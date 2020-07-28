@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots as sub_make
 from scipy import signal
 
-from utils import *
+from .utils import *
 
 class Strategies(object):
     """
