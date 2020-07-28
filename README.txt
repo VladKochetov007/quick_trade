@@ -1,0 +1,1 @@
+please, view source in github https://github.com/VvadKochetov007/quick_trade
