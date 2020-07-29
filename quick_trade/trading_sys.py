@@ -1077,7 +1077,8 @@ class Strategies(object):
         deposit_df = to_4_col_df(deposit_df, 'deposit Close', 'deposit Open',
                                  'deposit High', 'deposit Low')
 
-        self.linear = pd.DataFrame(self.linear_(deposit_df['deposit Close'].values), columns=['deposit Close'])
+        self.linear = pd.DataFrame(self.linear_(deposit_df['deposit Close'].values),
+                                   columns=['deposit Close'])
 
         self.open_lot_prices = __4_div(
             self.open_lot_prices, columns=['open lot price'])
