@@ -4,7 +4,7 @@ algo-trading system.
 trading with python.
 
 
-customize your strategy!
+## customize your strategy!
 
 ```
 from quick_trade.trading_sys import PatternFinder
@@ -25,12 +25,12 @@ a.set_pyplot()
 a.strategy_buy_and_hold()
 a.backtest()
 ```
-installing:
+## installing:
 ```
 $ git clone https://github.com/VvadKochetov007/quick_trade.git
 ```
 
-your project tree:
+## your project tree:
 ```
 project
  ├── quick_trade
@@ -44,7 +44,7 @@ project
  └── user_code.py
 ```
 
-user code example:
+##### user code example:
 ```
 import quick_trade.trading_sys as qt
 import yfinance as yf
