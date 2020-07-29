@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots as sub_make
 from scipy import signal
 
-from .utils import *
+from quick_trade.utils import *
 
 class Strategies(object):
     """
@@ -487,7 +487,7 @@ class Strategies(object):
         -----------------+-------------+--------------------------------------
         credit_leverage: | int, float. | tradeing leverage. 1 = none
         -----------------+-------------+--------------------------------------
-        bet:             | int, float, | fixed bet to trade. None = all moneys
+        bet:             | int, float, | fixed bet to quick_trade. None = all moneys
         -----------------+-------------+--------------------------------------
         commission:      | int, float. | percentage commission (0 -- 100)
         -----------------+-------------+--------------------------------------
@@ -1006,7 +1006,7 @@ class Strategies(object):
         -----------------+-------------+--------------------------------------
         credit_leverage: | int, float. | tradeing leverage. 1 = none
         -----------------+-------------+--------------------------------------
-        bet:             | int, float, | fixed bet to trade. None = all moneys
+        bet:             | int, float, | fixed bet to quick_trade. None = all moneys
         -----------------+-------------+--------------------------------------
         commission:      | int, float. | percentage commission (0 -- 100)
         -----------------+-------------+--------------------------------------

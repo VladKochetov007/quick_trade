@@ -7,7 +7,7 @@ trading with python.
 customize your strategy!
 
 ```
-from trade.trading_sys import PatternFinder
+from quick_trade.trading_sys import PatternFinder
 import yfinance as yf
 
 class my_trader(PatternFinder):
