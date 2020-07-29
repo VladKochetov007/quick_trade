@@ -25,3 +25,31 @@ a.set_pyplot()
 a.strategy_buy_and_hold()
 a.backtest()
 ```
+installing:
+```
+$ git clone https://github.com/VvadKochetov007/quick_trade
+```
+
+your project tree:
+```
+project
+ ├── quick_trade
+ │    ├── quick_trade
+ │    │    ├── __init__.py
+ │    │    ├── trading_sys.py
+ │    │    └── utils.py
+ │    ├── LICENSE.txt
+ │    ├── README.md
+ │    └── setup.py
+ └── user_code.py
+```
+
+user code example:
+```
+import quick_trade.trading_sys as qt
+import yfinance as yf
+a = qt.PatternFinder('AAPL', df=yf.download('AAPL', period='1y'))
+a.set_pyplot()
+a.strategy_macd()
+a.backtest()
+```
