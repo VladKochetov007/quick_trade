@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(
-    name='quick_trade-VladKochetov007-',
+    name='quick_trade',
     version='1.9.1',
     packages=setuptools.find_packages(),
     license='MIT',
