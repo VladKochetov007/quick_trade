@@ -56,4 +56,4 @@ a.backtest()
  ### output plot:
 <div align="center">
   <img src="https://i.ibb.co/ThYVwpq/imgonline-com-ua-Big-Picture-afe-Xd-HJoldw-Tp.jpg" height=400, width=700" ">
-</div>NdHHbyswxWpto_NU9UW7XKJ6iS_OK1m5Bj7_qgujZgadCEFjfLIcVBMGE=s47)
+</div>)
