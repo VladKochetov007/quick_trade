@@ -27,7 +27,7 @@ a.backtest()
 ```
 installing:
 ```
-$ git clone https://github.com/VvadKochetov007/quick_trade
+$ git clone https://github.com/VvadKochetov007/quick_trade.git
 ```
 
 your project tree:
