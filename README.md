@@ -1,7 +1,7 @@
 # quick_trade
 
 
-[![button](https://srv4.imgonline.com.ua/result_img/imgonline-com-ua-Resize-AGcbCQj8US.jpg)](https://www.donationalerts.com/r/vladkochetov007)
+[![button](https://srv2.imgonline.com.ua/result_img/imgonline-com-ua-Resize-7TnuiVmtcX62.jpg)](https://www.donationalerts.com/r/vladkochetov007)
 
 
 algo-trading system.
