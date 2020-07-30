@@ -1,5 +1,5 @@
 # quick_trade
-### used ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
+### used ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta) and tensorflow (https://github.com/tensorflow/tensorflow)
 
 [![button](https://i.ibb.co/MgWmjsY/imgonline-com-ua-Resize-y-Wu-Bc-Rv7-KGALSc-Iw.jpg)](https://www.donationalerts.com/r/vladkochetov007)
 
