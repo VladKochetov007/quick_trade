@@ -53,7 +53,8 @@ a.set_pyplot()
 a.strategy_macd()
 a.backtest()
 ```
- ## output plot:
-<div align="center">
+
+## output plot:
+<div align="left">
   <img src="https://i.ibb.co/ThYVwpq/imgonline-com-ua-Big-Picture-afe-Xd-HJoldw-Tp.jpg" width=900">
 </div>
