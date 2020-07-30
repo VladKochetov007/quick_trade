@@ -44,7 +44,7 @@ project
  └── user_code.py
 ```
 
-##### user code example:
+#### user code example:
 ```
 import quick_trade.trading_sys as qt
 import yfinance as yf
@@ -53,7 +53,7 @@ a.set_pyplot()
 a.strategy_macd()
 a.backtest()
 ```
- ### output plot:
+ ## output plot:
 <div align="center">
-  <img src="https://i.ibb.co/ThYVwpq/imgonline-com-ua-Big-Picture-afe-Xd-HJoldw-Tp.jpg" height=400, width=700" ">
+  <img src="https://i.ibb.co/ThYVwpq/imgonline-com-ua-Big-Picture-afe-Xd-HJoldw-Tp.jpg" width=900">
 </div>
