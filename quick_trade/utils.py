@@ -1,3 +1,6 @@
+"""used ta by Darío López Padial (Bukosabino) https://github.com/bukosabino/ta"""
+
+
 import logging
 import pandas as pd
 import numpy as np

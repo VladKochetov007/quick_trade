@@ -1,7 +1,7 @@
 # quick_trade
+### used ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
 
-
-[![button](https://srv2.imgonline.com.ua/result_img/imgonline-com-ua-Resize-7TnuiVmtcX62.jpg)](https://www.donationalerts.com/r/vladkochetov007)
+[![button](https://i.ibb.co/MgWmjsY/imgonline-com-ua-Resize-y-Wu-Bc-Rv7-KGALSc-Iw.jpg)](https://www.donationalerts.com/r/vladkochetov007)
 
 
 algo-trading system.
