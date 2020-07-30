@@ -7,6 +7,6 @@ setuptools.setup(
     license='MIT',
     long_description_content_type="text/markdown",
     description="trading system",
-    url='https://github.com/VvadKochetov007/quick_trade',
+    url='https://github.com/VvadKochetov007/quick_trade.git',
     long_description=open('README.md').read(),
 )
