@@ -1,13 +1,9 @@
 # quick_trade
 
 
-[![button](https://i.ibb.co/1MjKqkt/photo-2020-07-30-23-20-13.jpg)](https://www.donationalerts.com/r/vladkochetov007)
+[![button](https://srv4.imgonline.com.ua/result_img/imgonline-com-ua-Resize-AGcbCQj8US.jpg)](https://www.donationalerts.com/r/vladkochetov007)
 
 
-<p>
-  <a class="btn btn-large btn-purple" href="#url" role="button">Large link button</a>
-  <button class="btn btn-large" type="button">Large button button</button>
-</p>
 algo-trading system.
 trading with python.
 
