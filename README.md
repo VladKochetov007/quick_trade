@@ -17,18 +17,8 @@ used:
  ├──itertools
  ├──datetime
  ├──os
+ ├──scipy
  └──iexfinance (https://github.com/addisonlynch/iexfinance)
-
-install packages:
-    ├──pip install ta
-    ├──pip install pykalman
-    ├──pip install yfinance
-    ├──pip install iexfinance
-    ├──pip install tensorflow
-    ├──pip install pandas
-    ├──pip install numpy
-    ├──pip install tqdm
-    └──pip install plotly
 ```
 
 
@@ -57,6 +47,15 @@ a.set_pyplot()
 a.strategy_buy_and_hold()
 a.backtest()
 ```
+*
+
+1 -- Buy
+
+2 -- Exit
+
+0 -- Sell
+
+*
 ## installing:
 ```
 $ git clone https://github.com/VladKochetov007/quick_trade.git
@@ -90,3 +89,23 @@ a.backtest()
 <div align="left">
   <img src="https://i.ibb.co/ThYVwpq/imgonline-com-ua-Big-Picture-afe-Xd-HJoldw-Tp.jpg" width=900">
 </div>
+
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+<img alt="Creative Commons License" style="border-width:0"
+src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+</a><br/>
+<span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">quick_trade</span> by 
+<a xmlns:cc="http://creativecommons.org/ns#"
+href="https://github.com/VladKochetov007" property="cc:attributionName"
+rel="cc:attributionURL">Vlad Kochetov</a> is licensed under a <a rel="license"
+href="http://creativecommons.org/licenses/by-sa/4.0/">
+Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+<br />Based on a work at 
+<a xmlns:dct="http://purl.org/dc/terms/"
+href="https://github.com/VladKochetov007/quick_trade"
+rel="dct:source">https://github.com/VladKochetov007/quick_trade</a>.
+<br />Permissions beyond the scope of this license may be available at 
+<a xmlns:cc="http://creativecommons.org/ns#"
+href="vladyslavdrrragonkoch@gmail.com" 
+rel="cc:morePermissions">vladyslavdrrragonkoch@gmail.com</a>.
