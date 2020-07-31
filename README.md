@@ -47,6 +47,15 @@ a.set_pyplot()
 a.strategy_buy_and_hold()
 a.backtest()
 ```
+*
+
+1 -- Buy
+
+2 -- Exit
+
+0 -- Sell
+
+*
 ## installing:
 ```
 $ git clone https://github.com/VladKochetov007/quick_trade.git
