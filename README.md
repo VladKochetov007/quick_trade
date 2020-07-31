@@ -1,8 +1,4 @@
 # quick_trade
-<<<<<<< HEAD
-=======
-### used ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta) and tensorflow (https://github.com/tensorflow/tensorflow)
->>>>>>> d8d7ce9f4d5bbd44baa7f5f1b2e2de87aa01ec19
 
 [![button](https://i.ibb.co/MgWmjsY/imgonline-com-ua-Resize-y-Wu-Bc-Rv7-KGALSc-Iw.jpg)](https://www.donationalerts.com/r/vladkochetov007)
 
