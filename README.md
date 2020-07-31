@@ -1,7 +1,37 @@
 # quick_trade
-### used ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
 
 [![button](https://i.ibb.co/MgWmjsY/imgonline-com-ua-Resize-y-Wu-Bc-Rv7-KGALSc-Iw.jpg)](https://www.donationalerts.com/r/vladkochetov007)
+
+```
+used:
+ ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
+ ├──tensorflow (https://github.com/tensorflow/tensorflow)
+ ├──pykalman (https://github.com/pykalman/pykalman)
+ ├──tqdm (https://github.com/tqdm/tqdm)
+ ├──yfinance (https://github.com/ranaroussi/yfinance)
+ ├──plotly (https://github.com/plotly/plotly.py)
+ ├──scipy (https://github.com/scipy/scipy)
+ ├──logging
+ ├──pandas (https://github.com/pandas-dev/pandas)
+ ├──numpy (https://github.com/numpy/numpy)
+ ├──itertools
+ ├──datetime
+ ├──os
+ └──iexfinance (https://github.com/addisonlynch/iexfinance)
+
+install packages:
+    ├──pip install ta
+    ├──pip install pykalman
+    ├──pip install yfinance
+    ├──pip install pyEX
+    ├──pip install iexfinance
+    ├──pip install tensorflow
+    ├──pip install pandas
+    ├──pip install numpy
+    ├──pip install scicit-learn
+    ├──pip install tqdm
+    └──pip install plotly
+```
 
 
 algo-trading system.
