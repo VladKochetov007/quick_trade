@@ -17,6 +17,7 @@ used:
  ├──itertools
  ├──datetime
  ├──os
+ ├──scipy
  └──iexfinance (https://github.com/addisonlynch/iexfinance)
 
 install packages:
