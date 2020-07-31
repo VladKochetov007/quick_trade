@@ -998,6 +998,7 @@ class Strategies(object):
                  take_profit=None,
                  plot=True,
                  print_out=True,
+                 show=True,
                  *args,
                  **kwargs):
         """
@@ -1019,6 +1020,8 @@ class Strategies(object):
         plot:            |    bool.    | plotting
         -----------------+-------------+--------------------------------------
         print_out:       |    bool.    | printing
+        -----------------+-------------+--------------------------------------
+        show:            |    bool.    | showing figure
 
 
 
@@ -1194,7 +1197,8 @@ class Strategies(object):
                             size=SCATTER_SIZE,
                             opacity=SCATTER_ALPHA))
             self.fig.update_layout(xaxis_rangeslider_visible=False)
-            self.fig.show()
+            if show:
+                self.fig.show()
 
         return self.backtest_out
 
@@ -1362,4 +1366,4 @@ if __name__ == '__main__':
     # trader.strategy_diff(trader.df['Close']) stop_loss=300, take_profit=300 inverse
     trader.inverse_strategy()
     trader.log_deposit()
-    resur = trader.backtest(take_profit=200)
+    resur = trader.backtest(take_profit=200, plot=False, print_out=False)
