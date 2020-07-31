@@ -23,12 +23,10 @@ install packages:
     ├──pip install ta
     ├──pip install pykalman
     ├──pip install yfinance
-    ├──pip install pyEX
     ├──pip install iexfinance
     ├──pip install tensorflow
     ├──pip install pandas
     ├──pip install numpy
-    ├──pip install scicit-learn
     ├──pip install tqdm
     └──pip install plotly
 ```
