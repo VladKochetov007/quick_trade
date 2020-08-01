@@ -16,6 +16,7 @@ from quick_trade.utils import *
 
 class Strategies(object):
     """
+
     basic class for PatternFinder.
     please use PatternFinder class.
 
@@ -374,7 +375,7 @@ class Strategies(object):
                             kalman_range=10,
                             optimizer='adam',
                             loss='mse',
-                            metrics=['acc'],
+                            metrics=None,
                             **fit_kwargs):
         """
         getting trained neural network to trading.
@@ -386,15 +387,16 @@ class Strategies(object):
             'Close'
             'Volume'
 
-        optimizer:   |       str         |   optimizer for .compile of network
+        optimizer:   |       str         |   optimizer for .compile of network.
 
-        kalman_range:|       int         |    lavel of smoothing
+        kalman_range:|       int         |    lavel of smoothing.
 
-        loss:        |       str         |   loss for .compile of network
+        loss:        |       str         |   loss for .compile of network.
 
-        metrics:     |  list of strings  |   metrics for .compile of network
+        metrics:     |  list of strings  |   metrics for .compile of network:
+            standart: ['acc']
 
-        fit_kwargs:  | *named argumenrs* |   arguments to .fit of network
+        fit_kwargs:  | *named argumenrs* |   arguments to .fit of network.
 
 
         returns:
@@ -404,6 +406,8 @@ class Strategies(object):
 
         """
 
+        if metrics is None:
+            metrics = ['acc']
         list_input = []
         list_output = []
 
