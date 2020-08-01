@@ -494,7 +494,7 @@ class Strategies(object):
 
         credit_leverage: | int, float. | tradeing leverage. 1 = none.
 
-        bet:             | int, float, | fixed bet to quick_trade. None = all moneys.
+        bet:             | int, float, | fixed bet to quick_trade--. None = all moneys.
 
         commission:      | int, float. | percentage commission (0 -- 100).
 
@@ -1014,7 +1014,7 @@ class Strategies(object):
 
         credit_leverage: | int, float. | tradeing leverage. 1 = none.
 
-        bet:             | int, float, | fixed bet to quick_trade. None = all moneys.
+        bet:             | int, float, | fixed bet to quick_trade--. None = all moneys.
 
         commission:      | int, float. | percentage commission (0 -- 100).
 
@@ -1371,6 +1371,4 @@ if __name__ == '__main__':
     # trader.strategy_diff(trader.df['Close']) stop_loss=300, take_profit=300 inverse
     trader.inverse_strategy()
     trader.log_deposit()
-    resur = trader.backtest(take_profit=200, plot=False, print_out=False)
-
-# dev
+    resur = trader.backtest(take_profit=200)

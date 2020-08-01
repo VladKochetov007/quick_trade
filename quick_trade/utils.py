@@ -106,11 +106,11 @@ def anti_set_(seted):
     return ret
 
 
-def move_stop_to_breakeven(stop, open, sig, price, diff, *args, **kwargs):
-    if sig == 1 and price > open and diff > 0:
-        stop_loss = (price * 2 + open) / 3
-    elif sig == 0 and price < open and diff < 0:
-        stop_loss = (price * 2 + open) / 3
+def move_stop_to_breakeven(stop, open_, sig, price, diff, *args, **kwargs):
+    if sig == 1 and price > open_ and diff > 0:
+        stop_loss = (price * 2 + open_) / 3
+    elif sig == 0 and price < open_ and diff < 0:
+        stop_loss = (price * 2 + open_) / 3
     else:
         stop_loss = stop
     return stop_loss
