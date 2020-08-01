@@ -3,14 +3,16 @@
 import time
 import copy
 import ta
+from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dropout, Dense
+from tensorflow.keras.layers import Dropout, Dense, LSTM
 from pykalman import KalmanFilter
 from tqdm.auto import tqdm
 import yfinance as yf
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots as sub_make
 from scipy import signal
+from tensorflow.keras.models import load_model
 
 from quick_trade.utils import *
 
@@ -370,12 +372,65 @@ class Strategies(object):
         self.returns = ret
         return ret
 
+    def get_network_regression(self, dataframes, inputs=60, network_save_path='../model-regression'):
+        """based on
+        https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb"""
+
+        if isinstance(dataframes, pd.DataFrame):
+            data = dataframes
+            dataset = data.values
+            scaler = MinMaxScaler(feature_range=(0, 1))
+            scaled_data = scaler.fit_transform(dataset)
+            train_data = scaled_data[0:len(scaled_data), :]
+            x_train = []
+            y_train = []
+            for i in range(inputs, len(train_data)):
+                x_train.append(train_data[i - inputs:i, 0])
+                y_train.append(train_data[i, 0])
+            x_train, y_train = np.array(x_train), np.array(y_train)
+            x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
+            model = Sequential()
+            model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
+            model.add(LSTM(units=50, return_sequences=False))
+            model.add(Dense(units=25))
+            model.add(Dense(units=1))
+            model.compile(optimizer='adam', loss='mean_squared_error')
+
+            model.fit(x_train, y_train, batch_size=1, epochs=1)
+        else:
+            for df in dataframes:
+                data = df.filter(['Close'])
+                dataset = data.values
+                scaler = MinMaxScaler(feature_range=(0, 1))
+                scaled_data = scaler.fit_transform(dataset)
+                train_data = scaled_data[0:len(scaled_data), :]
+                x_train = []
+                y_train = []
+                for i in range(inputs, len(train_data)):
+                    x_train.append(train_data[i - inputs:i, 0])
+                    y_train.append(train_data[i, 0])
+                x_train, y_train = np.array(x_train), np.array(y_train)
+                x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
+
+                model = Sequential()
+                model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
+                model.add(LSTM(units=50, return_sequences=False))
+                model.add(Dense(units=25))
+                model.add(Dense(units=1))
+                model.compile(optimizer='adam', loss='mean_squared_error')
+
+                model.fit(x_train, y_train, batch_size=1, epochs=1)
+        self.model = model
+        model.save(network_save_path)
+        return model
+
     def get_trained_network(self,
                             dataframes,
                             kalman_range=10,
                             optimizer='adam',
                             loss='mse',
                             metrics=None,
+                            network_save_path='../model-regression',
                             **fit_kwargs):
         """
         getting trained neural network to trading.
@@ -438,6 +493,7 @@ class Strategies(object):
         self.model = model
         self.history = hist
         self.training_set = (input_train_array, output_train_array)
+        model.save(network_save_path)
         return model, hist, self.training_set
 
     def strategy_with_network(self, *args, **kwargs):
@@ -1206,6 +1262,9 @@ class Strategies(object):
 
         return self.backtest_out
 
+    def load_regression_model(self, path):
+        self.model = load_model(path)
+
 
 class PatternFinder(Strategies):
     """
@@ -1369,7 +1428,7 @@ if __name__ == '__main__':
     # trader.strategy_3_sma(slow=1000//5, mid=260//5, fast=130//5)
     # trader.strategy_diff(trader.df['Close']) stop_loss=300, take_profit=300 inverse
     trader.inverse_strategy()
+    trader.get_network_regression(yf.download('AAPL', start='2020-01-01'))
     trader.log_deposit()
-    resur = trader.backtest(take_profit=200, plot=False, print_out=False)
+    #resur = trader.backtest(take_profit=200)
 
-# dev
