@@ -1,20 +1,21 @@
 """used ta by Darío López Padial (Bukosabino) https://github.com/bukosabino/ta"""
 
-import time
 import copy
+import time
+
+import plotly.graph_objects as go
 import ta
 from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dropout, Dense, LSTM
-from pykalman import KalmanFilter
-from tqdm.auto import tqdm
 import yfinance as yf
-import plotly.graph_objects as go
 from plotly.subplots import make_subplots as sub_make
+from pykalman import KalmanFilter
+from quick_trade.utils import *
 from scipy import signal
+from tensorflow.keras.models import Sequential
+from tqdm.auto import tqdm
 from tensorflow.keras.models import load_model
 
-from quick_trade.utils import *
 
 class Strategies(object):
     """
@@ -372,12 +373,19 @@ class Strategies(object):
         self.returns = ret
         return ret
 
-    def get_network_regression(self, dataframes, inputs=60, network_save_path='../model-regression'):
+    def get_network_regression(self, dataframes, inputs=60, network_save_path='../model-regression', **fit_kwargs):
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb"""
 
-        if isinstance(dataframes, pd.DataFrame):
-            data = dataframes
+        self.inputs = inputs
+        model = Sequential()
+        model.add(LSTM(units=50, return_sequences=True, input_shape=(inputs, 1)))
+        model.add(LSTM(units=50, return_sequences=False))
+        model.add(Dense(units=25))
+        model.add(Dense(units=1))
+        model.compile(optimizer='adam', loss='mean_squared_error')
+        for df in dataframes:
+            data = df.filter(['Close'])
             dataset = data.values
             scaler = MinMaxScaler(feature_range=(0, 1))
             scaled_data = scaler.fit_transform(dataset)
@@ -389,37 +397,7 @@ class Strategies(object):
                 y_train.append(train_data[i, 0])
             x_train, y_train = np.array(x_train), np.array(y_train)
             x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
-            model = Sequential()
-            model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
-            model.add(LSTM(units=50, return_sequences=False))
-            model.add(Dense(units=25))
-            model.add(Dense(units=1))
-            model.compile(optimizer='adam', loss='mean_squared_error')
-
-            model.fit(x_train, y_train, batch_size=1, epochs=1)
-        else:
-            for df in dataframes:
-                data = df.filter(['Close'])
-                dataset = data.values
-                scaler = MinMaxScaler(feature_range=(0, 1))
-                scaled_data = scaler.fit_transform(dataset)
-                train_data = scaled_data[0:len(scaled_data), :]
-                x_train = []
-                y_train = []
-                for i in range(inputs, len(train_data)):
-                    x_train.append(train_data[i - inputs:i, 0])
-                    y_train.append(train_data[i, 0])
-                x_train, y_train = np.array(x_train), np.array(y_train)
-                x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
-
-                model = Sequential()
-                model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
-                model.add(LSTM(units=50, return_sequences=False))
-                model.add(Dense(units=25))
-                model.add(Dense(units=1))
-                model.compile(optimizer='adam', loss='mean_squared_error')
-
-                model.fit(x_train, y_train, batch_size=1, epochs=1)
+            model.fit(x_train, y_train, **fit_kwargs)
         self.model = model
         model.save(network_save_path)
         return model
@@ -512,9 +490,9 @@ class Strategies(object):
         """
         makes signals inverse:
 
-        buy = sell
-        sell = buy
-        exit = exit
+        buy = sell.
+        sell = buy.
+        exit = exit.
 
         """
 
@@ -546,22 +524,22 @@ class Strategies(object):
 
 
         deposit:         | int, float. | start deposit.
-        -----------------+-------------+--------------------------------------
-        credit_leverage: | int, float. | tradeing leverage. 1 = none
-        -----------------+-------------+--------------------------------------
-        bet:             | int, float, | fixed bet to quick_trade. None = all moneys
-        -----------------+-------------+--------------------------------------
-        commission:      | int, float. | percentage commission (0 -- 100)
-        -----------------+-------------+--------------------------------------
-        stop_loss:       | int, float. | stop loss in points
-        -----------------+-------------+--------------------------------------
-        take_profit:     | int, float. | take profit in points
-        -----------------+-------------+--------------------------------------
-        plot:            |    bool.    | plotting
-        -----------------+-------------+--------------------------------------
-        print_out:       |    bool.    | printing
-        -----------------+-------------+--------------------------------------
-        column:          |     str     | column of dataframe to becktest
+
+        credit_leverage: | int, float. | tradeing leverage. 1 = none.
+
+        bet:             | int, float, | fixed bet to quick_trade--. None = all moneys.
+
+        commission:      | int, float. | percentage commission (0 -- 100).
+
+        stop_loss:       | int, float. | stop loss in points.
+
+        take_profit:     | int, float. | take profit in points.
+
+        plot:            |    bool.    | plotting.
+
+        print_out:       |    bool.    | printing.
+
+        column:          |     str     | column of dataframe to becktest.
 
 
 
@@ -842,19 +820,19 @@ class Strategies(object):
                           *args,
                           **kwargs):
         """
-        first_func:      |  trading strategy  |   strategy to combine
+        first_func:      |  trading strategy  |   strategy to combine.
 
-        standart: nothing
+        standart: nothing.
 
-        example:  Strategies.strategy_macd
+        example:  Strategies.strategy_macd.
 
-        second_func:     |  trading strategy  |   strategy to combine
+        second_func:     |  trading strategy  |   strategy to combine.
 
-        standart: nothing
+        standart: nothing.
 
-        args_first_func: |    tuple, list     |   arguments to first function
+        args_first_func: |    tuple, list     |   arguments to first function.
 
-        args_second_func:|    tuple, list     |   arguments to second function
+        args_second_func:|    tuple, list     |   arguments to second function.
 
         mode:            |         str        |   mode of combining:
             example :
@@ -1013,18 +991,18 @@ class Strategies(object):
                          inverse=False,
                          **strategy_kwargs):
         """
-        strategy:         |   Strategies.some_strategy  |  trading strategy
+        strategy:         |   Strategies.some_strategy  |  trading strategy.
 
         get_gataframe:    |          function           |  function to getting the data:
-            first argument must be a ticker
+            first argument must be a ticker.
 
-        get_data_kwargs:  |             dict            |  named arguments to <<get_gataframe>> WITHOUT TICKER
+        get_data_kwargs:  |             dict            |  named arguments to <<get_gataframe>> WITHOUT TICKER.
 
-        **strategy_kwargs:|             kwargs          |  named arguments to <<strategy>>
+        **strategy_kwargs:|             kwargs          |  named arguments to <<strategy>>.
 
-        sleeping_time:    |             int             |  sleeping time
+        sleeping_time:    |             int             |  sleeping time.
 
-        print_out:        |             bool            |  printing
+        print_out:        |             bool            |  printing.
 
         """
 
@@ -1066,22 +1044,22 @@ class Strategies(object):
 
 
         deposit:         | int, float. | start deposit.
-        -----------------+-------------+--------------------------------------
-        credit_leverage: | int, float. | tradeing leverage. 1 = none
-        -----------------+-------------+--------------------------------------
-        bet:             | int, float, | fixed bet to quick_trade. None = all moneys
-        -----------------+-------------+--------------------------------------
-        commission:      | int, float. | percentage commission (0 -- 100)
-        -----------------+-------------+--------------------------------------
-        stop_loss:       | int, float. | stop loss in points
-        -----------------+-------------+--------------------------------------
-        take_profit:     | int, float. | take profit in points
-        -----------------+-------------+--------------------------------------
-        plot:            |    bool.    | plotting
-        -----------------+-------------+--------------------------------------
-        print_out:       |    bool.    | printing
-        -----------------+-------------+--------------------------------------
-        show:            |    bool.    | showing figure
+
+        credit_leverage: | int, float. | tradeing leverage. 1 = none.
+
+        bet:             | int, float, | fixed bet to quick_trade--. None = all moneys.
+
+        commission:      | int, float. | percentage commission (0 -- 100).
+
+        stop_loss:       | int, float. | stop loss in points.
+
+        take_profit:     | int, float. | take profit in points.
+
+        plot:            |    bool.    | plotting.
+
+        print_out:       |    bool.    | printing.
+
+        show:            |    bool.    | showing figure.
 
 
 
@@ -1262,7 +1240,7 @@ class Strategies(object):
 
         return self.backtest_out
 
-    def load_regression_model(self, path):
+    def load_model(self, path):
         self.model = load_model(path)
 
 
@@ -1428,7 +1406,6 @@ if __name__ == '__main__':
     # trader.strategy_3_sma(slow=1000//5, mid=260//5, fast=130//5)
     # trader.strategy_diff(trader.df['Close']) stop_loss=300, take_profit=300 inverse
     trader.inverse_strategy()
-    trader.get_network_regression(yf.download('AAPL', start='2020-01-01'))
+    trader.get_network_regression([yf.download('AAPL', start='2020-01-01')], epochs=1, batch_size=1)
     trader.log_deposit()
     #resur = trader.backtest(take_profit=200)
-
