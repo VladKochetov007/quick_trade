@@ -1,13 +1,11 @@
-"""used ta by Darío López Padial (Bukosabino) https://github.com/bukosabino/ta"""
-
-
-import logging
-import pandas as pd
-import numpy as np
-import itertools
 import datetime
-from iexfinance.stocks import get_historical_intraday
+import itertools
+import logging
 import os
+
+import numpy as np
+import pandas as pd
+from iexfinance.stocks import get_historical_intraday
 
 R = '#ff0000'
 G = '#55ff00'
@@ -19,7 +17,6 @@ __author__ = 'Vlad Kochetov'
 __credits__ = ["Hemerson Tacon -- Stack overflow",
                "hpaulj -- Stack overflow"]
 __version__ = "1.9.1"
-
 
 TICKER = '^DJI'
 SCATTER_SIZE = 12
@@ -53,11 +50,11 @@ def to_4_col_df(data, *columns):
     pd.DataFrame with 4 your columns
 
     """
-    PREDICT = [[] for _ in range(4)]
+    predict = [[] for _ in range(4)]
     for it in range(4):
         for i in range(it, len(data), 4):
-            PREDICT[it].append(data[i])
-    return pd.DataFrame(PREDICT, index=columns).T
+            predict[it].append(data[i])
+    return pd.DataFrame(predict, index=columns).T
 
 
 def inverse_4_col_df(df, columns):
@@ -111,9 +108,9 @@ def anti_set_(seted):
 
 def move_stop_to_breakeven(stop, open, sig, price, diff, *args, **kwargs):
     if sig == 1 and price > open and diff > 0:
-        stop_loss = (price + open) / 2
+        stop_loss = (price * 2 + open) / 3
     elif sig == 0 and price < open and diff < 0:
-        stop_loss = (price + open) / 2
+        stop_loss = (price * 2 + open) / 3
     else:
         stop_loss = stop
     return stop_loss

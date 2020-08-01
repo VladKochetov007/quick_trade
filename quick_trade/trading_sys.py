@@ -1,18 +1,19 @@
 """used ta by Darío López Padial (Bukosabino) https://github.com/bukosabino/ta"""
 
-import time
 import copy
-import ta
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dropout, Dense
-from pykalman import KalmanFilter
-from tqdm.auto import tqdm
-import yfinance as yf
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots as sub_make
-from scipy import signal
+import time
 
+import plotly.graph_objects as go
+import ta
+import yfinance as yf
+from plotly.subplots import make_subplots as sub_make
+from pykalman import KalmanFilter
 from quick_trade.utils import *
+from scipy import signal
+from tensorflow.keras.layers import Dropout, Dense
+from tensorflow.keras.models import Sequential
+from tqdm.auto import tqdm
+
 
 class Strategies(object):
     """
@@ -452,9 +453,9 @@ class Strategies(object):
         """
         makes signals inverse:
 
-        buy = sell
-        sell = buy
-        exit = exit
+        buy = sell.
+        sell = buy.
+        exit = exit.
 
         """
 
@@ -486,22 +487,22 @@ class Strategies(object):
 
 
         deposit:         | int, float. | start deposit.
-        -----------------+-------------+--------------------------------------
-        credit_leverage: | int, float. | tradeing leverage. 1 = none
-        -----------------+-------------+--------------------------------------
-        bet:             | int, float, | fixed bet to quick_trade. None = all moneys
-        -----------------+-------------+--------------------------------------
-        commission:      | int, float. | percentage commission (0 -- 100)
-        -----------------+-------------+--------------------------------------
-        stop_loss:       | int, float. | stop loss in points
-        -----------------+-------------+--------------------------------------
-        take_profit:     | int, float. | take profit in points
-        -----------------+-------------+--------------------------------------
-        plot:            |    bool.    | plotting
-        -----------------+-------------+--------------------------------------
-        print_out:       |    bool.    | printing
-        -----------------+-------------+--------------------------------------
-        column:          |     str     | column of dataframe to becktest
+
+        credit_leverage: | int, float. | tradeing leverage. 1 = none.
+
+        bet:             | int, float, | fixed bet to quick_trade. None = all moneys.
+
+        commission:      | int, float. | percentage commission (0 -- 100).
+
+        stop_loss:       | int, float. | stop loss in points.
+
+        take_profit:     | int, float. | take profit in points.
+
+        plot:            |    bool.    | plotting.
+
+        print_out:       |    bool.    | printing.
+
+        column:          |     str     | column of dataframe to becktest.
 
 
 
@@ -782,19 +783,19 @@ class Strategies(object):
                           *args,
                           **kwargs):
         """
-        first_func:      |  trading strategy  |   strategy to combine
+        first_func:      |  trading strategy  |   strategy to combine.
 
-        standart: nothing
+        standart: nothing.
 
-        example:  Strategies.strategy_macd
+        example:  Strategies.strategy_macd.
 
-        second_func:     |  trading strategy  |   strategy to combine
+        second_func:     |  trading strategy  |   strategy to combine.
 
-        standart: nothing
+        standart: nothing.
 
-        args_first_func: |    tuple, list     |   arguments to first function
+        args_first_func: |    tuple, list     |   arguments to first function.
 
-        args_second_func:|    tuple, list     |   arguments to second function
+        args_second_func:|    tuple, list     |   arguments to second function.
 
         mode:            |         str        |   mode of combining:
             example :
@@ -953,18 +954,18 @@ class Strategies(object):
                          inverse=False,
                          **strategy_kwargs):
         """
-        strategy:         |   Strategies.some_strategy  |  trading strategy
+        strategy:         |   Strategies.some_strategy  |  trading strategy.
 
         get_gataframe:    |          function           |  function to getting the data:
-            first argument must be a ticker
+            first argument must be a ticker.
 
-        get_data_kwargs:  |             dict            |  named arguments to <<get_gataframe>> WITHOUT TICKER
+        get_data_kwargs:  |             dict            |  named arguments to <<get_gataframe>> WITHOUT TICKER.
 
-        **strategy_kwargs:|             kwargs          |  named arguments to <<strategy>>
+        **strategy_kwargs:|             kwargs          |  named arguments to <<strategy>>.
 
-        sleeping_time:    |             int             |  sleeping time
+        sleeping_time:    |             int             |  sleeping time.
 
-        print_out:        |             bool            |  printing
+        print_out:        |             bool            |  printing.
 
         """
 
@@ -1006,22 +1007,22 @@ class Strategies(object):
 
 
         deposit:         | int, float. | start deposit.
-        -----------------+-------------+--------------------------------------
-        credit_leverage: | int, float. | tradeing leverage. 1 = none
-        -----------------+-------------+--------------------------------------
-        bet:             | int, float, | fixed bet to quick_trade. None = all moneys
-        -----------------+-------------+--------------------------------------
-        commission:      | int, float. | percentage commission (0 -- 100)
-        -----------------+-------------+--------------------------------------
-        stop_loss:       | int, float. | stop loss in points
-        -----------------+-------------+--------------------------------------
-        take_profit:     | int, float. | take profit in points
-        -----------------+-------------+--------------------------------------
-        plot:            |    bool.    | plotting
-        -----------------+-------------+--------------------------------------
-        print_out:       |    bool.    | printing
-        -----------------+-------------+--------------------------------------
-        show:            |    bool.    | showing figure
+
+        credit_leverage: | int, float. | tradeing leverage. 1 = none.
+
+        bet:             | int, float, | fixed bet to quick_trade. None = all moneys.
+
+        commission:      | int, float. | percentage commission (0 -- 100).
+
+        stop_loss:       | int, float. | stop loss in points.
+
+        take_profit:     | int, float. | take profit in points.
+
+        plot:            |    bool.    | plotting.
+
+        print_out:       |    bool.    | printing.
+
+        show:            |    bool.    | showing figure.
 
 
 
