@@ -11,8 +11,10 @@ R = '#ff0000'
 G = '#55ff00'
 B = '#0015ff'
 
+TOKEN = 'Tpk_a4bc3e95d4c94810a3b2d4138dc81c5d'
+
 os.environ['IEX_API_VERSION'] = 'iexcloud-sandbox'
-os.environ['IEX_TOKEN'] = 'Tpk_a4bc3e95d4c94810a3b2d4138dc81c5d'
+os.environ['IEX_TOKEN'] = TOKEN
 __author__ = 'Vlad Kochetov'
 __credits__ = ["Hemerson Tacon -- Stack overflow",
                "hpaulj -- Stack overflow"]
