@@ -1,2 +1,6 @@
 */__pycache__
 *.log
+bdist
+dist
+MANIFEST
+.pypirc
