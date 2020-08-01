@@ -1371,3 +1371,5 @@ if __name__ == '__main__':
     trader.inverse_strategy()
     trader.log_deposit()
     resur = trader.backtest(take_profit=200, plot=False, print_out=False)
+
+# dev
