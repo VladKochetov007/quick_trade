@@ -3,3 +3,5 @@
 MANIFEST
 dist
 build
+bdist
+.pypirc
