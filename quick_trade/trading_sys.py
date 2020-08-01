@@ -373,12 +373,19 @@ class Strategies(object):
         self.returns = ret
         return ret
 
-    def get_network_regression(self, dataframes, inputs=60, network_save_path='../model-regression'):
+    def get_network_regression(self, dataframes, inputs=60, network_save_path='../model-regression', **fit_kwargs):
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb"""
 
-        if isinstance(dataframes, pd.DataFrame):
-            data = dataframes
+        self.inputs = inputs
+        model = Sequential()
+        model.add(LSTM(units=50, return_sequences=True, input_shape=(inputs, 1)))
+        model.add(LSTM(units=50, return_sequences=False))
+        model.add(Dense(units=25))
+        model.add(Dense(units=1))
+        model.compile(optimizer='adam', loss='mean_squared_error')
+        for df in dataframes:
+            data = df.filter(['Close'])
             dataset = data.values
             scaler = MinMaxScaler(feature_range=(0, 1))
             scaled_data = scaler.fit_transform(dataset)
@@ -390,37 +397,7 @@ class Strategies(object):
                 y_train.append(train_data[i, 0])
             x_train, y_train = np.array(x_train), np.array(y_train)
             x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
-            model = Sequential()
-            model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
-            model.add(LSTM(units=50, return_sequences=False))
-            model.add(Dense(units=25))
-            model.add(Dense(units=1))
-            model.compile(optimizer='adam', loss='mean_squared_error')
-
-            model.fit(x_train, y_train, batch_size=1, epochs=1)
-        else:
-            for df in dataframes:
-                data = df.filter(['Close'])
-                dataset = data.values
-                scaler = MinMaxScaler(feature_range=(0, 1))
-                scaled_data = scaler.fit_transform(dataset)
-                train_data = scaled_data[0:len(scaled_data), :]
-                x_train = []
-                y_train = []
-                for i in range(inputs, len(train_data)):
-                    x_train.append(train_data[i - inputs:i, 0])
-                    y_train.append(train_data[i, 0])
-                x_train, y_train = np.array(x_train), np.array(y_train)
-                x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
-
-                model = Sequential()
-                model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
-                model.add(LSTM(units=50, return_sequences=False))
-                model.add(Dense(units=25))
-                model.add(Dense(units=1))
-                model.compile(optimizer='adam', loss='mean_squared_error')
-
-                model.fit(x_train, y_train, batch_size=1, epochs=1)
+            model.fit(x_train, y_train, **fit_kwargs)
         self.model = model
         model.save(network_save_path)
         return model
@@ -1263,7 +1240,7 @@ class Strategies(object):
 
         return self.backtest_out
 
-    def load_regression_model(self, path):
+    def load_model(self, path):
         self.model = load_model(path)
 
 
@@ -1429,6 +1406,6 @@ if __name__ == '__main__':
     # trader.strategy_3_sma(slow=1000//5, mid=260//5, fast=130//5)
     # trader.strategy_diff(trader.df['Close']) stop_loss=300, take_profit=300 inverse
     trader.inverse_strategy()
-    trader.get_network_regression(yf.download('AAPL', start='2020-01-01'))
+    trader.get_network_regression([yf.download('AAPL', start='2020-01-01')], epochs=1, batch_size=1)
     trader.log_deposit()
     #resur = trader.backtest(take_profit=200)
