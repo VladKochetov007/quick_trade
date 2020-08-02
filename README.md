@@ -65,6 +65,14 @@ $ git clone https://github.com/VladKochetov007/quick_trade.git
 ```
 project
  ├── quick_trade
+ │    ├── model-regression
+ │    │    ├── assets
+ │    │    ├── varibles
+ │    │    │    ├── varibles.data-00000-of-00001
+ │    │    │    └── varibles.index
+ │    │    └── saved_model.pb
+ │    │
+ │    │
  │    ├── quick_trade
  │    │    ├── __init__.py
  │    │    ├── trading_sys.py
