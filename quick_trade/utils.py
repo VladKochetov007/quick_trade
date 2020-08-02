@@ -10,6 +10,8 @@ from iexfinance.stocks import get_historical_intraday
 R = '#ff0000'
 G = '#55ff00'
 B = '#0015ff'
+C = 'cyan'
+INPUTS = 60
 
 TOKEN = 'Tpk_a4bc3e95d4c94810a3b2d4138dc81c5d'
 

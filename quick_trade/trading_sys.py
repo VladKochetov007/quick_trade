@@ -373,9 +373,39 @@ class Strategies(object):
         self.returns = ret
         return ret
 
+    def strategy_regression_model(self, plot=True, *args, **kwargs):
+        ret = []
+        for i in range(self.inputs - 1):
+            ret.append(2)
+        data_to_pred = np.array(get_window(np.array([self.df['Close'].values]).T, self.inputs))
+
+        data_to_pred = data_to_pred.T
+        for e, data in enumerate(data_to_pred):
+            data_to_pred[e] = self.scaler.fit_transform(data)
+        data_to_pred = data_to_pred.T
+
+        predictions = itertools.chain.from_iterable(self.model.predict(data_to_pred))
+        predictions = pd.DataFrame(predictions)
+        frame = predictions
+        predictions = self.strategy_diff(predictions)
+        frame = self.scaler.inverse_transform(frame.values.T).T
+        self.returns = [*ret, *predictions]
+        if plot:
+            nans = itertools.chain.from_iterable([(np.nan,) * self.inputs])
+            self.fig.add_trace(
+                go.Line(
+                    name='predict',
+                    y=(*nans, *frame.T[0]),
+                    line=dict(width=SUB_LINES_WIDTH, color=C)), row=1, col=1)
+        return self.returns
+
     def get_network_regression(self, dataframes, inputs=60, network_save_path='../model-regression', **fit_kwargs):
         """based on
-        https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb"""
+        https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
+
+        please, use one dataframe.
+
+        """
 
         self.inputs = inputs
         model = Sequential()
@@ -384,11 +414,13 @@ class Strategies(object):
         model.add(Dense(units=25))
         model.add(Dense(units=1))
         model.compile(optimizer='adam', loss='mean_squared_error')
+
+        self.scaler = MinMaxScaler(feature_range=(0, 1))
+
         for df in dataframes:
             data = df.filter(['Close'])
             dataset = data.values
-            scaler = MinMaxScaler(feature_range=(0, 1))
-            scaled_data = scaler.fit_transform(dataset)
+            scaled_data = self.scaler.fit_transform(dataset)
             train_data = scaled_data[0:len(scaled_data), :]
             x_train = []
             y_train = []
@@ -401,6 +433,17 @@ class Strategies(object):
         self.model = model
         model.save(network_save_path)
         return model
+
+    def prepare_scaler(self, dataframe):
+        """
+        if you are loading a neural network.
+
+        """
+        scaler = MinMaxScaler(feature_range=(0, 1))
+        data = dataframe.filter(['Close'])
+        dataset = data.values
+        scaled_data = scaler.fit_transform(dataset)
+        self.scaler = scaler
 
     def get_trained_network(self,
                             dataframes,
@@ -1309,6 +1352,7 @@ class PatternFinder(Strategies):
             self.profit_calculate_coef = 1 / 365
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
+        self.inputs = INPUTS
 
     def _window_(self, column, n=2):
         return get_window(self.df[column].values, n)
@@ -1399,13 +1443,16 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
-    df = yf.download(TICKER, period='1y', interval='1d')
+    df = yf.download(TICKER, period='5y', interval='1d')
     trader = PatternFinder(TICKER, 0, df=df, interval='1d')
     trader.set_pyplot()
-    trader.strategy_parabolic_SAR()
+    trader.prepare_scaler(df)
+    trader.load_model('../model-regression')
+    trader.strategy_regression_model()
     # trader.strategy_3_sma(slow=1000//5, mid=260//5, fast=130//5)
     # trader.strategy_diff(trader.df['Close']) stop_loss=300, take_profit=300 inverse
-    trader.inverse_strategy()
-    trader.get_network_regression([yf.download('AAPL', start='2020-01-01')], epochs=1, batch_size=1)
-    trader.log_deposit()
     #resur = trader.backtest(take_profit=200)
+    # trader.inverse_strategy()
+    # trader.log_deposit()
+    resur = trader.backtest(stop_loss=300)
+
