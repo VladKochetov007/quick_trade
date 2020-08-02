@@ -2,7 +2,6 @@ import datetime
 import itertools
 import logging
 import os
-
 import numpy as np
 import pandas as pd
 from iexfinance.stocks import get_historical_intraday
@@ -20,7 +19,7 @@ os.environ['IEX_TOKEN'] = TOKEN
 __author__ = 'Vlad Kochetov'
 __credits__ = ["Hemerson Tacon -- Stack overflow",
                "hpaulj -- Stack overflow"]
-__version__ = "1.9.1"
+__version__ = "2.0"
 
 TICKER = '^DJI'
 SCATTER_SIZE = 12

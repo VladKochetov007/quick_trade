@@ -1,8 +1,8 @@
 from distutils.core import setup
 
 setup(
-    name='quick_trade--',
-    version='1.9.1',
+    name='quick_trade',
+    version='2.0',
     packages=['quick_trade--'],
     license='cc',
     description="trading system",

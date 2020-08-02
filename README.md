@@ -5,7 +5,7 @@
 ```
 used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
- ├──tensorflow (https://github.com/tensorflow/tensorflow)
+ ├──tensorflow==2.2 (https://github.com/tensorflow/tensorflow)
  ├──pykalman (https://github.com/pykalman/pykalman)
  ├──tqdm (https://github.com/tqdm/tqdm)
  ├──yfinance (https://github.com/ranaroussi/yfinance)
