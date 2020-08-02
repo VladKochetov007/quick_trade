@@ -1153,7 +1153,6 @@ class Strategies(object):
         rets = self.backtest_out
 
         def __4_div(obj, columns):
-            ret = []
             ret = obj[::4]
             ret = pd.DataFrame(ret, columns=columns).reset_index()
             del ret['index']
