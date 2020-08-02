@@ -71,8 +71,6 @@ project
  │    │    │    ├── varibles.data-00000-of-00001
  │    │    │    └── varibles.index
  │    │    └── saved_model.pb
- │    │
- │    │
  │    ├── quick_trade
  │    │    ├── __init__.py
  │    │    ├── trading_sys.py
