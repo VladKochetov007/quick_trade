@@ -238,8 +238,8 @@ class Strategies(object):
 
         if plot:
             for ema, C, name in zip([
-                ema3.values[self.drop:], ema21.values[self.drop:],
-                ema46.values[self.drop:]
+                    ema3.values[self.drop:], ema21.values[self.drop:],
+                    ema46.values[self.drop:]
             ], [G, B, R], [slow, mid, fast]):
                 self.fig.add_trace(
                     go.Line(
@@ -377,29 +377,37 @@ class Strategies(object):
         ret = []
         for i in range(self.inputs - 1):
             ret.append(2)
-        data_to_pred = np.array(get_window(np.array([self.df['Close'].values]).T, self.inputs))
+        data_to_pred = np.array(
+            get_window(np.array([self.df['Close'].values]).T, self.inputs))
 
         data_to_pred = data_to_pred.T
         for e, data in enumerate(data_to_pred):
             data_to_pred[e] = self.scaler.fit_transform(data)
         data_to_pred = data_to_pred.T
 
-        predictions = itertools.chain.from_iterable(self.model.predict(data_to_pred))
+        predictions = itertools.chain.from_iterable(
+            self.model.predict(data_to_pred))
         predictions = pd.DataFrame(predictions)
         frame = predictions
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
         self.returns = [*ret, *predictions]
         if plot:
-            nans = itertools.chain.from_iterable([(np.nan,) * self.inputs])
+            nans = itertools.chain.from_iterable([(np.nan, ) * self.inputs])
             self.fig.add_trace(
                 go.Line(
                     name='predict',
                     y=(*nans, *frame.T[0]),
-                    line=dict(width=SUB_LINES_WIDTH, color=C)), row=1, col=1)
+                    line=dict(width=SUB_LINES_WIDTH, color=C)),
+                row=1,
+                col=1)
         return self.returns
 
-    def get_network_regression(self, dataframes, inputs=60, network_save_path='../model-regression', **fit_kwargs):
+    def get_network_regression(self,
+                               dataframes,
+                               inputs=60,
+                               network_save_path='../model-regression',
+                               **fit_kwargs):
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
 
@@ -409,7 +417,8 @@ class Strategies(object):
 
         self.inputs = inputs
         model = Sequential()
-        model.add(LSTM(units=50, return_sequences=True, input_shape=(inputs, 1)))
+        model.add(
+            LSTM(units=50, return_sequences=True, input_shape=(inputs, 1)))
         model.add(LSTM(units=50, return_sequences=False))
         model.add(Dense(units=25))
         model.add(Dense(units=1))
@@ -428,7 +437,8 @@ class Strategies(object):
                 x_train.append(train_data[i - inputs:i, 0])
                 y_train.append(train_data[i, 0])
             x_train, y_train = np.array(x_train), np.array(y_train)
-            x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
+            x_train = np.reshape(x_train,
+                                 (x_train.shape[0], x_train.shape[1], 1))
             model.fit(x_train, y_train, **fit_kwargs)
         self.model = model
         model.save(network_save_path)
@@ -698,7 +708,7 @@ class Strategies(object):
             _rate -= _rate * (commission / 100)
 
             for i in (
-                             pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
+                    pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
 
                 min_price = self.df['Low'][self.drop:][e]
                 max_price = self.df['High'][self.drop:][e]
@@ -1162,8 +1172,9 @@ class Strategies(object):
         deposit_df = to_4_col_df(deposit_df, 'deposit Close', 'deposit Open',
                                  'deposit High', 'deposit Low')
 
-        self.linear = pd.DataFrame(self.linear_(deposit_df['deposit Close'].values),
-                                   columns=['deposit Close'])
+        self.linear = pd.DataFrame(
+            self.linear_(deposit_df['deposit Close'].values),
+            columns=['deposit Close'])
 
         self.open_lot_prices = __4_div(
             self.open_lot_prices, columns=['open lot price'])
@@ -1182,7 +1193,8 @@ class Strategies(object):
         del self.backtest_out['index']
         self.backtest_out = self.backtest_out.dropna()
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
-        self.year_profit = ((self.year_profit - money_start) / money_start) * 100
+        self.year_profit = ((
+            self.year_profit - money_start) / money_start) * 100
         if print_out:
             print(f'L O S S E S: {self.losses}')
             print(f'T R A D E S: {self.trades}')
@@ -1454,4 +1466,3 @@ if __name__ == '__main__':
     # trader.inverse_strategy()
     # trader.log_deposit()
     resur = trader.backtest(stop_loss=300)
-
