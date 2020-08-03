@@ -92,7 +92,6 @@ class Strategies(object):
     def bull_power(self, periods):
         EMA = ta.trend.ema(self.df['Close'], periods)
         ret = np.array(self.df['High']) - EMA
-        self.returns = ret
         return ret
 
     def tema(self, periods, *args, **kwargs):
@@ -276,7 +275,6 @@ class Strategies(object):
 
     def strategy_exp_diff(self, period=80, plot=True, *args, **kwargs):
         ret = self.strategy_diff(self.tema(period))
-
         if plot:
             self.fig.add_trace(
                 go.Line(
@@ -392,16 +390,17 @@ class Strategies(object):
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
         self.returns = [*ret, *predictions]
+        nans = itertools.chain.from_iterable([(np.nan, ) * self.inputs])
+        filt = (*nans, *frame.T[0])
         if plot:
-            nans = itertools.chain.from_iterable([(np.nan, ) * self.inputs])
             self.fig.add_trace(
                 go.Line(
                     name='predict',
-                    y=(*nans, *frame.T[0]),
+                    y=filt,
                     line=dict(width=SUB_LINES_WIDTH, color=C)),
                 row=1,
                 col=1)
-        return self.returns
+        return self.returns, filt
 
     def get_network_regression(self,
                                dataframes,
@@ -1454,15 +1453,17 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
-    df = yf.download(TICKER, period='5y', interval='1d')
+    TICKER = 'EUR=X'
+    df = yf.download(TICKER)
     trader = PatternFinder(TICKER, 0, df=df, interval='1d')
     trader.set_pyplot()
-    trader.prepare_scaler(df)
-    trader.load_model('../model-regression')
-    trader.strategy_regression_model()
+    trader.strategy_rsi()
+    # trader.prepare_scaler(df)
+    # trader.load_model('../model-regression')
+    # trader.strategy_regression_model()
     # trader.strategy_3_sma(slow=1000//5, mid=260//5, fast=130//5)
     # trader.strategy_diff(trader.df['Close']) stop_loss=300, take_profit=300 inverse
-    #resur = trader.backtest(take_profit=200)
+    # resur = trader.backtest(take_profit=200)
     # trader.inverse_strategy()
     # trader.log_deposit()
-    resur = trader.backtest(stop_loss=300)
+    resur = trader.backtest()
