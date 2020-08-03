@@ -85,6 +85,7 @@ project
 <div align="left">
   <img src="https://i.ibb.co/pP4jdBL/2020-08-03-05-10-37.png" width=900">
 </div>
+
 #### user code example:
 ```
 import quick_trade.trading_sys as qt
