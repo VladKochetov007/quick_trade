@@ -288,8 +288,8 @@ class Strategies(object):
                      max_mid=75,
                      min_mid=35,
                      *args,
-                     **kwargs):
-        rsi = ta.momentum.rsi(self.df['Close'])
+                     **rsi_kwargs):
+        rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
         ret = []
         flag = 2
 
@@ -317,11 +317,12 @@ class Strategies(object):
                           mac_slow=26,
                           mac_fast=12,
                           rsi_level=50,
+                          rsi_kwargs=dict(),
                           *args,
-                          **kwargs):
+                          **macd_kwargs):
         ret = []
-        macd = ta.trend.macd(self.df['Close'], mac_slow, mac_fast)
-        rsi = ta.momentum.rsi(self.df['Close'])
+        macd = ta.trend.macd(self.df['Close'], mac_slow, mac_fast, **macd_kwargs)
+        rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
         for MACD, RSI in zip(macd.values, rsi.values):
             if MACD > 0 and RSI > rsi_level:
                 ret.append(1)
@@ -333,10 +334,10 @@ class Strategies(object):
         self.returns = ret
         return ret
 
-    def strategy_parabolic_SAR(self, plot=True, *args, **kwargs):
+    def strategy_parabolic_SAR(self, plot=True, *args, **sar_kwargs):
         ret = []
         sar = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
-                                     self.df['Close'])
+                                     self.df['Close'], **sar_kwargs)
         sardown = sar.psar_down()[self.drop:].values
         sarup = sar.psar_up()[self.drop:].values
 
@@ -359,8 +360,8 @@ class Strategies(object):
         self.returns = ret
         return ret
 
-    def strategy_macd_histogram_diff(self, slow=23, fast=12, *args, **kwargs):
-        _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast)
+    def strategy_macd_histogram_diff(self, slow=23, fast=12, *args, **macd_kwargs):
+        _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
         signal_ = _MACD_.macd_signal()
         macd_ = _MACD_.macd()
         histogram = pd.DataFrame(macd_.values - signal_.values)
@@ -1450,7 +1451,7 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
-    '''TICKER = 'EUR=X'
+    TICKER = 'EUR=X'
     df = yf.download(TICKER, period='1y')
     trader = PatternFinder(TICKER, 0, df=df, interval='1d')
     trader.set_pyplot()
@@ -1463,5 +1464,4 @@ if __name__ == '__main__':
     # resur = trader.backtest(take_profit=200)
     # trader.inverse_strategy()
     # trader.log_deposit()
-    resur = trader.backtest()'''
-    print(to_4_col_df([1,2,3,4,5,6,7,8,9,10,11,12], 'a', 'b', 'c', 'd'))
+    resur = trader.backtest()
