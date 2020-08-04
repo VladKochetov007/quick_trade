@@ -1,7 +1,5 @@
 # quick_trade
-
-[![button](https://i.ibb.co/MgWmjsY/imgonline-com-ua-Resize-y-Wu-Bc-Rv7-KGALSc-Iw.jpg)](https://www.donationalerts.com/r/vladkochetov007)
-
+VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io/
 ```
 used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)

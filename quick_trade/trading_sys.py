@@ -237,8 +237,7 @@ class Strategies(object):
 
         if plot:
             for ema, C, name in zip([
-                    ema3.values[self.drop:], ema21.values[self.drop:],
-                    ema46.values[self.drop:]
+                    ema3.values, ema21.values, ema46.values
             ], [G, B, R], [slow, mid, fast]):
                 self.fig.add_trace(
                     go.Line(
@@ -246,8 +245,7 @@ class Strategies(object):
                         y=ema,
                         line=dict(width=SUB_LINES_WIDTH, color=C)), 1, 1)
 
-        for EMA1, EMA2, EMA3 in zip(ema3[self.drop:], ema21[self.drop:],
-                                    ema46[self.drop:]):
+        for EMA1, EMA2, EMA3 in zip(ema3, ema21, ema46):
             if EMA1 > EMA2 > EMA3:
                 ret.append(1)
             elif EMA1 < EMA2 < EMA3:
@@ -269,7 +267,6 @@ class Strategies(object):
                 ret.append(1)
             else:
                 ret.append(2)
-        ret = ret[self.drop:]
         self.returns = ret
         return ret
 
@@ -460,7 +457,7 @@ class Strategies(object):
                             optimizer='adam',
                             loss='mse',
                             metrics=None,
-                            network_save_path='../model-regression',
+                            network_save_path='../model-predicting',
                             **fit_kwargs):
         """
         getting trained neural network to trading.
@@ -1453,11 +1450,11 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
-    TICKER = 'EUR=X'
-    df = yf.download(TICKER)
+    '''TICKER = 'EUR=X'
+    df = yf.download(TICKER, period='1y')
     trader = PatternFinder(TICKER, 0, df=df, interval='1d')
     trader.set_pyplot()
-    trader.strategy_rsi()
+    trader.strategy_macd()
     # trader.prepare_scaler(df)
     # trader.load_model('../model-regression')
     # trader.strategy_regression_model()
@@ -1466,4 +1463,5 @@ if __name__ == '__main__':
     # resur = trader.backtest(take_profit=200)
     # trader.inverse_strategy()
     # trader.log_deposit()
-    resur = trader.backtest()
+    resur = trader.backtest()'''
+    print(to_4_col_df([1,2,3,4,5,6,7,8,9,10,11,12], 'a', 'b', 'c', 'd'))
