@@ -1451,6 +1451,7 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
+    print(inverse_4_col_df(to_4_col_df([1,2,3,4,5,6,7,8,9,10,11,12], *'abcd'), 'cdf'))
     TICKER = 'EUR=X'
     df = yf.download(TICKER, period='1y')
     trader = PatternFinder(TICKER, 0, df=df, interval='1d')
@@ -1464,4 +1465,4 @@ if __name__ == '__main__':
     # resur = trader.backtest(take_profit=200)
     # trader.inverse_strategy()
     # trader.log_deposit()
-    resur = trader.backtest()
+    # resur = trader.backtest()
