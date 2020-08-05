@@ -1,5 +1,5 @@
 # quick_trade
-VIEW DOCUMENTATION: https://github.com/VladKochetov007/quick_trade.github.io
+VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io/all/
 ```
 used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
