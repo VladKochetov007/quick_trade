@@ -8,4 +8,3 @@ scipy==1.4.1
 ta==0.5.25
 tensorflow==2.2.0
 tqdm==4.48.0
-yfinance==0.1.54
