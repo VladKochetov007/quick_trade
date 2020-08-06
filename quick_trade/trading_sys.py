@@ -58,9 +58,11 @@ class Strategies(object):
         except AttributeError:
             raise ValueError('D O   B A C K T E S T')
 
-    def kalman_filter(self, iters=40, plot=True, *args, **kwargs):
+    def kalman_filter(self, df='self.df["Close"]', iters=40, plot=True, *args, **kwargs):
         k_filter = KalmanFilter()
-        filtered = k_filter.filter(np.array(self.df['Close']))[0]
+        if df == 'self.df["Close"]':
+            df = self.df['Close']
+        filtered = k_filter.filter(np.array(df))[0]
         for i in range(iters):
             filtered = k_filter.smooth(filtered)[0]
         if plot:
@@ -73,11 +75,14 @@ class Strategies(object):
 
     def scipy_filter(self,
                      window_length=101,
+                     df='self.df["Close"]',
                      polyorder=3,
                      plot=True,
                      **scipy_savgol_filter_kwargs):
+        if df == 'self.df["Close"]':
+            df = self.df['Close']
         filtered = signal.savgol_filter(
-            self.df['Close'],
+            df,
             window_length=window_length,
             polyorder=polyorder,
             **scipy_savgol_filter_kwargs)
@@ -237,7 +242,7 @@ class Strategies(object):
 
         if plot:
             for ema, C, name in zip([
-                    ema3.values, ema21.values, ema46.values
+                ema3.values, ema21.values, ema46.values
             ], [G, B, R], [slow, mid, fast]):
                 self.fig.add_trace(
                     go.Line(
@@ -388,7 +393,7 @@ class Strategies(object):
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
         self.returns = [*ret, *predictions]
-        nans = itertools.chain.from_iterable([(np.nan, ) * self.inputs])
+        nans = itertools.chain.from_iterable([(np.nan,) * self.inputs])
         filt = (*nans, *frame.T[0])
         if plot:
             self.fig.add_trace(
@@ -451,6 +456,7 @@ class Strategies(object):
         dataset = data.values
         scaled_data = scaler.fit_transform(dataset)
         self.scaler = scaler
+        return scaled_data
 
     def get_trained_network(self,
                             dataframes,
@@ -705,7 +711,7 @@ class Strategies(object):
             _rate -= _rate * (commission / 100)
 
             for i in (
-                    pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
+                             pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
 
                 min_price = self.df['Low'][self.drop:][e]
                 max_price = self.df['High'][self.drop:][e]
@@ -1191,7 +1197,7 @@ class Strategies(object):
         self.backtest_out = self.backtest_out.dropna()
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
         self.year_profit = ((
-            self.year_profit - money_start) / money_start) * 100
+                                    self.year_profit - money_start) / money_start) * 100
         if print_out:
             print(f'L O S S E S: {self.losses}')
             print(f'T R A D E S: {self.trades}')
@@ -1336,6 +1342,25 @@ class PatternFinder(Strategies):
 
     """
 
+    def __getitem__(self, item):
+        ret_trader = copy.copy(self)
+        ret_trader.df = self.df.T[item].T
+        try:
+            ret_trader.returns = copy.copy(self.returns[item])
+        except AttributeError:
+            pass
+        try:
+            ret_trader.backtest_out = copy.copy(self.backtest_out.T[item].T)
+        except AttributeError:
+            pass
+        try:
+            ret_trader.open_lot_prices = copy.copy(self.open_lot_prices[item])
+            ret_trader.stop_losses = copy.copy(self.stop_losses[item])
+            ret_trader.take_profits = copy.copy(self.take_profits[item])
+        except AttributeError:
+            pass
+        return ret_trader
+
     def __init__(self,
                  ticker='AAPL',
                  days_undo=100,
@@ -1452,13 +1477,14 @@ class PatternFinder(Strategies):
 
 if __name__ == '__main__':
     TICKER = 'EUR=X'
-    df = yf.download(TICKER, period='1y')
+    df = yf.download(TICKER)
     trader = PatternFinder(TICKER, 0, df=df, interval='1d')
-    trader.set_pyplot()
-    trader.strategy_macd()
+    print(trader[:5].df)
+    # trader.set_pyplot()
     # trader.prepare_scaler(df)
     # trader.load_model('../model-regression')
-    # trader.strategy_regression_model()
+    # filtered = trader.scipy_filter(df=trader.strategy_regression_model()[1])
+    # trader.strategy_diff(filtered)
     # trader.strategy_3_sma(slow=1000//5, mid=260//5, fast=130//5)
     # trader.strategy_diff(trader.df['Close']) stop_loss=300, take_profit=300 inverse
     # resur = trader.backtest(take_profit=200)
