@@ -6,7 +6,6 @@ used:
  ├──tensorflow==2.2 (https://github.com/tensorflow/tensorflow)
  ├──pykalman (https://github.com/pykalman/pykalman)
  ├──tqdm (https://github.com/tqdm/tqdm)
- ├──yfinance (https://github.com/ranaroussi/yfinance)
  ├──plotly (https://github.com/plotly/plotly.py)
  ├──scipy (https://github.com/scipy/scipy)
  ├──logging

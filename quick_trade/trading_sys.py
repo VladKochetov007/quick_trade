@@ -7,7 +7,6 @@ import plotly.graph_objects as go
 import ta
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
-import yfinance as yf
 from plotly.subplots import make_subplots as sub_make
 from pykalman import KalmanFilter
 from quick_trade.utils import *
@@ -1473,21 +1472,3 @@ class PatternFinder(Strategies):
         ret = ret
         self.returns = ret
         return ret
-
-
-if __name__ == '__main__':
-    TICKER = 'EUR=X'
-    df = yf.download(TICKER)
-    trader = PatternFinder(TICKER, 0, df=df, interval='1d')
-    print(trader[:5].df)
-    # trader.set_pyplot()
-    # trader.prepare_scaler(df)
-    # trader.load_model('../model-regression')
-    # filtered = trader.scipy_filter(df=trader.strategy_regression_model()[1])
-    # trader.strategy_diff(filtered)
-    # trader.strategy_3_sma(slow=1000//5, mid=260//5, fast=130//5)
-    # trader.strategy_diff(trader.df['Close']) stop_loss=300, take_profit=300 inverse
-    # resur = trader.backtest(take_profit=200)
-    # trader.inverse_strategy()
-    # trader.log_deposit()
-    # resur = trader.backtest()
