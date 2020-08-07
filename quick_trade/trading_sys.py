@@ -114,7 +114,7 @@ class Strategies(object):
         linear data. mean + (mean diff * n)
 
         """
-        data = pd.DataFrame(dataset)
+        data = pd.DataFrame(dataset).copy()
 
         mean = float(data.mean())
         mean_diff = float(data.diff().mean())
@@ -401,7 +401,7 @@ class Strategies(object):
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
         self.returns = [*ret, *predictions]
-        nans = itertools.chain.from_iterable([(np.nan, ) * self.inputs])
+        nans = itertools.chain.from_iterable([(np.nan,) * self.inputs])
         filt = (*nans, *frame.T[0])
         if plot:
             self.fig.add_trace(
@@ -631,9 +631,9 @@ class Strategies(object):
         saved_del = self.returns[len(self.returns) - 1]
 
         if set_(self.returns)[len(self.returns) - 1] is np.nan:
-            self.returns[len(self.returns) - 1] = 'r'
+            self.returns[len(self.returns) - 1] = 2
 
-        loc = list(self.df[column][self.drop:].values)
+        loc = list(self.df[column].values)
 
         if plot:
             self.fig.add_candlestick(
@@ -649,7 +649,7 @@ class Strategies(object):
         for e, i in enumerate(set_(self.returns)):
             if i is not np.nan:
                 __predictions[e] = i
-            # marker's 'y' cordinate on real price of stock/forex
+            # marker's 'y' coordinate on real price of stock/forex
             if plot:
                 if i == 0:
                     self.fig.add_scatter(
@@ -731,6 +731,7 @@ class Strategies(object):
 
                 stop_losses.append(_stop_loss)
                 take_profits.append(take)
+
                 def get_condition(value):
                     return min(_stop_loss, take) < value < max(_stop_loss, take)
 
@@ -749,8 +750,33 @@ class Strategies(object):
                     else:
                         resur.append(0)
                 else:
+                    flag = True
+                    flag_2 = True
+                    if cond and self.moneys > 0:
+                        close = self.df['Close'][e + 1]
+                        open_ = self.df['Open'][e + 1]
+                        if sig == 1 and close < _stop_loss:
+                            diff = _stop_loss - open_
+                        elif sig == 1 and close > take:
+                            diff = take - open_
+                        elif sig == 0 and close < take:
+                            diff = take - close
+                        elif sig == 0 and close > _stop_loss:
+                            diff = _stop_loss - open_
+                        else:
+                            flag = False
+                        if flag:
+                            if sig == 0:
+                                self.moneys -= diff * coef * leverage * (_rate / mons)
+                                resur.append(self.moneys)
+                                flag_2 = False
+                            elif sig == 1:
+                                self.moneys += diff * coef * leverage * (_rate / mons)
+                                resur.append(self.moneys)
+                                flag_2 = False
                     exit = True
-                    resur.append(self.moneys)
+                    if not flag:
+                        resur.append(self.moneys)
 
                 e += 1
 
@@ -1207,7 +1233,7 @@ class Strategies(object):
         self.backtest_out = self.backtest_out.dropna()
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
         self.year_profit = ((
-            self.year_profit - money_start) / money_start) * 100
+                                    self.year_profit - money_start) / money_start) * 100
         if print_out:
             print(f'L O S S E S: {self.losses}')
             print(f'T R A D E S: {self.trades}')
