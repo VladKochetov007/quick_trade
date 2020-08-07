@@ -1,5 +1,7 @@
 # quick_trade
 VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io/all/
+![image](https://i.ibb.co/mFLDJsX/IMG-5613.png)
+
 ```
 used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
@@ -17,7 +19,6 @@ used:
  ├──scipy
  └──iexfinance (https://github.com/addisonlynch/iexfinance)
 ```
-
 
 algo-trading system.
 trading with python.
