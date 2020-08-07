@@ -57,7 +57,12 @@ class Strategies(object):
         except AttributeError:
             raise ValueError('D O   B A C K T E S T')
 
-    def kalman_filter(self, df='self.df["Close"]', iters=40, plot=True, *args, **kwargs):
+    def kalman_filter(self,
+                      df='self.df["Close"]',
+                      iters=40,
+                      plot=True,
+                      *args,
+                      **kwargs):
         k_filter = KalmanFilter()
         if df == 'self.df["Close"]':
             df = self.df['Close']
@@ -240,9 +245,8 @@ class Strategies(object):
         ret = []
 
         if plot:
-            for ema, C, name in zip([
-                ema3.values, ema21.values, ema46.values
-            ], [G, B, R], [slow, mid, fast]):
+            for ema, C, name in zip([ema3.values, ema21.values, ema46.values],
+                                    [G, B, R], [slow, mid, fast]):
                 self.fig.add_trace(
                     go.Line(
                         name=f'SMA{name}',
@@ -325,7 +329,8 @@ class Strategies(object):
                           *args,
                           **macd_kwargs):
         ret = []
-        macd = ta.trend.macd(self.df['Close'], mac_slow, mac_fast, **macd_kwargs)
+        macd = ta.trend.macd(self.df['Close'], mac_slow, mac_fast,
+                             **macd_kwargs)
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
         for MACD, RSI in zip(macd.values, rsi.values):
             if MACD > 0 and RSI > rsi_level:
@@ -364,7 +369,11 @@ class Strategies(object):
         self.returns = ret
         return ret
 
-    def strategy_macd_histogram_diff(self, slow=23, fast=12, *args, **macd_kwargs):
+    def strategy_macd_histogram_diff(self,
+                                     slow=23,
+                                     fast=12,
+                                     *args,
+                                     **macd_kwargs):
         _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
         signal_ = _MACD_.macd_signal()
         macd_ = _MACD_.macd()
@@ -392,7 +401,7 @@ class Strategies(object):
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
         self.returns = [*ret, *predictions]
-        nans = itertools.chain.from_iterable([(np.nan,) * self.inputs])
+        nans = itertools.chain.from_iterable([(np.nan, ) * self.inputs])
         filt = (*nans, *frame.T[0])
         if plot:
             self.fig.add_trace(
@@ -710,7 +719,7 @@ class Strategies(object):
             _rate -= _rate * (commission / 100)
 
             for i in (
-                             pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
+                    pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
 
                 min_price = self.df['Low'][self.drop:][e]
                 max_price = self.df['High'][self.drop:][e]
@@ -1196,7 +1205,7 @@ class Strategies(object):
         self.backtest_out = self.backtest_out.dropna()
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
         self.year_profit = ((
-                                    self.year_profit - money_start) / money_start) * 100
+            self.year_profit - money_start) / money_start) * 100
         if print_out:
             print(f'L O S S E S: {self.losses}')
             print(f'T R A D E S: {self.trades}')
