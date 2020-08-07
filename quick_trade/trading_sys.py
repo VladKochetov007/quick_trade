@@ -721,8 +721,8 @@ class Strategies(object):
             for i in (
                     pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
 
-                min_price = self.df['Low'][self.drop:][e]
-                max_price = self.df['High'][self.drop:][e]
+                min_price = self.df['Low'][e + 1]
+                max_price = self.df['High'][e + 1]
                 self.open_lot_prices.append(self.open_price)
 
                 take_stop = self.get_stop_take(sig)
@@ -731,8 +731,10 @@ class Strategies(object):
 
                 stop_losses.append(_stop_loss)
                 take_profits.append(take)
+                def get_condition(value):
+                    return min(_stop_loss, take) < value < max(_stop_loss, take)
 
-                cond = min(_stop_loss, take) < loc[e] < max(_stop_loss, take)
+                cond = get_condition(min_price) and get_condition(max_price)
 
                 if cond and not exit:
                     if self.moneys > 0:
