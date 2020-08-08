@@ -885,8 +885,8 @@ class Strategies(object):
                    width=1300,
                    template='plotly_dark',
                    row_heights=[100, 160],
-                   **subplot_args):
-        self.fig = sub_make(2, 1, row_heights=row_heights, **subplot_args)
+                   **subplot_kwargs):
+        self.fig = sub_make(2, 1, row_heights=row_heights, **subplot_kwargs)
         self.fig.update_layout(
             height=height,
             width=width,
