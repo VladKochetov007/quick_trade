@@ -5,3 +5,4 @@ dist
 build
 bdist
 .pypirc
+quick_trade.egg-info
