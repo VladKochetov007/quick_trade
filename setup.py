@@ -3,7 +3,7 @@ import setuptools
 
 setup(
     name='quick_trade',
-    version='2.0.1',
+    version='2.1',
     packages=setuptools.find_packages(),
     license='cc',
     description="trading system",
