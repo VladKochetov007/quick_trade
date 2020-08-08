@@ -1,0 +1,9 @@
+README.md
+setup.py
+quick_trade/__init__.py
+quick_trade/trading_sys.py
+quick_trade/utils.py
+quick_trade.egg-info/PKG-INFO
+quick_trade.egg-info/SOURCES.txt
+quick_trade.egg-info/dependency_links.txt
+quick_trade.egg-info/top_level.txt
