@@ -589,7 +589,7 @@ class Strategies(object):
 
         deposit:         | int, float. | start deposit.
 
-        credit_leverage: | int, float. | tradeing leverage. 1 = none.
+        credit_leverage: | int, float. | trading leverage. 1 = none.
 
         bet:             | int, float, | fixed bet to quick_trade--. None = all moneys.
 
@@ -1040,9 +1040,9 @@ class Strategies(object):
                             *args,
                             **kwargs):
         if take_profit is None:
-            take_profit = np.inf
+            self.take_profit = np.inf
         if stop_loss is None:
-            stop_loss = np.inf
+            self.stop_loss = np.inf
         if inverse:
             self.inverse_strategy()
         predicts = self.returns
@@ -1234,21 +1234,12 @@ class Strategies(object):
         self.backtest_out = self.backtest_out.dropna()
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
         self.year_profit = ((self.year_profit - money_start) / money_start) * 100
+        self.info = (f"L O S S E S: {self.losses}\n"
+                     f"T R A D E S: {self.trades}\n"
+                     f"P R O F I T S: {self.profits}\n"
+                     f"M E A N   Y E A R   P E R C E N T A G E P   R O F I T: {self.year_profit}%\n")
         if print_out:
-            print(f'L O S S E S: {self.losses}')
-            print(f'T R A D E S: {self.trades}')
-            print(f'P R O F I T S: {self.profits}')
-            print(
-                'M E A N   Y E A R   P E R C E N T A G E P   R O F I T: ',
-                self.year_profit,
-                '%',
-                sep='')
-        self.info = f'''L O S S E S: {self.losses}'
-T R A D E S: {self.trades}
-P R O F I T S: {self.profits}
-M E A N   Y E A R   P E R C E N T A G E P   R O F I T: {self.year_profit}%
-
-'''
+            print(self.info)
         if plot:
             self.fig.add_candlestick(
                 close=self.df['Close'],
