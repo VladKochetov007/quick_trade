@@ -751,7 +751,6 @@ class Strategies(object):
                         resur.append(0)
                 else:
                     flag = True
-                    flag_2 = True
                     if cond and self.moneys > 0:
                         close = self.df['Close'][e + 1]
                         open_ = self.df['Open'][e + 1]
@@ -769,14 +768,11 @@ class Strategies(object):
                             if sig == 0:
                                 self.moneys -= diff * coef * leverage * (_rate / mons)
                                 resur.append(self.moneys)
-                                flag_2 = False
                             elif sig == 1:
                                 self.moneys += diff * coef * leverage * (_rate / mons)
                                 resur.append(self.moneys)
-                                flag_2 = False
                     exit = True
-                    if not flag:
-                        resur.append(self.moneys)
+                    resur.append(self.moneys)
 
                 e += 1
 
@@ -1155,7 +1151,7 @@ class Strategies(object):
 
 
 
-        returns: pd.DataFrame with data of:
+        returns: 2 pd.DataFrames with data of:
             signals,
             deposit (high, low, open, close)'
             stop loss,
@@ -1163,6 +1159,9 @@ class Strategies(object):
             linear deposit,
             price (high, low, open, close),
             open bet\lot\deal price.
+
+            1: dropped na
+            2: no dropped
 
         """
 
@@ -1202,7 +1201,7 @@ class Strategies(object):
         rets = self.backtest_out
 
         def __4_div(obj, columns):
-            ret = obj[::4]
+            ret = list(np.array(obj))[::4]
             ret = pd.DataFrame(ret, columns=columns).reset_index()
             del ret['index']
             return ret
@@ -1211,9 +1210,10 @@ class Strategies(object):
         deposit_df = to_4_col_df(deposit_df, 'deposit Close', 'deposit Open',
                                  'deposit High', 'deposit Low')
 
+
         self.linear = pd.DataFrame(
             self.linear_(deposit_df['deposit Close'].values),
-            columns=['deposit Close'])
+            columns=['deposit Close linear'])
 
         self.open_lot_prices = __4_div(
             self.open_lot_prices, columns=['open lot price'])
@@ -1230,10 +1230,10 @@ class Strategies(object):
             axis=1)
         del __4_div
         del self.backtest_out['index']
+        self.backtest_out_no_drop = self.backtest_out
         self.backtest_out = self.backtest_out.dropna()
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
-        self.year_profit = ((
-                                    self.year_profit - money_start) / money_start) * 100
+        self.year_profit = ((self.year_profit - money_start) / money_start) * 100
         if print_out:
             print(f'L O S S E S: {self.losses}')
             print(f'T R A D E S: {self.trades}')
@@ -1243,6 +1243,12 @@ class Strategies(object):
                 self.year_profit,
                 '%',
                 sep='')
+        self.info = f'''L O S S E S: {self.losses}'
+T R A D E S: {self.trades}
+P R O F I T S: {self.profits}
+M E A N   Y E A R   P E R C E N T A G E P   R O F I T: {self.year_profit}%
+
+'''
         if plot:
             self.fig.add_candlestick(
                 close=self.df['Close'],
@@ -1331,7 +1337,7 @@ class Strategies(object):
             if show:
                 self.fig.show()
 
-        return self.backtest_out
+        return self.backtest_out, self.backtest_out_no_drop
 
     def load_model(self, path):
         self.model = load_model(path)
