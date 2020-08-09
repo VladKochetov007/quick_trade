@@ -1,7 +1,6 @@
 */__pycache__
 *.log
 MANIFEST
-dist
 build
 bdist
 .pypirc
