@@ -62,6 +62,12 @@ $ git clone https://github.com/VladKochetov007/quick_trade.git
 ```
 project
  ├── quick_trade
+ │    ├── model-predicting
+ │    │    ├── assets
+ │    │    ├── varibles
+ │    │    │    ├── varibles.data-00000-of-00001
+ │    │    │    └── varibles.index
+ │    │    └── saved_model.pb
  │    ├── model-regression
  │    │    ├── assets
  │    │    ├── varibles
@@ -72,16 +78,16 @@ project
  │    │    ├── __init__.py
  │    │    ├── trading_sys.py
  │    │    └── utils.py
- │    ├── LICENSE.txt
+ │    ├── LICENSE.md
+ │    ├── .gitignore
+ │    ├── logo.PNG
+ │    ├── logo-with-slogan.PNG
+ │    ├── README_for_pypi.txt
  │    ├── README.md
  │    ├── requerments.txt
  │    └── setup.py
  └── user_code.py
 ```
-
-<div align="left">
-  <img src="https://i.ibb.co/pP4jdBL/2020-08-03-05-10-37.png" width=900">
-</div>
 
 #### user code example:
 ```
