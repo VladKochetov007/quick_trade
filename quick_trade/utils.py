@@ -19,7 +19,7 @@ os.environ['IEX_TOKEN'] = TOKEN
 __author__ = 'Vlad Kochetov'
 __credits__ = ["Hemerson Tacon -- Stack overflow",
                "hpaulj -- Stack overflow"]
-__version__ = "2.0"
+__version__ = "2.1.2"
 
 TICKER = '^DJI'
 SCATTER_SIZE = 12
@@ -37,10 +37,10 @@ logger.setLevel(50)
 logging.basicConfig(level=10, filename='trading.log')
 
 
-def set_(plotter):
-    ret = list(plotter.copy())
-    for e, i in enumerate(plotter[1:]):
-        if i == plotter[e]:
+def set_(data):
+    ret = list(data.copy())
+    for e, i in enumerate(data[1:]):
+        if i == data[e]:
             ret[e + 1] = np.nan
     return ret
 

@@ -57,7 +57,12 @@ class Strategies(object):
         except AttributeError:
             raise ValueError('D O   B A C K T E S T')
 
-    def kalman_filter(self, df='self.df["Close"]', iters=40, plot=True, *args, **kwargs):
+    def kalman_filter(self,
+                      df='self.df["Close"]',
+                      iters=40,
+                      plot=True,
+                      *args,
+                      **kwargs):
         k_filter = KalmanFilter()
         if df == 'self.df["Close"]':
             df = self.df['Close']
@@ -109,7 +114,7 @@ class Strategies(object):
         linear data. mean + (mean diff * n)
 
         """
-        data = pd.DataFrame(dataset)
+        data = pd.DataFrame(dataset).copy()
 
         mean = float(data.mean())
         mean_diff = float(data.diff().mean())
@@ -240,9 +245,8 @@ class Strategies(object):
         ret = []
 
         if plot:
-            for ema, C, name in zip([
-                ema3.values, ema21.values, ema46.values
-            ], [G, B, R], [slow, mid, fast]):
+            for ema, C, name in zip([ema3.values, ema21.values, ema46.values],
+                                    [G, B, R], [slow, mid, fast]):
                 self.fig.add_trace(
                     go.Line(
                         name=f'SMA{name}',
@@ -325,7 +329,8 @@ class Strategies(object):
                           *args,
                           **macd_kwargs):
         ret = []
-        macd = ta.trend.macd(self.df['Close'], mac_slow, mac_fast, **macd_kwargs)
+        macd = ta.trend.macd(self.df['Close'], mac_slow, mac_fast,
+                             **macd_kwargs)
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
         for MACD, RSI in zip(macd.values, rsi.values):
             if MACD > 0 and RSI > rsi_level:
@@ -364,7 +369,11 @@ class Strategies(object):
         self.returns = ret
         return ret
 
-    def strategy_macd_histogram_diff(self, slow=23, fast=12, *args, **macd_kwargs):
+    def strategy_macd_histogram_diff(self,
+                                     slow=23,
+                                     fast=12,
+                                     *args,
+                                     **macd_kwargs):
         _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
         signal_ = _MACD_.macd_signal()
         macd_ = _MACD_.macd()
@@ -580,7 +589,7 @@ class Strategies(object):
 
         deposit:         | int, float. | start deposit.
 
-        credit_leverage: | int, float. | tradeing leverage. 1 = none.
+        credit_leverage: | int, float. | trading leverage. 1 = none.
 
         bet:             | int, float, | fixed bet to quick_trade--. None = all moneys.
 
@@ -622,9 +631,9 @@ class Strategies(object):
         saved_del = self.returns[len(self.returns) - 1]
 
         if set_(self.returns)[len(self.returns) - 1] is np.nan:
-            self.returns[len(self.returns) - 1] = 'r'
+            self.returns[len(self.returns) - 1] = 2
 
-        loc = list(self.df[column][self.drop:].values)
+        loc = list(self.df[column].values)
 
         if plot:
             self.fig.add_candlestick(
@@ -640,7 +649,7 @@ class Strategies(object):
         for e, i in enumerate(set_(self.returns)):
             if i is not np.nan:
                 __predictions[e] = i
-            # marker's 'y' cordinate on real price of stock/forex
+            # marker's 'y' coordinate on real price of stock/forex
             if plot:
                 if i == 0:
                     self.fig.add_scatter(
@@ -710,10 +719,10 @@ class Strategies(object):
             _rate -= _rate * (commission / 100)
 
             for i in (
-                             pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
+                    pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
 
-                min_price = self.df['Low'][self.drop:][e]
-                max_price = self.df['High'][self.drop:][e]
+                min_price = self.df['Low'][e + 1]
+                max_price = self.df['High'][e + 1]
                 self.open_lot_prices.append(self.open_price)
 
                 take_stop = self.get_stop_take(sig)
@@ -723,7 +732,10 @@ class Strategies(object):
                 stop_losses.append(_stop_loss)
                 take_profits.append(take)
 
-                cond = min(_stop_loss, take) < loc[e] < max(_stop_loss, take)
+                def get_condition(value):
+                    return min(_stop_loss, take) < value < max(_stop_loss, take)
+
+                cond = get_condition(min_price) and get_condition(max_price)
 
                 if cond and not exit:
                     if self.moneys > 0:
@@ -738,6 +750,27 @@ class Strategies(object):
                     else:
                         resur.append(0)
                 else:
+                    flag = True
+                    if cond and self.moneys > 0:
+                        close = self.df['Close'][e + 1]
+                        open_ = self.df['Open'][e + 1]
+                        if sig == 1 and close < _stop_loss:
+                            diff = _stop_loss - open_
+                        elif sig == 1 and close > take:
+                            diff = take - open_
+                        elif sig == 0 and close < take:
+                            diff = take - close
+                        elif sig == 0 and close > _stop_loss:
+                            diff = _stop_loss - open_
+                        else:
+                            flag = False
+                        if flag:
+                            if sig == 0:
+                                self.moneys -= diff * coef * leverage * (_rate / mons)
+                                resur.append(self.moneys)
+                            elif sig == 1:
+                                self.moneys += diff * coef * leverage * (_rate / mons)
+                                resur.append(self.moneys)
                     exit = True
                     resur.append(self.moneys)
 
@@ -848,8 +881,8 @@ class Strategies(object):
                    width=1300,
                    template='plotly_dark',
                    row_heights=[100, 160],
-                   **subplot_args):
-        self.fig = sub_make(2, 1, row_heights=row_heights, **subplot_args)
+                   **subplot_kwargs):
+        self.fig = sub_make(2, 1, row_heights=row_heights, **subplot_kwargs)
         self.fig.update_layout(
             height=height,
             width=width,
@@ -1007,9 +1040,9 @@ class Strategies(object):
                             *args,
                             **kwargs):
         if take_profit is None:
-            take_profit = np.inf
+            self.take_profit = np.inf
         if stop_loss is None:
-            stop_loss = np.inf
+            self.stop_loss = np.inf
         if inverse:
             self.inverse_strategy()
         predicts = self.returns
@@ -1118,7 +1151,7 @@ class Strategies(object):
 
 
 
-        returns: pd.DataFrame with data of:
+        returns: 2 pd.DataFrames with data of:
             signals,
             deposit (high, low, open, close)'
             stop loss,
@@ -1126,6 +1159,9 @@ class Strategies(object):
             linear deposit,
             price (high, low, open, close),
             open bet\lot\deal price.
+
+            1: dropped na
+            2: no dropped
 
         """
 
@@ -1165,7 +1201,7 @@ class Strategies(object):
         rets = self.backtest_out
 
         def __4_div(obj, columns):
-            ret = obj[::4]
+            ret = list(np.array(obj))[::4]
             ret = pd.DataFrame(ret, columns=columns).reset_index()
             del ret['index']
             return ret
@@ -1174,9 +1210,10 @@ class Strategies(object):
         deposit_df = to_4_col_df(deposit_df, 'deposit Close', 'deposit Open',
                                  'deposit High', 'deposit Low')
 
+
         self.linear = pd.DataFrame(
             self.linear_(deposit_df['deposit Close'].values),
-            columns=['deposit Close'])
+            columns=['deposit Close linear'])
 
         self.open_lot_prices = __4_div(
             self.open_lot_prices, columns=['open lot price'])
@@ -1193,19 +1230,16 @@ class Strategies(object):
             axis=1)
         del __4_div
         del self.backtest_out['index']
+        self.backtest_out_no_drop = self.backtest_out
         self.backtest_out = self.backtest_out.dropna()
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
-        self.year_profit = ((
-                                    self.year_profit - money_start) / money_start) * 100
+        self.year_profit = ((self.year_profit - money_start) / money_start) * 100
+        self.info = (f"L O S S E S: {self.losses}\n"
+                     f"T R A D E S: {self.trades}\n"
+                     f"P R O F I T S: {self.profits}\n"
+                     f"M E A N   Y E A R   P E R C E N T A G E P   R O F I T: {self.year_profit}%\n")
         if print_out:
-            print(f'L O S S E S: {self.losses}')
-            print(f'T R A D E S: {self.trades}')
-            print(f'P R O F I T S: {self.profits}')
-            print(
-                'M E A N   Y E A R   P E R C E N T A G E P   R O F I T: ',
-                self.year_profit,
-                '%',
-                sep='')
+            print(self.info)
         if plot:
             self.fig.add_candlestick(
                 close=self.df['Close'],
@@ -1294,7 +1328,7 @@ class Strategies(object):
             if show:
                 self.fig.show()
 
-        return self.backtest_out
+        return self.backtest_out, self.backtest_out_no_drop
 
     def load_model(self, path):
         self.model = load_model(path)
