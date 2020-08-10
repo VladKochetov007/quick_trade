@@ -5,15 +5,15 @@ import time
 
 import plotly.graph_objects as go
 import ta
-from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.layers import Dropout, Dense, LSTM
 from plotly.subplots import make_subplots as sub_make
 from pykalman import KalmanFilter
 from quick_trade.utils import *
 from scipy import signal
+from sklearn.preprocessing import MinMaxScaler
+from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential
-from tqdm.auto import tqdm
 from tensorflow.keras.models import load_model
+from tqdm.auto import tqdm
 
 
 class Strategies(object):
@@ -150,10 +150,10 @@ class Strategies(object):
         else:
             take = np.inf
 
-        if sig == 1:
+        if sig == BUY:
             _stop_loss = self.open_price - _stop_loss
             take = self.open_price + take
-        elif sig == 0:
+        elif sig == SELL:
             take = self.open_price - take
             _stop_loss = self.open_price + _stop_loss
         else:
@@ -192,11 +192,11 @@ class Strategies(object):
 
         for SMA13, SMA26 in zip(SMA1, SMA2):
             if SMA26 < SMA13:
-                ret.append(1)
+                ret.append(BUY)
             elif SMA13 < SMA26:
-                ret.append(0)
+                ret.append(SELL)
             else:
-                ret.append(2)
+                ret.append(EXIT)
         self.returns = ret
         return ret
 
@@ -223,11 +223,11 @@ class Strategies(object):
 
         for SMA13, SMA26, SMA100 in zip(SMA1, SMA2, SMA3):
             if SMA100 < SMA26 < SMA13:
-                ret.append(1)
+                ret.append(BUY)
             elif SMA100 > SMA26 > SMA13:
-                ret.append(0)
+                ret.append(SELL)
             else:
-                ret.append(2)
+                ret.append(EXIT)
 
         self.returns = ret
         return ret
@@ -255,11 +255,11 @@ class Strategies(object):
 
         for EMA1, EMA2, EMA3 in zip(ema3, ema21, ema46):
             if EMA1 > EMA2 > EMA3:
-                ret.append(1)
+                ret.append(BUY)
             elif EMA1 < EMA2 < EMA3:
-                ret.append(0)
+                ret.append(SELL)
             else:
-                ret.append(2)
+                ret.append(EXIT)
         self.returns = ret
         return ret
 
@@ -270,11 +270,11 @@ class Strategies(object):
 
         for j, k in zip(lavel.values, macd.values):
             if j > k:
-                ret.append(0)
+                ret.append(SELL)
             elif k > j:
-                ret.append(1)
+                ret.append(BUY)
             else:
-                ret.append(2)
+                ret.append(EXIT)
         self.returns = ret
         return ret
 
@@ -299,21 +299,21 @@ class Strategies(object):
                      **rsi_kwargs):
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
         ret = []
-        flag = 2
+        flag = EXIT
 
         for val, diff in zip(rsi.values, rsi.diff().values):
             if val < min and diff > 0 and val is not pd.NA:
-                ret.append(1)
-                flag = 1
+                ret.append(BUY)
+                flag = BUY
             elif val > max and diff < 0 and val is not pd.NA:
-                ret.append(0)
-                flag = 0
-            elif flag == 1 and val < max_mid:
-                flag = 2
-                ret.append(2)
-            elif flag == 0 and val > min_mid:
-                flag = 2
-                ret.append(2)
+                ret.append(SELL)
+                flag = SELL
+            elif flag == BUY and val < max_mid:
+                flag = EXIT
+                ret.append(EXIT)
+            elif flag == SELL and val > min_mid:
+                flag = EXIT
+                ret.append(EXIT)
             else:
                 ret.append(flag)
 
@@ -334,11 +334,11 @@ class Strategies(object):
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
         for MACD, RSI in zip(macd.values, rsi.values):
             if MACD > 0 and RSI > rsi_level:
-                ret.append(1)
+                ret.append(BUY)
             elif MACD < 0 and RSI < rsi_level:
-                ret.append(0)
+                ret.append(SELL)
             else:
-                ret.append(2)
+                ret.append(EXIT)
         ret = ret[self.drop:]
         self.returns = ret
         return ret
@@ -361,11 +361,11 @@ class Strategies(object):
             numup = np.nan_to_num(up, nan=-9999)
             numdown = np.nan_to_num(down, nan=-9999)
             if numup != -9999:
-                ret.append(1)
+                ret.append(BUY)
             elif numdown != -9999:
-                ret.append(0)
+                ret.append(SELL)
             else:
-                ret.append(2)
+                ret.append(EXIT)
         self.returns = ret
         return ret
 
@@ -385,7 +385,7 @@ class Strategies(object):
     def strategy_regression_model(self, plot=True, *args, **kwargs):
         ret = []
         for i in range(self.inputs - 1):
-            ret.append(2)
+            ret.append(EXIT)
         data_to_pred = np.array(
             get_window(np.array([self.df['Close'].values]).T, self.inputs))
 
@@ -468,7 +468,8 @@ class Strategies(object):
 
     def get_trained_network(self,
                             dataframes,
-                            kalman_range=10,
+                            filter_='kalman_filter',
+                            filter_kwargs={},
                             optimizer='adam',
                             loss='mse',
                             metrics=None,
@@ -514,7 +515,7 @@ class Strategies(object):
             get_all_out = PatternFinder(df=df)
 
             output1 = get_all_out.strategy_diff(
-                get_all_out.kalman_filter(kalman_range, plot=False))
+                eval('get_all_out.' + filter_ + '(plot=False, **filter_kwargs)'))
 
             for output in output1:
                 list_output.append(output[0])
@@ -562,12 +563,12 @@ class Strategies(object):
 
         ret = []
         for signal in self.returns:
-            if signal == 1:
-                ret.append(0)
-            elif signal == 0:
-                ret.append(1)
+            if signal == BUY:
+                ret.append(SELL)
+            elif signal == SELL:
+                ret.append(BUY)
             else:
-                ret.append(2)
+                ret.append(EXIT)
         self.returns = ret
         return ret
 
@@ -631,7 +632,7 @@ class Strategies(object):
         saved_del = self.returns[len(self.returns) - 1]
 
         if set_(self.returns)[len(self.returns) - 1] is np.nan:
-            self.returns[len(self.returns) - 1] = 2
+            self.returns[len(self.returns) - 1] = EXIT
 
         loc = list(self.df[column].values)
 
@@ -651,7 +652,7 @@ class Strategies(object):
                 __predictions[e] = i
             # marker's 'y' coordinate on real price of stock/forex
             if plot:
-                if i == 0:
+                if i == SELL:
                     self.fig.add_scatter(
                         name='Sell',
                         y=[loc[e]],
@@ -663,7 +664,7 @@ class Strategies(object):
                             symbol='triangle-down',
                             size=SCATTER_SIZE,
                             opacity=SCATTER_ALPHA))
-                elif i == 1:
+                elif i == BUY:
                     self.fig.add_scatter(
                         name='Buy',
                         y=[loc[e]],
@@ -675,7 +676,7 @@ class Strategies(object):
                             symbol='triangle-up',
                             size=SCATTER_SIZE,
                             opacity=SCATTER_ALPHA))
-                elif i == 2:
+                elif i == EXIT:
                     self.fig.add_scatter(
                         name='Exit',
                         y=[loc[e]],
@@ -719,7 +720,7 @@ class Strategies(object):
             _rate -= _rate * (commission / 100)
 
             for i in (
-                    pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
+                             pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
 
                 min_price = self.df['Low'][e + 1]
                 max_price = self.df['High'][e + 1]
@@ -739,36 +740,36 @@ class Strategies(object):
 
                 if cond and not exit:
                     if self.moneys > 0:
-                        if sig == 0:
+                        if sig == SELL:
                             self.moneys -= i[0] * leverage * (_rate / mons)
                             resur.append(self.moneys)
-                        elif sig == 1:
+                        elif sig == BUY:
                             self.moneys += i[0] * leverage * (_rate / mons)
                             resur.append(self.moneys)
-                        elif sig == 2:
+                        elif sig == EXIT:
                             resur.append(self.moneys)
                     else:
-                        resur.append(0)
+                        resur.append(0)  # 0 but it's deposit
                 else:
                     flag = True
                     if cond and self.moneys > 0:
                         close = self.df['Close'][e + 1]
                         open_ = self.df['Open'][e + 1]
-                        if sig == 1 and close < _stop_loss:
+                        if sig == BUY and close < _stop_loss:
                             diff = _stop_loss - open_
-                        elif sig == 1 and close > take:
+                        elif sig == BUY and close > take:
                             diff = take - open_
-                        elif sig == 0 and close < take:
+                        elif sig == SELL and close < take:
                             diff = take - close
-                        elif sig == 0 and close > _stop_loss:
+                        elif sig == SELL and close > _stop_loss:
                             diff = _stop_loss - open_
                         else:
                             flag = False
                         if flag:
-                            if sig == 0:
+                            if sig == SELL:
                                 self.moneys -= diff * coef * leverage * (_rate / mons)
                                 resur.append(self.moneys)
-                            elif sig == 1:
+                            elif sig == BUY:
                                 self.moneys += diff * coef * leverage * (_rate / mons)
                                 resur.append(self.moneys)
                     exit = True
@@ -845,12 +846,6 @@ class Strategies(object):
         end = linear_dat[len(linear_dat) - 1]
         self.year_profit = (end - start) / start * 100
         self.year_profit /= len(resur) * self.profit_calculate_coef
-        if start < 0 < end:
-            self.year_profit = -self.year_profit
-        elif start > end and self.year_profit > 0:
-            self.year_profit = -self.year_profit
-        elif start < end and self.year_profit < 0:
-            self.year_profit = -self.year_profit
         self.linear = linear_dat
         self.profits = self.trades - self.losses
         if print_out:
@@ -999,7 +994,7 @@ class Strategies(object):
                 if ret1 == ret2:
                     ret.append(ret1)
                 else:
-                    ret.append(2)
+                    ret.append(EXIT)
         elif mode == 'maximalist':
             ret = self.__maximalist(first_returns, second_returns)
         elif mode == 'super':
@@ -1011,7 +1006,7 @@ class Strategies(object):
 
     def __maximalist(self, returns1, returns2):
         ret = []
-        flag = 2
+        flag = EXIT
         for a, b in zip(returns1, returns2):
             if a == b:
                 ret.append(a)
@@ -1024,7 +1019,7 @@ class Strategies(object):
         ret = []
         for first, sec in zip(set_(l1), set_(l2)):
             if first is not np.nan and sec is not np.nan and first is not sec:
-                ret.append(2)
+                ret.append(EXIT)
             elif first is sec:
                 ret.append(first)
             elif first is np.nan:
@@ -1054,11 +1049,11 @@ class Strategies(object):
             opn = close[len(close) - 1]
         curr_price = close[len(close) - 1]
         rets = self.get_stop_take(predict)
-        if predict == 1:
+        if predict == BUY:
             predict = 'Buy'
-        elif predict == 0:
+        elif predict == SELL:
             predict = 'Sell'
-        elif predict == 2:
+        elif predict == EXIT:
             predict = 'Exit'
         return {
             'predict': predict,
@@ -1210,7 +1205,6 @@ class Strategies(object):
         deposit_df = to_4_col_df(deposit_df, 'deposit Close', 'deposit Open',
                                  'deposit High', 'deposit Low')
 
-
         self.linear = pd.DataFrame(
             self.linear_(deposit_df['deposit Close'].values),
             columns=['deposit Close linear'])
@@ -1288,7 +1282,7 @@ class Strategies(object):
                 row=2,
                 col=1)
             for e, i in enumerate(set_(self.returns)):
-                if i == 0:
+                if i == SELL:
                     self.fig.add_scatter(
                         name='Sell',
                         y=[loc[e]],
@@ -1300,7 +1294,7 @@ class Strategies(object):
                             symbol='triangle-down',
                             size=SCATTER_SIZE,
                             opacity=SCATTER_ALPHA))
-                elif i == 1:
+                elif i == BUY:
                     self.fig.add_scatter(
                         name='Buy',
                         y=[loc[e]],
@@ -1312,7 +1306,7 @@ class Strategies(object):
                             symbol='triangle-up',
                             size=SCATTER_SIZE,
                             opacity=SCATTER_ALPHA))
-                elif i == 2:
+                elif i == EXIT:
                     self.fig.add_scatter(
                         name='Exit',
                         y=[loc[e]],
@@ -1405,7 +1399,7 @@ class PatternFinder(Strategies):
         df_ = round(df, rounding)
         self.rounding = rounding
         diff = digit(df_['Close'].diff().values)[1:]
-        self.diff = [2, *diff]
+        self.diff = [EXIT, *diff]
         self.df = df_.reset_index()
         self.drop = 0
         self.ticker = ticker
@@ -1425,7 +1419,7 @@ class PatternFinder(Strategies):
 
     def find_pip_bar(self, min_diff_co=2):
         ret = []
-        flag = 2
+        flag = EXIT
         for e, (high, low, open, close) in enumerate(
                 zip(self.df['High'], self.df['Low'], self.df['Open'],
                     self.df['Close']), 1):
@@ -1434,11 +1428,11 @@ class PatternFinder(Strategies):
             shadow_low = min(open, close) - low
             if body < (max(shadow_high, shadow_low) * min_diff_co):
                 if shadow_low > (shadow_high * min_diff_co):
-                    ret.append(1)
-                    flag = 1
+                    ret.append(BUY)
+                    flag = BUY
                 elif shadow_high > (shadow_low * min_diff_co):
-                    ret.append(0)
-                    flag = 0
+                    ret.append(SELL)
+                    flag = SELL
                 else:
                     ret.append(flag)
             else:
@@ -1448,18 +1442,18 @@ class PatternFinder(Strategies):
         return ret
 
     def find_DBLHC_DBHLC(self):
-        ret = [2]
-        flag = 2
+        ret = [EXIT]
+        flag = EXIT
         for e, (high, low, open, close) in enumerate(
                 zip(
                     self._window_('High'), self._window_('Low'),
                     self._window_('Open'), self._window_('Close')), 1):
             if low[0] == low[1] and close[1] > close[0]:
-                ret.append(1)
-                flag = 1
+                ret.append(BUY)
+                flag = BUY
             elif high[0] == high[1] and close[0] > close[1]:
-                ret.append(0)
-                flag = 0
+                ret.append(SELL)
+                flag = SELL
             else:
                 ret.append(flag)
         ret = ret[self.drop:]
@@ -1467,20 +1461,20 @@ class PatternFinder(Strategies):
         return ret
 
     def find_TBH_TBL(self):
-        ret = [2]
-        flag = 2
-        for e, (high, low, open, close) in enumerate(
+        ret = [EXIT]
+        flag = EXIT
+        for e, (high, low, open_, close) in enumerate(
                 zip(
                     self._window_('High'), self._window_('Low'),
                     self._window_('Open'), self._window_('Close')), 1):
             if high[0] == high[1] and self.diff[e -
                                                 1] == 1 and self.diff[e] == 0:
-                ret.append(1)
-                flag = 1
+                ret.append(BUY)
+                flag = BUY
             elif low[0] == low[1] and self.diff[e -
                                                 1] == 0 and self.diff[e] == 1:
-                ret.append(0)
-                flag = 0
+                ret.append(SELL)
+                flag = SELL
             else:
                 ret.append(flag)
         ret = ret
@@ -1488,19 +1482,19 @@ class PatternFinder(Strategies):
         return ret
 
     def find_PPR(self):
-        ret = [2, 2]
-        flag = 2
+        ret = [EXIT, EXIT]
+        flag = EXIT
         for e, (high, low, opn, close) in enumerate(
                 zip(
                     self._window_('High', 3), self._window_('Low', 3),
                     self._window_('Open', 3), self._window_('Close', 3)), 1):
             if min(low) == low[1] and close[1] < close[2] and high[2] < high[0]:
-                ret.append(1)
-                flag = 1
+                ret.append(BUY)
+                flag = BUY
             elif max(high
                      ) == high[1] and close[2] < close[1] and low[2] > low[0]:
-                ret.append(0)
-                flag = 0
+                ret.append(SELL)
+                flag = SELL
             else:
                 ret.append(flag)
         ret = ret

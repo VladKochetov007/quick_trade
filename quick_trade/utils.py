@@ -2,6 +2,7 @@ import datetime
 import itertools
 import logging
 import os
+
 import numpy as np
 import pandas as pd
 from iexfinance.stocks import get_historical_intraday
@@ -11,6 +12,9 @@ G = '#55ff00'
 B = '#0015ff'
 C = 'cyan'
 INPUTS = 60
+BUY = 1
+SELL = 0
+EXIT = 2
 
 TOKEN = 'Tpk_a4bc3e95d4c94810a3b2d4138dc81c5d'
 
@@ -110,9 +114,9 @@ def anti_set_(seted):
 
 
 def move_stop_to_breakeven(stop, open_, sig, price, diff, *args, **kwargs):
-    if sig == 1 and price > open_ and diff > 0:
+    if sig == BUY and price > open_ and diff > 0:
         stop_loss = (price * 2 + open_) / 3
-    elif sig == 0 and price < open_ and diff < 0:
+    elif sig == SELL and price < open_ and diff < 0:
         stop_loss = (price * 2 + open_) / 3
     else:
         stop_loss = stop
@@ -124,11 +128,11 @@ def digit(data):
     ret = []
     for i in list(data):
         if i == 0:
-            ret.append(2)
+            ret.append(EXIT)
         elif i > 0:
-            ret.append(1)
+            ret.append(BUY)
         else:
-            ret.append(0)
+            ret.append(SELL)
     return ret
 
 
