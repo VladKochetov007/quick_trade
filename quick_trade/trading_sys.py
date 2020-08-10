@@ -13,7 +13,6 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
-from tqdm.auto import tqdm
 
 
 class Strategies(object):
@@ -544,12 +543,12 @@ class Strategies(object):
         model.save(network_save_path)
         return model, hist, self.training_set
 
-    def strategy_with_network(self, *args, **kwargs):
+    def strategy_with_network(self, rounding=0, *args, **kwargs):
         scaler = MinMaxScaler(feature_range=(0, 1))
         all_ta = ta.add_all_ta_features(self.df, "Open", 'High', 'Low', 'Close', "Volume", True).values
         preds = self.model.predict(scaler.fit_transform(all_ta))
         for e, i in enumerate(preds):
-            preds[e] = round(i[0])
+            preds[e] = round(i[0], rounding)
         self.returns = preds
         return preds
 

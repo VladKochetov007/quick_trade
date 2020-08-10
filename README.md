@@ -1,5 +1,6 @@
 # quick_trade
 VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io
+
 ![image](logo_with_slogan.PNG)
 
 ```
@@ -7,7 +8,6 @@ used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
  ├──tensorflow==2.2 (https://github.com/tensorflow/tensorflow)
  ├──pykalman (https://github.com/pykalman/pykalman)
- ├──tqdm (https://github.com/tqdm/tqdm)
  ├──plotly (https://github.com/plotly/plotly.py)
  ├──scipy (https://github.com/scipy/scipy)
  ├──logging
