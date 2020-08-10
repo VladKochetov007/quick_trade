@@ -1,6 +1,7 @@
 # quick_trade
-VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io/all/
-![image](logo-with-slogan.PNG)
+VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io
+![image](logo_with_slogan.PNG)
+
 ```
 used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
