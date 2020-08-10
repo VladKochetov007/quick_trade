@@ -416,7 +416,7 @@ class Strategies(object):
     def get_network_regression(self,
                                dataframes,
                                inputs=60,
-                               network_save_path='../model-regression',
+                               network_save_path='quick_trade/model-regression',
                                **fit_kwargs):
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
@@ -454,14 +454,17 @@ class Strategies(object):
         model.save(network_save_path)
         return model
 
-    def prepare_scaler(self, dataframe):
+    def prepare_scaler(self, dataframe: pd.DataFrame, regression_net=True):
         """
         if you are loading a neural network.
 
         """
         scaler = MinMaxScaler(feature_range=(0, 1))
-        data = dataframe.filter(['Close'])
-        dataset = data.values
+        if regression_net:
+            data = dataframe.filter(['Close'])
+            dataset = data.values
+        else:
+            dataset = dataframe.values
         scaled_data = scaler.fit_transform(dataset)
         self.scaler = scaler
         return scaled_data
@@ -473,7 +476,7 @@ class Strategies(object):
                             optimizer='adam',
                             loss='mse',
                             metrics=None,
-                            network_save_path='../model-predicting',
+                            network_save_path='quick_trade/model-predicting',
                             **fit_kwargs):
         """
         getting trained neural network to trading.
@@ -485,16 +488,18 @@ class Strategies(object):
             'Close'
             'Volume'
 
-        optimizer:   |       str         |   optimizer for .compile of network.
+        optimizer:    |       str         |   optimizer for .compile of network.
 
-        kalman_range:|       int         |    lavel of smoothing.
+        filter_:      |       str         |    filter to training.
 
-        loss:        |       str         |   loss for .compile of network.
+        filter_kwargs:|       dict        |    named arguments for the filter.
 
-        metrics:     |  list of strings  |   metrics for .compile of network:
-            standart: ['acc']
+        loss:         |       str         |   loss for .compile of network.
 
-        fit_kwargs:  | *named argumenrs* |   arguments to .fit of network.
+        metrics:      |  list of strings  |   metrics for .compile of network:
+            standard: ['acc']
+
+        fit_kwargs:   | *named arguments* |   arguments to .fit of network.
 
 
         returns:
@@ -511,25 +516,25 @@ class Strategies(object):
 
         for df in dataframes:
             all_ta = ta.add_all_ta_features(df, 'Open', 'High', 'Low', 'Close',
-                                            'Volume', True)[self.drop:]
+                                            'Volume', True)
             get_all_out = PatternFinder(df=df)
-
+            filter_kwargs['plot'] = False
             output1 = get_all_out.strategy_diff(
-                eval('get_all_out.' + filter_ + '(plot=False, **filter_kwargs)'))
+                eval('get_all_out.' + filter_ + '(**filter_kwargs)'))
 
             for output in output1:
                 list_output.append(output[0])
-            list_input.append(all_ta)
+            list_input.append(pd.DataFrame(self.prepare_scaler(pd.DataFrame(all_ta), regression_net=False)))
         input_df = pd.concat(list_input, axis=0).dropna(1)
 
-        input_train_array = np.array(input_df.values)
+        input_train_array = input_df.values
         output_train_array = np.array([list_output]).T
 
         model = Sequential()
         model.add(
             Dense(20, input_dim=len(input_train_array[0]), activation='tanh'))
         model.add(Dropout(0.3))
-        model.add(Dense(1, 'linear'))
+        model.add(Dense(1, 'sigmoid'))
         model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
         hist = model.fit(input_train_array, output_train_array, **fit_kwargs)
 
@@ -540,14 +545,11 @@ class Strategies(object):
         return model, hist, self.training_set
 
     def strategy_with_network(self, *args, **kwargs):
-        preds = []
-        for i in tqdm(
-                ta.add_all_ta_features(self.df, 'Open', 'High', 'Low', 'Close',
-                                       'Volume', True).values):
-            pred = self.model.predict(np.array(i))[0]
-            preds.append(pred)
+        scaler = MinMaxScaler(feature_range=(0, 1))
+        all_ta = ta.add_all_ta_features(self.df, "Open", 'High', 'Low', 'Close', "Volume", True).values
+        preds = self.model.predict(scaler.fit_transform(all_ta))
         for e, i in enumerate(preds):
-            preds[e] = round(i)
+            preds[e] = round(i[0])
         self.returns = preds
         return preds
 
@@ -1392,7 +1394,7 @@ class PatternFinder(Strategies):
                  ticker='AAPL',
                  days_undo=100,
                  df=np.nan,
-                 interval='1m',
+                 interval='1d',
                  rounding=5,
                  *args,
                  **kwargs):
@@ -1400,12 +1402,11 @@ class PatternFinder(Strategies):
         self.rounding = rounding
         diff = digit(df_['Close'].diff().values)[1:]
         self.diff = [EXIT, *diff]
-        self.df = df_.reset_index()
+        self.df = df_.reset_index(drop=True)
         self.drop = 0
         self.ticker = ticker
         self.days_undo = days_undo
         self.interval = interval
-        self.df = self.df[self.drop:]
         if interval == '1m':
             self.profit_calculate_coef = 1 / 60 / 24 / 365
         elif interval == '1d':
