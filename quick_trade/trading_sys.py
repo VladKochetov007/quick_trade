@@ -415,7 +415,7 @@ class Strategies(object):
     def get_network_regression(self,
                                dataframes,
                                inputs=60,
-                               network_save_path='quick_trade/model-regression',
+                               network_save_path='quick_trade/model_regression',
                                **fit_kwargs):
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
@@ -475,7 +475,7 @@ class Strategies(object):
                             optimizer='adam',
                             loss='mse',
                             metrics=None,
-                            network_save_path='quick_trade/model-predicting',
+                            network_save_path='quick_trade/model_predicting',
                             **fit_kwargs):
         """
         getting trained neural network to trading.
