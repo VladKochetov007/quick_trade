@@ -6,6 +6,7 @@ import os
 import numpy as np
 import pandas as pd
 from iexfinance.stocks import get_historical_intraday
+from tensorflow.keras.models import load_model
 
 R = '#ff0000'
 G = '#55ff00'
@@ -39,8 +40,8 @@ DEPO_COLOR_DOWN = 'red'
 logger = logging.getLogger()
 logger.setLevel(50)
 logging.basicConfig(level=10, filename='trading.log')
-
-
+MODEL_PREDICTING = load_model('../model_predicting')
+MODEL_REGRESSION = load_model('../model_regression')
 def set_(data):
     ret = list(data.copy())
     for e, i in enumerate(data[1:]):
