@@ -68,20 +68,19 @@ $ pip install --upgrade quick-trade
 ```
 project
  ├── quick_trade
- │    ├── model-predicting
- │    │    ├── assets
- │    │    ├── varibles
- │    │    │    ├── varibles.data-00000-of-00001
- │    │    │    └── varibles.index
- │    │    └── saved_model.pb
- │    ├── model-regression
- │    │    ├── assets
- │    │    ├── varibles
- │    │    │    ├── varibles.data-00000-of-00001
- │    │    │    └── varibles.index
- │    │    └── saved_model.pb
  │    ├── quick_trade
- │    │    ├── __init__.py
+ |    |    ├── model-predicting
+ |    |    │    ├── assets
+ |    |    │    ├── varibles
+ |    |    │    │    ├── varibles.data-00000-of-00001
+ |    |    │    │    └── varibles.index
+ |    |    │    └── saved_model.pb
+ |    |    ├── model-regression
+ |    |    │    ├── assets
+ |    |    │    ├── varibles
+ |    |    │    │    ├── varibles.data-00000-of-00001
+ |    |    │    │    └── varibles.index
+ |    |    │    └── saved_model.pb
  │    │    ├── trading_sys.py
  │    │    └── utils.py
  │    ├── LICENSE.md
@@ -95,7 +94,7 @@ project
  └── user_code.py
 ```
 
-#### user code example:
+#### user_code example:
 ```
 import quick_trade.trading_sys as qt
 import yfinance as yf
