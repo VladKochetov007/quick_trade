@@ -7,7 +7,7 @@ setup(
     author='Vlad Kochetov',
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=setuptools.find_packages(),
-    version='2.1.7',
+    version='2.1.8',
     description='Trading system for stocks, forex and others',
     long_description='Please, view page on github.',
     url='https://github.com/VladKochetov007/quick_trade',
