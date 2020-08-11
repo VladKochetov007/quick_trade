@@ -23,7 +23,7 @@ setup(
         'numpy==1.18.5',
         'pandas==1.0.5',
     ],
-    download_url='https://github.com/VladKochetov007/quick_trade/archive/2.1.8.tar.gz',
+    download_url='https://github.com/VladKochetov007/quick_trade/archive/2.1.9.tar.gz',
     keywords=['technical analysis', 'python3', 'trading'],
     license='cc-by-sa-4.0',
     classifiers=[
