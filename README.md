@@ -58,6 +58,11 @@ a.backtest()
 ```
 $ git clone https://github.com/VladKochetov007/quick_trade.git
 ```
+or
+```
+$ pip install --upgrade quick-trade
+```
+
 
 ## your project tree:
 ```
