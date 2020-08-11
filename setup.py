@@ -7,7 +7,7 @@ setup(
     author='Vlad Kochetov',
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=setuptools.find_packages(),
-    version='2.1.11',
+    version='2.1.12',
     description='Trading system for stocks, forex and others',
     long_description='Please, view page on github.',
     url='https://github.com/VladKochetov007/quick_trade',
@@ -23,7 +23,7 @@ setup(
         'numpy==1.18.5',
         'pandas==1.0.5',
     ],
-    download_url='https://github.com/VladKochetov007/quick_trade/archive/2.1.11.tar.gz',
+    download_url='https://github.com/VladKochetov007/quick_trade/archive/2.1.12.tar.gz',
     keywords=['technical analysis', 'python3', 'trading'],
     license='cc-by-sa-4.0',
     classifiers=[
