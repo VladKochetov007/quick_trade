@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-import setuptools
+# -*- coding: utf-8 -*-
 from distutils.core import setup
 import setuptools
 
@@ -6,8 +6,8 @@ setup(
     name='quick_trade',
     author='Vlad Kochetov',
     author_email='vladyslavdrrragonkoch@gmail.com',
-    packages=setuptools.find_packages(),
-    version='2.1.9',
+    packages=setuptools.find_packages('..'),
+    version='2.1.10',
     description='Trading system for stocks, forex and others',
     long_description='Please, view page on github.',
     url='https://github.com/VladKochetov007/quick_trade',
@@ -30,7 +30,7 @@ setup(
         'Intended Audience :: Financial and Insurance Industry',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3',
     ],
 )
-
-
