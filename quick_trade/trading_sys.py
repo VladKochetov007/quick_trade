@@ -715,9 +715,6 @@ class Strategies(object):
             self.open_price = loc[val]
 
             _rate = self.moneys if rate is None else rate
-            if rate is not None:
-                if _rate >= rate:
-                    _rate = self.moneys
             _rate -= _rate * (commission / 100)
 
             for i in (
@@ -738,7 +735,7 @@ class Strategies(object):
                     return min(_stop_loss, take) < value < max(_stop_loss, take)
 
                 cond = get_condition(min_price) and get_condition(max_price)
-
+                print(_rate)
                 if cond and not exit:
                     if self.moneys > 0:
                         if sig == SELL:
@@ -1500,3 +1497,19 @@ class PatternFinder(Strategies):
         ret = ret
         self.returns = ret
         return ret
+
+
+if __name__ == '__main__':
+    import yfinance as yf
+    df = yf.download('EUR=X', interval='1d')
+    trader = PatternFinder(df=df)
+
+    trader.set_pyplot()
+    # trader.log_deposit()
+    # trader.get_trained_network([yf.download('EUR=X')], epochs=30)
+    trader.prepare_scaler(df)
+    trader.load_model("./model_predicting")
+    trader.strategy_with_network()
+    trader.inverse_strategy()
+    r = trader.backtest(bet=20000, credit_leverage=2)
+    print(trader.returns)
