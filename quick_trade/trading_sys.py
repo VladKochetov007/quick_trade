@@ -400,7 +400,7 @@ class Strategies(object):
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
         self.returns = [*ret, *predictions]
-        nans = itertools.chain.from_iterable([(np.nan,) * self.inputs])
+        nans = itertools.chain.from_iterable([(np.nan, ) * self.inputs])
         filt = (*nans, *frame.T[0])
         if plot:
             self.fig.add_trace(
@@ -523,7 +523,10 @@ class Strategies(object):
 
             for output in output1:
                 list_output.append(output[0])
-            list_input.append(pd.DataFrame(self.prepare_scaler(pd.DataFrame(all_ta), regression_net=False)))
+            list_input.append(
+                pd.DataFrame(
+                    self.prepare_scaler(
+                        pd.DataFrame(all_ta), regression_net=False)))
         input_df = pd.concat(list_input, axis=0).dropna(1)
 
         input_train_array = input_df.values
@@ -545,7 +548,8 @@ class Strategies(object):
 
     def strategy_with_network(self, rounding=0, *args, **kwargs):
         scaler = MinMaxScaler(feature_range=(0, 1))
-        all_ta = ta.add_all_ta_features(self.df, "Open", 'High', 'Low', 'Close', "Volume", True).values
+        all_ta = ta.add_all_ta_features(self.df, "Open", 'High', 'Low',
+                                        'Close', "Volume", True).values
         preds = self.model.predict(scaler.fit_transform(all_ta))
         for e, i in enumerate(preds):
             preds[e] = round(i[0], rounding)
@@ -711,14 +715,14 @@ class Strategies(object):
         for enum, (val, val2, sig) in enumerate(
                 zip(vals[:len(vals) - 1], vals[1:], sigs[:len(sigs) - 1])):
             mons = self.moneys
-            coef = self.moneys / loc[val]
+            coefficient = self.moneys / loc[val]
             self.open_price = loc[val]
 
             _rate = self.moneys if rate is None else rate
             _rate -= _rate * (commission / 100)
 
-            for i in (
-                             pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
+            for i in (pd.DataFrame(loc).diff().values *
+                      coefficient)[val + 1:val2 + 1]:
 
                 min_price = self.df['Low'][e + 1]
                 max_price = self.df['High'][e + 1]
@@ -732,7 +736,8 @@ class Strategies(object):
                 take_profits.append(take)
 
                 def get_condition(value):
-                    return min(_stop_loss, take) < value < max(_stop_loss, take)
+                    return min(_stop_loss, take) < value < max(
+                        _stop_loss, take)
 
                 cond = get_condition(min_price) and get_condition(max_price)
 
@@ -765,10 +770,12 @@ class Strategies(object):
                             flag = False
                         if flag:
                             if sig == SELL:
-                                self.moneys -= diff * coef * leverage * (_rate / mons)
+                                self.moneys -= diff * coefficient * leverage * (
+                                    _rate / mons)
                                 resur.append(self.moneys)
                             elif sig == BUY:
-                                self.moneys += diff * coef * leverage * (_rate / mons)
+                                self.moneys += diff * coefficient * leverage * (
+                                    _rate / mons)
                                 resur.append(self.moneys)
                     exit = True
                     resur.append(self.moneys)
@@ -1225,11 +1232,14 @@ class Strategies(object):
         self.backtest_out_no_drop = self.backtest_out
         self.backtest_out = self.backtest_out.dropna()
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
-        self.year_profit = ((self.year_profit - money_start) / money_start) * 100
-        self.info = (f"L O S S E S: {self.losses}\n"
-                     f"T R A D E S: {self.trades}\n"
-                     f"P R O F I T S: {self.profits}\n"
-                     f"M E A N   Y E A R   P E R C E N T A G E P   R O F I T: {self.year_profit}%\n")
+        self.year_profit = ((
+            self.year_profit - money_start) / money_start) * 100
+        self.info = (
+            f"L O S S E S: {self.losses}\n"
+            f"T R A D E S: {self.trades}\n"
+            f"P R O F I T S: {self.profits}\n"
+            f"M E A N   Y E A R   P E R C E N T A G E P   R O F I T: {self.year_profit}%\n"
+        )
         if print_out:
             print(self.info)
         if plot:
@@ -1501,6 +1511,7 @@ class PatternFinder(Strategies):
 
 if __name__ == '__main__':
     import yfinance as yf
+
     df = yf.download('EUR=X', interval='1d')
     trader = PatternFinder(df=df)
 
