@@ -735,7 +735,7 @@ class Strategies(object):
                     return min(_stop_loss, take) < value < max(_stop_loss, take)
 
                 cond = get_condition(min_price) and get_condition(max_price)
-                print(_rate)
+
                 if cond and not exit:
                     if self.moneys > 0:
                         if sig == SELL:
