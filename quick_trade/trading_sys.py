@@ -1363,17 +1363,13 @@ class PatternFinder(Strategies):
 
     example:
 
-
-    drop = 0
-
-
-    trader = Strategies('AAPL', 100, drop)
+    trader = Strategies(df=mydf)
 
     trader.set_pyplot()
 
     trader.strategy_3_sma()
 
-    resur1 = trader.backtest(credit_leverage=40)
+    return = trader.backtest(credit_leverage=40)
 
     """
 
