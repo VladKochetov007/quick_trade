@@ -1048,6 +1048,9 @@ class Strategies(object):
         predicts = self.returns
         predict = predicts[len(predicts) - 1]
         close = self.df['Close'].values
+        for sig, close_ in zip(self.returns, self.df['Close'].values):
+            if sig != EXIT:
+                self.open_price = close_
         if set_(predicts)[len(predicts) - 1] is np.nan:
             opn = self.open_price
         else:
@@ -1511,12 +1514,12 @@ if __name__ == '__main__':
     df = yf.download('EUR=X', interval='1d')
     trader = PatternFinder(df=df)
 
-    trader.set_pyplot()
+    '''trader.set_pyplot()
     # trader.log_deposit()
     # trader.get_trained_network([yf.download('EUR=X')], epochs=30)
     trader.prepare_scaler(df)
     trader.load_model("./model_predicting")
     trader.strategy_with_network()
     trader.inverse_strategy()
-    r = trader.backtest(bet=20000, credit_leverage=2)
-    print(trader.returns)
+    r = trader.backtest(bet=20000, credit_leverage=2)'''
+    trader.realtime_trading(trader.strategy_parabolic_SAR, get_data, plot=False, sleeping_time=5,get_data_kwargs={"undo_days":100})
