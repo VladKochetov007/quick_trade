@@ -1,37 +1,36 @@
+# -*- coding: utf-8 -*-
 from distutils.core import setup
-
 import setuptools
 
 setup(
     name='quick_trade',
-    version='2.1.3',
-    packages=setuptools.find_packages(),
-    license='cc-by-sa-4.0',
-    description="trading system",
-    url='https://github.com/VladKochetov007/quick_trade',
-    long_description=open('README_for_pypi.txt').read(),
-    download_url='https://github.com/VladKochetov007/quick_trade/blob/master/dist/quick_trade-2.1.2.tar.gz',
-    keywords=['trading', 'tensorflow', 'keras'],
     author='Vlad Kochetov',
     author_email='vladyslavdrrragonkoch@gmail.com',
+    packages=setuptools.find_packages(),
+    version='2.1.12',
+    description='Trading system for stocks, forex and others',
+    long_description='Please, view page on github.',
+    url='https://github.com/VladKochetov007/quick_trade',
+    install_requires=[
+        'iexfinance==0.4.3',
+        'plotly==4.9.0',
+        'ta==0.5.25',
+        'scikit-learn==0.23.1',
+        'tensorflow==2.2.0',
+        'pykalman==0.9.5',
+        'scipy==1.4.1',
+        'tqdm==4.48.0',
+        'numpy==1.18.5',
+        'pandas==1.0.5',
+    ],
+    download_url='https://github.com/VladKochetov007/quick_trade/archive/2.1.12.tar.gz',
+    keywords=['technical analysis', 'python3', 'trading'],
+    license='cc-by-sa-4.0',
     classifiers=[
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
+        'Intended Audience :: Financial and Insurance Industry',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
-    ],
-    install_requires=[
-        'iexfinance',
-        'numpy',
-        'pandas',
-        'plotly',
-        'pykalman',
-        'scikit-learn',
-        'scipy',
-        'ta',
-        'tensorflow',
-        'tqdm'
+        'Programming Language :: Python :: 3',
     ],
 )

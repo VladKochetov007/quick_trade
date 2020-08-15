@@ -2,6 +2,6 @@
 *.log
 MANIFEST
 build
-bdist
+dist
 .pypirc
 quick_trade.egg-info

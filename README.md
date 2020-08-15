@@ -1,12 +1,13 @@
 # quick_trade
-VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io/all/
-![image](logo-with-slogan.PNG)
+VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io
+
+![image](logo_with_slogan.PNG)
+
 ```
 used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
  ├──tensorflow==2.2 (https://github.com/tensorflow/tensorflow)
  ├──pykalman (https://github.com/pykalman/pykalman)
- ├──tqdm (https://github.com/tqdm/tqdm)
  ├──plotly (https://github.com/plotly/plotly.py)
  ├──scipy (https://github.com/scipy/scipy)
  ├──logging
@@ -62,28 +63,33 @@ $ git clone https://github.com/VladKochetov007/quick_trade.git
 ```
 project
  ├── quick_trade
- │    ├── model-regression
- │    │    ├── assets
- │    │    ├── varibles
- │    │    │    ├── varibles.data-00000-of-00001
- │    │    │    └── varibles.index
- │    │    └── saved_model.pb
  │    ├── quick_trade
- │    │    ├── __init__.py
+ |    |    ├── model-predicting
+ |    |    │    ├── assets
+ |    |    │    ├── varibles
+ |    |    │    │    ├── varibles.data-00000-of-00001
+ |    |    │    │    └── varibles.index
+ |    |    │    └── saved_model.pb
+ |    |    ├── model-regression
+ |    |    │    ├── assets
+ |    |    │    ├── varibles
+ |    |    │    │    ├── varibles.data-00000-of-00001
+ |    |    │    │    └── varibles.index
+ |    |    │    └── saved_model.pb
  │    │    ├── trading_sys.py
  │    │    └── utils.py
- │    ├── LICENSE.txt
+ │    ├── LICENSE.md
+ │    ├── .gitignore
+ │    ├── logo.PNG
+ │    ├── logo-with-slogan.PNG
+ │    ├── README_for_pypi.txt
  │    ├── README.md
  │    ├── requerments.txt
  │    └── setup.py
  └── user_code.py
 ```
 
-<div align="left">
-  <img src="https://i.ibb.co/pP4jdBL/2020-08-03-05-10-37.png" width=900">
-</div>
-
-#### user code example:
+#### user_code example:
 ```
 import quick_trade.trading_sys as qt
 import yfinance as yf

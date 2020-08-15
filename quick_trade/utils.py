@@ -23,7 +23,7 @@ os.environ['IEX_TOKEN'] = TOKEN
 __author__ = 'Vlad Kochetov'
 __credits__ = ["Hemerson Tacon -- Stack overflow",
                "hpaulj -- Stack overflow"]
-__version__ = "2.1.2"
+__version__ = "2.1.9"
 
 TICKER = '^DJI'
 SCATTER_SIZE = 12
