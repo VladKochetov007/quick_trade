@@ -1,4 +1,4 @@
-"""used ta by Darío López Padial (Bukosabino) https://github.com/bukosabino/ta"""
+#  used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
 import copy
 import time
@@ -13,7 +13,6 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
-from tqdm.auto import tqdm
 
 
 class Strategies(object):
@@ -401,7 +400,7 @@ class Strategies(object):
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
         self.returns = [*ret, *predictions]
-        nans = itertools.chain.from_iterable([(np.nan,) * self.inputs])
+        nans = itertools.chain.from_iterable([(np.nan, ) * self.inputs])
         filt = (*nans, *frame.T[0])
         if plot:
             self.fig.add_trace(
@@ -416,7 +415,7 @@ class Strategies(object):
     def get_network_regression(self,
                                dataframes,
                                inputs=60,
-                               network_save_path='../model-regression',
+                               network_save_path='./model_regression',
                                **fit_kwargs):
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
@@ -454,14 +453,17 @@ class Strategies(object):
         model.save(network_save_path)
         return model
 
-    def prepare_scaler(self, dataframe):
+    def prepare_scaler(self, dataframe: pd.DataFrame, regression_net=True):
         """
         if you are loading a neural network.
 
         """
         scaler = MinMaxScaler(feature_range=(0, 1))
-        data = dataframe.filter(['Close'])
-        dataset = data.values
+        if regression_net:
+            data = dataframe.filter(['Close'])
+            dataset = data.values
+        else:
+            dataset = dataframe.values
         scaled_data = scaler.fit_transform(dataset)
         self.scaler = scaler
         return scaled_data
@@ -473,7 +475,7 @@ class Strategies(object):
                             optimizer='adam',
                             loss='mse',
                             metrics=None,
-                            network_save_path='../model-predicting',
+                            network_save_path='./model_predicting',
                             **fit_kwargs):
         """
         getting trained neural network to trading.
@@ -485,16 +487,18 @@ class Strategies(object):
             'Close'
             'Volume'
 
-        optimizer:   |       str         |   optimizer for .compile of network.
+        optimizer:    |       str         |   optimizer for .compile of network.
 
-        kalman_range:|       int         |    lavel of smoothing.
+        filter_:      |       str         |    filter to training.
 
-        loss:        |       str         |   loss for .compile of network.
+        filter_kwargs:|       dict        |    named arguments for the filter.
 
-        metrics:     |  list of strings  |   metrics for .compile of network:
-            standart: ['acc']
+        loss:         |       str         |   loss for .compile of network.
 
-        fit_kwargs:  | *named argumenrs* |   arguments to .fit of network.
+        metrics:      |  list of strings  |   metrics for .compile of network:
+            standard: ['acc']
+
+        fit_kwargs:   | *named arguments* |   arguments to .fit of network.
 
 
         returns:
@@ -511,25 +515,28 @@ class Strategies(object):
 
         for df in dataframes:
             all_ta = ta.add_all_ta_features(df, 'Open', 'High', 'Low', 'Close',
-                                            'Volume', True)[self.drop:]
+                                            'Volume', True)
             get_all_out = PatternFinder(df=df)
-
+            filter_kwargs['plot'] = False
             output1 = get_all_out.strategy_diff(
-                eval('get_all_out.' + filter_ + '(plot=False, **filter_kwargs)'))
+                eval('get_all_out.' + filter_ + '(**filter_kwargs)'))
 
             for output in output1:
                 list_output.append(output[0])
-            list_input.append(all_ta)
+            list_input.append(
+                pd.DataFrame(
+                    self.prepare_scaler(
+                        pd.DataFrame(all_ta), regression_net=False)))
         input_df = pd.concat(list_input, axis=0).dropna(1)
 
-        input_train_array = np.array(input_df.values)
+        input_train_array = input_df.values
         output_train_array = np.array([list_output]).T
 
         model = Sequential()
         model.add(
             Dense(20, input_dim=len(input_train_array[0]), activation='tanh'))
         model.add(Dropout(0.3))
-        model.add(Dense(1, 'linear'))
+        model.add(Dense(1, 'sigmoid'))
         model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
         hist = model.fit(input_train_array, output_train_array, **fit_kwargs)
 
@@ -539,15 +546,13 @@ class Strategies(object):
         model.save(network_save_path)
         return model, hist, self.training_set
 
-    def strategy_with_network(self, *args, **kwargs):
-        preds = []
-        for i in tqdm(
-                ta.add_all_ta_features(self.df, 'Open', 'High', 'Low', 'Close',
-                                       'Volume', True).values):
-            pred = self.model.predict(np.array(i))[0]
-            preds.append(pred)
+    def strategy_with_network(self, rounding=0, *args, **kwargs):
+        scaler = MinMaxScaler(feature_range=(0, 1))
+        all_ta = ta.add_all_ta_features(self.df, "Open", 'High', 'Low',
+                                        'Close', "Volume", True).values
+        preds = self.model.predict(scaler.fit_transform(all_ta))
         for e, i in enumerate(preds):
-            preds[e] = round(i)
+            preds[e] = round(i[0], rounding)
         self.returns = preds
         return preds
 
@@ -710,17 +715,14 @@ class Strategies(object):
         for enum, (val, val2, sig) in enumerate(
                 zip(vals[:len(vals) - 1], vals[1:], sigs[:len(sigs) - 1])):
             mons = self.moneys
-            coef = self.moneys / loc[val]
+            coefficient = self.moneys / loc[val]
             self.open_price = loc[val]
 
             _rate = self.moneys if rate is None else rate
-            if rate is not None:
-                if _rate >= rate:
-                    _rate = self.moneys
             _rate -= _rate * (commission / 100)
 
-            for i in (
-                             pd.DataFrame(loc).diff().values * coef)[val + 1:val2 + 1]:
+            for i in (pd.DataFrame(loc).diff().values *
+                      coefficient)[val + 1:val2 + 1]:
 
                 min_price = self.df['Low'][e + 1]
                 max_price = self.df['High'][e + 1]
@@ -734,7 +736,8 @@ class Strategies(object):
                 take_profits.append(take)
 
                 def get_condition(value):
-                    return min(_stop_loss, take) < value < max(_stop_loss, take)
+                    return min(_stop_loss, take) < value < max(
+                        _stop_loss, take)
 
                 cond = get_condition(min_price) and get_condition(max_price)
 
@@ -767,10 +770,12 @@ class Strategies(object):
                             flag = False
                         if flag:
                             if sig == SELL:
-                                self.moneys -= diff * coef * leverage * (_rate / mons)
+                                self.moneys -= diff * coefficient * leverage * (
+                                    _rate / mons)
                                 resur.append(self.moneys)
                             elif sig == BUY:
-                                self.moneys += diff * coef * leverage * (_rate / mons)
+                                self.moneys += diff * coefficient * leverage * (
+                                    _rate / mons)
                                 resur.append(self.moneys)
                     exit = True
                     resur.append(self.moneys)
@@ -1227,11 +1232,14 @@ class Strategies(object):
         self.backtest_out_no_drop = self.backtest_out
         self.backtest_out = self.backtest_out.dropna()
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
-        self.year_profit = ((self.year_profit - money_start) / money_start) * 100
-        self.info = (f"L O S S E S: {self.losses}\n"
-                     f"T R A D E S: {self.trades}\n"
-                     f"P R O F I T S: {self.profits}\n"
-                     f"M E A N   Y E A R   P E R C E N T A G E P   R O F I T: {self.year_profit}%\n")
+        self.year_profit = ((
+            self.year_profit - money_start) / money_start) * 100
+        self.info = (
+            f"L O S S E S: {self.losses}\n"
+            f"T R A D E S: {self.trades}\n"
+            f"P R O F I T S: {self.profits}\n"
+            f"M E A N   Y E A R   P E R C E N T A G E P   R O F I T: {self.year_profit}%\n"
+        )
         if print_out:
             print(self.info)
         if plot:
@@ -1355,17 +1363,13 @@ class PatternFinder(Strategies):
 
     example:
 
-
-    drop = 0
-
-
-    trader = Strategies('AAPL', 100, drop)
+    trader = Strategies(df=mydf)
 
     trader.set_pyplot()
 
     trader.strategy_3_sma()
 
-    resur1 = trader.backtest(credit_leverage=40)
+    return = trader.backtest(credit_leverage=40)
 
     """
 
@@ -1392,7 +1396,7 @@ class PatternFinder(Strategies):
                  ticker='AAPL',
                  days_undo=100,
                  df=np.nan,
-                 interval='1m',
+                 interval='1d',
                  rounding=5,
                  *args,
                  **kwargs):
@@ -1400,12 +1404,11 @@ class PatternFinder(Strategies):
         self.rounding = rounding
         diff = digit(df_['Close'].diff().values)[1:]
         self.diff = [EXIT, *diff]
-        self.df = df_.reset_index()
+        self.df = df_.reset_index(drop=True)
         self.drop = 0
         self.ticker = ticker
         self.days_undo = days_undo
         self.interval = interval
-        self.df = self.df[self.drop:]
         if interval == '1m':
             self.profit_calculate_coef = 1 / 60 / 24 / 365
         elif interval == '1d':
@@ -1417,7 +1420,7 @@ class PatternFinder(Strategies):
     def _window_(self, column, n=2):
         return get_window(self.df[column].values, n)
 
-    def find_pip_bar(self, min_diff_co=2):
+    def find_pip_bar(self, min_diff_coef=2):
         ret = []
         flag = EXIT
         for e, (high, low, open, close) in enumerate(
@@ -1426,11 +1429,11 @@ class PatternFinder(Strategies):
             body = abs(open - close)
             shadow_high = high - max(open, close)
             shadow_low = min(open, close) - low
-            if body < (max(shadow_high, shadow_low) * min_diff_co):
-                if shadow_low > (shadow_high * min_diff_co):
+            if body < (max(shadow_high, shadow_low) * min_diff_coef):
+                if shadow_low > (shadow_high * min_diff_coef):
                     ret.append(BUY)
                     flag = BUY
-                elif shadow_high > (shadow_low * min_diff_co):
+                elif shadow_high > (shadow_low * min_diff_coef):
                     ret.append(SELL)
                     flag = SELL
                 else:
@@ -1500,3 +1503,20 @@ class PatternFinder(Strategies):
         ret = ret
         self.returns = ret
         return ret
+
+
+if __name__ == '__main__':
+    import yfinance as yf
+
+    df = yf.download('EUR=X', interval='1d')
+    trader = PatternFinder(df=df)
+
+    trader.set_pyplot()
+    # trader.log_deposit()
+    # trader.get_trained_network([yf.download('EUR=X')], epochs=30)
+    trader.prepare_scaler(df)
+    trader.load_model("./model_predicting")
+    trader.strategy_with_network()
+    trader.inverse_strategy()
+    r = trader.backtest(bet=20000, credit_leverage=2)
+    print(trader.returns)
