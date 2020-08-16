@@ -13,6 +13,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
+import json
 
 
 class Strategies(object):
@@ -1048,13 +1049,11 @@ class Strategies(object):
         predicts = self.returns
         predict = predicts[len(predicts) - 1]
         close = self.df['Close'].values
-        for sig, close_ in zip(self.returns, self.df['Close'].values):
+        for sig, close_ in zip(self.returns[::-1], self.df['Close'].values[::-1]):
             if sig != EXIT:
                 self.open_price = close_
-        if set_(predicts)[len(predicts) - 1] is np.nan:
-            opn = self.open_price
-        else:
-            opn = close[len(close) - 1]
+                break
+        opn = self.open_price
         curr_price = close[len(close) - 1]
         rets = self.get_stop_take(predict)
         if predict == BUY:
@@ -1072,6 +1071,7 @@ class Strategies(object):
         }
 
     def realtime_trading(self,
+                         tickers,
                          strategy,
                          get_gataframe,
                          get_data_kwargs={},
@@ -1080,8 +1080,11 @@ class Strategies(object):
                          take_profit=None,
                          stop_loss=None,
                          inverse=False,
+                         json_saving_path='realtime_trading_returns.json',
                          **strategy_kwargs):
         """
+        tickers:          |   array-like of str         |  tickers for trading.
+
         strategy:         |   Strategies.some_strategy  |  trading strategy.
 
         get_gataframe:    |          function           |  function to getting the data:
@@ -1095,21 +1098,33 @@ class Strategies(object):
 
         print_out:        |             bool            |  printing.
 
+        json_saving_path: |            str              |  path to saving results
+
         """
 
         try:
             ret = {}
             while True:
-                self.df = get_gataframe(self.ticker, **get_data_kwargs)
-                strategy(**strategy_kwargs)
-                prediction = self.get_trading_predict(
-                    take_profit, stop_loss, inverse=inverse)
-                now = copy.copy(time.ctime())
-                ret[now] = prediction
-                if print_out:
-                    print(now, prediction)
-                time.sleep(sleeping_time)
+                def get_realtime(ticker):
+                    nonlocal ret
+                    self.ticker = ticker
+                    ret[f'{self.ticker}'] = {}
+                    self.df = get_gataframe(ticker, **get_data_kwargs)
+                    strategy(**strategy_kwargs)
+                    prediction = self.get_trading_predict(
+                        take_profit, stop_loss, inverse=inverse)
+                    now = copy.copy(time.ctime())
+                    ret[f'{self.ticker}'][f'{now}'] = prediction
+                    if print_out:
+                        print(f'{self.ticker}, {now}', prediction)
+                    time.sleep(sleeping_time / len(tickers))
+                for ticker in tickers:
+                    get_realtime(ticker)
         except KeyboardInterrupt:
+            self.json_returns_realtime = json.dumps(ret)
+            with open(json_saving_path, 'w') as file:
+                file.write(self.json_returns_realtime)
+                file.close()
             return ret
 
     def log_data(self):
@@ -1522,4 +1537,5 @@ if __name__ == '__main__':
     trader.strategy_with_network()
     trader.inverse_strategy()
     r = trader.backtest(bet=20000, credit_leverage=2)'''
-    trader.realtime_trading(trader.strategy_parabolic_SAR, get_data, plot=False, sleeping_time=5,get_data_kwargs={"undo_days":100})
+    print('launch!')
+    print(trader.realtime_trading(tickers=['MSFT', 'UAH=X'], strategy=trader.strategy_parabolic_SAR, get_gataframe=yf.download, plot=False, sleeping_time=5, get_data_kwargs={'progress': False}))
