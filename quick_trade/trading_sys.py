@@ -1,7 +1,6 @@
 #  used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
 import copy
-import json
 import time
 
 import plotly.graph_objects as go
@@ -208,9 +207,9 @@ class Strategies(object):
                        *args,
                        **kwargs):
         ret = []
-        SMA1 = ta.trend.sma(self.df['Close'], fast)[self.drop:]
-        SMA2 = ta.trend.sma(self.df['Close'], mid)[self.drop:]
-        SMA3 = ta.trend.sma(self.df['Close'], slow)[self.drop:]
+        SMA1 = ta.trend.sma(self.df['Close'], fast)
+        SMA2 = ta.trend.sma(self.df['Close'], mid)
+        SMA3 = ta.trend.sma(self.df['Close'], slow)
 
         if plot:
             for SMA, C, name in zip([SMA1, SMA2, SMA3], [G, B, R],
@@ -378,7 +377,7 @@ class Strategies(object):
         signal_ = _MACD_.macd_signal()
         macd_ = _MACD_.macd()
         histogram = pd.DataFrame(macd_.values - signal_.values)
-        ret = digit(histogram.diff().values)[self.drop:]
+        ret = digit(histogram.diff().values)
         self.returns = ret
         return ret
 
@@ -753,7 +752,7 @@ class Strategies(object):
                         elif sig == EXIT:
                             resur.append(self.moneys)
                     else:
-                        resur.append(0)  # 0 but it's deposit
+                        resur.append(0)  # 0 because it's deposit
                 else:
                     flag = True
                     if cond and self.moneys > 0:
@@ -1421,7 +1420,7 @@ class PatternFinder(Strategies):
         df_ = round(df, rounding)
         self.rounding = rounding
         diff = digit(df_['Close'].diff().values)[1:]
-        self.diff = [EXIT, *diff]
+        self.diff = [0, *diff]
         self.df = df_.reset_index(drop=True)
         self.drop = 0
         self.ticker = ticker
