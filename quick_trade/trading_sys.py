@@ -1420,7 +1420,7 @@ class PatternFinder(Strategies):
         df_ = round(df, rounding)
         self.rounding = rounding
         diff = digit(df_['Close'].diff().values)[1:]
-        self.diff = [0, *diff]
+        self.diff = [EXIT, *diff]
         self.df = df_.reset_index(drop=True)
         self.drop = 0
         self.ticker = ticker
