@@ -1,6 +1,7 @@
 #  used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
 import copy
+import json
 import time
 
 import plotly.graph_objects as go
@@ -13,7 +14,6 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
-import json
 
 
 class Strategies(object):
@@ -401,7 +401,7 @@ class Strategies(object):
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
         self.returns = [*ret, *predictions]
-        nans = itertools.chain.from_iterable([(np.nan, ) * self.inputs])
+        nans = itertools.chain.from_iterable([(np.nan,) * self.inputs])
         filt = (*nans, *frame.T[0])
         if plot:
             self.fig.add_trace(
@@ -772,11 +772,11 @@ class Strategies(object):
                         if flag:
                             if sig == SELL:
                                 self.moneys -= diff * coefficient * leverage * (
-                                    _rate / mons)
+                                        _rate / mons)
                                 resur.append(self.moneys)
                             elif sig == BUY:
                                 self.moneys += diff * coefficient * leverage * (
-                                    _rate / mons)
+                                        _rate / mons)
                                 resur.append(self.moneys)
                     exit = True
                     resur.append(self.moneys)
@@ -1117,6 +1117,7 @@ class Strategies(object):
                     if print_out:
                         print(f'{self.ticker}, {now}', prediction)
                     time.sleep(sleeping_time / len(tickers))
+
                 for ticker in tickers:
                     get_realtime(ticker)
         except KeyboardInterrupt:
@@ -1250,7 +1251,7 @@ class Strategies(object):
         self.backtest_out = self.backtest_out.dropna()
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
         self.year_profit = ((
-            self.year_profit - money_start) / money_start) * 100
+                                    self.year_profit - money_start) / money_start) * 100
         self.info = (
             f"L O S S E S: {self.losses}\n"
             f"T R A D E S: {self.trades}\n"
@@ -1527,14 +1528,6 @@ if __name__ == '__main__':
 
     df = yf.download('EUR=X', interval='1d')
     trader = PatternFinder(df=df)
-
-    '''trader.set_pyplot()
-    # trader.log_deposit()
-    # trader.get_trained_network([yf.download('EUR=X')], epochs=30)
-    trader.prepare_scaler(df)
-    trader.load_model("./model_predicting")
-    trader.strategy_with_network()
-    trader.inverse_strategy()
-    r = trader.backtest(bet=20000, credit_leverage=2)'''
-    print('launch!')
-    print(trader.realtime_trading(tickers=['MSFT', 'UAH=X'], strategy=trader.strategy_parabolic_SAR, get_gataframe=yf.download, plot=False, sleeping_time=1, get_data_kwargs={'progress': False}))
+    (trader.realtime_trading(tickers=['MSFT', 'UAH=X'], strategy=trader.strategy_parabolic_SAR,
+                             get_gataframe=yf.download, plot=False, sleeping_time=1,
+                             get_data_kwargs={'progress': False}))
