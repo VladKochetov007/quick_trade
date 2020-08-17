@@ -24,6 +24,18 @@ __author__ = 'Vlad Kochetov'
 __credits__ = ["Hemerson Tacon -- Stack overflow",
                "hpaulj -- Stack overflow"]
 __version__ = "2.1.9"
+__install_requires = [
+        'iexfinance==0.4.3',
+        'plotly==4.9.0',
+        'ta==0.5.25',
+        'scikit-learn==0.23.1',
+        'tensorflow==2.2.0',
+        'pykalman==0.9.5',
+        'scipy==1.4.1',
+        'tqdm==4.48.0',
+        'numpy==1.18.5',
+        'pandas==1.0.5',
+    ]
 
 TICKER = '^DJI'
 SCATTER_SIZE = 12

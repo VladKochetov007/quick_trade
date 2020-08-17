@@ -1108,13 +1108,12 @@ class Strategies(object):
                 def get_realtime(ticker):
                     nonlocal ret
                     self.ticker = ticker
-                    ret[f'{self.ticker}'] = {}
                     self.df = get_gataframe(ticker, **get_data_kwargs)
                     strategy(**strategy_kwargs)
                     prediction = self.get_trading_predict(
                         take_profit, stop_loss, inverse=inverse)
                     now = copy.copy(time.ctime())
-                    ret[f'{self.ticker}'][f'{now}'] = prediction
+                    ret[f'{self.ticker}, {now}'] = prediction
                     if print_out:
                         print(f'{self.ticker}, {now}', prediction)
                     time.sleep(sleeping_time / len(tickers))
@@ -1538,4 +1537,4 @@ if __name__ == '__main__':
     trader.inverse_strategy()
     r = trader.backtest(bet=20000, credit_leverage=2)'''
     print('launch!')
-    print(trader.realtime_trading(tickers=['MSFT', 'UAH=X'], strategy=trader.strategy_parabolic_SAR, get_gataframe=yf.download, plot=False, sleeping_time=5, get_data_kwargs={'progress': False}))
+    print(trader.realtime_trading(tickers=['MSFT', 'UAH=X'], strategy=trader.strategy_parabolic_SAR, get_gataframe=yf.download, plot=False, sleeping_time=1, get_data_kwargs={'progress': False}))
