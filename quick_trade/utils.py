@@ -1,10 +1,13 @@
 import datetime
+import datetime as dt
 import itertools
+import json
 import logging
 import os
 
 import numpy as np
 import pandas as pd
+import requests
 from iexfinance.stocks import get_historical_intraday
 
 R = '#ff0000'
@@ -25,17 +28,17 @@ __credits__ = ["Hemerson Tacon -- Stack overflow",
                "hpaulj -- Stack overflow"]
 __version__ = "2.1.9"
 __install_requires = [
-        'iexfinance==0.4.3',
-        'plotly==4.9.0',
-        'ta==0.5.25',
-        'scikit-learn==0.23.1',
-        'tensorflow==2.2.0',
-        'pykalman==0.9.5',
-        'scipy==1.4.1',
-        'tqdm==4.48.0',
-        'numpy==1.18.5',
-        'pandas==1.0.5',
-    ]
+    'iexfinance==0.4.3',
+    'plotly==4.9.0',
+    'ta==0.5.25',
+    'scikit-learn==0.23.1',
+    'tensorflow==2.2.0',
+    'pykalman==0.9.5',
+    'scipy==1.4.1',
+    'tqdm==4.48.0',
+    'numpy==1.18.5',
+    'pandas==1.0.5',
+]
 
 TICKER = '^DJI'
 SCATTER_SIZE = 12
@@ -157,3 +160,18 @@ def get_window(values, window):
 
 def nothing(ret):
     return ret
+
+
+def get_binance_data(ticker="BNBBTC", interval="1m", date_index=False):
+    url = f"https://api.binance.com/api/v1/klines?symbol={ticker}&interval={interval}"
+    data = json.loads(requests.get(url).text)
+    df = pd.DataFrame(data)
+    df.columns = ["open_time",
+                  "Open", "High", "Low", 'Close', 'Volume',
+                  'close_time', 'qav', 'num_trades',
+                  'taker_base_vol', 'taker_quote_vol', 'ignore']
+    for column in ["Open", "High", "Low", 'Close', 'Volume']:
+        df[column] = df[column].astype(float)
+    if date_index:
+        df.index = [dt.datetime.fromtimestamp(x / 1000.0) for x in df.close_time]
+    return df

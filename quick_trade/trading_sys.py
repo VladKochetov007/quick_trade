@@ -1438,7 +1438,7 @@ class PatternFinder(Strategies):
     def _window_(self, column, n=2):
         return get_window(self.df[column].values, n)
 
-    def find_pip_bar(self, min_diff_coef=2):
+    def find_pip_bar(self, min_diff_coef=2, body_coef=10):
         ret = []
         flag = EXIT
         for e, (high, low, open, close) in enumerate(
@@ -1447,7 +1447,7 @@ class PatternFinder(Strategies):
             body = abs(open - close)
             shadow_high = high - max(open, close)
             shadow_low = min(open, close) - low
-            if body < (max(shadow_high, shadow_low) * min_diff_coef):
+            if body < (max(shadow_high, shadow_low) * body_coef):
                 if shadow_low > (shadow_high * min_diff_coef):
                     ret.append(BUY)
                     flag = BUY
@@ -1469,10 +1469,10 @@ class PatternFinder(Strategies):
                 zip(
                     self._window_('High'), self._window_('Low'),
                     self._window_('Open'), self._window_('Close')), 1):
-            if low[0] == low[1] and close[1] > close[0]:
+            if low[0] == low[1] and close[1] > high[0]:
                 ret.append(BUY)
                 flag = BUY
-            elif high[0] == high[1] and close[0] > close[1]:
+            elif high[0] == high[1] and close[0] > low[1]:
                 ret.append(SELL)
                 flag = SELL
             else:
@@ -1488,12 +1488,10 @@ class PatternFinder(Strategies):
                 zip(
                     self._window_('High'), self._window_('Low'),
                     self._window_('Open'), self._window_('Close')), 1):
-            if high[0] == high[1] and self.diff[e -
-                                                1] == 1 and self.diff[e] == 0:
+            if high[0] == high[1]:
                 ret.append(BUY)
                 flag = BUY
-            elif low[0] == low[1] and self.diff[e -
-                                                1] == 0 and self.diff[e] == 1:
+            elif low[0] == low[1]:
                 ret.append(SELL)
                 flag = SELL
             else:
@@ -1522,12 +1520,24 @@ class PatternFinder(Strategies):
         self.returns = ret
         return ret
 
+    def is_doji(self):
+        """
+        returns: list of booleans.
+
+        """
+        ret = []
+        for close, open_ in zip(self.df['Close'].values,
+                                self.df['Open'].values):
+            if close == open_:
+                ret.append(True)
+            else:
+                ret.append(False)
+        return ret
+
 
 if __name__ == '__main__':
-    import yfinance as yf
+    '''import yfinance as yf
 
     df = yf.download('EUR=X', interval='1d')
-    trader = PatternFinder(df=df)
-    (trader.realtime_trading(tickers=['MSFT', 'UAH=X'], strategy=trader.strategy_parabolic_SAR,
-                             get_gataframe=yf.download, plot=False, sleeping_time=1,
-                             get_data_kwargs={'progress': False}))
+    trader = PatternFinder(df=df)'''
+    print(get_binance_data())
