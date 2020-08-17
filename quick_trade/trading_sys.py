@@ -1539,4 +1539,4 @@ if __name__ == '__main__':
 
     df = yf.download('EUR=X', interval='1d')
     trader = PatternFinder(df=df)'''
-    print(get_binance_data())
+    print(get_binance_data(date_index=True))

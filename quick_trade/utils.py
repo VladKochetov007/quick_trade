@@ -173,5 +173,5 @@ def get_binance_data(ticker="BNBBTC", interval="1m", date_index=False):
     for column in ["Open", "High", "Low", 'Close', 'Volume']:
         df[column] = df[column].astype(float)
     if date_index:
-        df.index = [dt.datetime.fromtimestamp(x / 1000.0) for x in df.close_time]
+        df.index = [dt.datetime.fromtimestamp(i / 1000) for i in df.close_time]
     return df
