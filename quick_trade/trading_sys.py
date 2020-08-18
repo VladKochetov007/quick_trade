@@ -13,6 +13,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
+from threading import Thread
 
 
 class Strategies(object):
@@ -1093,7 +1094,7 @@ class Strategies(object):
         }
 
     def realtime_trading(self,
-                         tickers,
+                         ticker,
                          strategy,
                          get_gataframe,
                          get_data_kwargs={},
@@ -1139,10 +1140,9 @@ class Strategies(object):
                     ret[f'{self.ticker}, {now}'] = prediction
                     if print_out:
                         print(f'{self.ticker}, {now}', prediction)
-                    time.sleep(sleeping_time / len(tickers))
+                    time.sleep(sleeping_time)
 
-                for ticker in tickers:
-                    get_realtime(ticker)
+                get_realtime(ticker)
         except KeyboardInterrupt:
             self.prepare_realtime = False
             self.json_returns_realtime = json.dumps(ret)
@@ -1557,12 +1557,20 @@ class PatternFinder(Strategies):
             else:
                 ret.append(False)
         return ret
+    def __realtime_trading__(self, tickers,
+                         **realtime_trading_kw):
+        theads = [Thread(target=PatternFinder(df=self.df).realtime_trading, kwargs=dict(realtime_trading_kw,ticker=ticker))
+                  for ticker in tickers]
+        for t in theads:
+            t.run()
+            t.join()
+
 
 
 if __name__ == '__main__':
     df = get_binance_data('BTCUSDT', interval='1m')
     trader = PatternFinder(df=df)
-    print(trader.realtime_trading(tickers=['BTCUSDT', 'ETHUSDT'], strategy=trader.strategy_diff,
+    print(trader.__realtime_trading__(tickers=['BTCUSDT', 'ETHUSDT'], strategy=trader.strategy_diff,
                                   get_gataframe=get_binance_data, sleeping_time=2,
                                   get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]', inverse=True,
                                   stop_loss=10))
