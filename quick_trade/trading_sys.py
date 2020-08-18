@@ -169,7 +169,7 @@ class Strategies(object):
 
         """
         ret = list(np.digitize(frame_to_diff.diff(), bins=[0]))
-        ret = ret[self.drop:]
+        ret = ret
         self.returns = ret
         return ret
 
@@ -1047,25 +1047,31 @@ class Strategies(object):
             self.inverse_strategy()
         predicts = self.returns
         predict = predicts[len(predicts) - 1]
+        cond = "_predict" not in self.__dir__()
+        if not cond:
+            cond = set_(self.returns)[len(self.returns)-1] is not np.nan
         close = self.df['Close'].values
-        for sig, close_ in zip(self.returns[::-1], self.df['Close'].values[::-1]):
-            if sig != EXIT:
-                self.open_price = close_
-                break
-        opn = self.open_price
+        if cond:
+            for sig, close_ in zip(self.returns[::-1], self.df['Close'].values[::-1]):
+                if sig != EXIT:
+                    self.open_price = close_
+                    break
+            rets = self.get_stop_take(predict)
+            if predict == BUY:
+                predict = 'Buy'
+            elif predict == SELL:
+                predict = 'Sell'
+            elif predict == EXIT:
+                predict = 'Exit'
+            self._predict = predict
+            self.__stop_loss = rets['stop']
+            self.__take_profit = rets['take']
         curr_price = close[len(close) - 1]
-        rets = self.get_stop_take(predict)
-        if predict == BUY:
-            predict = 'Buy'
-        elif predict == SELL:
-            predict = 'Sell'
-        elif predict == EXIT:
-            predict = 'Exit'
         return {
-            'predict': predict,
-            'open lot price': opn,
-            'stop loss': rets['stop'],
-            'take profit': rets['take'],
+            'predict': self._predict,
+            'open lot price': self.open_price,
+            'stop loss': self.__stop_loss,
+            'take profit': self.__take_profit,
             'currency close': curr_price
         }
 
@@ -1107,7 +1113,7 @@ class Strategies(object):
                 def get_realtime(ticker):
                     nonlocal ret
                     self.ticker = ticker
-                    self.df = get_gataframe(ticker, **get_data_kwargs)
+                    self.df = get_gataframe(ticker, **get_data_kwargs).reset_index(drop=True)
                     strategy(**strategy_kwargs)
                     prediction = self.get_trading_predict(
                         take_profit, stop_loss, inverse=inverse)
@@ -1535,8 +1541,10 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
-    '''import yfinance as yf
+    import yfinance as yf
 
-    df = yf.download('EUR=X', interval='1d')
-    trader = PatternFinder(df=df)'''
-    print(get_binance_data(date_index=True))
+    df = yf.download('EUR=X', interval='1m')
+    trader = PatternFinder(df=df)
+    print(trader.realtime_trading(tickers=['BTCUSDT'], strategy=trader.strategy_diff,
+                                  get_gataframe=get_binance_data, sleeping_time=2,
+                                  get_data_kwargs={"interval": '1m'}))
