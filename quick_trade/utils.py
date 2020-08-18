@@ -141,10 +141,10 @@ def move_stop_to_breakeven(stop, open_, sig, price, diff, *args, **kwargs):
 def digit(data):
     data = list(data)
     ret = []
-    for i in list(data):
-        if i == 0:
+    for element in list(data):
+        if element == 0:
             ret.append(EXIT)
-        elif i > 0:
+        elif element > 0:
             ret.append(BUY)
         else:
             ret.append(SELL)

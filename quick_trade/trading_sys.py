@@ -168,6 +168,8 @@ class Strategies(object):
         frame_to_diff:  |   pd.DataFrame  |  example:  Strategies.df['Close']
 
         """
+        if self.prepare_realtime:
+            frame_to_diff = eval(frame_to_diff)
         ret = list(np.digitize(frame_to_diff.diff(), bins=[0]))
         ret = ret
         self.returns = ret
@@ -175,8 +177,8 @@ class Strategies(object):
 
     def strategy_2_sma(self, slow=100, fast=30, plot=True, *args, **kwargs):
         ret = []
-        SMA1 = ta.trend.sma(self.df['Close'], fast)[self.drop:]
-        SMA2 = ta.trend.sma(self.df['Close'], slow)[self.drop:]
+        SMA1 = ta.trend.sma(self.df['Close'], fast)
+        SMA2 = ta.trend.sma(self.df['Close'], slow)
         if plot:
             self.fig.add_trace(
                 go.Line(
@@ -545,6 +547,12 @@ class Strategies(object):
         self.training_set = (input_train_array, output_train_array)
         model.save(network_save_path)
         return model, hist, self.training_set
+
+    def strategy_random_pred(self, **kwargs):
+        import random
+        self.returns = []
+        for i in range(len(self.df)):
+            self.returns.append(random.randint(0, 2))
 
     def strategy_with_network(self, rounding=0, *args, **kwargs):
         scaler = MinMaxScaler(feature_range=(0, 1))
@@ -1112,6 +1120,7 @@ class Strategies(object):
             while True:
                 def get_realtime(ticker):
                     nonlocal ret
+                    self.prepare_realtime = True
                     self.ticker = ticker
                     self.df = get_gataframe(ticker, **get_data_kwargs).reset_index(drop=True)
                     strategy(**strategy_kwargs)
@@ -1126,6 +1135,7 @@ class Strategies(object):
                 for ticker in tickers:
                     get_realtime(ticker)
         except KeyboardInterrupt:
+            self.prepare_realtime = False
             self.json_returns_realtime = json.dumps(ret)
             with open(json_saving_path, 'w') as file:
                 file.write(self.json_returns_realtime)
@@ -1541,10 +1551,8 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
-    import yfinance as yf
-
-    df = yf.download('EUR=X', interval='1m')
+    df = get_binance_data('BTCUSDT', interval='1m')
     trader = PatternFinder(df=df)
-    print(trader.realtime_trading(tickers=['BTCUSDT'], strategy=trader.strategy_diff,
-                                  get_gataframe=get_binance_data, sleeping_time=2,
-                                  get_data_kwargs={"interval": '1m'}))
+    trader.set_pyplot()
+    trader.random_predict()
+    trader.backtest()
