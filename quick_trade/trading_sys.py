@@ -63,8 +63,8 @@ class Strategies(object):
                       *args,
                       **kwargs):
         k_filter = KalmanFilter()
-        if df == 'self.df["Close"]':
-            df = self.df['Close']
+        if isinstance(df, str):
+            df = eval(df)
         filtered = k_filter.filter(np.array(df))[0]
         for i in range(iters):
             filtered = k_filter.smooth(filtered)[0]
@@ -82,8 +82,8 @@ class Strategies(object):
                      polyorder=3,
                      plot=True,
                      **scipy_savgol_filter_kwargs):
-        if df == 'self.df["Close"]':
-            df = self.df['Close']
+        if isinstance(df, str):
+            df = eval(df)
         filtered = signal.savgol_filter(
             df,
             window_length=window_length,
@@ -113,6 +113,8 @@ class Strategies(object):
         linear data. mean + (mean diff * n)
 
         """
+        if isinstance(dataset, str):
+            dataset = eval(dataset)
         data = pd.DataFrame(dataset).copy()
 
         mean = float(data.mean())
@@ -168,7 +170,7 @@ class Strategies(object):
         frame_to_diff:  |   pd.DataFrame  |  example:  Strategies.df['Close']
 
         """
-        if self.prepare_realtime:
+        if isinstance(frame_to_diff, str):
             frame_to_diff = eval(frame_to_diff)
         ret = list(np.digitize(frame_to_diff.diff(), bins=[0]))
         ret = ret
@@ -1047,17 +1049,29 @@ class Strategies(object):
                             inverse=False,
                             *args,
                             **kwargs):
+        def convert():
+            nonlocal predict
+            if predict == BUY:
+                predict = 'Buy'
+            elif predict == SELL:
+                predict = 'Sell'
+            elif predict == EXIT:
+                predict = 'Exit'
         if take_profit is None:
             self.take_profit = np.inf
+        else:
+            self.take_profit = take_profit
         if stop_loss is None:
             self.stop_loss = np.inf
+        else:
+            self.stop_loss = stop_loss
         if inverse:
             self.inverse_strategy()
         predicts = self.returns
         predict = predicts[len(predicts) - 1]
         cond = "_predict" not in self.__dir__()
         if not cond:
-            cond = set_(self.returns)[len(self.returns)-1] is not np.nan
+            cond = self._predict != predict
         close = self.df['Close'].values
         if cond:
             for sig, close_ in zip(self.returns[::-1], self.df['Close'].values[::-1]):
@@ -1065,18 +1079,13 @@ class Strategies(object):
                     self.open_price = close_
                     break
             rets = self.get_stop_take(predict)
-            if predict == BUY:
-                predict = 'Buy'
-            elif predict == SELL:
-                predict = 'Sell'
-            elif predict == EXIT:
-                predict = 'Exit'
             self._predict = predict
             self.__stop_loss = rets['stop']
             self.__take_profit = rets['take']
+        convert()
         curr_price = close[len(close) - 1]
         return {
-            'predict': self._predict,
+            'predict': predict,
             'open lot price': self.open_price,
             'stop loss': self.__stop_loss,
             'take profit': self.__take_profit,
@@ -1553,6 +1562,7 @@ class PatternFinder(Strategies):
 if __name__ == '__main__':
     df = get_binance_data('BTCUSDT', interval='1m')
     trader = PatternFinder(df=df)
-    trader.set_pyplot()
-    trader.random_predict()
-    trader.backtest()
+    print(trader.realtime_trading(tickers=['BTCUSDT'], strategy=trader.strategy_diff,
+                                  get_gataframe=get_binance_data, sleeping_time=2,
+                                  get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]', inverse=True,
+                                  stop_loss=10))
