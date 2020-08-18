@@ -1093,7 +1093,7 @@ class Strategies(object):
         }
 
     def realtime_trading(self,
-                         tickers,
+                         ticker,
                          strategy,
                          get_gataframe,
                          get_data_kwargs={},
@@ -1102,10 +1102,11 @@ class Strategies(object):
                          take_profit=None,
                          stop_loss=None,
                          inverse=False,
+                         print_exception=True,
                          json_saving_path='realtime_trading_returns.json',
                          **strategy_kwargs):
         """
-        tickers:          |   array-like of str         |  tickers for trading.
+        tickers:          |             str             |  ticker for trading.
 
         strategy:         |   Strategies.some_strategy  |  trading strategy.
 
@@ -1139,11 +1140,12 @@ class Strategies(object):
                     ret[f'{self.ticker}, {now}'] = prediction
                     if print_out:
                         print(f'{self.ticker}, {now}', prediction)
-                    time.sleep(sleeping_time / len(tickers))
+                    time.sleep(sleeping_time)
 
-                for ticker in tickers:
-                    get_realtime(ticker)
-        except KeyboardInterrupt:
+                get_realtime(ticker)
+        except Exception as e:
+            if print_exception:
+                print(e)
             self.prepare_realtime = False
             self.json_returns_realtime = json.dumps(ret)
             with open(json_saving_path, 'w') as file:
@@ -1562,7 +1564,7 @@ class PatternFinder(Strategies):
 if __name__ == '__main__':
     df = get_binance_data('BTCUSDT', interval='1m')
     trader = PatternFinder(df=df)
-    print(trader.realtime_trading(tickers=['BTCUSDT', 'ETHUSDT'], strategy=trader.strategy_diff,
-                                  get_gataframe=get_binance_data, sleeping_time=2,
+    print(trader.realtime_trading(ticker='BTCUSDT', strategy=trader.strategy_diff,
+                                  get_gataframe=get_binance_data, sleeping_time=0,
                                   get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]', inverse=True,
                                   stop_loss=10))
