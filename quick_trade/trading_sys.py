@@ -1282,7 +1282,7 @@ class Strategies(object):
             f"L O S S E S: {self.losses}\n"
             f"T R A D E S: {self.trades}\n"
             f"P R O F I T S: {self.profits}\n"
-            f"M E A N   Y E A R   P E R C E N T A G E P   R O F I T: {self.year_profit}%\n"
+            f"M E A N   Y E A R   P E R C E N T A G E   R O F I T: {self.year_profit}%\n"
         )
         if print_out:
             print(self.info)
@@ -1562,9 +1562,12 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
-    df = get_binance_data('BTCUSDT', interval='1m')
-    trader = PatternFinder(df=df)
-    print(trader.realtime_trading(ticker='BTCUSDT', strategy=trader.strategy_diff,
-                                  get_gataframe=get_binance_data, sleeping_time=0,
-                                  get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]', inverse=True,
-                                  stop_loss=10))
+    import yfinance as yf
+    TICKER = 'BTCUSDT'
+    df = get_binance_data(TICKER, interval='1d')
+    trader = PatternFinder(df=df, interval='1d', ticker=TICKER)
+    trader.set_pyplot()
+    trader.strategy_diff(trader.df['Close'])
+    trader.inverse_strategy()
+    trader.log_deposit()
+    trader.backtest(commission=0.1, stop_loss=10)
