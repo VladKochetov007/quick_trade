@@ -1562,7 +1562,7 @@ class PatternFinder(Strategies):
 if __name__ == '__main__':
     df = get_binance_data('BTCUSDT', interval='1m')
     trader = PatternFinder(df=df)
-    print(trader.realtime_trading(tickers=['BTCUSDT'], strategy=trader.strategy_diff,
+    print(trader.realtime_trading(tickers=['BTCUSDT', 'ETHUSDT'], strategy=trader.strategy_diff,
                                   get_gataframe=get_binance_data, sleeping_time=2,
                                   get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]', inverse=True,
                                   stop_loss=10))
