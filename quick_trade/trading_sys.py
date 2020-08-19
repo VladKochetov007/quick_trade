@@ -5,6 +5,7 @@ import time
 
 import plotly.graph_objects as go
 import ta
+from binance.client import Client
 from plotly.subplots import make_subplots as sub_make
 from pykalman import KalmanFilter
 from quick_trade.utils import *
@@ -46,6 +47,7 @@ class Strategies(object):
             self.profit_calculate_coef = 1 / 365
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
+        self.use_binance = False
 
     def __repr__(self):
         return 'trader'
@@ -176,6 +178,10 @@ class Strategies(object):
         ret = ret
         self.returns = ret
         return ret
+
+    def strategy_buy_hold(self, *args, **kwargs):
+        self.returns = [1 for i in range(len(self.df))]
+        return self.returns
 
     def strategy_2_sma(self, slow=100, fast=30, plot=True, *args, **kwargs):
         ret = []
@@ -1057,6 +1063,7 @@ class Strategies(object):
                 predict = 'Sell'
             elif predict == EXIT:
                 predict = 'Exit'
+
         if take_profit is None:
             self.take_profit = np.inf
         else:
@@ -1074,6 +1081,12 @@ class Strategies(object):
             cond = self._predict != predict
         close = self.df['Close'].values
         if cond:
+            convert()
+            logger.info(f'open lot {predict}')
+            if self.console_use:
+                print(predict)
+            predict = predicts[len(predicts) - 1]
+            self.__exit_binance__ = False
             for sig, close_ in zip(self.returns[::-1], self.df['Close'].values[::-1]):
                 if sig != EXIT:
                     self.open_price = close_
@@ -1121,37 +1134,53 @@ class Strategies(object):
 
         print_out:        |             bool            |  printing.
 
-        json_saving_path: |            str              |  path to saving results
+        json_saving_path: |             str             |  path to saving results
 
         """
 
-        try:
-            ret = {}
-            while True:
-                def get_realtime(ticker):
-                    nonlocal ret
-                    self.prepare_realtime = True
-                    self.ticker = ticker
-                    self.df = get_gataframe(ticker, **get_data_kwargs).reset_index(drop=True)
-                    strategy(**strategy_kwargs)
-                    prediction = self.get_trading_predict(
-                        take_profit, stop_loss, inverse=inverse)
-                    now = copy.copy(time.ctime())
-                    ret[f'{self.ticker}, {now}'] = prediction
-                    if print_out:
-                        print(f'{self.ticker}, {now}', prediction)
-                    time.sleep(sleeping_time)
+        ret = {}
+        while True:
+            try:
+                self.prepare_realtime = True
+                self.ticker = ticker
+                self.df = get_gataframe(ticker, **get_data_kwargs).reset_index(drop=True)
+                strategy(**strategy_kwargs)
+                prediction = self.get_trading_predict(
+                    take_profit, stop_loss, inverse=inverse)
+                now = copy.copy(time.ctime())
+                ret[f'{self.ticker}, {now}'] = prediction
+                if print_out:
+                    print(f'{self.ticker}, {now}', prediction)
+                _time = time.time()
+                while True:
+                    if time.time() < (_time + sleeping_time):
+                            if self.use_binance:
+                                price = float(self.client.get_symbol_ticker(symbol='BTCUSDT')['price'])
+                                min_ = min(self.__stop_loss, self.__take_profit)
+                                max_ = max(self.__stop_loss, self.__take_profit)
+                                if (not min_ < price < max_) and (not self.__exit_binance__):
+                                    if self._predict != EXIT:
+                                        logger.info('exit lot')
+                                        if self.console_use:
+                                            print('Exit')
+                                        self.__exit_binance__ = True
+                    else:
+                        break
+            # как-же меня это всё достало, мне просто хочется заработать и жить спокойно
+            # но нет, блин, нужно было этим разрабам из python-binance сморозить такую дичь
+            # представляю, что-бы было, если-б юзал официальное API.
+            # мне ещё географию переписывать в тетрадь
+            # я просто хочу хорошо жить, никого не напрягаяя.
 
-                get_realtime(ticker)
-        except Exception as e:
-            if print_exception:
-                print(e)
-            self.prepare_realtime = False
-            self.json_returns_realtime = json.dumps(ret)
-            with open(json_saving_path, 'w') as file:
-                file.write(self.json_returns_realtime)
-                file.close()
-            return ret
+            except Exception as e:
+                if print_exception:
+                    print(e)
+                self.prepare_realtime = False
+                self.json_returns_realtime = json.dumps(ret)
+                with open(json_saving_path, 'w') as file:
+                    file.write(self.json_returns_realtime)
+                    file.close()
+                return ret
 
     def log_data(self):
         self.fig.update_yaxes(row=1, col=1, type='log')
@@ -1379,6 +1408,15 @@ class Strategies(object):
     def load_model(self, path):
         self.model = load_model(path)
 
+    def set_binance_client(self, public_key, secret_key):
+        """
+        to using binance in realtime_trading
+
+        """
+        self.client = Client(api_key=public_key,
+                             api_secret=secret_key)
+        self.use_binance = True
+
 
 class PatternFinder(Strategies):
     """
@@ -1417,25 +1455,6 @@ class PatternFinder(Strategies):
 
     """
 
-    def __getitem__(self, item):
-        ret_trader = copy.copy(self)
-        ret_trader.df = self.df.T[item].T
-        try:
-            ret_trader.returns = copy.copy(self.returns[item])
-        except AttributeError:
-            pass
-        try:
-            ret_trader.backtest_out = copy.copy(self.backtest_out.T[item].T)
-        except AttributeError:
-            pass
-        try:
-            ret_trader.open_lot_prices = copy.copy(self.open_lot_prices[item])
-            ret_trader.stop_losses = copy.copy(self.stop_losses[item])
-            ret_trader.take_profits = copy.copy(self.take_profits[item])
-        except AttributeError:
-            pass
-        return ret_trader
-
     def __init__(self,
                  ticker='AAPL',
                  days_undo=100,
@@ -1460,6 +1479,9 @@ class PatternFinder(Strategies):
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
         self.inputs = INPUTS
+        self.use_binance = True
+        self.console_use = False
+        self.client = Client()
 
     def _window_(self, column, n=2):
         return get_window(self.df[column].values, n)
@@ -1562,12 +1584,11 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
-    import yfinance as yf
     TICKER = 'BTCUSDT'
     df = get_binance_data(TICKER, interval='1d')
     trader = PatternFinder(df=df, interval='1d', ticker=TICKER)
-    trader.set_pyplot()
-    trader.strategy_diff(trader.df['Close'])
-    trader.inverse_strategy()
-    trader.log_deposit()
-    trader.backtest(commission=0.1, stop_loss=10)
+    trader.console_use = True
+    print(trader.realtime_trading('BTCUSDT', strategy=trader.strategy_buy_hold,
+                                  get_gataframe=get_binance_data, sleeping_time=1,
+                                  get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
+                                  stop_loss=1))

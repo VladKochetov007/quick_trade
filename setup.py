@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
+
 import setuptools
 
 setup(
@@ -22,6 +23,8 @@ setup(
         'tqdm==4.48.0',
         'numpy==1.18.5',
         'pandas==1.0.5',
+        'python-binance==0.7.5',
+
     ],
     download_url='https://github.com/VladKochetov007/quick_trade/archive/2.1.12.tar.gz',
     keywords=['technical analysis', 'python3', 'trading'],
