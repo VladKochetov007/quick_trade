@@ -28,26 +28,27 @@ class Strategies(object):
                  ticker='AAPL',
                  days_undo=100,
                  df=np.nan,
-                 interval='1m',
+                 interval='1d',
+                 rounding=5,
                  *args,
                  **kwargs):
+        df_ = round(df, rounding)
+        self.rounding = rounding
+        diff = digit(df_['Close'].diff().values)[1:]
+        self.diff = [EXIT, *diff]
+        self.df = df_.reset_index(drop=True)
+        self.drop = 0
         self.ticker = ticker
         self.days_undo = days_undo
-        self.drop = 0
         self.interval = interval
-        if df is np.nan:
-            data = get_data(ticker, days_undo)
-            self.df = data.reset_index()
-        else:
-            self.df = df.reset_index()
-        self.df = self.df[self.drop:].reset_index()
         if interval == '1m':
             self.profit_calculate_coef = 1 / 60 / 24 / 365
         elif interval == '1d':
             self.profit_calculate_coef = 1 / 365
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
-        self.use_binance = False
+        self.inputs = INPUTS
+        self.use_binance = True
 
     def __repr__(self):
         return 'trader'
@@ -1083,8 +1084,6 @@ class Strategies(object):
         if cond:
             convert()
             logger.info(f'open lot {predict}')
-            if self.console_use:
-                print(predict)
             predict = predicts[len(predicts) - 1]
             self.__exit_binance__ = False
             for sig, close_ in zip(self.returns[::-1], self.df['Close'].values[::-1]):
@@ -1104,6 +1103,10 @@ class Strategies(object):
             'take profit': self.__take_profit,
             'currency close': curr_price
         }
+
+    def get_price_binance(self, ticker):
+        client = Client()
+        return float(client.get_symbol_ticker(symbol=ticker)['price'])
 
     def realtime_trading(self,
                          ticker,
@@ -1139,8 +1142,8 @@ class Strategies(object):
         """
 
         ret = {}
-        while True:
-            try:
+        try:
+            while True:
                 self.prepare_realtime = True
                 self.ticker = ticker
                 self.df = get_gataframe(ticker, **get_data_kwargs).reset_index(drop=True)
@@ -1154,16 +1157,14 @@ class Strategies(object):
                 _time = time.time()
                 while True:
                     if time.time() < (_time + sleeping_time):
-                            if self.use_binance:
-                                price = float(self.client.get_symbol_ticker(symbol='BTCUSDT')['price'])
-                                min_ = min(self.__stop_loss, self.__take_profit)
-                                max_ = max(self.__stop_loss, self.__take_profit)
-                                if (not min_ < price < max_) and (not self.__exit_binance__):
-                                    if self._predict != EXIT:
-                                        logger.info('exit lot')
-                                        if self.console_use:
-                                            print('Exit')
-                                        self.__exit_binance__ = True
+                        if self.use_binance:
+                            price = self.get_price_binance(ticker)
+                            min_ = min(self.__stop_loss, self.__take_profit)
+                            max_ = max(self.__stop_loss, self.__take_profit)
+                            if (not min_ < price < max_) and (not self.__exit_binance__):
+                                if self._predict != EXIT:
+                                    logger.info('exit lot')
+                                    self.__exit_binance__ = True
                     else:
                         break
             # как-же меня это всё достало, мне просто хочется заработать и жить спокойно
@@ -1172,15 +1173,15 @@ class Strategies(object):
             # мне ещё географию переписывать в тетрадь
             # я просто хочу хорошо жить, никого не напрягаяя.
 
-            except Exception as e:
-                if print_exception:
-                    print(e)
-                self.prepare_realtime = False
-                self.json_returns_realtime = json.dumps(ret)
-                with open(json_saving_path, 'w') as file:
-                    file.write(self.json_returns_realtime)
-                    file.close()
-                return ret
+        except Exception as e:
+            if print_exception:
+                print(e)
+            self.prepare_realtime = False
+            self.json_returns_realtime = json.dumps(ret)
+            with open(json_saving_path, 'w') as file:
+                file.write(self.json_returns_realtime)
+                file.close()
+            return ret
 
     def log_data(self):
         self.fig.update_yaxes(row=1, col=1, type='log')
@@ -1408,15 +1409,6 @@ class Strategies(object):
     def load_model(self, path):
         self.model = load_model(path)
 
-    def set_binance_client(self, public_key, secret_key):
-        """
-        to using binance in realtime_trading
-
-        """
-        self.client = Client(api_key=public_key,
-                             api_secret=secret_key)
-        self.use_binance = True
-
 
 class PatternFinder(Strategies):
     """
@@ -1480,8 +1472,6 @@ class PatternFinder(Strategies):
             raise ValueError('I N C O R R E C T   I N T E R V A L')
         self.inputs = INPUTS
         self.use_binance = True
-        self.console_use = False
-        self.client = Client()
 
     def _window_(self, column, n=2):
         return get_window(self.df[column].values, n)
