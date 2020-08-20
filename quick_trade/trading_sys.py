@@ -1056,6 +1056,7 @@ class Strategies(object):
                             inverse=False,
                             *args,
                             **kwargs):
+
         def convert():
             nonlocal predict
             if predict == BUY:
@@ -1085,7 +1086,7 @@ class Strategies(object):
             convert()
             logger.info(f'open lot {predict}')
             predict = predicts[len(predicts) - 1]
-            self.__exit_binance__ = False
+            self.__exit__ = False
             for sig, close_ in zip(self.returns[::-1], self.df['Close'].values[::-1]):
                 if sig != EXIT:
                     self.open_price = close_
@@ -1151,22 +1152,24 @@ class Strategies(object):
                 prediction = self.get_trading_predict(
                     take_profit, stop_loss, inverse=inverse)
                 now = copy.copy(time.ctime())
+                _time = time.time()
+                while True:
+                    if time.time() < (_time + sleeping_time + 0.001):
+                        price = self.get_price_binance(ticker)
+                        min_ = min(self.__stop_loss, self.__take_profit)
+                        max_ = max(self.__stop_loss, self.__take_profit)
+                        if (not min_ < price < max_) and (not self.__exit__):
+                            if self._predict != EXIT:
+                                logger.info('exit lot')
+                                self.__exit__ = True
+
+                    else:
+                        break
+                if self.__exit__:
+                    prediction['predict'] = 'Exit'
                 ret[f'{self.ticker}, {now}'] = prediction
                 if print_out:
                     print(f'{self.ticker}, {now}', prediction)
-                _time = time.time()
-                while True:
-                    if time.time() < (_time + sleeping_time):
-                        if self.use_binance:
-                            price = self.get_price_binance(ticker)
-                            min_ = min(self.__stop_loss, self.__take_profit)
-                            max_ = max(self.__stop_loss, self.__take_profit)
-                            if (not min_ < price < max_) and (not self.__exit_binance__):
-                                if self._predict != EXIT:
-                                    logger.info('exit lot')
-                                    self.__exit_binance__ = True
-                    else:
-                        break
             # как-же меня это всё достало, мне просто хочется заработать и жить спокойно
             # но нет, блин, нужно было этим разрабам из python-binance сморозить такую дичь
             # представляю, что-бы было, если-б юзал официальное API.
@@ -1577,8 +1580,7 @@ if __name__ == '__main__':
     TICKER = 'BTCUSDT'
     df = get_binance_data(TICKER, interval='1d')
     trader = PatternFinder(df=df, interval='1d', ticker=TICKER)
-    trader.console_use = True
     print(trader.realtime_trading('BTCUSDT', strategy=trader.strategy_buy_hold,
                                   get_gataframe=get_binance_data, sleeping_time=1,
                                   get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
-                                  stop_loss=1))
+                                  stop_loss=1, inverse=True))
