@@ -23,12 +23,12 @@ class TradingClient(object):
         client = Client()
         return float(client.get_symbol_ticker(symbol=ticker)['price'])
 
-    def get_data(self, ticker, interval):
+    def get_data(self, ticker=None, interval=None):
         return get_binance_data(ticker, interval)
 
-    def new_order_buy(self): pass
+    def new_order_buy(self, ticker=None, credit_leverage=None, quantity=None): pass
 
-    def new_order_sell(self): pass
+    def new_order_sell(self, ticker=None, credit_leverage=None, quantity=None): pass
 
     def exit_last_order(self): pass
 
@@ -1163,6 +1163,7 @@ class Strategies(object):
         """
 
         ret = {}
+        plus = 0.0001 if sleeping_time == 0 else 0
         try:
             while True:
                 self.prepare_realtime = True
@@ -1173,27 +1174,27 @@ class Strategies(object):
                     take_profit=take_profit, stop_loss=stop_loss,
                     inverse=inverse, trading_on_client=trading_on_client)
                 # едрить, жизнь такая крутаяяяяяяяяя
-                now = copy.copy(time.ctime())
-                _time = time.time()
+                print(f'{self.ticker}, {time.ctime()}', prediction)
+                now = time.time()
                 while True:
-                    if time.time() < (_time + sleeping_time + 0.001):
+                    if time.time() < (now + sleeping_time + plus):
                         price = self.client.get_ticker_price(ticker)
                         min_ = min(self.__stop_loss, self.__take_profit)
                         max_ = max(self.__stop_loss, self.__take_profit)
                         if (not min_ < price < max_) and (not self.__exit_order__):
                             if self._predict != EXIT:
                                 logger.info('exit lot')
+                                pred2 = prediction
+                                pred2['predict'] = 'Exit'
+                                pred2['currency close'] = price
+                                if print_out:
+                                    print(f'{self.ticker}, {time.ctime()}', prediction)
                                 if trading_on_client:
                                     self.client.exit_last_order()
                                 self.client.exit_last_order()
                                 self.__exit_order__ = True
                     else:
                         break
-                if self.__exit_order__:
-                    prediction['predict'] = 'Exit'
-                ret[f'{self.ticker}, {now}'] = prediction
-                if print_out:
-                    print(f'{self.ticker}, {now}', prediction)
             # как-же меня это всё достало, мне просто хочется заработать и жить спокойно
             # но нет, блин, нужно было этим разрабам из python-binance сморозить такую дичь
             # представляю, что-бы было, если-б юзал официальное API.
@@ -1589,7 +1590,7 @@ class PatternFinder(Strategies):
 
     def is_doji(self):
         """
-        returns: list of booleans.
+        :returns: list of booleans.
 
         """
         ret = []
@@ -1607,6 +1608,6 @@ if __name__ == '__main__':
     df = get_binance_data(TICKER, interval='1d')
     trader = PatternFinder(df=df, interval='1d', ticker=TICKER)
     trader.set_client(TradingClient)
-    print(trader.realtime_trading('BTCUSDT', strategy=trader.strategy_buy_hold, sleeping_time=1,
+    print(trader.realtime_trading('BTCUSDT', strategy=trader.strategy_buy_hold, sleeping_time=9,
                                   get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
                                   stop_loss=0.01, trading_on_client=True))
