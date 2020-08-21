@@ -1,11 +1,10 @@
-#  used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
+# used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
 import copy
 import time
-
+from binance.client import Client
 import plotly.graph_objects as go
 import ta
-from binance.client import Client
 from plotly.subplots import make_subplots as sub_make
 from pykalman import KalmanFilter
 from quick_trade.utils import *
@@ -14,6 +13,24 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
+
+
+class TradingClient(object):
+    def __init__(self):
+        pass
+
+    def get_ticker_price(self, ticker):
+        client = Client()
+        return float(client.get_symbol_ticker(symbol=ticker)['price'])
+
+    def get_data(self, ticker, interval):
+        return get_binance_data(ticker, interval)
+
+    def new_order_buy(self): pass
+
+    def new_order_sell(self): pass
+
+    def exit_last_order(self): pass
 
 
 class Strategies(object):
@@ -48,7 +65,6 @@ class Strategies(object):
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
         self.inputs = INPUTS
-        self.use_binance = True
 
     def __repr__(self):
         return 'trader'
@@ -181,7 +197,7 @@ class Strategies(object):
         return ret
 
     def strategy_buy_hold(self, *args, **kwargs):
-        self.returns = [1 for i in range(len(self.df))]
+        self.returns = [BUY for _ in range(len(self.df))]
         return self.returns
 
     def strategy_2_sma(self, slow=100, fast=30, plot=True, *args, **kwargs):
@@ -557,7 +573,7 @@ class Strategies(object):
         model.save(network_save_path)
         return model, hist, self.training_set
 
-    def strategy_random_pred(self, **kwargs):
+    def strategy_random_pred(self, *args, **kwargs):
         import random
         self.returns = []
         for i in range(len(self.df)):
@@ -1054,6 +1070,7 @@ class Strategies(object):
                             take_profit=None,
                             stop_loss=None,
                             inverse=False,
+                            trading_on_client=False,
                             *args,
                             **kwargs):
 
@@ -1085,8 +1102,15 @@ class Strategies(object):
         if cond:
             convert()
             logger.info(f'open lot {predict}')
+            if trading_on_client:
+                if predict == 'Buy':
+                    self.client.new_order_buy()
+                elif predict == 'Sell':
+                    self.client.new_order_sell()
+                elif predict == 'Exit':
+                    self.client.exit_last_order()
             predict = predicts[len(predicts) - 1]
-            self.__exit__ = False
+            self.__exit_order__ = False
             for sig, close_ in zip(self.returns[::-1], self.df['Close'].values[::-1]):
                 if sig != EXIT:
                     self.open_price = close_
@@ -1105,14 +1129,12 @@ class Strategies(object):
             'currency close': curr_price
         }
 
-    def get_price_binance(self, ticker):
-        client = Client()
-        return float(client.get_symbol_ticker(symbol=ticker)['price'])
+    def get_price_client(self, ticker):
+        return self.client.get_ticker_price(ticker)
 
     def realtime_trading(self,
                          ticker,
                          strategy,
-                         get_gataframe,
                          get_data_kwargs={},
                          sleeping_time=60,
                          print_out=True,
@@ -1121,16 +1143,14 @@ class Strategies(object):
                          inverse=False,
                          print_exception=True,
                          json_saving_path='realtime_trading_returns.json',
+                         trading_on_client=False,
                          **strategy_kwargs):
         """
         tickers:          |             str             |  ticker for trading.
 
         strategy:         |   Strategies.some_strategy  |  trading strategy.
 
-        get_gataframe:    |          function           |  function to getting the data:
-            first argument must be a ticker.
-
-        get_data_kwargs:  |             dict            |  named arguments to <<get_gataframe>> WITHOUT TICKER.
+        get_data_kwargs:  |             dict            |  named arguments to self.client.get_data WITHOUT TICKER.
 
         **strategy_kwargs:|             kwargs          |  named arguments to <<strategy>>.
 
@@ -1147,25 +1167,29 @@ class Strategies(object):
             while True:
                 self.prepare_realtime = True
                 self.ticker = ticker
-                self.df = get_gataframe(ticker, **get_data_kwargs).reset_index(drop=True)
+                self.df = self.client.get_data(ticker, **get_data_kwargs).reset_index(drop=True)
                 strategy(**strategy_kwargs)
                 prediction = self.get_trading_predict(
-                    take_profit, stop_loss, inverse=inverse)
+                    take_profit=take_profit, stop_loss=stop_loss,
+                    inverse=inverse, trading_on_client=trading_on_client)
+                # едрить, жизнь такая крутаяяяяяяяяя
                 now = copy.copy(time.ctime())
                 _time = time.time()
                 while True:
                     if time.time() < (_time + sleeping_time + 0.001):
-                        price = self.get_price_binance(ticker)
+                        price = self.client.get_ticker_price(ticker)
                         min_ = min(self.__stop_loss, self.__take_profit)
                         max_ = max(self.__stop_loss, self.__take_profit)
-                        if (not min_ < price < max_) and (not self.__exit__):
+                        if (not min_ < price < max_) and (not self.__exit_order__):
                             if self._predict != EXIT:
                                 logger.info('exit lot')
-                                self.__exit__ = True
-
+                                if trading_on_client:
+                                    self.client.exit_last_order()
+                                self.client.exit_last_order()
+                                self.__exit_order__ = True
                     else:
                         break
-                if self.__exit__:
+                if self.__exit_order__:
                     prediction['predict'] = 'Exit'
                 ret[f'{self.ticker}, {now}'] = prediction
                 if print_out:
@@ -1412,6 +1436,9 @@ class Strategies(object):
     def load_model(self, path):
         self.model = load_model(path)
 
+    def set_client(self, class_client, *client_set_args, **client_set_kwargs):
+        self.client = class_client(*client_set_args, **client_set_kwargs)
+
 
 class PatternFinder(Strategies):
     """
@@ -1474,7 +1501,6 @@ class PatternFinder(Strategies):
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
         self.inputs = INPUTS
-        self.use_binance = True
 
     def _window_(self, column, n=2):
         return get_window(self.df[column].values, n)
@@ -1580,7 +1606,7 @@ if __name__ == '__main__':
     TICKER = 'BTCUSDT'
     df = get_binance_data(TICKER, interval='1d')
     trader = PatternFinder(df=df, interval='1d', ticker=TICKER)
-    print(trader.realtime_trading('BTCUSDT', strategy=trader.strategy_buy_hold,
-                                  get_gataframe=get_binance_data, sleeping_time=1,
+    trader.set_client(TradingClient)
+    print(trader.realtime_trading('BTCUSDT', strategy=trader.strategy_buy_hold, sleeping_time=1,
                                   get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
-                                  stop_loss=1, inverse=True))
+                                  stop_loss=0.01, trading_on_client=True))
