@@ -1,6 +1,5 @@
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
-import copy
 import time
 from binance.client import Client
 import plotly.graph_objects as go
@@ -1121,6 +1120,8 @@ class Strategies(object):
             self.__take_profit = rets['take']
         convert()
         curr_price = close[len(close) - 1]
+        if self.__exit_order__:
+            predict = 'Exit'
         return {
             'predict': predict,
             'open lot price': self.open_price,
@@ -1162,8 +1163,8 @@ class Strategies(object):
 
         """
 
+        global ret
         ret = {}
-        plus = 0.0001 if sleeping_time == 0 else 0
         try:
             while True:
                 self.prepare_realtime = True
@@ -1174,26 +1175,28 @@ class Strategies(object):
                     take_profit=take_profit, stop_loss=stop_loss,
                     inverse=inverse, trading_on_client=trading_on_client)
                 # едрить, жизнь такая крутаяяяяяяяяя
-                print(f'{self.ticker}, {time.ctime()}', prediction)
+                index = f'{self.ticker}, {time.ctime()}'
+                print(index, prediction)
+                ret[index] = prediction
                 now = time.time()
                 while True:
-                    if time.time() < (now + sleeping_time + plus):
-                        price = self.client.get_ticker_price(ticker)
-                        min_ = min(self.__stop_loss, self.__take_profit)
-                        max_ = max(self.__stop_loss, self.__take_profit)
-                        if (not min_ < price < max_) and (not self.__exit_order__):
-                            if self._predict != EXIT:
-                                logger.info('exit lot')
-                                pred2 = prediction
-                                pred2['predict'] = 'Exit'
-                                pred2['currency close'] = price
-                                if print_out:
-                                    print(f'{self.ticker}, {time.ctime()}', prediction)
-                                if trading_on_client:
-                                    self.client.exit_last_order()
+                    price = self.client.get_ticker_price(ticker)
+                    min_ = min(self.__stop_loss, self.__take_profit)
+                    max_ = max(self.__stop_loss, self.__take_profit)
+                    if (not min_ < price < max_) and (not self.__exit_order__):
+                        if self._predict != EXIT:
+                            self.__exit_order__ = True
+                            logger.info('exit lot')
+                            prediction['predict'] = 'Exit'
+                            prediction['currency close'] = price
+                            index = f'{self.ticker}, {time.ctime()}'
+                            if print_out:
+                                print(index, prediction)
+                            ret[index] = prediction
+                            if trading_on_client:
                                 self.client.exit_last_order()
-                                self.__exit_order__ = True
-                    else:
+                            self.client.exit_last_order()
+                    if not (time.time() < (now + sleeping_time)):
                         break
             # как-же меня это всё достало, мне просто хочется заработать и жить спокойно
             # но нет, блин, нужно было этим разрабам из python-binance сморозить такую дичь
@@ -1608,6 +1611,9 @@ if __name__ == '__main__':
     df = get_binance_data(TICKER, interval='1d')
     trader = PatternFinder(df=df, interval='1d', ticker=TICKER)
     trader.set_client(TradingClient)
-    print(trader.realtime_trading('BTCUSDT', strategy=trader.strategy_buy_hold, sleeping_time=9,
-                                  get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
-                                  stop_loss=0.01, trading_on_client=True))
+    try:
+        print(trader.realtime_trading('BTCUSDT', strategy=trader.strategy_buy_hold, sleeping_time=0,
+                                      get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
+                                      stop_loss=0.01, trading_on_client=True))
+    except:
+        print(ret)
