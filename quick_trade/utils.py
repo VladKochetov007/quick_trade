@@ -53,7 +53,7 @@ DEPO_COLOR_UP = 'green'
 DEPO_COLOR_DOWN = 'red'
 logger = logging.getLogger()
 logger.setLevel(50)
-logging.basicConfig(level=10, filename='trading.log')
+logging.basicConfig(level=20, filename='trading.log')
 
 
 def set_(data):

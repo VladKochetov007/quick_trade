@@ -1,9 +1,10 @@
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
 import time
-from binance.client import Client
+
 import plotly.graph_objects as go
 import ta
+from binance.client import Client
 from plotly.subplots import make_subplots as sub_make
 from pykalman import KalmanFilter
 from quick_trade.utils import *
@@ -14,22 +15,28 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
 
 
-class TradingClient(object):
-    def __init__(self):
-        pass
-
+class TradingClient(Client):
     def get_ticker_price(self, ticker):
-        client = Client()
-        return float(client.get_symbol_ticker(symbol=ticker)['price'])
+        return float(self.get_symbol_ticker(symbol=ticker)['price'])
 
     def get_data(self, ticker=None, interval=None):
         return get_binance_data(ticker, interval)
 
-    def new_order_buy(self, ticker=None, credit_leverage=None, quantity=None): pass
+    def new_order_buy(self, ticker=None, quantity=None):
+        self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
+        self.order_id = self.order['oderId']
 
-    def new_order_sell(self, ticker=None, credit_leverage=None, quantity=None): pass
+    def new_order_sell(self, ticker=None, quantity=None):
+        self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
+        self.order_id = self.order['oderId']
 
-    def exit_last_order(self): pass
+    def exit_last_order(self, ticker):
+        self.cancel_order(
+            symbol=ticker,
+            orderId=self.order_id)
+
+    def get_balance_ticker(self, ticker):
+        return self.get_asset_balance(ticker)
 
 
 class Strategies(object):
@@ -1173,7 +1180,9 @@ class Strategies(object):
                     inverse=inverse, trading_on_client=trading_on_client)
                 # едрить, жизнь такая крутаяяяяяяяяя
                 index = f'{self.ticker}, {time.ctime()}'
-                print(index, prediction)
+                if print_out:
+                    print(index, prediction)
+                logger.info(f"trading prediction at {index}: {prediction}")
                 ret[index] = prediction
                 now = time.time()
                 while True:
@@ -1189,6 +1198,7 @@ class Strategies(object):
                             index = f'{self.ticker}, {time.ctime()}'
                             if print_out:
                                 print(index, prediction)
+                            logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
                             ret[index] = prediction
                             if trading_on_client:
                                 self.client.exit_last_order()
@@ -1333,9 +1343,12 @@ class Strategies(object):
         del self.backtest_out['index']
         self.backtest_out_no_drop = self.backtest_out
         self.backtest_out = self.backtest_out.dropna()
+        self.lin_calc = self.linear_(np.log(deposit_df['deposit Close'].values))
+        flag = money_start
+        money_start = np.log(money_start)
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
-        self.year_profit = ((
-                                    self.year_profit - money_start) / money_start) * 100
+        self.year_profit = ((self.year_profit - money_start) / money_start) * 100
+        money_start = flag
         self.info = (
             f"L O S S E S: {self.losses}\n"
             f"T R A D E S: {self.trades}\n"
@@ -1604,10 +1617,14 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
-    TICKER = 'BTCUSDT'
-    df = get_binance_data(TICKER, interval='1d')
-    trader = PatternFinder(df=df, interval='1d', ticker=TICKER)
+    TICKER = 'MSFT'
+    df = get_data(TICKER, 100)
+    trader = PatternFinder(df=df, interval='1m', ticker=TICKER)
     trader.set_client(TradingClient)
-    trader.realtime_trading('BTCUSDT', strategy=trader.strategy_buy_hold, sleeping_time=0,
-                                      get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
-                                      stop_loss=0.01, trading_on_client=True)
+    trader.set_pyplot()
+    trader.strategy_diff(trader.df['Close'])
+    trader.inverse_strategy()
+    trader.backtest(stop_loss=10)
+    '''trader.realtime_trading('BTCUSDT', strategy=trader.strategy_diff, sleeping_time=0,
+                            get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
+                            stop_loss=0.00000000001, trading_on_client=False, inverse=True)'''
