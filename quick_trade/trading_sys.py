@@ -497,7 +497,7 @@ class Strategies(object):
     def get_trained_network(self,
                             dataframes,
                             filter_='kalman_filter',
-                            filter_kwargs={},
+                            filter_kwargs=dict(),
                             optimizer='adam',
                             loss='mse',
                             metrics=None,
@@ -1130,9 +1130,6 @@ class Strategies(object):
             'currency close': curr_price
         }
 
-    def get_price_client(self, ticker):
-        return self.client.get_ticker_price(ticker)
-
     def realtime_trading(self,
                          ticker,
                          strategy,
@@ -1611,9 +1608,6 @@ if __name__ == '__main__':
     df = get_binance_data(TICKER, interval='1d')
     trader = PatternFinder(df=df, interval='1d', ticker=TICKER)
     trader.set_client(TradingClient)
-    try:
-        print(trader.realtime_trading('BTCUSDT', strategy=trader.strategy_buy_hold, sleeping_time=0,
+    trader.realtime_trading('BTCUSDT', strategy=trader.strategy_buy_hold, sleeping_time=0,
                                       get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
-                                      stop_loss=0.01, trading_on_client=True))
-    except:
-        print(ret)
+                                      stop_loss=0.01, trading_on_client=True)
