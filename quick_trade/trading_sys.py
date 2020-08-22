@@ -1202,7 +1202,6 @@ class Strategies(object):
                             ret[index] = prediction
                             if trading_on_client:
                                 self.client.exit_last_order()
-                            self.client.exit_last_order()
                     if not (time.time() < (now + sleeping_time)):
                         break
             # как-же меня это всё достало, мне просто хочется заработать и жить спокойно
@@ -1214,6 +1213,7 @@ class Strategies(object):
         except Exception as e:
             if print_exception:
                 print(e)
+                raise e
             self.prepare_realtime = False
             self.json_returns_realtime = json.dumps(ret)
             with open(json_saving_path, 'w') as file:
@@ -1618,13 +1618,9 @@ class PatternFinder(Strategies):
 
 if __name__ == '__main__':
     TICKER = 'MSFT'
-    df = get_data(TICKER, 100)
+    df = get_binance_data('BTCUSDT', '1d')
     trader = PatternFinder(df=df, interval='1m', ticker=TICKER)
     trader.set_client(TradingClient)
-    trader.set_pyplot()
-    trader.strategy_diff(trader.df['Close'])
-    trader.inverse_strategy()
-    trader.backtest(stop_loss=10)
-    '''trader.realtime_trading('BTCUSDT', strategy=trader.strategy_diff, sleeping_time=0,
+    trader.realtime_trading('BTCUSDT', strategy=trader.strategy_diff, sleeping_time=0,
                             get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
-                            stop_loss=0.00000000001, trading_on_client=False, inverse=True)'''
+                            stop_loss=0.00001, trading_on_client=False, inverse=True)
