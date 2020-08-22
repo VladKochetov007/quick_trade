@@ -1,4 +1,3 @@
-import datetime
 import datetime as dt
 import itertools
 import json
@@ -91,8 +90,8 @@ def inverse_4_col_df(df, columns):
 
 def get_data(ticker, undo_days):
     tuples = []
-    end = datetime.datetime.today()
-    date_list = [end - datetime.timedelta(days=d) for d in range(undo_days)]
+    end = dt.datetime.today()
+    date_list = [end - dt.timedelta(days=d) for d in range(undo_days)]
     for i in range(len(date_list)):
         ret = str(np.array(date_list[::-1])[i])[:10]
         ret = ret.split('-')
@@ -102,7 +101,7 @@ def get_data(ticker, undo_days):
 
     dataframes = []
     for date_ in tuples:
-        dat = datetime.datetime(*date_)
+        dat = dt.datetime(*date_)
         df_ = get_historical_intraday(ticker, date=dat, output_format='pandas')
         dataframes.append(df_)
     returns = pd.concat(dataframes, axis=0)
@@ -163,18 +162,15 @@ def nothing(ret):
 
 
 def get_binance_data(ticker="BNBBTC", interval="1m", date_index=False):
-    try:
-        url = f"https://api.binance.com/api/v1/klines?symbol={ticker}&interval={interval}"
-        data = json.loads(requests.get(url).text)
-        df = pd.DataFrame(data)
-        df.columns = ["open_time",
-                      "Open", "High", "Low", 'Close', 'Volume',
-                      'close_time', 'qav', 'num_trades',
-                      'taker_base_vol', 'taker_quote_vol', 'ignore']
-        for column in ["Open", "High", "Low", 'Close', 'Volume']:
-            df[column] = df[column].astype(float)
-        if date_index:
-            df.index = [dt.datetime.fromtimestamp(i / 1000) for i in df.close_time]
-        return df
-    except:
-        pass
+    url = f"https://api.binance.com/api/v1/klines?symbol={ticker}&interval={interval}"
+    data = json.loads(requests.get(url).text)
+    df = pd.DataFrame(data)
+    df.columns = ["open_time",
+                  "Open", "High", "Low", 'Close', 'Volume',
+                  'close_time', 'qav', 'num_trades',
+                  'taker_base_vol', 'taker_quote_vol', 'ignore']
+    for column in ["Open", "High", "Low", 'Close', 'Volume']:
+        df[column] = df[column].astype(float)
+    if date_index:
+        df.index = [dt.datetime.fromtimestamp(i / 1000) for i in df.close_time]
+    return df

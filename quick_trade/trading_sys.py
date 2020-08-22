@@ -1171,6 +1171,7 @@ class Strategies(object):
         ret = {}
         try:
             while True:
+                __now__ = time.time()
                 self.prepare_realtime = True
                 self.ticker = ticker
                 self.df = self.client.get_data(ticker, **get_data_kwargs).reset_index(drop=True)
@@ -1184,7 +1185,6 @@ class Strategies(object):
                     print(index, prediction)
                 logger.info(f"trading prediction at {index}: {prediction}")
                 ret[index] = prediction
-                now = time.time()
                 while True:
                     price = self.client.get_ticker_price(ticker)
                     min_ = min(self.__stop_loss, self.__take_profit)
@@ -1202,7 +1202,7 @@ class Strategies(object):
                             ret[index] = prediction
                             if trading_on_client:
                                 self.client.exit_last_order()
-                    if not (time.time() < (now + sleeping_time)):
+                    if not (time.time() < (__now__ + sleeping_time)):
                         break
             # как-же меня это всё достало, мне просто хочется заработать и жить спокойно
             # но нет, блин, нужно было этим разрабам из python-binance сморозить такую дичь
@@ -1620,6 +1620,6 @@ if __name__ == '__main__':
     df = get_binance_data('BTCUSDT', '1d')
     trader = PatternFinder(df=df, interval='1m', ticker=TICKER)
     trader.set_client(TradingClient)
-    trader.realtime_trading('BTCUSDT', strategy=trader.strategy_diff, sleeping_time=0,
+    trader.realtime_trading('BTCUSDT', strategy=trader.strategy_diff, sleeping_time=5,
                             get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
                             stop_loss=0.00001, trading_on_client=False, inverse=True)
