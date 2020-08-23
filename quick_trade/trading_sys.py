@@ -17,30 +17,31 @@ from tensorflow.keras.models import load_model
 
 class TradingClient(Client):
     exited = False
+
     def get_ticker_price(self, ticker):
         return float(self.get_symbol_ticker(symbol=ticker)['price'])
 
-    def get_data(self, ticker=None, interval=None):
-        return get_binance_data(ticker, interval)
+    def get_data(self, ticker=None, interval=None, **get_kw):
+        return get_binance_data(ticker, interval, **get_kw)
 
     def new_order_buy(self, ticker=None, quantity=None):
-        self.exited = False
         self.ticker = ticker
         self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
         self.order_id = self.order['oderId']
+        self.exited = False
 
     def new_order_sell(self, ticker=None, quantity=None):
-        self.exited = False
         self.ticker = ticker
         self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
         self.order_id = self.order['oderId']
+        self.exited = False
 
     def exit_last_order(self):
         if not self.exited:
-            self.exited = True
             self.cancel_order(
                 symbol=self.ticker,
                 orderId=self.order_id)
+            self.exited = True
 
     def get_balance_ticker(self, ticker):
         return self.get_asset_balance(ticker)
@@ -1084,8 +1085,17 @@ class Strategies(object):
                             stop_loss=None,
                             inverse=False,
                             trading_on_client=False,
+                            bet_for_trading_on_client='all depo',
                             *args,
                             **kwargs):
+        """
+        :param take_profit: take profit(float)
+        :param stop_loss: stop loss(float)
+        :param inverse: inverting(bool)
+        :param trading_on_client: trading on real client (boll)
+        :param bet_for_trading_on_client: (float or "all depo")
+        :return: dict with prediction
+        """
 
         def convert():
             nonlocal predict
@@ -1095,6 +1105,14 @@ class Strategies(object):
                 predict = 'Sell'
             elif predict == EXIT:
                 predict = 'Exit'
+
+        _moneys_ = self.client.get_balance_ticker(self.ticker)
+        if bet_for_trading_on_client == 'all depo':
+            bet = _moneys_
+        elif bet_for_trading_on_client > _moneys_:
+            bet = _moneys_
+        else:
+            bet = bet_for_trading_on_client
 
         if take_profit is None:
             self.take_profit = np.inf
@@ -1117,9 +1135,9 @@ class Strategies(object):
             logger.info(f'open lot {predict}')
             if trading_on_client:
                 if predict == 'Buy':
-                    self.client.new_order_buy(self.ticker)
+                    self.client.new_order_buy(self.ticker, bet)
                 elif predict == 'Sell':
-                    self.client.new_order_sell(self.ticker)
+                    self.client.new_order_sell(self.ticker, bet)
                 elif predict == 'Exit':
                     self.client.exit_last_order()
             predict = predicts[len(predicts) - 1]
@@ -1156,6 +1174,7 @@ class Strategies(object):
                          print_exception=True,
                          json_saving_path='realtime_trading_returns.json',
                          trading_on_client=False,
+                         bet_for_trading_on_client='all depo',
                          **strategy_kwargs):
         """
         tickers:          |             str             |  ticker for trading.
