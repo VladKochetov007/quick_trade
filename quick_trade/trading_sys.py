@@ -16,6 +16,7 @@ from tensorflow.keras.models import load_model
 
 
 class TradingClient(Client):
+    exited = False
     def get_ticker_price(self, ticker):
         return float(self.get_symbol_ticker(symbol=ticker)['price'])
 
@@ -23,17 +24,23 @@ class TradingClient(Client):
         return get_binance_data(ticker, interval)
 
     def new_order_buy(self, ticker=None, quantity=None):
+        self.exited = False
+        self.ticker = ticker
         self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
         self.order_id = self.order['oderId']
 
     def new_order_sell(self, ticker=None, quantity=None):
+        self.exited = False
+        self.ticker = ticker
         self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
         self.order_id = self.order['oderId']
 
-    def exit_last_order(self, ticker):
-        self.cancel_order(
-            symbol=ticker,
-            orderId=self.order_id)
+    def exit_last_order(self):
+        if not self.exited:
+            self.exited = True
+            self.cancel_order(
+                symbol=self.ticker,
+                orderId=self.order_id)
 
     def get_balance_ticker(self, ticker):
         return self.get_asset_balance(ticker)
@@ -1110,9 +1117,9 @@ class Strategies(object):
             logger.info(f'open lot {predict}')
             if trading_on_client:
                 if predict == 'Buy':
-                    self.client.new_order_buy()
+                    self.client.new_order_buy(self.ticker)
                 elif predict == 'Sell':
-                    self.client.new_order_sell()
+                    self.client.new_order_sell(self.ticker)
                 elif predict == 'Exit':
                     self.client.exit_last_order()
             predict = predicts[len(predicts) - 1]
@@ -1169,11 +1176,11 @@ class Strategies(object):
 
         global ret
         ret = {}
+        self.ticker = ticker
         try:
             while True:
                 __now__ = time.time()
                 self.prepare_realtime = True
-                self.ticker = ticker
                 self.df = self.client.get_data(ticker, **get_data_kwargs).reset_index(drop=True)
                 strategy(**strategy_kwargs)
                 prediction = self.get_trading_predict(
