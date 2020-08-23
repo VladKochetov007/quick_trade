@@ -1174,7 +1174,6 @@ class Strategies(object):
                          take_profit=None,
                          stop_loss=None,
                          inverse=False,
-                         print_exception=True,
                          json_saving_path='realtime_trading_returns.json',
                          trading_on_client=False,
                          bet_for_trading_on_client='all depo',
@@ -1240,9 +1239,7 @@ class Strategies(object):
             # мне ещё географию переписывать в тетрадь
             # я просто хочу хорошо жить, никого не напрягаяя.
 
-        except Exception as e:
-            if print_exception:
-                print(e)
+        finally:
             self.prepare_realtime = False
             self.json_returns_realtime = json.dumps(ret)
             with open(json_saving_path, 'a') as file:
