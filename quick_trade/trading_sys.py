@@ -1245,7 +1245,7 @@ class Strategies(object):
                 print(e)
             self.prepare_realtime = False
             self.json_returns_realtime = json.dumps(ret)
-            with open(json_saving_path, 'w') as file:
+            with open(json_saving_path, 'a') as file:
                 file.write(self.json_returns_realtime)
                 file.close()
             return ret
