@@ -24,13 +24,13 @@ class TradingClient(Client):
     def get_data(self, ticker=None, interval=None, **get_kw):
         return get_binance_data(ticker, interval, **get_kw)
 
-    def new_order_buy(self, ticker=None, quantity=None):
+    def new_order_buy(self, ticker=None, quantity=None, credit_leverage=None):
         self.ticker = ticker
         self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
         self.order_id = self.order['oderId']
         self.exited = False
 
-    def new_order_sell(self, ticker=None, quantity=None):
+    def new_order_sell(self, ticker=None, quantity=None, credit_leverage=None):
         self.ticker = ticker
         self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
         self.order_id = self.order['oderId']
@@ -1086,9 +1086,11 @@ class Strategies(object):
                             inverse=False,
                             trading_on_client=False,
                             bet_for_trading_on_client='all depo',
+                            credit_leverage=None,
                             *args,
                             **kwargs):
         """
+        :param credit_leverage: credit leverage for trading on client
         :param take_profit: take profit(float)
         :param stop_loss: stop loss(float)
         :param inverse: inverting(bool)
@@ -1096,6 +1098,9 @@ class Strategies(object):
         :param bet_for_trading_on_client: (float or "all depo")
         :return: dict with prediction
         """
+
+        if self.__exit_order__:
+            predict = 'Exit'
 
         def convert():
             nonlocal predict
@@ -1135,9 +1140,9 @@ class Strategies(object):
             logger.info(f'open lot {predict}')
             if trading_on_client:
                 if predict == 'Buy':
-                    self.client.new_order_buy(self.ticker, bet)
+                    self.client.new_order_buy(self.ticker, bet, credit_leverage=credit_leverage)
                 elif predict == 'Sell':
-                    self.client.new_order_sell(self.ticker, bet)
+                    self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
                 elif predict == 'Exit':
                     self.client.exit_last_order()
             predict = predicts[len(predicts) - 1]
@@ -1152,8 +1157,6 @@ class Strategies(object):
             self.__take_profit = rets['take']
         convert()
         curr_price = close[len(close) - 1]
-        if self.__exit_order__:
-            predict = 'Exit'
         return {
             'predict': predict,
             'open lot price': self.open_price,
@@ -1204,7 +1207,8 @@ class Strategies(object):
                 strategy(**strategy_kwargs)
                 prediction = self.get_trading_predict(
                     take_profit=take_profit, stop_loss=stop_loss,
-                    inverse=inverse, trading_on_client=trading_on_client)
+                    inverse=inverse, trading_on_client=trading_on_client,
+                    bet_for_trading_on_client=bet_for_trading_on_client)
                 # едрить, жизнь такая крутаяяяяяяяяя
                 index = f'{self.ticker}, {time.ctime()}'
                 if print_out:
