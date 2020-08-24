@@ -1,7 +1,7 @@
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
 import time
-
+import math
 import plotly.graph_objects as go
 import ta
 from binance.client import Client
@@ -66,6 +66,7 @@ class Strategies(object):
                  *args,
                  **kwargs):
         df_ = round(df, rounding)
+        self.first = True
         self.rounding = rounding
         diff = digit(df_['Close'].diff().values)[1:]
         self.diff = [EXIT, *diff]
@@ -1089,9 +1090,13 @@ class Strategies(object):
                             trading_on_client=False,
                             bet_for_trading_on_client='all depo',
                             credit_leverage=None,
+                            second_symbol_of_ticker=None,
+                            can_sell=False,
                             *args,
                             **kwargs):
         """
+        :param second_symbol_of_ticker: BTCUSDT -> USDT
+        :param can_sell: use order sell (client)
         :param credit_leverage: credit leverage for trading on client
         :param take_profit: take profit(float)
         :param stop_loss: stop loss(float)
@@ -1113,14 +1118,14 @@ class Strategies(object):
             elif predict == EXIT:
                 predict = 'Exit'
 
-        _moneys_ = self.client.get_balance_ticker(self.ticker)
+        _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
         if bet_for_trading_on_client == 'all depo':
             bet = _moneys_
         elif bet_for_trading_on_client > _moneys_:
             bet = _moneys_
         else:
             bet = bet_for_trading_on_client
-
+        bet /= self.client.get_ticker_price(self.ticker)
         if take_profit is None:
             self.take_profit = np.inf
         else:
@@ -1142,11 +1147,16 @@ class Strategies(object):
             logger.info(f'open lot {predict}')
             if trading_on_client:
                 if predict == 'Buy':
+                    if not self.first:
+                        self.client.exit_last_order()
                     self.client.new_order_buy(self.ticker, bet, credit_leverage=credit_leverage)
-                elif predict == 'Sell':
+                elif predict == 'Sell' and can_sell:
+                    if not self.first:
+                        self.client.exit_last_order()
                     self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
                 elif predict == 'Exit':
                     self.client.exit_last_order()
+                self.first = False
             predict = predicts[len(predicts) - 1]
             self.__exit_order__ = False
             for sig, close_ in zip(self.returns[::-1], self.df['Close'].values[::-1]):
@@ -1176,12 +1186,13 @@ class Strategies(object):
                          take_profit=None,
                          stop_loss=None,
                          inverse=False,
-                         json_saving_path='realtime_trading_returns.json',
                          trading_on_client=False,
                          bet_for_trading_on_client='all depo',
+                         can_sell_client=False,
+                         second_symbol_of_ticker=None,
                          **strategy_kwargs):
         """
-        tickers:          |             str             |  ticker for trading.
+        ticker:           |             str             |  ticker for trading.
 
         strategy:         |   Strategies.some_strategy  |  trading strategy.
 
@@ -1192,8 +1203,6 @@ class Strategies(object):
         sleeping_time:    |             int             |  sleeping time.
 
         print_out:        |             bool            |  printing.
-
-        json_saving_path: |             str             |  path to saving results
 
         """
 
@@ -1209,7 +1218,9 @@ class Strategies(object):
                 prediction = self.get_trading_predict(
                     take_profit=take_profit, stop_loss=stop_loss,
                     inverse=inverse, trading_on_client=trading_on_client,
-                    bet_for_trading_on_client=bet_for_trading_on_client)
+                    bet_for_trading_on_client=bet_for_trading_on_client,
+                    can_sell=can_sell_client,
+                    second_symbol_of_ticker=second_symbol_of_ticker)
                 # едрить, жизнь такая крутаяяяяяяяяя
                 index = f'{self.ticker}, {time.ctime()}'
                 if print_out:
@@ -1241,13 +1252,10 @@ class Strategies(object):
             # мне ещё географию переписывать в тетрадь
             # я просто хочу хорошо жить, никого не напрягаяя.
 
+        except Exception as e:
+            print(e)
         finally:
             self.prepare_realtime = False
-            self.json_returns_realtime = json.dumps(ret)
-            with open(json_saving_path, 'a') as file:
-                file.write(self.json_returns_realtime)
-                file.close()
-            return ret
 
     def log_data(self):
         self.fig.update_yaxes(row=1, col=1, type='log')
@@ -1528,6 +1536,7 @@ class PatternFinder(Strategies):
                  *args,
                  **kwargs):
         df_ = round(df, rounding)
+        self.first = True
         self.rounding = rounding
         diff = digit(df_['Close'].diff().values)[1:]
         self.diff = [EXIT, *diff]
@@ -1543,6 +1552,7 @@ class PatternFinder(Strategies):
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
         self.inputs = INPUTS
+        self.__exit_order__ = False
 
     def _window_(self, column, n=2):
         return get_window(self.df[column].values, n)
@@ -1646,9 +1656,15 @@ class PatternFinder(Strategies):
 
 if __name__ == '__main__':
     TICKER = 'MSFT'
-    df = get_binance_data('BTCUSDT', '1d')
+    df = get_binance_data('BTCUSDT', '1m', start_str='Tue Aug 10 7:00:00 2020')
     trader = PatternFinder(df=df, interval='1m', ticker=TICKER)
     trader.set_client(TradingClient)
+    trader.set_pyplot()
+    '''trader.set_client(TradingClient)
     trader.realtime_trading('BTCUSDT', strategy=trader.strategy_diff, sleeping_time=5,
                             get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
                             stop_loss=0.00001, trading_on_client=False, inverse=True)
+    '''
+    trader.strategy_diff(trader.df['Close'])
+    trader.inverse_strategy()
+    trader.backtest(commission=0.01, stop_loss=10)
