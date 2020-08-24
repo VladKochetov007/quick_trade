@@ -25,12 +25,14 @@ class TradingClient(Client):
         return get_binance_data(ticker, interval, **get_kw)
 
     def new_order_buy(self, ticker=None, quantity=None, credit_leverage=None):
+        self.exit_last_order()
         self.ticker = ticker
         self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
         self.order_id = self.order['oderId']
         self.exited = False
 
     def new_order_sell(self, ticker=None, quantity=None, credit_leverage=None):
+        self.exit_last_order()
         self.ticker = ticker
         self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
         self.order_id = self.order['oderId']
