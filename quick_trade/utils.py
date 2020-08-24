@@ -6,7 +6,7 @@ import os
 
 import numpy as np
 import pandas as pd
-from binance.client import Client
+import requests
 from iexfinance.stocks import get_historical_intraday
 
 R = '#ff0000'
@@ -161,8 +161,9 @@ def nothing(ret):
     return ret
 
 
-def get_binance_data(ticker="BNBBTC", interval="1m", date_index=False, start_str='Tue Jun 10 07:20:33 2020'):
-    data = Client().get_historical_klines(symbol=ticker, interval=interval, start_str=start_str)
+def get_binance_data(ticker="BNBBTC", interval="1m", date_index=False):
+    url = f"https://api.binance.com/api/v1/klines?symbol={ticker}&interval={interval}"
+    data = json.loads(requests.get(url).text)
     df = pd.DataFrame(data)
     df.columns = ["open_time",
                   "Open", "High", "Low", 'Close', 'Volume',

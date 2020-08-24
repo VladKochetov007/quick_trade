@@ -1,7 +1,6 @@
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
 import time
-import math
 import plotly.graph_objects as go
 import ta
 from binance.client import Client
@@ -16,7 +15,7 @@ from tensorflow.keras.models import load_model
 
 
 class TradingClient(Client):
-    exited = False
+    ordered = False
 
     def get_ticker_price(self, ticker):
         return float(self.get_symbol_ticker(symbol=ticker)['price'])
@@ -25,28 +24,33 @@ class TradingClient(Client):
         return get_binance_data(ticker, interval, **get_kw)
 
     def new_order_buy(self, ticker=None, quantity=None, credit_leverage=None):
-        self.exit_last_order()
+        self.__side__ = 'Buy'
+        self.quantity = quantity
         self.ticker = ticker
         self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
-        self.order_id = self.order['oderId']
-        self.exited = False
+        self.order_id = self.order['orderId']
+        self.ordered = True
 
     def new_order_sell(self, ticker=None, quantity=None, credit_leverage=None):
-        self.exit_last_order()
+        self.__side__ = 'Sell'
+        self.quantity = quantity
         self.ticker = ticker
         self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
-        self.order_id = self.order['oderId']
-        self.exited = False
+        self.order_id = self.order['orderId']
+        self.ordered = True
 
     def exit_last_order(self):
-        if not self.exited:
-            self.cancel_order(
-                symbol=self.ticker,
-                orderId=self.order_id)
-            self.exited = True
+        if self.ordered:
+            if self.__side__ == 'Sell':
+                self.new_order_buy(self.ticker, self.quantity)
+            elif self.__side__ == 'Buy':
+                self.new_order_sell(self.ticker, self.quantity)
+            self.__side__ = 'Exit'
 
     def get_balance_ticker(self, ticker):
-        return self.get_asset_balance(ticker)
+        for asset in self.get_account()['balances']:
+            if asset['asset'] == ticker:
+                return float(asset['free'])
 
 
 class Strategies(object):
@@ -1126,22 +1130,28 @@ class Strategies(object):
         else:
             bet = bet_for_trading_on_client
         bet /= self.client.get_ticker_price(self.ticker)
+
         if take_profit is None:
             self.take_profit = np.inf
         else:
             self.take_profit = take_profit
+
         if stop_loss is None:
             self.stop_loss = np.inf
         else:
             self.stop_loss = stop_loss
+
         if inverse:
             self.inverse_strategy()
+
         predicts = self.returns
         predict = predicts[len(predicts) - 1]
         cond = "_predict" not in self.__dir__()
+
         if not cond:
             cond = self._predict != predict
         close = self.df['Close'].values
+
         if cond:
             convert()
             logger.info(f'open lot {predict}')
@@ -1149,17 +1159,31 @@ class Strategies(object):
                 if predict == 'Buy':
                     if not self.first:
                         self.client.exit_last_order()
+                        logger.info('client exit')
                     self.client.new_order_buy(self.ticker, bet, credit_leverage=credit_leverage)
-                elif predict == 'Sell' and can_sell:
+                    logger.info('client buy')
+                    self.first = False
+
+                if predict == 'Sell' and can_sell:
                     if not self.first:
                         self.client.exit_last_order()
+                        logger.info('client exit')
                     self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
-                elif predict == 'Exit':
+                    logger.info('client sell')
+                    self.first = False
+                elif predict == 'Sell':
                     self.client.exit_last_order()
-                self.first = False
+
+                if predict == 'Exit':
+                    if not self.first:
+                        self.client.exit_last_order()
+                        logger.info('client exit')
+                        self.first = False
+
             predict = predicts[len(predicts) - 1]
             self.__exit_order__ = False
-            for sig, close_ in zip(self.returns[::-1], self.df['Close'].values[::-1]):
+            for sig, close_ in zip(self.returns,
+                                   self.df['Close'].values)[::-1]:
                 if sig != EXIT:
                     self.open_price = close_
                     break
@@ -1180,7 +1204,7 @@ class Strategies(object):
     def realtime_trading(self,
                          ticker,
                          strategy,
-                         get_data_kwargs={},
+                         get_data_kwargs=dict(),
                          sleeping_time=60,
                          print_out=True,
                          take_profit=None,
@@ -1656,15 +1680,7 @@ class PatternFinder(Strategies):
 
 if __name__ == '__main__':
     TICKER = 'MSFT'
-    df = get_binance_data('BTCUSDT', '1m', start_str='Tue Aug 10 7:00:00 2020')
+    df = get_binance_data('BTCUSDT', '1m')
     trader = PatternFinder(df=df, interval='1m', ticker=TICKER)
     trader.set_client(TradingClient)
     trader.set_pyplot()
-    '''trader.set_client(TradingClient)
-    trader.realtime_trading('BTCUSDT', strategy=trader.strategy_diff, sleeping_time=5,
-                            get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]',
-                            stop_loss=0.00001, trading_on_client=False, inverse=True)
-    '''
-    trader.strategy_diff(trader.df['Close'])
-    trader.inverse_strategy()
-    trader.backtest(commission=0.01, stop_loss=10)
