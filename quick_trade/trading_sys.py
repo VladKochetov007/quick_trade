@@ -1,10 +1,9 @@
-#  used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
+# used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
-import copy
 import time
-
 import plotly.graph_objects as go
 import ta
+from binance.client import Client
 from plotly.subplots import make_subplots as sub_make
 from pykalman import KalmanFilter
 from quick_trade.utils import *
@@ -13,7 +12,45 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
-from threading import Thread
+
+
+class TradingClient(Client):
+    ordered = False
+
+    def get_ticker_price(self, ticker):
+        return float(self.get_symbol_ticker(symbol=ticker)['price'])
+
+    def get_data(self, ticker=None, interval=None, **get_kw):
+        return get_binance_data(ticker, interval, **get_kw)
+
+    def new_order_buy(self, ticker=None, quantity=None, credit_leverage=None):
+        self.__side__ = 'Buy'
+        self.quantity = quantity
+        self.ticker = ticker
+        self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
+        self.order_id = self.order['orderId']
+        self.ordered = True
+
+    def new_order_sell(self, ticker=None, quantity=None, credit_leverage=None):
+        self.__side__ = 'Sell'
+        self.quantity = quantity
+        self.ticker = ticker
+        self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
+        self.order_id = self.order['orderId']
+        self.ordered = True
+
+    def exit_last_order(self):
+        if self.ordered:
+            if self.__side__ == 'Sell':
+                self.new_order_buy(self.ticker, self.quantity)
+            elif self.__side__ == 'Buy':
+                self.new_order_sell(self.ticker, self.quantity)
+            self.__side__ = 'Exit'
+
+    def get_balance_ticker(self, ticker):
+        for asset in self.get_account()['balances']:
+            if asset['asset'] == ticker:
+                return float(asset['free'])
 
 
 class Strategies(object):
@@ -28,25 +65,27 @@ class Strategies(object):
                  ticker='AAPL',
                  days_undo=100,
                  df=np.nan,
-                 interval='1m',
+                 interval='1d',
+                 rounding=5,
                  *args,
                  **kwargs):
+        df_ = round(df, rounding)
+        self.first = True
+        self.rounding = rounding
+        diff = digit(df_['Close'].diff().values)[1:]
+        self.diff = [EXIT, *diff]
+        self.df = df_.reset_index(drop=True)
+        self.drop = 0
         self.ticker = ticker
         self.days_undo = days_undo
-        self.drop = 0
         self.interval = interval
-        if df is np.nan:
-            data = get_data(ticker, days_undo)
-            self.df = data.reset_index()
-        else:
-            self.df = df.reset_index()
-        self.df = self.df[self.drop:].reset_index()
         if interval == '1m':
             self.profit_calculate_coef = 1 / 60 / 24 / 365
         elif interval == '1d':
             self.profit_calculate_coef = 1 / 365
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
+        self.inputs = INPUTS
 
     def __repr__(self):
         return 'trader'
@@ -177,6 +216,10 @@ class Strategies(object):
         ret = ret
         self.returns = ret
         return ret
+
+    def strategy_buy_hold(self, *args, **kwargs):
+        self.returns = [BUY for _ in range(len(self.df))]
+        return self.returns
 
     def strategy_2_sma(self, slow=100, fast=30, plot=True, *args, **kwargs):
         ret = []
@@ -476,7 +519,7 @@ class Strategies(object):
     def get_trained_network(self,
                             dataframes,
                             filter_='kalman_filter',
-                            filter_kwargs={},
+                            filter_kwargs=dict(),
                             optimizer='adam',
                             loss='mse',
                             metrics=None,
@@ -551,7 +594,7 @@ class Strategies(object):
         model.save(network_save_path)
         return model, hist, self.training_set
 
-    def strategy_random_pred(self, **kwargs):
+    def strategy_random_pred(self, *args, **kwargs):
         import random
         self.returns = []
         for i in range(len(self.df)):
@@ -1048,8 +1091,28 @@ class Strategies(object):
                             take_profit=None,
                             stop_loss=None,
                             inverse=False,
+                            trading_on_client=False,
+                            bet_for_trading_on_client='all depo',
+                            credit_leverage=None,
+                            second_symbol_of_ticker=None,
+                            can_sell=False,
                             *args,
                             **kwargs):
+        """
+        :param second_symbol_of_ticker: BTCUSDT -> USDT
+        :param can_sell: use order sell (client)
+        :param credit_leverage: credit leverage for trading on client
+        :param take_profit: take profit(float)
+        :param stop_loss: stop loss(float)
+        :param inverse: inverting(bool)
+        :param trading_on_client: trading on real client (boll)
+        :param bet_for_trading_on_client: (float or "all depo")
+        :return: dict with prediction
+        """
+
+        if self.__exit_order__:
+            predict = 'Exit'
+
         def convert():
             nonlocal predict
             if predict == BUY:
@@ -1058,24 +1121,69 @@ class Strategies(object):
                 predict = 'Sell'
             elif predict == EXIT:
                 predict = 'Exit'
+
+        _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
+        if bet_for_trading_on_client == 'all depo':
+            bet = _moneys_
+        elif bet_for_trading_on_client > _moneys_:
+            bet = _moneys_
+        else:
+            bet = bet_for_trading_on_client
+        bet /= self.client.get_ticker_price(self.ticker)
+
         if take_profit is None:
             self.take_profit = np.inf
         else:
             self.take_profit = take_profit
+
         if stop_loss is None:
             self.stop_loss = np.inf
         else:
             self.stop_loss = stop_loss
+
         if inverse:
             self.inverse_strategy()
+
         predicts = self.returns
         predict = predicts[len(predicts) - 1]
         cond = "_predict" not in self.__dir__()
+
         if not cond:
             cond = self._predict != predict
         close = self.df['Close'].values
+
         if cond:
-            for sig, close_ in zip(self.returns[::-1], self.df['Close'].values[::-1]):
+            convert()
+            logger.info(f'open lot {predict}')
+            if trading_on_client:
+                if predict == 'Buy':
+                    if not self.first:
+                        self.client.exit_last_order()
+                        logger.info('client exit')
+                    self.client.new_order_buy(self.ticker, bet, credit_leverage=credit_leverage)
+                    logger.info('client buy')
+                    self.first = False
+
+                if predict == 'Sell' and can_sell:
+                    if not self.first:
+                        self.client.exit_last_order()
+                        logger.info('client exit')
+                    self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
+                    logger.info('client sell')
+                    self.first = False
+                elif predict == 'Sell':
+                    self.client.exit_last_order()
+
+                if predict == 'Exit':
+                    if not self.first:
+                        self.client.exit_last_order()
+                        logger.info('client exit')
+                        self.first = False
+
+            predict = predicts[len(predicts) - 1]
+            self.__exit_order__ = False
+            for sig, close_ in zip(self.returns,
+                                   self.df['Close'].values)[::-1]:
                 if sig != EXIT:
                     self.open_price = close_
                     break
@@ -1096,24 +1204,23 @@ class Strategies(object):
     def realtime_trading(self,
                          ticker,
                          strategy,
-                         get_gataframe,
-                         get_data_kwargs={},
+                         get_data_kwargs=dict(),
                          sleeping_time=60,
                          print_out=True,
                          take_profit=None,
                          stop_loss=None,
                          inverse=False,
-                         json_saving_path='realtime_trading_returns.json',
+                         trading_on_client=False,
+                         bet_for_trading_on_client='all depo',
+                         can_sell_client=False,
+                         second_symbol_of_ticker=None,
                          **strategy_kwargs):
         """
-        tickers:          |   array-like of str         |  tickers for trading.
+        ticker:           |             str             |  ticker for trading.
 
         strategy:         |   Strategies.some_strategy  |  trading strategy.
 
-        get_gataframe:    |          function           |  function to getting the data:
-            first argument must be a ticker.
-
-        get_data_kwargs:  |             dict            |  named arguments to <<get_gataframe>> WITHOUT TICKER.
+        get_data_kwargs:  |             dict            |  named arguments to self.client.get_data WITHOUT TICKER.
 
         **strategy_kwargs:|             kwargs          |  named arguments to <<strategy>>.
 
@@ -1121,35 +1228,58 @@ class Strategies(object):
 
         print_out:        |             bool            |  printing.
 
-        json_saving_path: |            str              |  path to saving results
-
         """
 
+        global ret
+        ret = {}
+        self.ticker = ticker
         try:
-            ret = {}
             while True:
-                def get_realtime(ticker):
-                    nonlocal ret
-                    self.prepare_realtime = True
-                    self.ticker = ticker
-                    self.df = get_gataframe(ticker, **get_data_kwargs).reset_index(drop=True)
-                    strategy(**strategy_kwargs)
-                    prediction = self.get_trading_predict(
-                        take_profit, stop_loss, inverse=inverse)
-                    now = copy.copy(time.ctime())
-                    ret[f'{self.ticker}, {now}'] = prediction
-                    if print_out:
-                        print(f'{self.ticker}, {now}', prediction)
-                    time.sleep(sleeping_time)
+                __now__ = time.time()
+                self.prepare_realtime = True
+                self.df = self.client.get_data(ticker, **get_data_kwargs).reset_index(drop=True)
+                strategy(**strategy_kwargs)
+                prediction = self.get_trading_predict(
+                    take_profit=take_profit, stop_loss=stop_loss,
+                    inverse=inverse, trading_on_client=trading_on_client,
+                    bet_for_trading_on_client=bet_for_trading_on_client,
+                    can_sell=can_sell_client,
+                    second_symbol_of_ticker=second_symbol_of_ticker)
+                # едрить, жизнь такая крутаяяяяяяяяя
+                index = f'{self.ticker}, {time.ctime()}'
+                if print_out:
+                    print(index, prediction)
+                logger.info(f"trading prediction at {index}: {prediction}")
+                ret[index] = prediction
+                while True:
+                    price = self.client.get_ticker_price(ticker)
+                    min_ = min(self.__stop_loss, self.__take_profit)
+                    max_ = max(self.__stop_loss, self.__take_profit)
+                    if (not min_ < price < max_) and (not self.__exit_order__):
+                        if self._predict != EXIT:
+                            self.__exit_order__ = True
+                            logger.info('exit lot')
+                            prediction['predict'] = 'Exit'
+                            prediction['currency close'] = price
+                            index = f'{self.ticker}, {time.ctime()}'
+                            if print_out:
+                                print(index, prediction)
+                            logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
+                            ret[index] = prediction
+                            if trading_on_client:
+                                self.client.exit_last_order()
+                    if not (time.time() < (__now__ + sleeping_time)):
+                        break
+            # как-же меня это всё достало, мне просто хочется заработать и жить спокойно
+            # но нет, блин, нужно было этим разрабам из python-binance сморозить такую дичь
+            # представляю, что-бы было, если-б юзал официальное API.
+            # мне ещё географию переписывать в тетрадь
+            # я просто хочу хорошо жить, никого не напрягаяя.
 
-                get_realtime(ticker)
-        except KeyboardInterrupt:
+        except Exception as e:
+            print(e)
+        finally:
             self.prepare_realtime = False
-            self.json_returns_realtime = json.dumps(ret)
-            with open(json_saving_path, 'w') as file:
-                file.write(self.json_returns_realtime)
-                file.close()
-            return ret
 
     def log_data(self):
         self.fig.update_yaxes(row=1, col=1, type='log')
@@ -1273,14 +1403,17 @@ class Strategies(object):
         del self.backtest_out['index']
         self.backtest_out_no_drop = self.backtest_out
         self.backtest_out = self.backtest_out.dropna()
+        self.lin_calc = self.linear_(np.log(deposit_df['deposit Close'].values))
+        flag = money_start
+        money_start = np.log(money_start)
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
-        self.year_profit = ((
-                                    self.year_profit - money_start) / money_start) * 100
+        self.year_profit = ((self.year_profit - money_start) / money_start) * 100
+        money_start = flag
         self.info = (
             f"L O S S E S: {self.losses}\n"
             f"T R A D E S: {self.trades}\n"
             f"P R O F I T S: {self.profits}\n"
-            f"M E A N   Y E A R   P E R C E N T A G E P   R O F I T: {self.year_profit}%\n"
+            f"M E A N   Y E A R   P E R C E N T A G E   R O F I T: {self.year_profit}%\n"
         )
         if print_out:
             print(self.info)
@@ -1377,6 +1510,9 @@ class Strategies(object):
     def load_model(self, path):
         self.model = load_model(path)
 
+    def set_client(self, class_client, *client_set_args, **client_set_kwargs):
+        self.client = class_client(*client_set_args, **client_set_kwargs)
+
 
 class PatternFinder(Strategies):
     """
@@ -1415,25 +1551,6 @@ class PatternFinder(Strategies):
 
     """
 
-    def __getitem__(self, item):
-        ret_trader = copy.copy(self)
-        ret_trader.df = self.df.T[item].T
-        try:
-            ret_trader.returns = copy.copy(self.returns[item])
-        except AttributeError:
-            pass
-        try:
-            ret_trader.backtest_out = copy.copy(self.backtest_out.T[item].T)
-        except AttributeError:
-            pass
-        try:
-            ret_trader.open_lot_prices = copy.copy(self.open_lot_prices[item])
-            ret_trader.stop_losses = copy.copy(self.stop_losses[item])
-            ret_trader.take_profits = copy.copy(self.take_profits[item])
-        except AttributeError:
-            pass
-        return ret_trader
-
     def __init__(self,
                  ticker='AAPL',
                  days_undo=100,
@@ -1443,6 +1560,7 @@ class PatternFinder(Strategies):
                  *args,
                  **kwargs):
         df_ = round(df, rounding)
+        self.first = True
         self.rounding = rounding
         diff = digit(df_['Close'].diff().values)[1:]
         self.diff = [EXIT, *diff]
@@ -1458,6 +1576,7 @@ class PatternFinder(Strategies):
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
         self.inputs = INPUTS
+        self.__exit_order__ = False
 
     def _window_(self, column, n=2):
         return get_window(self.df[column].values, n)
@@ -1546,7 +1665,7 @@ class PatternFinder(Strategies):
 
     def is_doji(self):
         """
-        returns: list of booleans.
+        :returns: list of booleans.
 
         """
         ret = []
@@ -1557,20 +1676,11 @@ class PatternFinder(Strategies):
             else:
                 ret.append(False)
         return ret
-    def __realtime_trading__(self, tickers,
-                         **realtime_trading_kw):
-        theads = [Thread(target=PatternFinder(df=self.df).realtime_trading, kwargs=dict(realtime_trading_kw,ticker=ticker))
-                  for ticker in tickers]
-        for t in theads:
-            t.run()
-            t.join()
-
 
 
 if __name__ == '__main__':
-    df = get_binance_data('BTCUSDT', interval='1m')
-    trader = PatternFinder(df=df)
-    print(trader.__realtime_trading__(tickers=['BTCUSDT', 'ETHUSDT'], strategy=trader.strategy_diff,
-                                  get_gataframe=get_binance_data, sleeping_time=2,
-                                  get_data_kwargs={"interval": '1m'}, frame_to_diff='self.df["Close"]', inverse=True,
-                                  stop_loss=10))
+    TICKER = 'MSFT'
+    df = get_binance_data('BTCUSDT', '1m')
+    trader = PatternFinder(df=df, interval='1m', ticker=TICKER)
+    trader.set_client(TradingClient)
+    trader.set_pyplot()

@@ -1,4 +1,3 @@
-import datetime
 import datetime as dt
 import itertools
 import json
@@ -53,7 +52,7 @@ DEPO_COLOR_UP = 'green'
 DEPO_COLOR_DOWN = 'red'
 logger = logging.getLogger()
 logger.setLevel(50)
-logging.basicConfig(level=10, filename='trading.log')
+logging.basicConfig(level=20, filename='trading.log')
 
 
 def set_(data):
@@ -91,8 +90,8 @@ def inverse_4_col_df(df, columns):
 
 def get_data(ticker, undo_days):
     tuples = []
-    end = datetime.datetime.today()
-    date_list = [end - datetime.timedelta(days=d) for d in range(undo_days)]
+    end = dt.datetime.today()
+    date_list = [end - dt.timedelta(days=d) for d in range(undo_days)]
     for i in range(len(date_list)):
         ret = str(np.array(date_list[::-1])[i])[:10]
         ret = ret.split('-')
@@ -102,7 +101,7 @@ def get_data(ticker, undo_days):
 
     dataframes = []
     for date_ in tuples:
-        dat = datetime.datetime(*date_)
+        dat = dt.datetime(*date_)
         df_ = get_historical_intraday(ticker, date=dat, output_format='pandas')
         dataframes.append(df_)
     returns = pd.concat(dataframes, axis=0)

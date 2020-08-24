@@ -17,6 +17,7 @@ used:
  ├──datetime
  ├──os
  ├──scipy
+ ├──python-binance
  └──iexfinance (https://github.com/addisonlynch/iexfinance)
 ```
 
