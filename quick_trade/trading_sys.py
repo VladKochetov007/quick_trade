@@ -1205,7 +1205,6 @@ class Strategies(object):
                          ticker,
                          strategy,
                          get_data_kwargs=dict(),
-                         get_data_kwargs=None,
                          sleeping_time=60,
                          print_out=True,
                          take_profit=None,
@@ -1693,13 +1692,9 @@ if __name__ == '__main__':
     trader = PatternFinder(df=df, interval='1m', ticker=TICKER)
     trader.set_client(TradingClient)
     trader.set_pyplot()
-<<<<<<< HEAD
-=======
     trader.strategy_diff(trader.df['Close'])
     trader.inverse_strategy()
     for e, i in enumerate(trader.returns):
         if i == SELL:
             trader.returns[e] = EXIT
     trader.backtest()
-
->>>>>>> dev
