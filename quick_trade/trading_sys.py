@@ -1205,6 +1205,7 @@ class Strategies(object):
                          ticker,
                          strategy,
                          get_data_kwargs=dict(),
+                         get_data_kwargs=None,
                          sleeping_time=60,
                          print_out=True,
                          take_profit=None,
@@ -1230,6 +1231,9 @@ class Strategies(object):
 
         """
 
+
+        if get_data_kwargs is None:
+            get_data_kwargs = dict()
         global ret
         ret = {}
         self.ticker = ticker
@@ -1513,6 +1517,11 @@ class Strategies(object):
     def set_client(self, class_client, *client_set_args, **client_set_kwargs):
         self.client = class_client(*client_set_args, **client_set_kwargs)
 
+    def convert_signal(self, old=SELL, new=EXIT):
+        for pos, val in enumerate(self.returns):
+            if val == old:
+                self.returns[pos] = new
+
 
 class PatternFinder(Strategies):
     """
@@ -1684,3 +1693,13 @@ if __name__ == '__main__':
     trader = PatternFinder(df=df, interval='1m', ticker=TICKER)
     trader.set_client(TradingClient)
     trader.set_pyplot()
+<<<<<<< HEAD
+=======
+    trader.strategy_diff(trader.df['Close'])
+    trader.inverse_strategy()
+    for e, i in enumerate(trader.returns):
+        if i == SELL:
+            trader.returns[e] = EXIT
+    trader.backtest()
+
+>>>>>>> dev
