@@ -112,7 +112,7 @@ class Strategies(object):
             self.fig.add_trace(
                 go.Line(
                     name='kalman filter',
-                    y=filtered,
+                    y=filtered.T[0],
                     line=dict(width=SUB_LINES_WIDTH)), 1, 1)
         return pd.DataFrame(filtered)
 
@@ -213,7 +213,8 @@ class Strategies(object):
         if isinstance(frame_to_diff, str):
             frame_to_diff = eval(frame_to_diff)
         ret = list(np.digitize(frame_to_diff.diff(), bins=[0]))
-        ret = ret
+        ret = np.array(ret).T[0]
+        ret = list(ret)
         self.returns = ret
         return ret
 
@@ -325,13 +326,14 @@ class Strategies(object):
         self.returns = ret
         return ret
 
-    def strategy_exp_diff(self, period=80, plot=True, *args, **kwargs):
-        ret = self.strategy_diff(self.tema(period))
+    def strategy_exp_diff(self, period=70, plot=True, *args, **kwargs):
+        exp = self.tema(period)
+        ret = self.strategy_diff(exp)
         if plot:
             self.fig.add_trace(
                 go.Line(
                     name=f'EMA{period}',
-                    y=self.tema(period).values[self.drop:],
+                    y=exp.values.T[0],
                     line=dict(width=SUB_LINES_WIDTH)), 1, 1)
 
         self.returns = ret
@@ -705,10 +707,10 @@ class Strategies(object):
                 col=1,
                 name=self.ticker)
 
-        __predictions = {}
+        predictions__ = {}
         for e, i in enumerate(set_(self.returns)):
             if i is not np.nan:
-                __predictions[e] = i
+                predictions__[e] = i
             # marker's 'y' coordinate on real price of stock/forex
             if plot:
                 if i == SELL:
@@ -748,8 +750,8 @@ class Strategies(object):
                             size=SCATTER_SIZE,
                             opacity=SCATTER_ALPHA))
 
-        sigs = list(__predictions.values())
-        vals = list(__predictions.keys())
+        sigs = list(predictions__.values())
+        vals = list(predictions__.keys())
 
         self.moneys = deposit
         leverage = credit_leverage
@@ -768,12 +770,15 @@ class Strategies(object):
         e = 0
         for enum, (val, val2, sig) in enumerate(
                 zip(vals[:len(vals) - 1], vals[1:], sigs[:len(sigs) - 1])):
-            mons = self.moneys
             coefficient = self.moneys / loc[val]
             self.open_price = loc[val]
 
             _rate = self.moneys if rate is None else rate
-            _rate -= _rate * (commission / 100)
+            commission_real = _rate * (commission / 100)
+            self.moneys -= commission_real
+            if _rate > self.moneys:
+                _rate = self.moneys
+            mons = self.moneys
 
             for i in (pd.DataFrame(loc).diff().values *
                       coefficient)[val + 1:val2 + 1]:
@@ -1096,6 +1101,7 @@ class Strategies(object):
                             credit_leverage=None,
                             second_symbol_of_ticker=None,
                             can_sell=False,
+                            rounding_bet=4,
                             *args,
                             **kwargs):
         """
@@ -1109,9 +1115,6 @@ class Strategies(object):
         :param bet_for_trading_on_client: (float or "all depo")
         :return: dict with prediction
         """
-
-        if self.__exit_order__:
-            predict = 'Exit'
 
         def convert():
             nonlocal predict
@@ -1131,6 +1134,11 @@ class Strategies(object):
             bet = bet_for_trading_on_client
         bet /= self.client.get_ticker_price(self.ticker)
 
+        def min_r(r):
+            return round(float('0.' + '0' * (r - 1) + '1'), r)
+
+        bet = round(bet, rounding_bet) - min_r(rounding_bet)
+        bet = round(bet, rounding_bet)
         if take_profit is None:
             self.take_profit = np.inf
         else:
@@ -1146,8 +1154,12 @@ class Strategies(object):
 
         predicts = self.returns
         predict = predicts[len(predicts) - 1]
-        cond = "_predict" not in self.__dir__()
+        if self.__exit_order__:
+            predict = EXIT
+        if not can_sell:
+            self.convert_signal(SELL, EXIT)
 
+        cond = "_predict" not in self.__dir__()
         if not cond:
             cond = self._predict != predict
         close = self.df['Close'].values
@@ -1162,6 +1174,7 @@ class Strategies(object):
                         logger.info('client exit')
                     self.client.new_order_buy(self.ticker, bet, credit_leverage=credit_leverage)
                     logger.info('client buy')
+                    self.__exit_order__ = False
                     self.first = False
 
                 if predict == 'Sell' and can_sell:
@@ -1171,19 +1184,19 @@ class Strategies(object):
                     self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
                     logger.info('client sell')
                     self.first = False
+                    self.__exit_order__ = False
                 elif predict == 'Sell':
                     self.client.exit_last_order()
+                    logger.info('client exit')
 
                 if predict == 'Exit':
                     if not self.first:
                         self.client.exit_last_order()
                         logger.info('client exit')
-                        self.first = False
 
             predict = predicts[len(predicts) - 1]
-            self.__exit_order__ = False
-            for sig, close_ in zip(self.returns,
-                                   self.df['Close'].values)[::-1]:
+            for sig, close_ in zip(self.returns[::-1],
+                                   self.df['Close'].values[::-1]):
                 if sig != EXIT:
                     self.open_price = close_
                     break
@@ -1214,6 +1227,7 @@ class Strategies(object):
                          bet_for_trading_on_client='all depo',
                          can_sell_client=False,
                          second_symbol_of_ticker=None,
+                         rounding_bet=4,
                          **strategy_kwargs):
         """
         ticker:           |             str             |  ticker for trading.
@@ -1229,7 +1243,6 @@ class Strategies(object):
         print_out:        |             bool            |  printing.
 
         """
-
 
         if get_data_kwargs is None:
             get_data_kwargs = dict()
@@ -1247,7 +1260,8 @@ class Strategies(object):
                     inverse=inverse, trading_on_client=trading_on_client,
                     bet_for_trading_on_client=bet_for_trading_on_client,
                     can_sell=can_sell_client,
-                    second_symbol_of_ticker=second_symbol_of_ticker)
+                    second_symbol_of_ticker=second_symbol_of_ticker,
+                    rounding_bet=rounding_bet)
                 # едрить, жизнь такая крутаяяяяяяяяя
                 index = f'{self.ticker}, {time.ctime()}'
                 if print_out:
@@ -1279,9 +1293,7 @@ class Strategies(object):
             # мне ещё географию переписывать в тетрадь
             # я просто хочу хорошо жить, никого не напрягаяя.
 
-        except Exception as e:
-            print(e)
-        finally:
+        except:
             self.prepare_realtime = False
 
     def log_data(self):
@@ -1687,14 +1699,25 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
-    TICKER = 'MSFT'
-    df = get_binance_data('BTCUSDT', '1m')
-    trader = PatternFinder(df=df, interval='1m', ticker=TICKER)
+    import yfinance as yf
+
+
+    def real(df, window_length=57, polyorder=3):
+        filtered = [EXIT for _ in range(200)]
+        for i in range(200, len(df - 1)):
+            filtered.append(signal.savgol_filter(
+                df[i - 200:i],
+                window_length=window_length,
+                polyorder=polyorder)[199])
+        return filtered
+
+
+    TICKER = 'ETHUSD=X'
+    df = yf.download(TICKER, interval='1d', period='max')
+    df = np.log(df) + 1
+    trader = PatternFinder(df=df, interval='1d', ticker=TICKER)
     trader.set_client(TradingClient)
     trader.set_pyplot()
-    trader.strategy_diff(trader.df['Close'])
-    trader.inverse_strategy()
-    for e, i in enumerate(trader.returns):
-        if i == SELL:
-            trader.returns[e] = EXIT
-    trader.backtest()
+
+    trader.strategy_parabolic_SAR()
+    trader.backtest(commission=0.075,)
