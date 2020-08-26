@@ -1715,12 +1715,11 @@ if __name__ == '__main__':
         return filtered
 
 
-    TICKER = 'ETHUSD=X'
-    df = yf.download(TICKER, interval='1d', period='max')
-    df = np.log(df) + 1
+    TICKER = 'BNBUSDT'
+    df = get_binance_data(TICKER, interval='1d')
     trader = PatternFinder(df=df, interval='1d', ticker=TICKER)
     trader.set_client(TradingClient)
     trader.set_pyplot()
 
-    trader.strategy_parabolic_SAR()
+    trader.strategy_parabolic_SAR(step=0.04)
     trader.backtest(commission=0.075)
