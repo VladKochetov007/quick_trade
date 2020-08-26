@@ -46,6 +46,7 @@ class TradingClient(Client):
             elif self.__side__ == 'Buy':
                 self.new_order_sell(self.ticker, self.quantity)
             self.__side__ = 'Exit'
+            self.ordered = False
 
     def get_balance_ticker(self, ticker):
         for asset in self.get_account()['balances']:
