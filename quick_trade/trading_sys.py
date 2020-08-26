@@ -1126,20 +1126,21 @@ class Strategies(object):
             elif predict == EXIT:
                 predict = 'Exit'
 
-        _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
-        if bet_for_trading_on_client == 'all depo':
-            bet = _moneys_
-        elif bet_for_trading_on_client > _moneys_:
-            bet = _moneys_
-        else:
-            bet = bet_for_trading_on_client
-        bet /= self.client.get_ticker_price(self.ticker)
+        if trading_on_client:
+            _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
+            if bet_for_trading_on_client == 'all depo':
+                bet = _moneys_
+            elif bet_for_trading_on_client > _moneys_:
+                bet = _moneys_
+            else:
+                bet = bet_for_trading_on_client
+            bet /= self.client.get_ticker_price(self.ticker)
 
-        def min_r(r):
-            return round(float('0.' + '0' * (r - 1) + '1'), r)
+            def min_r(r):
+                return round(float('0.' + '0' * (r - 1) + '1'), r)
 
-        bet = round(bet, rounding_bet) - min_r(rounding_bet)
-        bet = round(bet, rounding_bet)
+            bet = round(bet, rounding_bet) - min_r(rounding_bet)
+            bet = round(bet, rounding_bet)
         if take_profit is None:
             self.take_profit = np.inf
         else:
@@ -1248,9 +1249,9 @@ class Strategies(object):
         global ret
         ret = {}
         self.ticker = ticker
+        __now__ = time.time()
         try:
             while True:
-                __now__ = time.time()
                 self.prepare_realtime = True
                 self.df = self.client.get_data(ticker, **get_data_kwargs).reset_index(drop=True)
                 strategy(**strategy_kwargs)
@@ -1285,6 +1286,7 @@ class Strategies(object):
                             if trading_on_client:
                                 self.client.exit_last_order()
                     if not (time.time() < (__now__ + sleeping_time)):
+                        __now__ = time.time()
                         break
             # как-же меня это всё достало, мне просто хочется заработать и жить спокойно
             # но нет, блин, нужно было этим разрабам из python-binance сморозить такую дичь
@@ -1292,8 +1294,10 @@ class Strategies(object):
             # мне ещё географию переписывать в тетрадь
             # я просто хочу хорошо жить, никого не напрягаяя.
 
-        except:
+        except Exception as e:
             self.prepare_realtime = False
+            if print_out:
+                print(e)
 
     def log_data(self):
         self.fig.update_yaxes(row=1, col=1, type='log')
