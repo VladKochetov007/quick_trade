@@ -1178,17 +1178,15 @@ class Strategies(object):
                     self.__exit_order__ = False
                     self.first = False
 
-                if predict == 'Sell' and can_sell:
+                if predict == 'Sell':
                     if not self.first:
                         self.client.exit_last_order()
                         logger.info('client exit')
-                    self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
-                    logger.info('client sell')
+                    if can_sell:
+                        self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
+                        logger.info('client sell')
                     self.first = False
                     self.__exit_order__ = False
-                elif predict == 'Sell':
-                    self.client.exit_last_order()
-                    logger.info('client exit')
 
                 if predict == 'Exit':
                     if not self.first:
@@ -1721,4 +1719,4 @@ if __name__ == '__main__':
     trader.set_pyplot()
 
     trader.strategy_parabolic_SAR()
-    trader.backtest(commission=0.075,)
+    trader.backtest(commission=0.075)
