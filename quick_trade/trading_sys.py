@@ -1315,6 +1315,7 @@ class Strategies(object):
                  plot=True,
                  print_out=True,
                  show=True,
+                 log_profit_calc=True,
                  *args,
                  **kwargs):
         """
@@ -1349,9 +1350,6 @@ class Strategies(object):
             linear deposit,
             price (high, low, open, close),
             open bet\lot\deal price.
-
-            1: dropped na
-            2: no dropped
 
         """
 
@@ -1421,12 +1419,18 @@ class Strategies(object):
         del self.backtest_out['index']
         self.backtest_out_no_drop = self.backtest_out
         self.backtest_out = self.backtest_out.dropna()
-        self.lin_calc = self.linear_(np.log(deposit_df['deposit Close'].values))
-        flag = money_start
-        money_start = np.log(money_start)
+        if not log_profit_calc:
+            func = nothing
+        else:
+            func = np.log
+        self.lin_calc = self.linear_(func(deposit_df['deposit Close'].values))
+        if log_profit_calc:
+            flag = money_start
+            money_start = np.log(money_start)
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
         self.year_profit = ((self.year_profit - money_start) / money_start) * 100
-        money_start = flag
+        if log_profit_calc:
+            money_start = flag
         self.info = (
             f"L O S S E S: {self.losses}\n"
             f"T R A D E S: {self.trades}\n"
@@ -1523,7 +1527,7 @@ class Strategies(object):
             if show:
                 self.fig.show()
 
-        return self.backtest_out, self.backtest_out_no_drop
+        return self.backtest_out
 
     def load_model(self, path):
         self.model = load_model(path)
@@ -1706,20 +1710,32 @@ if __name__ == '__main__':
 
 
     def real(df, window_length=57, polyorder=3):
-        filtered = [EXIT for _ in range(200)]
-        for i in range(200, len(df - 1)):
-            filtered.append(signal.savgol_filter(
-                df[i - 200:i],
+        aa = 20
+        filtered = [EXIT for _ in range(aa)]
+        from tqdm import auto
+        for i in auto.tqdm(range(aa, len(df - 1))):
+            '''filtered.append(signal.savgol_filter(
+                df[i - aa:i],
                 window_length=window_length,
-                polyorder=polyorder)[199])
-        return filtered
+                polyorder=polyorder)[aa-1])'''
+            filtered1 = KalmanFilter().filter(np.array(df[i-aa: i]))[0][aa-1]
+            for i in range(120):
+                filtered1 = KalmanFilter().filter(filtered1)[0]
+            filtered.append(filtered1)
+        return pd.DataFrame(filtered)
 
 
-    TICKER = 'BNBUSDT'
-    df = get_binance_data(TICKER, interval='1d')
-    trader = PatternFinder(df=df, interval='1d', ticker=TICKER)
+    TICKER = 'MATICUSDT'
+    interval = '1d'
+    df = get_binance_data(TICKER, interval=interval)
+    trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
     trader.set_client(TradingClient)
     trader.set_pyplot()
-
-    trader.strategy_parabolic_SAR(step=0.04)
-    trader.backtest(commission=0.075)
+    #trader.strategy_parabolic_SAR(step=0.04)
+    #trader.strategy_diff(real(trader.df['Close']))
+    trader.returns = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1]
+    print(trader.returns)
+    #trader.convert_signal()
+    #trader.log_deposit()
+    trader.inverse_strategy()
+    trader.backtest(commission=0.000075, log_profit_calc=False, plot=True)
