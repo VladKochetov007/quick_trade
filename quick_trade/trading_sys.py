@@ -1,6 +1,7 @@
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
 import time
+
 import plotly.graph_objects as go
 import ta
 from binance.client import Client
@@ -214,8 +215,6 @@ class Strategies(object):
         if isinstance(frame_to_diff, str):
             frame_to_diff = eval(frame_to_diff)
         ret = list(np.digitize(frame_to_diff.diff(), bins=[0]))
-        ret = np.array(ret).T[0]
-        ret = list(ret)
         self.returns = ret
         return ret
 
@@ -770,7 +769,9 @@ class Strategies(object):
 
         e = 0
         for enum, (val, val2, sig) in enumerate(
-                zip(vals[:len(vals) - 1], vals[1:], sigs[:len(sigs) - 1])):
+                zip(vals[:len(vals) - 1],
+                    vals[1:],
+                    sigs[:len(sigs) - 1])):
             coefficient = self.moneys / loc[val]
             self.open_price = loc[val]
 
@@ -1424,12 +1425,15 @@ class Strategies(object):
             _log = np.log
         else:
             _log = nothing
-        self.lin_calc = self.linear_(_log(deposit_df['deposit Close'].values))
-        if log_profit_calc:
-            self.lin_calc = MinMaxScaler(feature_range=(min(self.money_list),
-                                                    max(self.money_list))).fit_transform(
-            np.array([self.lin_calc]).T
-        ).T[0]
+        self.lin_calc = self.linear_(
+            MinMaxScaler(
+                feature_range=(
+                    min(self.money_list),
+                    max(self.money_list)
+                )
+            ).fit_transform(
+                np.array([_log(deposit_df['deposit Close'].values)]).T
+            ).T[0])
         lin_calc_df = pd.DataFrame(self.lin_calc)
         self.mean_diff = float(lin_calc_df.diff().mean())
         self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
@@ -1712,33 +1716,28 @@ if __name__ == '__main__':
     import yfinance as yf
 
 
-    def real(df, window_length=57, polyorder=3):
-        aa = 20
+    def real(df, window_length=221, polyorder=3):
+        aa = 222
         filtered = [EXIT for _ in range(aa)]
         from tqdm import auto
         for i in auto.tqdm(range(aa, len(df - 1))):
-            '''filtered.append(signal.savgol_filter(
+            filtered.append(signal.savgol_filter(
                 df[i - aa:i],
                 window_length=window_length,
-                polyorder=polyorder)[aa-1])'''
-            filtered1 = KalmanFilter().filter(np.array(df[i-aa: i]))[0][aa-1]
+                polyorder=polyorder)[aa - 1])
+            '''filtered1 = KalmanFilter().filter(np.array(df[i-aa: i]))[0][aa-1]
             for i in range(120):
                 filtered1 = KalmanFilter().filter(filtered1)[0]
-            filtered.append(filtered1)
+            filtered.append(filtered1)'''
         return pd.DataFrame(filtered)
 
 
-    TICKER = 'MATICUSDT'
+    TICKER = 'ETHUSD=X'
     interval = '1d'
-    df = get_binance_data(TICKER, interval=interval)
+    df = yf.download(TICKER, interval=interval, period='3y')
     trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
     trader.set_client(TradingClient)
     trader.set_pyplot()
-    #trader.strategy_parabolic_SAR(step=0.04)
-    trader.strategy_diff(trader.kalman_filter(iters=5))
-    #trader.returns = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1]
-    #print(trader.returns)
-    #trader.convert_signal()
-    #trader.log_deposit()
-    #trader.inverse_strategy()
-    trader.backtest(commission=0.000075, log_profit_calc=True, plot=True)
+    trader.strategy_parabolic_SAR(step=1, max_step=1)
+    trader.log_deposit()
+    trader.backtest(commission=0.075, log_profit_calc=True, plot=True)
