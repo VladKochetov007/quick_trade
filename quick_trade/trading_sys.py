@@ -830,6 +830,12 @@ class Strategies(object):
                         else:
                             flag = False
                         if flag:
+                            if bet is None:
+                                _rate = self.moneys
+                            commission_real = _rate * (commission / 100)
+                            self.moneys -= commission_real
+                            if bet is None:
+                                _rate = self.moneys
                             if sig == SELL:
                                 self.moneys -= diff * coefficient * leverage * (
                                         _rate / mons)
@@ -1732,12 +1738,13 @@ if __name__ == '__main__':
         return pd.DataFrame(filtered)
 
 
-    TICKER = 'ETHUSD=X'
+    TICKER = 'XRP-USD'
     interval = '1d'
-    df = yf.download(TICKER, interval=interval, period='3y')
+    df = yf.download(TICKER, interval=interval, period='max')
     trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
     trader.set_client(TradingClient)
     trader.set_pyplot()
-    trader.strategy_parabolic_SAR(step=1, max_step=1)
+    trader.strategy_parabolic_SAR()
+    # trader.convert_signal()
     trader.log_deposit()
     trader.backtest(commission=0.075, log_profit_calc=True, plot=True)
