@@ -26,7 +26,7 @@ __author__ = 'Vlad Kochetov'
 __credits__ = ["Hemerson Tacon -- Stack overflow",
                "hpaulj -- Stack overflow",
                "Войтенко Николай Поликарпович (Vojtenko Nikolaj Polikarpovich) -- helped me test the system of interaction with the binance crypto exchange with 50 dollars."]
-__version__ = "2.1.9"
+__version__ = "3.0"
 __install_requires = [
     'iexfinance==0.4.3',
     'plotly==4.9.0',
