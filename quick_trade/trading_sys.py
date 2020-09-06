@@ -98,6 +98,10 @@ class Strategies(object):
         except AttributeError:
             raise ValueError('D O   B A C K T E S T')
 
+    @classmethod
+    def _get_this_instance(cls, *args, **kwargs):
+        return cls(*args, **kwargs)
+
     def kalman_filter(self,
                       df='self.df["Close"]',
                       iters=40,
@@ -287,9 +291,9 @@ class Strategies(object):
                        plot=True,
                        *args,
                        **kwargs):
-        ema3 = ta.trend.ema(self.df['Close'], slow)
+        ema3 = ta.trend.ema(self.df['Close'], fast)
         ema21 = ta.trend.ema(self.df['Close'], mid)
-        ema46 = ta.trend.ema(self.df['Close'], fast)
+        ema46 = ta.trend.ema(self.df['Close'], slow)
         ret = []
 
         if plot:
@@ -566,7 +570,7 @@ class Strategies(object):
         for df in dataframes:
             all_ta = ta.add_all_ta_features(df, 'Open', 'High', 'Low', 'Close',
                                             'Volume', True)
-            get_all_out = PatternFinder(df=df)
+            get_all_out = self._get_this_instance(df=df)
             filter_kwargs['plot'] = False
             output1 = get_all_out.strategy_diff(
                 eval('get_all_out.' + filter_ + '(**filter_kwargs)'))
@@ -653,7 +657,7 @@ class Strategies(object):
 
         credit_leverage: | int, float. | trading leverage. 1 = none.
 
-        bet:             | int, float, | fixed bet to quick_trade--. None = all moneys.
+        bet:             | int, float, | fixed bet to quick_trade. None = all moneys.
 
         commission:      | int, float. | percentage commission (0 -- 100).
 
@@ -1397,10 +1401,10 @@ class Strategies(object):
         rets = self.backtest_out
 
         def __4_div(obj, columns):
-            ret = list(np.array(obj))[::4]
-            ret = pd.DataFrame(ret, columns=columns).reset_index()
-            del ret['index']
-            return ret
+            frame = list(np.array(obj))[::4]
+            frame = pd.DataFrame(frame, columns=columns).reset_index()
+            del frame['index']
+            return frame
 
         deposit_df = rets['deposit (Close)'].values
         deposit_df = to_4_col_df(deposit_df, 'deposit Close', 'deposit Open',
@@ -1566,7 +1570,7 @@ class PatternFinder(Strategies):
     df:       |   dataframe  |  data of chart
 
     interval: |     str      |  interval of df.
-    one of: '1d', '1m'
+    one of: '1d', '1m' ...
 
 
     step 1:
@@ -1581,7 +1585,7 @@ class PatternFinder(Strategies):
 
     example:
 
-    trader = Strategies(df=mydf)
+    trader = PatternFinder(df=mydf)
 
     trader.set_pyplot()
 
@@ -1719,6 +1723,7 @@ class PatternFinder(Strategies):
 
 
 if __name__ == '__main__':
+    # tests
     import yfinance as yf
 
 
@@ -1731,20 +1736,20 @@ if __name__ == '__main__':
                 df[i - aa:i],
                 window_length=window_length,
                 polyorder=polyorder)[aa - 1])
-            '''filtered1 = KalmanFilter().filter(np.array(df[i-aa: i]))[0][aa-1]
+            """filtered1 = KalmanFilter().filter(np.array(df[i-aa: i]))[0][aa-1]
             for i in range(120):
                 filtered1 = KalmanFilter().filter(filtered1)[0]
-            filtered.append(filtered1)'''
+            filtered.append(filtered1)"""
         return pd.DataFrame(filtered)
 
 
     TICKER = 'XRP-USD'
     interval = '1d'
-    df = yf.download(TICKER, interval=interval, period='max')
+    df = yf.download(TICKER, interval=interval, period='3y')
     trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
     trader.set_client(TradingClient)
     trader.set_pyplot()
-    trader.strategy_parabolic_SAR()
+    trader.strategy_3_ema(slow=100, mid=70, fast=30)
     # trader.convert_signal()
     trader.log_deposit()
-    trader.backtest(commission=0.075, log_profit_calc=True, plot=True)
+    trader.backtest(commission=0.075)
