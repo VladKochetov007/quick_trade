@@ -1,5 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
-
 import time
 
 import plotly.graph_objects as go
@@ -104,7 +105,7 @@ class Strategies(object):
 
     def kalman_filter(self,
                       df='self.df["Close"]',
-                      iters=40,
+                      iters=5,
                       plot=True,
                       *args,
                       **kwargs):
@@ -1743,13 +1744,16 @@ if __name__ == '__main__':
         return pd.DataFrame(filtered)
 
 
-    TICKER = 'XRP-USD'
+    TICKER = 'AAPL'
     interval = '1d'
-    df = yf.download(TICKER, interval=interval, period='3y')
+    df = yf.download(TICKER, interval=interval, period='max')
     trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
     trader.set_client(TradingClient)
     trader.set_pyplot()
-    trader.strategy_3_ema(slow=100, mid=70, fast=30)
+    # trader.get_trained_network([df], network_save_path='qwty')
+    trader.load_model('./qwty')
+    trader.prepare_scaler(dataframe=trader.df, regression_net=False)
+    trader.strategy_with_network()
     # trader.convert_signal()
     trader.log_deposit()
     trader.backtest(commission=0.075)
