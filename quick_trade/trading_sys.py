@@ -1744,16 +1744,16 @@ if __name__ == '__main__':
         return pd.DataFrame(filtered)
 
 
-    TICKER = 'AAPL'
+    TICKER = 'DIS'
     interval = '1d'
     df = yf.download(TICKER, interval=interval, period='max')
     trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
     trader.set_client(TradingClient)
     trader.set_pyplot()
     # trader.get_trained_network([df], network_save_path='qwty')
-    trader.load_model('./qwty')
-    trader.prepare_scaler(dataframe=trader.df, regression_net=False)
-    trader.strategy_with_network()
-    # trader.convert_signal()
+    trader.load_model('./model_regression')
+    trader.prepare_scaler(dataframe=trader.df, regression_net=True)
+    trader.strategy_regression_model()
+    trader.convert_signal()
     trader.log_deposit()
-    trader.backtest(commission=0.075)
+    trader.backtest(commission=0.075, stop_loss=100)
