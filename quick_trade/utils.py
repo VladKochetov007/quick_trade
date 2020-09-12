@@ -25,7 +25,8 @@ os.environ['IEX_TOKEN'] = TOKEN
 __author__ = 'Vlad Kochetov'
 __credits__ = ["Hemerson Tacon -- Stack overflow",
                "hpaulj -- Stack overflow",
-               "Войтенко Николай Поликарпович (Vojtenko Nikolaj Polikarpovich) -- helped me test the system of interaction with the binance crypto exchange with 50 dollars."]
+               "Войтенко Николай Поликарпович (Vojtenko Nikolaj Polikarpovich) -- helped me test the system of "
+               "interaction with the binance crypto exchange with 50 dollars."]
 __version__ = "3.0"
 __install_requires = [
     'iexfinance==0.4.3',
@@ -126,16 +127,6 @@ def anti_set_(seted):
             ret.append(i)
             flag = i
     return ret
-
-
-def move_stop_to_breakeven(stop, open_, sig, price, diff, *args, **kwargs):
-    if sig == BUY and price > open_ and diff > 0:
-        stop_loss = (price * 2 + open_) / 3
-    elif sig == SELL and price < open_ and diff < 0:
-        stop_loss = (price * 2 + open_) / 3
-    else:
-        stop_loss = stop
-    return stop_loss
 
 
 def digit(data):
