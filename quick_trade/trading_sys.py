@@ -681,7 +681,7 @@ class Strategies(object):
             take profit,
             linear deposit,
             <<column>> price,
-            open bet\lot\deal price.
+            open bet\lot price.
 
 
         """
@@ -1742,6 +1742,7 @@ class PatternFinder(Strategies):
 
 if __name__ == '__main__':
     # tests
+    # very bad code zone
     import yfinance as yf
 
 
@@ -1768,7 +1769,7 @@ if __name__ == '__main__':
 
     profits = []
 
-    for ticker_ in [['LINK-USD', '1d', 'max']]:
+    for ticker_ in [['XLM-USD', '1d', 'max']]:
         def start(ticker):
             global profits
             try:
@@ -1784,8 +1785,9 @@ if __name__ == '__main__':
                 trader.prepare_scaler(dataframe=trader.df, regression_net=True)
                 trader.strategy_regression_model()
                 # trader.strategy_diff(real(df['Close'].values))
-                # trader.convert_signal()
-                # trader.log_deposit()
+                trader.inverse_strategy()
+                trader.convert_signal()
+                trader.log_deposit()
                 trader.backtest(commission=0.075, stop_loss=10)
                 profits.append((trader.year_profit, ticker))
             except:
