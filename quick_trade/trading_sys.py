@@ -1775,7 +1775,6 @@ if __name__ == '__main__':
     # tests
     # very bad code zone
     import yfinance as yf
-    import matplotlib.pyplot as plt
 
 
     def real(df, window_length=221, polyorder=3):
