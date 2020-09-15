@@ -781,10 +781,11 @@ class Strategies(object):
             self.open_price = loc[val]
 
             _rate = self.moneys if rate is None else rate
-            commission_real = _rate * (commission / 100)
-            self.moneys -= commission_real
-            if _rate > self.moneys:
-                _rate = self.moneys
+            if e != 0:
+                commission_real = _rate * (commission / 100) * credit_leverage
+                self.moneys -= commission_real
+                if _rate > self.moneys:
+                    _rate = self.moneys
             mons = self.moneys
 
             for i in (pd.DataFrame(loc).diff().values *
@@ -837,8 +838,11 @@ class Strategies(object):
                         if flag:
                             if bet is None:
                                 _rate = self.moneys
-                            commission_real = _rate * (commission / 100)
-                            self.moneys -= commission_real
+                            if e != 0:
+                                commission_real = _rate * (commission / 100) * credit_leverage
+                                self.moneys -= commission_real
+                                if _rate > self.moneys:
+                                    _rate = self.moneys
                             if bet is None:
                                 _rate = self.moneys
                             if sig == SELL:
@@ -1283,22 +1287,23 @@ class Strategies(object):
                 logger.info(f"trading prediction at {index}: {prediction}")
                 ret[index] = prediction
                 while True:
-                    price = self.client.get_ticker_price(ticker)
-                    min_ = min(self.__stop_loss, self.__take_profit)
-                    max_ = max(self.__stop_loss, self.__take_profit)
-                    if (not min_ < price < max_) and (not self.__exit_order__):
-                        if self._predict != EXIT:
-                            self.__exit_order__ = True
-                            logger.info('exit lot')
-                            prediction['predict'] = 'Exit'
-                            prediction['currency close'] = price
-                            index = f'{self.ticker}, {time.ctime()}'
-                            if print_out:
-                                print(index, prediction)
-                            logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
-                            ret[index] = prediction
-                            if trading_on_client:
-                                self.client.exit_last_order()
+                    if not self.__exit_order__:
+                        price = self.client.get_ticker_price(ticker)
+                        min_ = min(self.__stop_loss, self.__take_profit)
+                        max_ = max(self.__stop_loss, self.__take_profit)
+                        if (not min_ < price < max_) and (not self.__exit_order__):
+                            if self._predict != EXIT:
+                                self.__exit_order__ = True
+                                logger.info('exit lot')
+                                prediction['predict'] = 'Exit'
+                                prediction['currency close'] = price
+                                index = f'{self.ticker}, {time.ctime()}'
+                                if print_out:
+                                    print(index, prediction)
+                                logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
+                                ret[index] = prediction
+                                if trading_on_client:
+                                    self.client.exit_last_order()
                     if not (time.time() < (__now__ + sleeping_time)):
                         __now__ = time.time()
                         break
@@ -1468,9 +1473,9 @@ class Strategies(object):
             CLOSE.append(sorted_[1])
             OPEN.append(sorted_[2])
         deposit_df = pd.DataFrame({'deposit Close': CLOSE,
-                                    'deposit Open': OPEN,
-                                    'deposit High': MAX,
-                                    'deposit Low': MIN})
+                                   'deposit Open': OPEN,
+                                   'deposit High': MAX,
+                                   'deposit Low': MIN})
 
         if print_out:
             print(self.info)
@@ -1632,9 +1637,35 @@ class PatternFinder(Strategies):
         self.days_undo = days_undo
         self.interval = interval
         if interval == '1m':
-            self.profit_calculate_coef = 1 / 60 / 24 / 365
+            self.profit_calculate_coef = 1 / (60 / 24 / 365)
+        elif interval == '3m':
+            self.profit_calculate_coef = 1 / (30 / 24 / 365)
+        elif interval == '5m':
+            self.profit_calculate_coef = 1 / (12 / 24 / 365)
+        elif interval == '15m':
+            self.profit_calculate_coef = 1 / (4 / 24 / 365)
+        elif interval == '45m':
+            self.profit_calculate_coef = 1 / (32 / 365)
+        elif interval == '1h':
+            self.profit_calculate_coef = 1 / (24 / 365)
+        elif interval == '90m':
+            self.profit_calculate_coef = 1 / (18 / 365)
+        elif interval == '2h':
+            self.profit_calculate_coef = 1 / (12 / 365)
+        elif interval == '3h':
+            self.profit_calculate_coef = 1 / (8 / 365)
+        elif interval == '4h':
+            self.profit_calculate_coef = 1 / (6 / 365)
         elif interval == '1d':
             self.profit_calculate_coef = 1 / 365
+        elif interval == '1w':
+            self.profit_calculate_coef = 1 / 52
+        elif interval == '1M':
+            self.profit_calculate_coef = 1 / 12
+        elif interval == '3M':
+            self.profit_calculate_coef = 1 / 4
+        elif interval == '6M':
+            self.profit_calculate_coef = 1 / 1.5
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
         self.inputs = INPUTS
@@ -1744,6 +1775,7 @@ if __name__ == '__main__':
     # tests
     # very bad code zone
     import yfinance as yf
+    import matplotlib.pyplot as plt
 
 
     def real(df, window_length=221, polyorder=3):
@@ -1776,7 +1808,7 @@ if __name__ == '__main__':
                 print(ticker)
                 TICKER = ticker[0]
                 interval = ticker[1]
-                df = yf.download(TICKER, interval=interval, period=ticker[2])
+                df = yf.download(TICKER, interval=interval, period=ticker[2]) * 100
                 trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
                 trader.set_client(TradingClient)
                 trader.set_pyplot()
@@ -1788,115 +1820,13 @@ if __name__ == '__main__':
                 trader.inverse_strategy()
                 trader.convert_signal()
                 trader.log_deposit()
-                trader.backtest(commission=0.075, stop_loss=10)
+                trader.backtest(50, commission=0.075, stop_loss=60, plot=True, credit_leverage=123)
+                print(trader.mean_diff, trader.lin_calc_df)
                 profits.append((trader.year_profit, ticker))
+                # trader.get_trained_network([df], filter_kwargs=dict(iters=40), network_save_path='test_predicting',
+                # batch_size=300, epochs=1000)
             except:
                 print(profits)
 
 
         start(ticker=ticker_)
-    r = [(39.19736247379709, ['BTC-USD', '1d', 'max']), (-6447.92766305565, ['BTC-USD', '1m', '5d']),
-         (29.84377099258418, ['BTC-USD', '1d', '3y']), (-28.742830829248163, ['ETH-USD', '1d', 'max']),
-         (-5612.804886090544, ['ETH-USD', '1m', '5d']), (-24.768708619577847, ['ETH-USD', '1d', '3y']),
-         (-16.820179149705037, ['USDT-USD', '1d', 'max']), (-6165.335846627174, ['USDT-USD', '1m', '5d']),
-         (-30.211686413247822, ['USDT-USD', '1d', '3y']), (280.0009681878613, ['XRP-USD', '1d', 'max']),
-         (-5945.96787010475, ['XRP-USD', '1m', '5d']), (384.1208967474691, ['XRP-USD', '1d', '3y']),
-         (1234.1590992325682, ['LINK-USD', '1d', 'max']), (-6445.944509450446, ['LINK-USD', '1m', '5d']),
-         (1234.1590992325682, ['LINK-USD', '1d', '3y']), (-5887.816669334989, ['BCH-USD', '1m', '5d']),
-         (29.57853291069441, ['BNB-USD', '1d', 'max']), (-2981.860431356841, ['BNB-USD', '1m', '5d']),
-         (-16.61246307978074, ['BNB-USD', '1d', '3y']), (17.152908666300174, ['LTC-USD', '1d', 'max']),
-         (-6980.570659419624, ['LTC-USD', '1m', '5d']), (-13.598211398229324, ['LTC-USD', '1d', '3y']),
-         (224.30089682462597, ['EOS-USD', '1d', 'max']), (-5772.233767756784, ['EOS-USD', '1m', '5d']),
-         (99.74221881737776, ['EOS-USD', '1d', '3y']), (192.06103347428873, ['ADA-USD', '1d', 'max']),
-         (-6112.337404227079, ['ADA-USD', '1m', '5d']), (192.06103347428873, ['ADA-USD', '1d', '3y']),
-         (-4626.164025819176, ['TRX-USD', '1m', '5d']), (-5570.492358620557, ['XLM-USD', '1m', '5d']),
-         (3825.003143700744, ['XLM-USD', '1d', '3y']), (-7086.70198911313, ['XMR-USD', '1m', '5d']),
-         (181.30109839745404, ['XMR-USD', '1d', '3y']), (-6519.8183110460395, ['NEO-USD', '1m', '5d']),
-         (40.256787540650926, ['NEO-USD', '1d', '3y']), (-1767.7355177692832, ['XEM-USD', '1m', '5d']),
-         (-4789.525648457119, ['MIOTA-USD', '1m', '5d']), (153.4219517075084, ['DASH-USD', '1d', 'max']),
-         (-5216.620654425313, ['DASH-USD', '1m', '5d']), (112.45882495305364, ['DASH-USD', '1d', '3y']),
-         (21.828310420739236, ['VET-USD', '1d', 'max']), (-4488.155936355582, ['VET-USD', '1m', '5d']),
-         (21.828310420739236, ['VET-USD', '1d', '3y']), (-6037.881244772736, ['ZEC-USD', '1m', '5d']),
-         (81.97491145821485, ['ZEC-USD', '1d', '3y']), (2.060891134304711, ['ETC-USD', '1d', 'max']),
-         (-6946.022390074773, ['ETC-USD', '1m', '5d']), (226.01346636988606, ['ETC-USD', '1d', '3y']),
-         (-33.46088869440191, ['OMG-USD', '1d', 'max']), (-2859.1929474692065, ['OMG-USD', '1m', '5d']),
-         (-41.73218952041832, ['OMG-USD', '1d', '3y']), (-35.85754234148478, ['BAT-USD', '1d', 'max']),
-         (-6031.435508555356, ['BAT-USD', '1m', '5d']), (-35.17763296894213, ['BAT-USD', '1d', '3y']),
-         (-7339.092779149273, ['DOGE-USD', '1m', '5d']), (62.820209128696256, ['DOGE-USD', '1d', '3y']),
-         (-19.45077170852921, ['ZRX-USD', '1d', 'max']), (-7175.572530838218, ['ZRX-USD', '1m', '5d']),
-         (-19.599997145272354, ['ZRX-USD', '1d', '3y']), (-6115.973767718546, ['DGB-USD', '1m', '5d']),
-         (-7416.015866629529, ['LRC-USD', '1m', '5d']), (-30.243324580375614, ['WAVES-USD', '1d', 'max']),
-         (-3213.141204112096, ['WAVES-USD', '1m', '5d']), (-36.744958031429405, ['WAVES-USD', '1d', '3y']),
-         (-48.241480857272535, ['ICX-USD', '1d', 'max']), (-6180.57043316453, ['ICX-USD', '1m', '5d']),
-         (-48.23740152146821, ['ICX-USD', '1d', '3y']), (-86.7487886497134, ['QTUM-USD', '1d', 'max']),
-         (-7002.775288323626, ['QTUM-USD', '1m', '5d']), (-84.23004131542095, ['QTUM-USD', '1d', '3y']),
-         (-52.37444994358788, ['KNC-USD', '1d', 'max']), (-7453.042401811234, ['KNC-USD', '1m', '5d']),
-         (-52.37444994358788, ['KNC-USD', '1d', '3y']), (-7130.794374540909, ['REP-USD', '1m', '5d']),
-         (-28.60505294670073, ['REP-USD', '1d', '3y']), (-46.10661540235794, ['LSK-USD', '1d', 'max']),
-         (-4834.153440289011, ['LSK-USD', '1m', '5d']), (-44.122027145234135, ['LSK-USD', '1d', '3y']),
-         (-6075.372044770467, ['DCR-USD', '1m', '5d']), (-17.543601141879865, ['DCR-USD', '1d', '3y']),
-         (-7187.5050353249735, ['SC-USD', '1m', '5d']), (-7411.985505486352, ['ANT-USD', '1m', '5d']),
-         (6.143614191499673, ['BTG-USD', '1d', 'max']), (-7237.35212096128, ['BTG-USD', '1m', '5d']),
-         (6.148483571086217, ['BTG-USD', '1d', '3y']), (-38.59332972908122, ['GNT-USD', '1d', 'max']),
-         (-7328.703142925059, ['GNT-USD', '1m', '5d']), (-55.99954844016474, ['GNT-USD', '1d', '3y']),
-         (-4742.42226722336, ['NANO-USD', '1m', '5d']), (6746.409266785695, ['BTS-USD', '1m', '5d']),
-         (426.8485448281176, ['BTS-USD', '1d', '3y']), (-7324.228240569624, ['SNT-USD', '1m', '5d']),
-         (-4186.677070483592, ['STORJ-USD', '1m', '5d']), (-7014.840142742094, ['MONA-USD', '1m', '5d']),
-         (-6195.296758437015, ['RLC-USD', '1m', '5d']), (-27.463031228982963, ['BNT-USD', '1d', 'max']),
-         (-7435.203701003185, ['BNT-USD', '1m', '5d']), (-26.187067684016856, ['BNT-USD', '1d', '3y']),
-         (-7343.12706190613, ['XVG-USD', '1m', '5d']), (60.367730219529946, ['KMD-USD', '1d', 'max']),
-         (-6290.656422706367, ['KMD-USD', '1m', '5d']), (-8.19844930552592, ['KMD-USD', '1d', '3y']),
-         (2.8636071178705604, ['GNO-USD', '1d', 'max']), (-5369.656014836748, ['GNO-USD', '1m', '5d']),
-         (1.6617465287302549, ['GNO-USD', '1d', '3y']), (-5762.0926832197565, ['STEEM-USD', '1m', '5d']),
-         (-37.19856199976553, ['STEEM-USD', '1d', '3y']), (-40.37480872490496, ['MCO-USD', '1d', 'max']),
-         (-8124.06008157869, ['MCO-USD', '1m', '5d']), (-48.548108175053, ['MCO-USD', '1d', '3y']),
-         (-25.861463852431427, ['ARDR-USD', '1d', 'max']), (-7665.509078597815, ['ARDR-USD', '1m', '5d']),
-         (-39.43640465113809, ['ARDR-USD', '1d', '3y']), (50.450908819591824, ['ZEN-USD', '1d', 'max']),
-         (-5433.407285688048, ['ZEN-USD', '1m', '5d']), (-8.225914293180086, ['ZEN-USD', '1d', '3y']),
-         (-6018.688488921355, ['XZC-USD', '1m', '5d']), (-1117.171233594981, ['MLN-USD', '1m', '5d']),
-         (12.780423382984955, ['HC-USD', '1d', 'max']), (-6288.260402601478, ['HC-USD', '1m', '5d']),
-         (4.995263370592419, ['HC-USD', '1d', '3y']), (-6635.651496941073, ['STRAT-USD', '1m', '5d']),
-         (-35.49347669112991, ['STRAT-USD', '1d', '3y']), (-86.10717126512681, ['AE-USD', '1d', 'max']),
-         (-4780.715845884844, ['AE-USD', '1m', '5d']), (-55.79069420192071, ['AE-USD', '1d', '3y']),
-         (-7840.6913320567255, ['ARK-USD', '1m', '5d']), (-32.15905856445741, ['ARK-USD', '1d', '3y']),
-         (-33.81755816042581, ['MAID-USD', '1d', 'max']), (-8658.16111503795, ['MAID-USD', '1m', '5d']),
-         (-43.122292907428374, ['MAID-USD', '1d', '3y']), (-5888.883553869845, ['SYS-USD', '1m', '5d']),
-         (-34.543214786260286, ['SYS-USD', '1d', '3y']), (-7532.685908766591, ['VGX-USD', '1m', '5d']),
-         (-22.17946896690666, ['WTC-USD', '1d', 'max']), (-5244.46246635709, ['WTC-USD', '1m', '5d']),
-         (-22.990879460693893, ['WTC-USD', '1d', '3y']),
-         (-8216.660869344107, ['BCN-USD', '1m', '5d']), (38.02129084925322, ['FUN-USD', '1d', 'max']),
-         (-7546.751107889418, ['FUN-USD', '1m', '5d']), (9.962293123605923, ['FUN-USD', '1d', '3y']),
-         (-5521.096452953344, ['PIVX-USD', '1m', '5d']), (-6309.069440599408, ['CVC-USD', '1m', '5d']),
-         (36.536012827652705, ['MTL-USD', '1d', 'max']), (-7383.913855633455, ['MTL-USD', '1m', '5d']),
-         (19.750730503019838, ['MTL-USD', '1d', '3y']), (-29.383476896292365, ['GAS-USD', '1d', 'max']),
-         (-7608.858044481988, ['GAS-USD', '1m', '5d']), (-31.534709071431443, ['GAS-USD', '1d', '3y']),
-         (-35.063380364762544, ['GBYTE-USD', '1d', 'max']), (-4532.883472555081, ['GBYTE-USD', '1m', '5d']),
-         (-42.97016168733182, ['GBYTE-USD', '1d', '3y']), (-5990.319252996601, ['ADX-USD', '1m', '5d']),
-         (-8242.394118222546, ['PPT-USD', '1m', '5d']), (-48.330221166815605, ['PPT-USD', '1d', '3y']),
-         (-2335.869969599348, ['KIN-USD', '1m', '5d']), (-8906.86130591432, ['VTC-USD', '1m', '5d']),
-         (-35.058713312449704, ['VTC-USD', '1d', '3y']), (-6921.774668681494, ['ETP-USD', '1m', '5d']),
-         (-73.53882661276671, ['ETP-USD', '1d', '3y']), (-78.89015867421155, ['FCT-USD', '1d', 'max']),
-         (-5757.298734423142, ['FCT-USD', '1m', '5d']), (-41.94774042869863, ['FCT-USD', '1d', '3y']),
-         (-99.01040021789179, ['QASH-USD', '1d', 'max']), (-8218.841227114643, ['QASH-USD', '1m', '5d']),
-         (-99.06036074513224, ['QASH-USD', '1d', '3y']), (-6150.061007567353, ['NXS-USD', '1m', '5d']),
-         (-8324.63940508008, ['NXT-USD', '1m', '5d']), (-23.66567152273008, ['UBQ-USD', '1d', 'max']),
-         (-5162.823827719285, ['UBQ-USD', '1m', '5d']), (-44.312551655795524, ['UBQ-USD', '1d', '3y']),
-         (-7655.931418029814, ['DGD-USD', '1m', '5d']), (-94.16014023564288, ['PAY-USD', '1d', 'max']),
-         (-7747.317840298753, ['PAY-USD', '1m', '5d']), (-98.59327461297991, ['PAY-USD', '1d', '3y']),
-         (-7437.844759520476, ['WINGS-USD', '1m', '5d']), (-38.268970491771356, ['WINGS-USD', '1d', '3y']),
-         (-4696.233744114565, ['NAV-USD', '1m', '5d']), (-6404.999802960724, ['NEBL-USD', '1m', '5d']),
-         (-6534.743060422938, ['TAAS-USD', '1m', '5d']), (-8243.896393193687, ['QRL-USD', '1m', '5d']),
-         (-7068.93213899856, ['DNT-USD', '1m', '5d']), (-6044.773244152681, ['GAME-USD', '1m', '5d']),
-         (-33.804142073046435, ['GAME-USD', '1d', '3y']), (-6600.73864606061, ['BLOCK-USD', '1m', '5d']),
-         (-238.9196373182715, ['BLOCK-USD', '1d', '3y']), (-8204.833930881152, ['SALT-USD', '1m', '5d']),
-         (-7405.49207833147, ['VERI-USD', '1m', '5d']), (-7181.561408923812, ['PART-USD', '1m', '5d']),
-         (-8121.695977257882, ['SMART-USD', '1m', '5d']), (-8381.740847374494, ['SNGLS-USD', '1m', '5d']),
-         (-32.26262811721819, ['SNM-USD', '1d', 'max']), (-7615.512103048762, ['SNM-USD', '1m', '5d']),
-         (-37.53365825380916, ['SNM-USD', '1d', '3y']), (-32.925816199820275, ['LKK-USD', '1d', 'max']),
-         (-5169.071723457766, ['LKK-USD', '1m', '5d']), (-94.39743921713418, ['LKK-USD', '1d', '3y']),
-         (-6594.973192197078, ['XCP-USD', '1m', '5d']), (-7167.284833607215, ['NLC2-USD', '1m', '5d']),
-         (-5637.591575666847, ['IOC-USD', '1m', '5d']), (-8899.596704927037, ['MGO-USD', '1m', '5d']),
-         (-106.74852253520662, ['SUB-USD', '1d', 'max']), (-7196.730774886856, ['SUB-USD', '1m', '5d']),
-         (-106.74852253520662, ['SUB-USD', '1d', '3y']), (-6734.991746797802, ['EDG-USD', '1m', '5d']),
-         (-2128.7882293668713, ['FRST-USD', '1m', '5d']), (-8844.16374251957, ['ATB-USD', '1m', '5d']),
-         (-8188.86167354639, ['XUC-USD', '1m', '5d'])]
