@@ -1800,26 +1800,26 @@ if __name__ == '__main__':
 
     profits = []
 
-    for ticker_ in [['XLM-USD', '1d', 'max']]:
+    for ticker_ in [['BTS-USD', '1d', 'max']]:
         def start(ticker):
             global profits
             try:
                 print(ticker)
                 TICKER = ticker[0]
                 interval = ticker[1]
-                df = yf.download(TICKER, interval=interval, period=ticker[2]) * 100
+                df = yf.download(TICKER, interval=interval, period=ticker[2])
                 trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
                 trader.set_client(TradingClient)
                 trader.set_pyplot()
-                # trader.get_trained_network([df], network_save_path='qwty')
-                trader.load_model('./model_regression')
+                # trader.get_network_regression([df], inputs=INPUTS, network_save_path='test', epochs=100)
+                trader.load_model('./test')
                 trader.prepare_scaler(dataframe=trader.df, regression_net=True)
                 trader.strategy_regression_model()
                 # trader.strategy_diff(real(df['Close'].values))
                 trader.inverse_strategy()
                 trader.convert_signal()
                 trader.log_deposit()
-                trader.backtest(50, commission=0.075, stop_loss=60, plot=True, credit_leverage=123)
+                trader.backtest(50, commission=0.075, stop_loss=60)
                 print(trader.mean_diff, trader.lin_calc_df)
                 profits.append((trader.year_profit, ticker))
                 # trader.get_trained_network([df], filter_kwargs=dict(iters=40), network_save_path='test_predicting',
