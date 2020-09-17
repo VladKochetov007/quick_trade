@@ -6,4 +6,3 @@ dist
 .pypirc
 quick_trade.egg-info
 *.json
-./quick_trade/test
