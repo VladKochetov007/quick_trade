@@ -67,7 +67,7 @@ class Strategies(object):
     def __init__(self,
                  ticker='AAPL',
                  days_undo=100,
-                 df=np.nan,
+                 df: pd.DataFrame = np.nan,
                  interval='1d',
                  rounding=5,
                  *args,
@@ -1620,7 +1620,7 @@ class PatternFinder(Strategies):
     def __init__(self,
                  ticker='AAPL',
                  days_undo=100,
-                 df: pd.DataFrame=np.nan,
+                 df: pd.DataFrame = np.nan,
                  interval='1d',
                  rounding=5,
                  *args,
@@ -1821,5 +1821,6 @@ if __name__ == '__main__':
                 # batch_size=300, epochs=1000)
             except:
                 print(profits)
+
 
         start(ticker=ticker_)
