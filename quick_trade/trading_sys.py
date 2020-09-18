@@ -761,7 +761,6 @@ class Strategies(object):
         self.moneys = deposit
         leverage = credit_leverage
         rate = bet
-        commission = commission
 
         money_start = self.moneys
         resur = [self.moneys]
@@ -1621,7 +1620,7 @@ class PatternFinder(Strategies):
     def __init__(self,
                  ticker='AAPL',
                  days_undo=100,
-                 df=np.nan,
+                 df: pd.DataFrame=np.nan,
                  interval='1d',
                  rounding=5,
                  *args,
@@ -1694,7 +1693,6 @@ class PatternFinder(Strategies):
                     ret.append(flag)
             else:
                 ret.append(flag)
-        ret = ret
         self.returns = ret
         return ret
 
@@ -1713,7 +1711,6 @@ class PatternFinder(Strategies):
                 flag = SELL
             else:
                 ret.append(flag)
-        ret = ret[self.drop:]
         self.returns = ret
         return ret
 
@@ -1732,7 +1729,6 @@ class PatternFinder(Strategies):
                 flag = SELL
             else:
                 ret.append(flag)
-        ret = ret
         self.returns = ret
         return ret
 
@@ -1752,7 +1748,6 @@ class PatternFinder(Strategies):
                 flag = SELL
             else:
                 ret.append(flag)
-        ret = ret
         self.returns = ret
         return ret
 

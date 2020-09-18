@@ -130,7 +130,6 @@ def anti_set_(seted):
 
 
 def digit(data):
-    data = list(data)
     ret = []
     for element in list(data):
         if element == 0:
