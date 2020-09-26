@@ -782,6 +782,8 @@ class Strategies(object):
             _rate = self.moneys if rate is None else rate
             if e != 0:
                 commission_real = _rate * (commission / 100) * credit_leverage
+                if self.__oldsig != EXIT:
+                    commission_real *= 2
                 self.moneys -= commission_real
                 if _rate > self.moneys:
                     _rate = self.moneys
@@ -839,6 +841,8 @@ class Strategies(object):
                                 _rate = self.moneys
                             if e != 0:
                                 commission_real = _rate * (commission / 100) * credit_leverage
+                                if self.__oldsig != EXIT:
+                                    commission_real *= 2
                                 self.moneys -= commission_real
                                 if _rate > self.moneys:
                                     _rate = self.moneys
@@ -863,6 +867,7 @@ class Strategies(object):
             if self.moneys < 0:
                 self.moneys = 0
             exit = False
+            self.__oldsig = sig
 
         if plot:
             if self.take_profit != np.inf:
@@ -1629,6 +1634,7 @@ class PatternFinder(Strategies):
         self.first = True
         self.rounding = rounding
         diff = digit(df_['Close'].diff().values)[1:]
+        self.__oldsig = EXIT
         self.diff = [EXIT, *diff]
         self.df = df_.reset_index(drop=True)
         self.drop = 0
