@@ -401,8 +401,8 @@ class Strategies(object):
         ret = []
         sar = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
                                      self.df['Close'], **sar_kwargs)
-        sardown = sar.psar_down()[self.drop:].values
-        sarup = sar.psar_up()[self.drop:].values
+        sardown = sar.psar_down().values
+        sarup = sar.psar_up().values
 
         if plot:
             for SAR_ in (sarup, sardown):
@@ -823,6 +823,17 @@ class Strategies(object):
                         resur.append(0)  # 0 because it's deposit
                 else:
                     flag = True
+
+                    if e != 0:
+                        commission_real = _rate * (commission / 100) * credit_leverage
+                        try:
+                            if self.__oldsig != EXIT:
+                                commission_real *= 2
+                        except AttributeError:
+                            pass
+                        self.moneys -= commission_real
+                        if _rate > self.moneys:
+                            _rate = self.moneys
                     if cond and self.moneys > 0:
                         close = self.df['Close'][e + 1]
                         open_ = self.df['Open'][e + 1]
@@ -839,13 +850,6 @@ class Strategies(object):
                         if flag:
                             if bet is None:
                                 _rate = self.moneys
-                            if e != 0:
-                                commission_real = _rate * (commission / 100) * credit_leverage
-                                if self.__oldsig != EXIT:
-                                    commission_real *= 2
-                                self.moneys -= commission_real
-                                if _rate > self.moneys:
-                                    _rate = self.moneys
                             if bet is None:
                                 _rate = self.moneys
                             if sig == SELL:
@@ -1801,118 +1805,7 @@ if __name__ == '__main__':
 
     profits = []
 
-    for ticker_ in itertools.chain.from_iterable(itertools.chain.from_iterable([[[['BTC-USD', '1m', '5d'], ['BTC-USD', '5m', '2mo'], ['BTC-USD', '15m', '1mo']],
-                     [['ETH-USD', '1m', '5d'], ['ETH-USD', '5m', '2mo'], ['ETH-USD', '15m', '1mo']],
-                     [['USDT-USD', '1m', '5d'], ['USDT-USD', '5m', '2mo'], ['USDT-USD', '15m', '1mo']],
-                     [['XRP-USD', '1m', '5d'], ['XRP-USD', '5m', '2mo'], ['XRP-USD', '15m', '1mo']],
-                     [['LINK-USD', '1m', '5d'], ['LINK-USD', '5m', '2mo'], ['LINK-USD', '15m', '1mo']],
-                     [['BCH-USD', '1m', '5d'], ['BCH-USD', '5m', '2mo'], ['BCH-USD', '15m', '1mo']],
-                     [['BNB-USD', '1m', '5d'], ['BNB-USD', '5m', '2mo'], ['BNB-USD', '15m', '1mo']],
-                     [['LTC-USD', '1m', '5d'], ['LTC-USD', '5m', '2mo'], ['LTC-USD', '15m', '1mo']],
-                     [['EOS-USD', '1m', '5d'], ['EOS-USD', '5m', '2mo'], ['EOS-USD', '15m', '1mo']],
-                     [['ADA-USD', '1m', '5d'], ['ADA-USD', '5m', '2mo'], ['ADA-USD', '15m', '1mo']],
-                     [['TRX-USD', '1m', '5d'], ['TRX-USD', '5m', '2mo'], ['TRX-USD', '15m', '1mo']],
-                     [['XLM-USD', '1m', '5d'], ['XLM-USD', '5m', '2mo'], ['XLM-USD', '15m', '1mo']],
-                     [['XMR-USD', '1m', '5d'], ['XMR-USD', '5m', '2mo'], ['XMR-USD', '15m', '1mo']],
-                     [['NEO-USD', '1m', '5d'], ['NEO-USD', '5m', '2mo'], ['NEO-USD', '15m', '1mo']],
-                     [['XEM-USD', '1m', '5d'], ['XEM-USD', '5m', '2mo'], ['XEM-USD', '15m', '1mo']],
-                     [['MIOTA-USD', '1m', '5d'], ['MIOTA-USD', '5m', '2mo'], ['MIOTA-USD', '15m', '1mo']],
-                     [['DASH-USD', '1m', '5d'], ['DASH-USD', '5m', '2mo'], ['DASH-USD', '15m', '1mo']],
-                     [['VET-USD', '1m', '5d'], ['VET-USD', '5m', '2mo'], ['VET-USD', '15m', '1mo']],
-                     [['ZEC-USD', '1m', '5d'], ['ZEC-USD', '5m', '2mo'], ['ZEC-USD', '15m', '1mo']],
-                     [['ETC-USD', '1m', '5d'], ['ETC-USD', '5m', '2mo'], ['ETC-USD', '15m', '1mo']],
-                     [['OMG-USD', '1m', '5d'], ['OMG-USD', '5m', '2mo'], ['OMG-USD', '15m', '1mo']],
-                     [['BAT-USD', '1m', '5d'], ['BAT-USD', '5m', '2mo'], ['BAT-USD', '15m', '1mo']],
-                     [['DOGE-USD', '1m', '5d'], ['DOGE-USD', '5m', '2mo'], ['DOGE-USD', '15m', '1mo']],
-                     [['ZRX-USD', '1m', '5d'], ['ZRX-USD', '5m', '2mo'], ['ZRX-USD', '15m', '1mo']],
-                     [['DGB-USD', '1m', '5d'], ['DGB-USD', '5m', '2mo'], ['DGB-USD', '15m', '1mo']],
-                     [['LRC-USD', '1m', '5d'], ['LRC-USD', '5m', '2mo'], ['LRC-USD', '15m', '1mo']],
-                     [['WAVES-USD', '1m', '5d'], ['WAVES-USD', '5m', '2mo'], ['WAVES-USD', '15m', '1mo']],
-                     [['ICX-USD', '1m', '5d'], ['ICX-USD', '5m', '2mo'], ['ICX-USD', '15m', '1mo']],
-                     [['QTUM-USD', '1m', '5d'], ['QTUM-USD', '5m', '2mo'], ['QTUM-USD', '15m', '1mo']],
-                     [['KNC-USD', '1m', '5d'], ['KNC-USD', '5m', '2mo'], ['KNC-USD', '15m', '1mo']],
-                     [['REPV2-USD', '1m', '5d'], ['REPV2-USD', '5m', '2mo'], ['REPV2-USD', '15m', '1mo']],
-                     [['REP-USD', '1m', '5d'], ['REP-USD', '5m', '2mo'], ['REP-USD', '15m', '1mo']],
-                     [['LSK-USD', '1m', '5d'], ['LSK-USD', '5m', '2mo'], ['LSK-USD', '15m', '1mo']],
-                     [['DCR-USD', '1m', '5d'], ['DCR-USD', '5m', '2mo'], ['DCR-USD', '15m', '1mo']],
-                     [['SC-USD', '1m', '5d'], ['SC-USD', '5m', '2mo'], ['SC-USD', '15m', '1mo']],
-                     [['ANT-USD', '1m', '5d'], ['ANT-USD', '5m', '2mo'], ['ANT-USD', '15m', '1mo']],
-                     [['BTG-USD', '1m', '5d'], ['BTG-USD', '5m', '2mo'], ['BTG-USD', '15m', '1mo']],
-                     [['GNT-USD', '1m', '5d'], ['GNT-USD', '5m', '2mo'], ['GNT-USD', '15m', '1mo']],
-                     [['NANO-USD', '1m', '5d'], ['NANO-USD', '5m', '2mo'], ['NANO-USD', '15m', '1mo']],
-                     [['BTS-USD', '1m', '5d'], ['BTS-USD', '5m', '2mo'], ['BTS-USD', '15m', '1mo']],
-                     [['SNT-USD', '1m', '5d'], ['SNT-USD', '5m', '2mo'], ['SNT-USD', '15m', '1mo']],
-                     [['STORJ-USD', '1m', '5d'], ['STORJ-USD', '5m', '2mo'], ['STORJ-USD', '15m', '1mo']],
-                     [['MONA-USD', '1m', '5d'], ['MONA-USD', '5m', '2mo'], ['MONA-USD', '15m', '1mo']],
-                     [['RLC-USD', '1m', '5d'], ['RLC-USD', '5m', '2mo'], ['RLC-USD', '15m', '1mo']],
-                     [['BNT-USD', '1m', '5d'], ['BNT-USD', '5m', '2mo'], ['BNT-USD', '15m', '1mo']],
-                     [['XVG-USD', '1m', '5d'], ['XVG-USD', '5m', '2mo'], ['XVG-USD', '15m', '1mo']],
-                     [['KMD-USD', '1m', '5d'], ['KMD-USD', '5m', '2mo'], ['KMD-USD', '15m', '1mo']],
-                     [['GNO-USD', '1m', '5d'], ['GNO-USD', '5m', '2mo'], ['GNO-USD', '15m', '1mo']],
-                     [['STEEM-USD', '1m', '5d'], ['STEEM-USD', '5m', '2mo'], ['STEEM-USD', '15m', '1mo']],
-                     [['MCO-USD', '1m', '5d'], ['MCO-USD', '5m', '2mo'], ['MCO-USD', '15m', '1mo']],
-                     [['ARDR-USD', '1m', '5d'], ['ARDR-USD', '5m', '2mo'], ['ARDR-USD', '15m', '1mo']],
-                     [['ZEN-USD', '1m', '5d'], ['ZEN-USD', '5m', '2mo'], ['ZEN-USD', '15m', '1mo']],
-                     [['XZC-USD', '1m', '5d'], ['XZC-USD', '5m', '2mo'], ['XZC-USD', '15m', '1mo']],
-                     [['MLN-USD', '1m', '5d'], ['MLN-USD', '5m', '2mo'], ['MLN-USD', '15m', '1mo']],
-                     [['HC-USD', '1m', '5d'], ['HC-USD', '5m', '2mo'], ['HC-USD', '15m', '1mo']],
-                     [['STRAT-USD', '1m', '5d'], ['STRAT-USD', '5m', '2mo'], ['STRAT-USD', '15m', '1mo']],
-                     [['ETHOS-USD', '1m', '5d'], ['ETHOS-USD', '5m', '2mo'], ['ETHOS-USD', '15m', '1mo']],
-                     [['AE-USD', '1m', '5d'], ['AE-USD', '5m', '2mo'], ['AE-USD', '15m', '1mo']],
-                     [['ARK-USD', '1m', '5d'], ['ARK-USD', '5m', '2mo'], ['ARK-USD', '15m', '1mo']],
-                     [['MAID-USD', '1m', '5d'], ['MAID-USD', '5m', '2mo'], ['MAID-USD', '15m', '1mo']],
-                     [['SYS-USD', '1m', '5d'], ['SYS-USD', '5m', '2mo'], ['SYS-USD', '15m', '1mo']],
-                     [['VGX-USD', '1m', '5d'], ['VGX-USD', '5m', '2mo'], ['VGX-USD', '15m', '1mo']],
-                     [['WTC-USD', '1m', '5d'], ['WTC-USD', '5m', '2mo'], ['WTC-USD', '15m', '1mo']],
-                     [['BCN-USD', '1m', '5d'], ['BCN-USD', '5m', '2mo'], ['BCN-USD', '15m', '1mo']],
-                     [['BTCD-USD', '1m', '5d'], ['BTCD-USD', '5m', '2mo'], ['BTCD-USD', '15m', '1mo']],
-                     [['FUN-USD', '1m', '5d'], ['FUN-USD', '5m', '2mo'], ['FUN-USD', '15m', '1mo']],
-                     [['PIVX-USD', '1m', '5d'], ['PIVX-USD', '5m', '2mo'], ['PIVX-USD', '15m', '1mo']],
-                     [['CVC-USD', '1m', '5d'], ['CVC-USD', '5m', '2mo'], ['CVC-USD', '15m', '1mo']],
-                     [['MTL-USD', '1m', '5d'], ['MTL-USD', '5m', '2mo'], ['MTL-USD', '15m', '1mo']],
-                     [['ICN-USD', '1m', '5d'], ['ICN-USD', '5m', '2mo'], ['ICN-USD', '15m', '1mo']],
-                     [['GAS-USD', '1m', '5d'], ['GAS-USD', '5m', '2mo'], ['GAS-USD', '15m', '1mo']],
-                     [['GBYTE-USD', '1m', '5d'], ['GBYTE-USD', '5m', '2mo'], ['GBYTE-USD', '15m', '1mo']],
-                     [['ADX-USD', '1m', '5d'], ['ADX-USD', '5m', '2mo'], ['ADX-USD', '15m', '1mo']],
-                     [['PPT-USD', '1m', '5d'], ['PPT-USD', '5m', '2mo'], ['PPT-USD', '15m', '1mo']],
-                     [['KIN-USD', '1m', '5d'], ['KIN-USD', '5m', '2mo'], ['KIN-USD', '15m', '1mo']],
-                     [['VTC-USD', '1m', '5d'], ['VTC-USD', '5m', '2mo'], ['VTC-USD', '15m', '1mo']],
-                     [['ETP-USD', '1m', '5d'], ['ETP-USD', '5m', '2mo'], ['ETP-USD', '15m', '1mo']],
-                     [['FCT-USD', '1m', '5d'], ['FCT-USD', '5m', '2mo'], ['FCT-USD', '15m', '1mo']],
-                     [['QASH-USD', '1m', '5d'], ['QASH-USD', '5m', '2mo'], ['QASH-USD', '15m', '1mo']],
-                     [['NXS-USD', '1m', '5d'], ['NXS-USD', '5m', '2mo'], ['NXS-USD', '15m', '1mo']],
-                     [['NXT-USD', '1m', '5d'], ['NXT-USD', '5m', '2mo'], ['NXT-USD', '15m', '1mo']],
-                     [['UBQ-USD', '1m', '5d'], ['UBQ-USD', '5m', '2mo'], ['UBQ-USD', '15m', '1mo']],
-                     [['DGD-USD', '1m', '5d'], ['DGD-USD', '5m', '2mo'], ['DGD-USD', '15m', '1mo']],
-                     [['PAY-USD', '1m', '5d'], ['PAY-USD', '5m', '2mo'], ['PAY-USD', '15m', '1mo']],
-                     [['WINGS-USD', '1m', '5d'], ['WINGS-USD', '5m', '2mo'], ['WINGS-USD', '15m', '1mo']],
-                     [['NAV-USD', '1m', '5d'], ['NAV-USD', '5m', '2mo'], ['NAV-USD', '15m', '1mo']],
-                     [['NEBL-USD', '1m', '5d'], ['NEBL-USD', '5m', '2mo'], ['NEBL-USD', '15m', '1mo']],
-                     [['TAAS-USD', '1m', '5d'], ['TAAS-USD', '5m', '2mo'], ['TAAS-USD', '15m', '1mo']],
-                     [['QRL-USD', '1m', '5d'], ['QRL-USD', '5m', '2mo'], ['QRL-USD', '15m', '1mo']],
-                     [['DNT-USD', '1m', '5d'], ['DNT-USD', '5m', '2mo'], ['DNT-USD', '15m', '1mo']],
-                     [['GAME-USD', '1m', '5d'], ['GAME-USD', '5m', '2mo'], ['GAME-USD', '15m', '1mo']],
-                     [['BLOCK-USD', '1m', '5d'], ['BLOCK-USD', '5m', '2mo'], ['BLOCK-USD', '15m', '1mo']],
-                     [['SALT-USD', '1m', '5d'], ['SALT-USD', '5m', '2mo'], ['SALT-USD', '15m', '1mo']],
-                     [['VERI-USD', '1m', '5d'], ['VERI-USD', '5m', '2mo'], ['VERI-USD', '15m', '1mo']],
-                     [['PART-USD', '1m', '5d'], ['PART-USD', '5m', '2mo'], ['PART-USD', '15m', '1mo']],
-                     [['DCN-USD', '1m', '5d'], ['DCN-USD', '5m', '2mo'], ['DCN-USD', '15m', '1mo']],
-                     [['SMART-USD', '1m', '5d'], ['SMART-USD', '5m', '2mo'], ['SMART-USD', '15m', '1mo']],
-                     [['SNGLS-USD', '1m', '5d'], ['SNGLS-USD', '5m', '2mo'], ['SNGLS-USD', '15m', '1mo']],
-                     [['SNM-USD', '1m', '5d'], ['SNM-USD', '5m', '2mo'], ['SNM-USD', '15m', '1mo']],
-                     [['LKK-USD', '1m', '5d'], ['LKK-USD', '5m', '2mo'], ['LKK-USD', '15m', '1mo']],
-                     [['XCP-USD', '1m', '5d'], ['XCP-USD', '5m', '2mo'], ['XCP-USD', '15m', '1mo']],
-                     [['NLC2-USD', '1m', '5d'], ['NLC2-USD', '5m', '2mo'], ['NLC2-USD', '15m', '1mo']],
-                     [['IOC-USD', '1m', '5d'], ['IOC-USD', '5m', '2mo'], ['IOC-USD', '15m', '1mo']],
-                     [['FAIR-USD', '1m', '5d'], ['FAIR-USD', '5m', '2mo'], ['FAIR-USD', '15m', '1mo']],
-                     [['MGO-USD', '1m', '5d'], ['MGO-USD', '5m', '2mo'], ['MGO-USD', '15m', '1mo']],
-                     [['SUB-USD', '1m', '5d'], ['SUB-USD', '5m', '2mo'], ['SUB-USD', '15m', '1mo']],
-                     [['EDG-USD', '1m', '5d'], ['EDG-USD', '5m', '2mo'], ['EDG-USD', '15m', '1mo']],
-                     [['BTM1-USD', '1m', '5d'], ['BTM1-USD', '5m', '2mo'], ['BTM1-USD', '15m', '1mo']],
-                     [['FRST-USD', '1m', '5d'], ['FRST-USD', '5m', '2mo'], ['FRST-USD', '15m', '1mo']],
-                     [['MCAP-USD', '1m', '5d'], ['MCAP-USD', '5m', '2mo'], ['MCAP-USD', '15m', '1mo']],
-                     [['ATB-USD', '1m', '5d'], ['ATB-USD', '5m', '2mo'], ['ATB-USD', '15m', '1mo']],
-                     [['XUC-USD', '1m', '5d'], ['XUC-USD', '5m', '2mo'], ['XUC-USD', '15m', '1mo']]]])):
+    for ticker_ in [['XLM-USD', '1d', 'max']]:
         def start(ticker):
             global profits
             try:
@@ -1930,13 +1823,14 @@ if __name__ == '__main__':
                 # trader.strategy_diff(real(df['Close'].values))
                 trader.inverse_strategy()
                 trader.convert_signal()
-                trader.log_deposit()
-                trader.backtest(50, commission=0.075, stop_loss=60, plot=False)
+                # trader.log_deposit()
+                trader.backtest(50, commission=0.075, stop_loss=10, plot=True)
                 print(trader.mean_diff, trader.lin_calc_df)
                 profits.append((trader.year_profit, ticker))
                 # trader.get_trained_network([df], filter_kwargs=dict(iters=40), network_save_path='test_predicting',
                 # batch_size=300, epochs=1000)
-            except:
+                print(profits)
+            except KeyboardInterrupt:
                 print(profits)
 
 
