@@ -780,7 +780,7 @@ class Strategies(object):
             self.open_price = loc[val]
 
             _rate = self.moneys if rate is None else rate
-            if e != 0:
+            if e != 0 and not exit:
                 commission_real = _rate * (commission / 100) * credit_leverage
                 if self.__oldsig != EXIT:
                     commission_real *= 2
@@ -824,7 +824,7 @@ class Strategies(object):
                 else:
                     flag = True
 
-                    if e != 0:
+                    if e != 0 and not exit:
                         commission_real = _rate * (commission / 100) * credit_leverage
                         try:
                             if self.__oldsig != EXIT:
@@ -1805,33 +1805,20 @@ if __name__ == '__main__':
 
     profits = []
 
-    for ticker_ in [['XLM-USD', '1d', 'max']]:
-        def start(ticker):
-            global profits
-            try:
-                print(ticker)
-                TICKER = ticker[0]
-                interval = ticker[1]
-                df = yf.download(TICKER, interval=interval, period=ticker[2])
-                trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
-                trader.set_client(TradingClient)
-                trader.set_pyplot()
-                # trader.get_network_regression([df], inputs=INPUTS, network_save_path='test', epochs=100)
-                trader.load_model('./model_regression')
-                trader.prepare_scaler(dataframe=trader.df, regression_net=True)
-                trader.strategy_regression_model()
-                # trader.strategy_diff(real(df['Close'].values))
-                trader.inverse_strategy()
-                trader.convert_signal()
-                # trader.log_deposit()
-                trader.backtest(50, commission=0.075, stop_loss=10, plot=True)
-                print(trader.mean_diff, trader.lin_calc_df)
-                profits.append((trader.year_profit, ticker))
-                # trader.get_trained_network([df], filter_kwargs=dict(iters=40), network_save_path='test_predicting',
-                # batch_size=300, epochs=1000)
-                print(profits)
-            except KeyboardInterrupt:
-                print(profits)
-
-
-        start(ticker=ticker_)
+    for ticker in [['XLM-USD', '1d', 'max']]:
+        print(ticker)
+        TICKER = ticker[0]
+        interval = ticker[1]
+        df = yf.download(TICKER, interval=interval, period=ticker[2]) + 3
+        trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
+        trader.set_client(TradingClient)
+        trader.set_pyplot()
+        trader.prepare_scaler(trader.df)
+        trader.strategy_macd()
+        print(trader.returns)
+        trader.backtest(50, log_profit_calc=False, commission=0.075)
+        # print(trader.mean_diff, trader.lin_calc_df)
+        profits.append((trader.year_profit, ticker))
+        # trader.get_trained_network([df], filter_kwargs=dict(iters=40), network_save_path='test_predicting',
+        # batch_size=300, epochs=1000)
+        print(profits)
