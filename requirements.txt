@@ -2,7 +2,7 @@ iexfinance==0.4.3
 plotly==4.9.0
 ta==0.5.25
 scikit-learn==0.23.1
-tensorflow==2.2.0
+tensorflow==2.2.1
 pykalman==0.9.5
 scipy==1.4.1
 numpy==1.18.5
