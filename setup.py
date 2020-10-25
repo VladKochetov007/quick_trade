@@ -20,7 +20,6 @@ setup(
         'tensorflow==2.2.0',
         'pykalman==0.9.5',
         'scipy==1.4.1',
-        'tqdm==4.48.0',
         'numpy==1.18.5',
         'pandas==1.0.5',
         'python-binance==0.7.5',
