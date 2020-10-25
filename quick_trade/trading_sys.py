@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 import time
+import random
 
 import plotly.graph_objects as go
 import ta
+import ta.volatility
 from binance.client import Client
 from plotly.subplots import make_subplots as sub_make
 from pykalman import KalmanFilter
@@ -76,6 +78,7 @@ class Strategies(object):
         self.first = True
         self.rounding = rounding
         diff = digit(df_['Close'].diff().values)[1:]
+        self.__oldsig = EXIT
         self.diff = [EXIT, *diff]
         self.df = df_.reset_index(drop=True)
         self.drop = 0
@@ -83,12 +86,39 @@ class Strategies(object):
         self.days_undo = days_undo
         self.interval = interval
         if interval == '1m':
-            self.profit_calculate_coef = 1 / 60 / 24 / 365
+            self.profit_calculate_coef = 1 / (60 / 24 / 365)
+        elif interval == '3m':
+            self.profit_calculate_coef = 1 / (30 / 24 / 365)
+        elif interval == '5m':
+            self.profit_calculate_coef = 1 / (12 / 24 / 365)
+        elif interval == '15m':
+            self.profit_calculate_coef = 1 / (4 / 24 / 365)
+        elif interval == '45m':
+            self.profit_calculate_coef = 1 / (32 / 365)
+        elif interval == '1h':
+            self.profit_calculate_coef = 1 / (24 / 365)
+        elif interval == '90m':
+            self.profit_calculate_coef = 1 / (18 / 365)
+        elif interval == '2h':
+            self.profit_calculate_coef = 1 / (12 / 365)
+        elif interval == '3h':
+            self.profit_calculate_coef = 1 / (8 / 365)
+        elif interval == '4h':
+            self.profit_calculate_coef = 1 / (6 / 365)
         elif interval == '1d':
             self.profit_calculate_coef = 1 / 365
+        elif interval == '1w':
+            self.profit_calculate_coef = 1 / 52
+        elif interval == '1M':
+            self.profit_calculate_coef = 1 / 12
+        elif interval == '3M':
+            self.profit_calculate_coef = 1 / 4
+        elif interval == '6M':
+            self.profit_calculate_coef = 1 / 1.5
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
         self.inputs = INPUTS
+        self.__exit_order__ = False
 
     def __repr__(self):
         return 'trader'
@@ -379,9 +409,11 @@ class Strategies(object):
                           mac_slow=26,
                           mac_fast=12,
                           rsi_level=50,
-                          rsi_kwargs=dict(),
+                          rsi_kwargs: dict=None,
                           *args,
                           **macd_kwargs):
+        if rsi_kwargs is None:
+            rsi_kwargs = {}
         ret = []
         macd = ta.trend.macd(self.df['Close'], mac_slow, mac_fast,
                              **macd_kwargs)
@@ -602,7 +634,6 @@ class Strategies(object):
         return model, hist, self.training_set
 
     def strategy_random_pred(self, *args, **kwargs):
-        import random
         self.returns = []
         for i in range(len(self.df)):
             self.returns.append(random.randint(0, 2))
@@ -616,6 +647,34 @@ class Strategies(object):
             preds[e] = round(i[0], rounding)
         self.returns = preds
         return preds
+
+    def strategy_bollinger(self, plot=True, to_mid=True, *bollinger_args, **bollinger_kwargs):
+        ret = []
+        flag = EXIT
+        bollinger = ta.volatility.BollingerBands(self.df['Close'], fillna=True, *bollinger_args, **bollinger_kwargs)
+
+        mid_ = bollinger.bollinger_mavg()
+        upper = bollinger.bollinger_hband()
+        lower = bollinger.bollinger_lband()
+        if plot:
+            for TR, name in zip([upper, mid_, lower], ['upper band', 'mid band', 'lower band']):
+                self.fig.add_trace(go.Line(y=TR, name=name, line=dict(width=SUB_LINES_WIDTH)), col=1, row=1)
+        for close, up, mid, low in zip(self.df['Close'].values,
+                                       upper,
+                                       mid_,
+                                       lower):
+            if close <= low:
+                flag = BUY
+            if close >= up:
+                flag = SELL
+
+            if to_mid:
+                if flag == SELL and close <= mid:
+                    flag = EXIT
+                if flag == BUY and close >= mid:
+                    flag = EXIT
+            ret.append(flag)
+        self.returns = ret
 
     def inverse_strategy(self, *args, **kwargs):
         """
@@ -1335,10 +1394,10 @@ class Strategies(object):
     def backtest(self,
                  deposit=10_000,
                  credit_leverage=1,
-                 bet=None,
-                 commission=0,
-                 stop_loss=None,
-                 take_profit=None,
+                 bet: int = None,
+                 commission: int = 0,
+                 stop_loss: int = None,
+                 take_profit: int = None,
                  plot=True,
                  print_out=True,
                  show=True,
@@ -1626,60 +1685,6 @@ class PatternFinder(Strategies):
 
     """
 
-    def __init__(self,
-                 ticker='AAPL',
-                 days_undo=100,
-                 df: pd.DataFrame = np.nan,
-                 interval='1d',
-                 rounding=5,
-                 *args,
-                 **kwargs):
-        df_ = round(df, rounding)
-        self.first = True
-        self.rounding = rounding
-        diff = digit(df_['Close'].diff().values)[1:]
-        self.__oldsig = EXIT
-        self.diff = [EXIT, *diff]
-        self.df = df_.reset_index(drop=True)
-        self.drop = 0
-        self.ticker = ticker
-        self.days_undo = days_undo
-        self.interval = interval
-        if interval == '1m':
-            self.profit_calculate_coef = 1 / (60 / 24 / 365)
-        elif interval == '3m':
-            self.profit_calculate_coef = 1 / (30 / 24 / 365)
-        elif interval == '5m':
-            self.profit_calculate_coef = 1 / (12 / 24 / 365)
-        elif interval == '15m':
-            self.profit_calculate_coef = 1 / (4 / 24 / 365)
-        elif interval == '45m':
-            self.profit_calculate_coef = 1 / (32 / 365)
-        elif interval == '1h':
-            self.profit_calculate_coef = 1 / (24 / 365)
-        elif interval == '90m':
-            self.profit_calculate_coef = 1 / (18 / 365)
-        elif interval == '2h':
-            self.profit_calculate_coef = 1 / (12 / 365)
-        elif interval == '3h':
-            self.profit_calculate_coef = 1 / (8 / 365)
-        elif interval == '4h':
-            self.profit_calculate_coef = 1 / (6 / 365)
-        elif interval == '1d':
-            self.profit_calculate_coef = 1 / 365
-        elif interval == '1w':
-            self.profit_calculate_coef = 1 / 52
-        elif interval == '1M':
-            self.profit_calculate_coef = 1 / 12
-        elif interval == '3M':
-            self.profit_calculate_coef = 1 / 4
-        elif interval == '6M':
-            self.profit_calculate_coef = 1 / 1.5
-        else:
-            raise ValueError('I N C O R R E C T   I N T E R V A L')
-        self.inputs = INPUTS
-        self.__exit_order__ = False
-
     def _window_(self, column, n=2):
         return get_window(self.df[column].values, n)
 
@@ -1805,20 +1810,52 @@ if __name__ == '__main__':
 
     profits = []
 
-    for ticker in [['XLM-USD', '1d', 'max']]:
-        print(ticker)
+    for ticker in [['OMG-USD', '1d', 'max']]:
+        def get_test_df():
+            close = []
+            open_ = []
+            high, low = [], []
+            for i in range(100):
+                for j in range(2):
+                    close.append(60)
+
+                for j in range(2):
+                    close.append(50)
+
+                for j in range(2):
+                    open_.append(50)
+
+                for j in range(2):
+                    open_.append(60)
+                for j in range(2):
+
+                    for j in range(2):
+                        high.append(70)
+
+                    for j in range(2):
+                        low.append(40)
+            return pd.DataFrame({'Close': close,
+                                 'Open': open_,
+                                 'High': high,
+                                 'Low': low})
+
+
+        # df = get_test_df()
+        # print(df)
         TICKER = ticker[0]
         interval = ticker[1]
-        df = yf.download(TICKER, interval=interval, period=ticker[2]) + 3
+        period = ticker[2]
+        df = yf.download(TICKER, interval=interval, period=period)
+        # df = yf.download(TICKER, interval=interval, period='max')
         trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
         trader.set_client(TradingClient)
         trader.set_pyplot()
-        trader.prepare_scaler(trader.df)
-        trader.strategy_macd()
-        print(trader.returns)
-        trader.backtest(50, log_profit_calc=False, commission=0.075)
-        # print(trader.mean_diff, trader.lin_calc_df)
-        profits.append((trader.year_profit, ticker))
-        # trader.get_trained_network([df], filter_kwargs=dict(iters=40), network_save_path='test_predicting',
-        # batch_size=300, epochs=1000)
-        print(profits)
+        # trader.get_trained_network([df], network_save_path='qwty')
+        trader.load_model('./model_regression')
+        trader.prepare_scaler(dataframe=df, regression_net=True)
+        trader.strategy_regression_model()
+        trader.inverse_strategy()
+        trader.convert_signal()
+        trader.log_deposit()
+        # trader.strategy_diff(trader.df['Close'])
+        trader.backtest(commission=0.075, stop_loss=10, )
