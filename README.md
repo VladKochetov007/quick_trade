@@ -58,6 +58,7 @@ a.backtest()
 ## installing:
 ```
 $ git clone https://github.com/VladKochetov007/quick_trade.git
+$ pip3 install -r quick_trade/requirements.txt
 ```
 
 ## your project tree:
@@ -85,7 +86,7 @@ project
  │    ├── logo-with-slogan.PNG
  │    ├── README_for_pypi.txt
  │    ├── README.md
- │    ├── requerments.txt
+ │    ├── requirements.txt
  │    └── setup.py
  └── user_code.py
 ```
