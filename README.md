@@ -66,18 +66,18 @@ $ pip3 install -r quick_trade/requirements.txt
 project
  ├── quick_trade
  │    ├── quick_trade
- |    |    ├── model-predicting
- |    |    │    ├── assets
- |    |    │    ├── varibles
- |    |    │    │    ├── varibles.data-00000-of-00001
- |    |    │    │    └── varibles.index
- |    |    │    └── saved_model.pb
- |    |    ├── model-regression
- |    |    │    ├── assets
- |    |    │    ├── varibles
- |    |    │    │    ├── varibles.data-00000-of-00001
- |    |    │    │    └── varibles.index
- |    |    │    └── saved_model.pb
+ │    │    ├── model-predicting
+ │    │    │    ├── assets
+ │    │    │    ├── varibles
+ │    │    │    │    ├── varibles.data-00000-of-00001
+ │    │    │    │    └── varibles.index
+ │    │    │    └── saved_model.pb
+ │    │    ├── model-regression
+ │    │    │    ├── assets
+ │    │    │    ├── varibles
+ │    │    │    │    ├── varibles.data-00000-of-00001
+ │    │    │    │    └── varibles.index
+ │    │    │    └── saved_model.pb
  │    │    ├── trading_sys.py
  │    │    └── utils.py
  │    ├── LICENSE.md
