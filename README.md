@@ -84,7 +84,6 @@ project
  │    ├── .gitignore
  │    ├── logo.PNG
  │    ├── logo-with-slogan.PNG
- │    ├── README_for_pypi.txt
  │    ├── README.md
  │    ├── requirements.txt
  │    └── setup.py
