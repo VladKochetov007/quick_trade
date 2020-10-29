@@ -18,6 +18,11 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
 
 
+# я понял свои ошибки
+# я пишу на русском комментарии
+# и они без смысла
+# и нет комментов к коду
+
 class TradingClient(Client):
     ordered = False
 
@@ -409,7 +414,7 @@ class Strategies(object):
                           mac_slow=26,
                           mac_fast=12,
                           rsi_level=50,
-                          rsi_kwargs: dict=None,
+                          rsi_kwargs: dict = None,
                           *args,
                           **macd_kwargs):
         if rsi_kwargs is None:
@@ -599,14 +604,15 @@ class Strategies(object):
             metrics = ['acc']
         list_input = []
         list_output = []
+        flag = self.df
 
         for df in dataframes:
+            self.df = df
             all_ta = ta.add_all_ta_features(df, 'Open', 'High', 'Low', 'Close',
                                             'Volume', True)
-            get_all_out = self._get_this_instance(df=df)
             filter_kwargs['plot'] = False
-            output1 = get_all_out.strategy_diff(
-                eval('get_all_out.' + filter_ + '(**filter_kwargs)'))
+            output1 = self.strategy_diff(
+                eval('self.' + filter_ + '(**filter_kwargs)'))
 
             for output in output1:
                 list_output.append(output[0])
@@ -614,6 +620,8 @@ class Strategies(object):
                 pd.DataFrame(
                     self.prepare_scaler(
                         pd.DataFrame(all_ta), regression_net=False)))
+        self.df = flag
+        del flag
         input_df = pd.concat(list_input, axis=0).dropna(1)
 
         input_train_array = input_df.values
@@ -1810,7 +1818,7 @@ if __name__ == '__main__':
 
     profits = []
 
-    for ticker in [['OMG-USD', '1d', 'max']]:
+    for ticker in [['EUR=X', '1d', 'max']]:
         def get_test_df():
             close = []
             open_ = []
@@ -1850,12 +1858,19 @@ if __name__ == '__main__':
         trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
         trader.set_client(TradingClient)
         trader.set_pyplot()
-        # trader.get_trained_network([df], network_save_path='qwty')
+
+        '''trader.get_trained_network([yf.download("XRP-USD"),
+                                    yf.download("GE")],
+                                   network_save_path='model_predicting3',
+                                   epochs=50,
+                                   filter_kwargs={'iters': 1})'''
+
         trader.load_model('./model_regression')
         trader.prepare_scaler(dataframe=df, regression_net=True)
         trader.strategy_regression_model()
-        trader.inverse_strategy()
-        trader.convert_signal()
+        # trader.inverse_strategy()
+        # trader.convert_signal()
         trader.log_deposit()
+
         # trader.strategy_diff(trader.df['Close'])
-        trader.backtest(commission=0.075, stop_loss=10, )
+        trader.backtest(commission=0.075)
