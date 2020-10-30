@@ -1648,8 +1648,11 @@ class Strategies(object):
     def load_model(self, path):
         self.model = load_model(path)
 
-    def set_client(self, class_client, *client_set_args, **client_set_kwargs):
-        self.client = class_client(*client_set_args, **client_set_kwargs)
+    def set_client(self, your_client):
+        """
+        :param your_client: TradingClient object
+        """
+        self.client = your_client
 
     def convert_signal(self, old=SELL, new=EXIT):
         for pos, val in enumerate(self.returns):
