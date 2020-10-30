@@ -60,6 +60,10 @@ a.backtest()
 $ git clone https://github.com/VladKochetov007/quick_trade.git
 $ pip3 install -r quick_trade/requirements.txt
 ```
+or
+```
+$ pip install quick-trade==3.0
+```
 
 ## your project tree:
 ```
