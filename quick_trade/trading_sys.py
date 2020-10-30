@@ -73,7 +73,6 @@ class Strategies(object):
 
     def __init__(self,
                  ticker='AAPL',
-                 days_undo=100,
                  df: pd.DataFrame = np.nan,
                  interval='1d',
                  rounding=5,
@@ -88,7 +87,6 @@ class Strategies(object):
         self.df = df_.reset_index(drop=True)
         self.drop = 0
         self.ticker = ticker
-        self.days_undo = days_undo
         self.interval = interval
         if interval == '1m':
             self.profit_calculate_coef = 1 / (60 / 24 / 365)
@@ -1403,7 +1401,7 @@ class Strategies(object):
                  deposit=10_000,
                  credit_leverage=1,
                  bet: int = None,
-                 commission: int = 0,
+                 commission: float = 0,
                  stop_loss: int = None,
                  take_profit: int = None,
                  plot=True,
@@ -1663,8 +1661,6 @@ class PatternFinder(Strategies):
 
     ticker:   |     str      |  ticker/symbol of chart
 
-    days_undo:|     int      |  days of chart
-
     df:       |   dataframe  |  data of chart
 
     interval: |     str      |  interval of df.
@@ -1788,89 +1784,3 @@ class PatternFinder(Strategies):
                 ret.append(False)
         return ret
 
-
-if __name__ == '__main__':
-    # tests
-    # very bad code zone
-    import yfinance as yf
-
-
-    def real(df, window_length=221, polyorder=3):
-
-        from tqdm import auto
-        """
-        for i in auto.tqdm(range(aa, len(df - 1))):
-            filtered.append(signal.savgol_filter(
-                df[i - aa:i],
-                window_length=window_length,
-                polyorder=polyorder)[aa - 1])
-        """
-
-        aa = 222
-        filtered = [EXIT for _ in range(aa)]
-
-        filtered1 = df
-        for _ in auto.tqdm(range(len(df))):
-            filtered1 = KalmanFilter().filter(filtered1)[0]
-            filtered.append(filtered1[len(filtered1) - 1])
-        return pd.DataFrame(filtered)
-
-
-    profits = []
-
-    for ticker in [['EUR=X', '1d', 'max']]:
-        def get_test_df():
-            close = []
-            open_ = []
-            high, low = [], []
-            for i in range(100):
-                for j in range(2):
-                    close.append(60)
-
-                for j in range(2):
-                    close.append(50)
-
-                for j in range(2):
-                    open_.append(50)
-
-                for j in range(2):
-                    open_.append(60)
-                for j in range(2):
-
-                    for j in range(2):
-                        high.append(70)
-
-                    for j in range(2):
-                        low.append(40)
-            return pd.DataFrame({'Close': close,
-                                 'Open': open_,
-                                 'High': high,
-                                 'Low': low})
-
-
-        # df = get_test_df()
-        # print(df)
-        TICKER = ticker[0]
-        interval = ticker[1]
-        period = ticker[2]
-        df = yf.download(TICKER, interval=interval, period=period)
-        # df = yf.download(TICKER, interval=interval, period='max')
-        trader = PatternFinder(df=df, interval=interval, ticker=TICKER)
-        trader.set_client(TradingClient)
-        trader.set_pyplot()
-
-        '''trader.get_trained_network([yf.download("XRP-USD"),
-                                    yf.download("GE")],
-                                   network_save_path='model_predicting3',
-                                   epochs=50,
-                                   filter_kwargs={'iters': 1})'''
-
-        trader.load_model('./model_regression')
-        trader.prepare_scaler(dataframe=df, regression_net=True)
-        trader.strategy_regression_model()
-        # trader.inverse_strategy()
-        # trader.convert_signal()
-        trader.log_deposit()
-
-        # trader.strategy_diff(trader.df['Close'])
-        trader.backtest(commission=0.075)
