@@ -66,8 +66,7 @@ class TradingClient(Client):
 class Strategies(object):
     """
 
-    basic class for PatternFinder.
-    please use PatternFinder class.
+    basic class for PatternFinder (but without patterns).
 
     """
 
@@ -90,12 +89,16 @@ class Strategies(object):
         self.interval = interval
         if interval == '1m':
             self.profit_calculate_coef = 1 / (60 / 24 / 365)
-        elif interval == '3m':
+        if interval == '2m':
             self.profit_calculate_coef = 1 / (30 / 24 / 365)
+        elif interval == '3m':
+            self.profit_calculate_coef = 1 / (20 / 24 / 365)
         elif interval == '5m':
             self.profit_calculate_coef = 1 / (12 / 24 / 365)
         elif interval == '15m':
             self.profit_calculate_coef = 1 / (4 / 24 / 365)
+        elif interval == '30m':
+            self.profit_calculate_coef = 1 / (2 / 24 / 365)
         elif interval == '45m':
             self.profit_calculate_coef = 1 / (32 / 365)
         elif interval == '1h':
@@ -117,7 +120,7 @@ class Strategies(object):
         elif interval == '3M':
             self.profit_calculate_coef = 1 / 4
         elif interval == '6M':
-            self.profit_calculate_coef = 1 / 1.5
+            self.profit_calculate_coef = 1 / 2
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
         self.inputs = INPUTS
@@ -1664,7 +1667,12 @@ class PatternFinder(Strategies):
     df:       |   dataframe  |  data of chart
 
     interval: |     str      |  interval of df.
-    one of: '1d', '1m' ...
+    one of:
+    1m    30m    3h    3M
+    2m    45m    4h    6M
+    3m    1h     1d
+    5m    90m    1w
+    15m   2h     1M
 
 
     step 1:
