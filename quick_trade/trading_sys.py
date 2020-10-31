@@ -78,13 +78,12 @@ class Strategies(object):
                  *args,
                  **kwargs):
         df_ = round(df, rounding)
-        self.first = True
-        self.rounding = rounding
+        self.__first__ = True
+        self.__rounding__ = rounding
         diff = digit(df_['Close'].diff().values)[1:]
         self.__oldsig = EXIT
         self.diff = [EXIT, *diff]
         self.df = df_.reset_index(drop=True)
-        self.drop = 0
         self.ticker = ticker
         self.interval = interval
         if interval == '1m':
@@ -123,7 +122,7 @@ class Strategies(object):
             self.profit_calculate_coef = 1 / 2
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
-        self.inputs = INPUTS
+        self.__inputs = INPUTS
         self.__exit_order__ = False
 
     def __repr__(self):
@@ -407,7 +406,6 @@ class Strategies(object):
             else:
                 ret.append(flag)
 
-        ret = ret[self.drop:]
         self.returns = ret
         return ret
 
@@ -431,7 +429,6 @@ class Strategies(object):
                 ret.append(SELL)
             else:
                 ret.append(EXIT)
-        ret = ret[self.drop:]
         self.returns = ret
         return ret
 
@@ -476,10 +473,10 @@ class Strategies(object):
 
     def strategy_regression_model(self, plot=True, *args, **kwargs):
         ret = []
-        for i in range(self.inputs - 1):
+        for i in range(self.__inputs - 1):
             ret.append(EXIT)
         data_to_pred = np.array(
-            get_window(np.array([self.df['Close'].values]).T, self.inputs))
+            get_window(np.array([self.df['Close'].values]).T, self.__inputs))
 
         data_to_pred = data_to_pred.T
         for e, data in enumerate(data_to_pred):
@@ -493,7 +490,7 @@ class Strategies(object):
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
         self.returns = [*ret, *predictions]
-        nans = itertools.chain.from_iterable([(np.nan,) * self.inputs])
+        nans = itertools.chain.from_iterable([(np.nan,) * self.__inputs])
         filt = (*nans, *frame.T[0])
         if plot:
             self.fig.add_trace(
@@ -517,7 +514,7 @@ class Strategies(object):
 
         """
 
-        self.inputs = inputs
+        self.__inputs = inputs
         model = Sequential()
         model.add(
             LSTM(units=50, return_sequences=True, input_shape=(inputs, 1)))
@@ -1264,26 +1261,26 @@ class Strategies(object):
             logger.info(f'open lot {predict}')
             if trading_on_client:
                 if predict == 'Buy':
-                    if not self.first:
+                    if not self.__first__:
                         self.client.exit_last_order()
                         logger.info('client exit')
                     self.client.new_order_buy(self.ticker, bet, credit_leverage=credit_leverage)
                     logger.info('client buy')
                     self.__exit_order__ = False
-                    self.first = False
+                    self.__first__ = False
 
                 if predict == 'Sell':
-                    if not self.first:
+                    if not self.__first__:
                         self.client.exit_last_order()
                         logger.info('client exit')
                     if can_sell:
                         self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
                         logger.info('client sell')
-                    self.first = False
+                    self.__first__ = False
                     self.__exit_order__ = False
 
                 if predict == 'Exit':
-                    if not self.first:
+                    if not self.__first__:
                         self.client.exit_last_order()
                         logger.info('client exit')
                         self.__exit_order__ = True
@@ -1794,4 +1791,3 @@ class PatternFinder(Strategies):
             else:
                 ret.append(False)
         return ret
-
