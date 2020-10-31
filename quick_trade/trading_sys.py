@@ -217,10 +217,10 @@ class Strategies(object):
         calculating stop loss and take profit.
 
 
-        sig:        |     int     |  signsl to sell/buy/exit:
-            2 -- exit.
-            1 -- buy.
-            0 -- sell.
+        sig:        |     int     |  signal to sell/buy/exit:
+            EXIT -- exit.
+            BUY -- buy.
+            SELL -- sell.
 
         """
 
@@ -300,13 +300,13 @@ class Strategies(object):
         SMA3 = ta.trend.sma(self.df['Close'], slow)
 
         if plot:
-            for SMA, C, name in zip([SMA1, SMA2, SMA3], [G, B, R],
-                                    [fast, mid, slow]):
+            for SMA, Co, name in zip([SMA1, SMA2, SMA3], [G, B, R],
+                                     [fast, mid, slow]):
                 self.fig.add_trace(
                     go.Line(
                         name=f'SMA{name}',
                         y=SMA.values,
-                        line=dict(width=SUB_LINES_WIDTH, color=C)), 1, 1)
+                        line=dict(width=SUB_LINES_WIDTH, color=Co)), 1, 1)
 
         for SMA13, SMA26, SMA100 in zip(SMA1, SMA2, SMA3):
             if SMA100 < SMA26 < SMA13:
@@ -332,13 +332,13 @@ class Strategies(object):
         return_list = []
 
         if plot:
-            for ema, C, name in zip([ema3.values, ema21.values, ema46.values],
-                                    [G, B, R], [slow, mid, fast]):
+            for ema, Co, name in zip([ema3.values, ema21.values, ema46.values],
+                                     [G, B, R], [slow, mid, fast]):
                 self.fig.add_trace(
                     go.Line(
                         name=f'SMA{name}',
                         y=ema,
-                        line=dict(width=SUB_LINES_WIDTH, color=C)), 1, 1)
+                        line=dict(width=SUB_LINES_WIDTH, color=Co)), 1, 1)
 
         for EMA1, EMA2, EMA3 in zip(ema3, ema21, ema46):
             if EMA1 > EMA2 > EMA3:
@@ -736,7 +736,7 @@ class Strategies(object):
 
         print_out:       |    bool.    | printing.
 
-        column:          |     str     | column of dataframe to becktest.
+        column:          |     str     | column of dataframe to backtest.
 
 
 
@@ -838,6 +838,8 @@ class Strategies(object):
         exit = False
 
         e = 0
+        _stop_loss = 0
+        take = 0
         for enum, (val, val2, sig) in enumerate(
                 zip(vals[:len(vals) - 1],
                     vals[1:],
@@ -912,6 +914,7 @@ class Strategies(object):
                         elif sig == SELL and close > _stop_loss:
                             diff = _stop_loss - open_
                         else:
+                            diff = 0
                             flag = False
                         if flag:
                             if bet is None:
@@ -1719,12 +1722,12 @@ class PatternFinder(Strategies):
     def find_pip_bar(self, min_diff_coef=2, body_coef=10):
         ret = []
         flag = EXIT
-        for e, (high, low, open, close) in enumerate(
+        for e, (high, low, open_price, close) in enumerate(
                 zip(self.df['High'], self.df['Low'], self.df['Open'],
                     self.df['Close']), 1):
-            body = abs(open - close)
-            shadow_high = high - max(open, close)
-            shadow_low = min(open, close) - low
+            body = abs(open_price - close)
+            shadow_high = high - max(open_price, close)
+            shadow_low = min(open_price, close) - low
             if body < (max(shadow_high, shadow_low) * body_coef):
                 if shadow_low > (shadow_high * min_diff_coef):
                     ret.append(BUY)
@@ -1742,7 +1745,7 @@ class PatternFinder(Strategies):
     def find_DBLHC_DBHLC(self):
         ret = [EXIT]
         flag = EXIT
-        for e, (high, low, open, close) in enumerate(
+        for e, (high, low, open_pr, close) in enumerate(
                 zip(
                     self._window_('High'), self._window_('Low'),
                     self._window_('Open'), self._window_('Close')), 1):
