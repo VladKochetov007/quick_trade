@@ -29,7 +29,8 @@ class TradingClient(Client):
     def get_ticker_price(self, ticker):
         return float(self.get_symbol_ticker(symbol=ticker)['price'])
 
-    def get_data(self, ticker=None, interval=None, **get_kw):
+    @staticmethod
+    def get_data(ticker=None, interval=None, **get_kw):
         return get_binance_data(ticker, interval, **get_kw)
 
     def new_order_buy(self, ticker=None, quantity=None, credit_leverage=None):
@@ -181,8 +182,7 @@ class Strategies(object):
 
     def bull_power(self, periods):
         EMA = ta.trend.ema(self.df['Close'], periods)
-        ret = np.array(self.df['High']) - EMA
-        return ret
+        return np.array(self.df['High']) - EMA
 
     def tema(self, periods, *args, **kwargs):
         ema = ta.trend.ema(self.df['Close'], periods)
@@ -205,12 +205,12 @@ class Strategies(object):
         end = start + (mean - start) * 2
 
         length = len(data)
-        ret = []
+        return_list = []
         mean_diff = (end - start) / length
         for i in range(length):
-            ret.append(start + mean_diff * i)
+            return_list.append(start + mean_diff * i)
         self.mean_diff = mean_diff
-        return np.array(ret)
+        return np.array(return_list)
 
     def get_stop_take(self, sig):
         """
@@ -254,16 +254,15 @@ class Strategies(object):
         """
         if isinstance(frame_to_diff, str):
             frame_to_diff = eval(frame_to_diff)
-        ret = list(np.digitize(frame_to_diff.diff(), bins=[0]))
-        self.returns = ret
-        return ret
+        self.returns = list(np.digitize(frame_to_diff.diff(), bins=[0]))
+        return self.returns
 
     def strategy_buy_hold(self, *args, **kwargs):
         self.returns = [BUY for _ in range(len(self.df))]
         return self.returns
 
     def strategy_2_sma(self, slow=100, fast=30, plot=True, *args, **kwargs):
-        ret = []
+        return_list = []
         SMA1 = ta.trend.sma(self.df['Close'], fast)
         SMA2 = ta.trend.sma(self.df['Close'], slow)
         if plot:
@@ -280,13 +279,13 @@ class Strategies(object):
 
         for SMA13, SMA26 in zip(SMA1, SMA2):
             if SMA26 < SMA13:
-                ret.append(BUY)
+                return_list.append(BUY)
             elif SMA13 < SMA26:
-                ret.append(SELL)
+                return_list.append(SELL)
             else:
-                ret.append(EXIT)
-        self.returns = ret
-        return ret
+                return_list.append(EXIT)
+        self.returns = return_list
+        return return_list
 
     def strategy_3_sma(self,
                        slow=100,
@@ -295,7 +294,7 @@ class Strategies(object):
                        plot=True,
                        *args,
                        **kwargs):
-        ret = []
+        return_list = []
         SMA1 = ta.trend.sma(self.df['Close'], fast)
         SMA2 = ta.trend.sma(self.df['Close'], mid)
         SMA3 = ta.trend.sma(self.df['Close'], slow)
@@ -311,14 +310,14 @@ class Strategies(object):
 
         for SMA13, SMA26, SMA100 in zip(SMA1, SMA2, SMA3):
             if SMA100 < SMA26 < SMA13:
-                ret.append(BUY)
+                return_list.append(BUY)
             elif SMA100 > SMA26 > SMA13:
-                ret.append(SELL)
+                return_list.append(SELL)
             else:
-                ret.append(EXIT)
+                return_list.append(EXIT)
 
-        self.returns = ret
-        return ret
+        self.returns = return_list
+        return return_list
 
     def strategy_3_ema(self,
                        slow=3,
@@ -330,7 +329,7 @@ class Strategies(object):
         ema3 = ta.trend.ema(self.df['Close'], slow)
         ema21 = ta.trend.ema(self.df['Close'], mid)
         ema46 = ta.trend.ema(self.df['Close'], fast)
-        ret = []
+        return_list = []
 
         if plot:
             for ema, C, name in zip([ema3.values, ema21.values, ema46.values],
@@ -343,32 +342,32 @@ class Strategies(object):
 
         for EMA1, EMA2, EMA3 in zip(ema3, ema21, ema46):
             if EMA1 > EMA2 > EMA3:
-                ret.append(BUY)
+                return_list.append(BUY)
             elif EMA1 < EMA2 < EMA3:
-                ret.append(SELL)
+                return_list.append(SELL)
             else:
-                ret.append(EXIT)
-        self.returns = ret
-        return ret
+                return_list.append(EXIT)
+        self.returns = return_list
+        return return_list
 
     def strategy_macd(self, slow=100, fast=30, *args, **kwargs):
-        ret = []
+        return_list = []
         lavel = ta.trend.macd_signal(self.df['Close'], slow, fast)
         macd = ta.trend.macd(self.df['Close'], slow, fast)
 
         for j, k in zip(lavel.values, macd.values):
             if j > k:
-                ret.append(SELL)
+                return_list.append(SELL)
             elif k > j:
-                ret.append(BUY)
+                return_list.append(BUY)
             else:
-                ret.append(EXIT)
-        self.returns = ret
-        return ret
+                return_list.append(EXIT)
+        self.returns = return_list
+        return return_list
 
     def strategy_exp_diff(self, period=70, plot=True, *args, **kwargs):
         exp = self.tema(period)
-        ret = self.strategy_diff(exp)
+        return_list = self.strategy_diff(exp)
         if plot:
             self.fig.add_trace(
                 go.Line(
@@ -376,38 +375,38 @@ class Strategies(object):
                     y=exp.values.T[0],
                     line=dict(width=SUB_LINES_WIDTH)), 1, 1)
 
-        self.returns = ret
-        return ret
+        self.returns = return_list
+        return return_list
 
     def strategy_rsi(self,
-                     min=20,
-                     max=80,
+                     minimum=20,
+                     maximum=80,
                      max_mid=75,
                      min_mid=35,
                      *args,
                      **rsi_kwargs):
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
-        ret = []
+        return_list = []
         flag = EXIT
 
         for val, diff in zip(rsi.values, rsi.diff().values):
-            if val < min and diff > 0 and val is not pd.NA:
-                ret.append(BUY)
+            if val < minimum and diff > 0 and val is not pd.NA:
+                return_list.append(BUY)
                 flag = BUY
-            elif val > max and diff < 0 and val is not pd.NA:
-                ret.append(SELL)
+            elif val > maximum and diff < 0 and val is not pd.NA:
+                return_list.append(SELL)
                 flag = SELL
             elif flag == BUY and val < max_mid:
                 flag = EXIT
-                ret.append(EXIT)
+                return_list.append(EXIT)
             elif flag == SELL and val > min_mid:
                 flag = EXIT
-                ret.append(EXIT)
+                return_list.append(EXIT)
             else:
-                ret.append(flag)
+                return_list.append(flag)
 
-        self.returns = ret
-        return ret
+        self.returns = return_list
+        return return_list
 
     def strategy_macd_rsi(self,
                           mac_slow=26,
@@ -418,22 +417,22 @@ class Strategies(object):
                           **macd_kwargs):
         if rsi_kwargs is None:
             rsi_kwargs = {}
-        ret = []
+        return_list = []
         macd = ta.trend.macd(self.df['Close'], mac_slow, mac_fast,
                              **macd_kwargs)
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
         for MACD, RSI in zip(macd.values, rsi.values):
             if MACD > 0 and RSI > rsi_level:
-                ret.append(BUY)
+                return_list.append(BUY)
             elif MACD < 0 and RSI < rsi_level:
-                ret.append(SELL)
+                return_list.append(SELL)
             else:
-                ret.append(EXIT)
-        self.returns = ret
-        return ret
+                return_list.append(EXIT)
+        self.returns = return_list
+        return return_list
 
     def strategy_parabolic_SAR(self, plot=True, *args, **sar_kwargs):
-        ret = []
+        return_list = []
         sar = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
                                      self.df['Close'], **sar_kwargs)
         sardown = sar.psar_down().values
@@ -450,13 +449,13 @@ class Strategies(object):
             numup = np.nan_to_num(up, nan=-9999)
             numdown = np.nan_to_num(down, nan=-9999)
             if numup != -9999:
-                ret.append(BUY)
+                return_list.append(BUY)
             elif numdown != -9999:
-                ret.append(SELL)
+                return_list.append(SELL)
             else:
-                ret.append(EXIT)
-        self.returns = ret
-        return ret
+                return_list.append(EXIT)
+        self.returns = return_list
+        return return_list
 
     def strategy_macd_histogram_diff(self,
                                      slow=23,
@@ -467,14 +466,14 @@ class Strategies(object):
         signal_ = _MACD_.macd_signal()
         macd_ = _MACD_.macd()
         histogram = pd.DataFrame(macd_.values - signal_.values)
-        ret = digit(histogram.diff().values)
-        self.returns = ret
-        return ret
+        return_list = digit(histogram.diff().values)
+        self.returns = return_list
+        return return_list
 
     def strategy_regression_model(self, plot=True, *args, **kwargs):
-        ret = []
+        return_list = []
         for i in range(self.__inputs - 1):
-            ret.append(EXIT)
+            return_list.append(EXIT)
         data_to_pred = np.array(
             get_window(np.array([self.df['Close'].values]).T, self.__inputs))
 
@@ -489,7 +488,7 @@ class Strategies(object):
         frame = predictions
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
-        self.returns = [*ret, *predictions]
+        self.returns = [*return_list, *predictions]
         nans = itertools.chain.from_iterable([(np.nan,) * self.__inputs])
         filt = (*nans, *frame.T[0])
         if plot:
@@ -561,7 +560,7 @@ class Strategies(object):
     def get_trained_network(self,
                             dataframes,
                             filter_='kalman_filter',
-                            filter_kwargs=dict(),
+                            filter_kwargs=None,
                             optimizer='adam',
                             loss='mse',
                             metrics=None,
@@ -598,6 +597,8 @@ class Strategies(object):
 
         """
 
+        if filter_kwargs is None:
+            filter_kwargs = dict()
         if metrics is None:
             metrics = ['acc']
         list_input = []
@@ -655,7 +656,7 @@ class Strategies(object):
         return preds
 
     def strategy_bollinger(self, plot=True, to_mid=True, *bollinger_args, **bollinger_kwargs):
-        ret = []
+        return_list = []
         flag = EXIT
         bollinger = ta.volatility.BollingerBands(self.df['Close'], fillna=True, *bollinger_args, **bollinger_kwargs)
 
@@ -679,8 +680,8 @@ class Strategies(object):
                     flag = EXIT
                 if flag == BUY and close >= mid:
                     flag = EXIT
-            ret.append(flag)
-        self.returns = ret
+            return_list.append(flag)
+        self.returns = return_list
 
     def inverse_strategy(self, *args, **kwargs):
         """
@@ -692,22 +693,22 @@ class Strategies(object):
 
         """
 
-        ret = []
-        for signal in self.returns:
-            if signal == BUY:
-                ret.append(SELL)
-            elif signal == SELL:
-                ret.append(BUY)
+        return_list = []
+        for signal_key in self.returns:
+            if signal_key == BUY:
+                return_list.append(SELL)
+            elif signal_key == SELL:
+                return_list.append(BUY)
             else:
-                ret.append(EXIT)
-        self.returns = ret
-        return ret
+                return_list.append(EXIT)
+        self.returns = return_list
+        return return_list
 
     def basic_backtest(self,
                        deposit=10_000,
                        credit_leverage=1,
                        bet=None,
-                       commission=0,
+                       commission: float = 0.0,
                        stop_loss=None,
                        take_profit=None,
                        plot=True,
@@ -746,7 +747,7 @@ class Strategies(object):
             take profit,
             linear deposit,
             <<column>> price,
-            open bet\lot price.
+            open lot price.
 
 
         """
@@ -1030,8 +1031,19 @@ class Strategies(object):
                    height=900,
                    width=1300,
                    template='plotly_dark',
-                   row_heights=[100, 160],
+                   row_heights=None,
                    **subplot_kwargs):
+        """
+
+        :param height: window height
+        :param width: window width
+        :param template: plotly template
+        :param row_heights: standard [100, 160]
+        :param subplot_kwargs: kw
+        :return:
+        """
+        if row_heights is None:
+            row_heights = [100, 160]
         self.fig = sub_make(2, 1, row_heights=row_heights, **subplot_kwargs)
         self.fig.update_layout(
             height=height,
@@ -1060,13 +1072,13 @@ class Strategies(object):
         """
         first_func:      |  trading strategy  |   strategy to combine.
 
-        standart: nothing.
+        standard: nothing.
 
         example:  Strategies.strategy_macd.
 
         second_func:     |  trading strategy  |   strategy to combine.
 
-        standart: nothing.
+        standard: nothing.
 
         args_first_func: |    tuple, list     |   arguments to first function.
 
@@ -1143,45 +1155,47 @@ class Strategies(object):
 
         first_returns = first_func(*args_first_func)
         second_returns = second_func(*args_second_func)
-        ret = []
+        return_list = []
         if mode == 'minimalist':
             for ret1, ret2 in zip(first_returns, second_returns):
                 if ret1 == ret2:
-                    ret.append(ret1)
+                    return_list.append(ret1)
                 else:
-                    ret.append(EXIT)
+                    return_list.append(EXIT)
         elif mode == 'maximalist':
-            ret = self.__maximalist(first_returns, second_returns)
+            return_list = self.__maximalist(first_returns, second_returns)
         elif mode == 'super':
-            ret = self.__collide_super(first_returns, second_returns)
+            return_list = self.__collide_super(first_returns, second_returns)
         else:
             raise ValueError('I N C O R R E C T   M O D E')
-        self.returns = ret
-        return ret
+        self.returns = return_list
+        return return_list
 
-    def __maximalist(self, returns1, returns2):
-        ret = []
+    @staticmethod
+    def __maximalist(returns1, returns2):
+        return_list = []
         flag = EXIT
         for a, b in zip(returns1, returns2):
             if a == b:
-                ret.append(a)
+                return_list.append(a)
                 flag = a
             else:
-                ret.append(flag)
-        return ret
+                return_list.append(flag)
+        return return_list
 
-    def __collide_super(self, l1, l2):
-        ret = []
+    @staticmethod
+    def __collide_super(l1, l2):
+        return_list = []
         for first, sec in zip(set_(l1), set_(l2)):
             if first is not np.nan and sec is not np.nan and first is not sec:
-                ret.append(EXIT)
+                return_list.append(EXIT)
             elif first is sec:
-                ret.append(first)
+                return_list.append(first)
             elif first is np.nan:
-                ret.append(sec)
+                return_list.append(sec)
             else:
-                ret.append(first)
-        return anti_set_(ret)
+                return_list.append(first)
+        return anti_set_(return_list)
 
     def get_trading_predict(self,
                             take_profit=None,
@@ -1196,6 +1210,7 @@ class Strategies(object):
                             *args,
                             **kwargs):
         """
+        :param rounding_bet: maximum permissible accuracy with your api
         :param second_symbol_of_ticker: BTCUSDT -> USDT
         :param can_sell: use order sell (client)
         :param credit_leverage: credit leverage for trading on client
@@ -1308,7 +1323,7 @@ class Strategies(object):
     def realtime_trading(self,
                          ticker,
                          strategy,
-                         get_data_kwargs=dict(),
+                         get_data_kwargs=None,
                          sleeping_time=60,
                          print_out=True,
                          take_profit=None,
@@ -1337,8 +1352,9 @@ class Strategies(object):
 
         if get_data_kwargs is None:
             get_data_kwargs = dict()
-        global ret
-        ret = {}
+        if get_data_kwargs is None:
+            get_data_kwargs = dict()
+        self._ret = {}
         self.ticker = ticker
         __now__ = time.time()
         try:
@@ -1358,7 +1374,7 @@ class Strategies(object):
                 if print_out:
                     print(index, prediction)
                 logger.info(f"trading prediction at {index}: {prediction}")
-                ret[index] = prediction
+                self._ret[index] = prediction
                 while True:
                     if not self.__exit_order__:
                         price = self.client.get_ticker_price(ticker)
@@ -1374,7 +1390,7 @@ class Strategies(object):
                                 if print_out:
                                     print(index, prediction)
                                 logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
-                                ret[index] = prediction
+                                self._ret[index] = prediction
                                 if trading_on_client:
                                     self.client.exit_last_order()
                     if not (time.time() < (__now__ + sleeping_time)):
@@ -1441,7 +1457,7 @@ class Strategies(object):
             take profit,
             linear deposit,
             price (high, low, open, close),
-            open bet\lot\deal price.
+            open lot price.
 
         """
 
