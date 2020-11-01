@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
-import time
 import random
+import time
 
-import plotly.graph_objects as go
+from plotly.graph_objs import Line
 import ta
 import ta.volatility
 from binance.client import Client
-from plotly.subplots import make_subplots as sub_make
+from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
 from quick_trade.utils import *
 from scipy import signal
@@ -153,7 +153,7 @@ class Strategies(object):
             filtered = k_filter.smooth(filtered)[0]
         if plot:
             self.fig.add_trace(
-                go.Line(
+                Line(
                     name='kalman filter',
                     y=filtered.T[0],
                     line=dict(width=SUB_LINES_WIDTH)), 1, 1)
@@ -174,7 +174,7 @@ class Strategies(object):
             **scipy_savgol_filter_kwargs)
         if plot:
             self.fig.add_trace(
-                go.Line(
+                Line(
                     name='savgol filter',
                     y=filtered,
                     line=dict(width=SUB_LINES_WIDTH)), 1, 1)
@@ -267,12 +267,12 @@ class Strategies(object):
         SMA2 = ta.trend.sma(self.df['Close'], slow)
         if plot:
             self.fig.add_trace(
-                go.Line(
+                Line(
                     name=f'SMA{fast}',
                     y=SMA1.values,
                     line=dict(width=SUB_LINES_WIDTH, color=G)), 1, 1)
             self.fig.add_trace(
-                go.Line(
+                Line(
                     name=f'SMA{slow}',
                     y=SMA2.values,
                     line=dict(width=SUB_LINES_WIDTH, color=R)), 1, 1)
@@ -303,7 +303,7 @@ class Strategies(object):
             for SMA, Co, name in zip([SMA1, SMA2, SMA3], [G, B, R],
                                      [fast, mid, slow]):
                 self.fig.add_trace(
-                    go.Line(
+                    Line(
                         name=f'SMA{name}',
                         y=SMA.values,
                         line=dict(width=SUB_LINES_WIDTH, color=Co)), 1, 1)
@@ -335,7 +335,7 @@ class Strategies(object):
             for ema, Co, name in zip([ema3.values, ema21.values, ema46.values],
                                      [G, B, R], [slow, mid, fast]):
                 self.fig.add_trace(
-                    go.Line(
+                    Line(
                         name=f'SMA{name}',
                         y=ema,
                         line=dict(width=SUB_LINES_WIDTH, color=Co)), 1, 1)
@@ -370,7 +370,7 @@ class Strategies(object):
         return_list = self.strategy_diff(exp)
         if plot:
             self.fig.add_trace(
-                go.Line(
+                Line(
                     name=f'EMA{period}',
                     y=exp.values.T[0],
                     line=dict(width=SUB_LINES_WIDTH)), 1, 1)
@@ -441,7 +441,7 @@ class Strategies(object):
         if plot:
             for SAR_ in (sarup, sardown):
                 self.fig.add_trace(
-                    go.Line(
+                    Line(
                         name='SAR', y=SAR_, line=dict(width=SUB_LINES_WIDTH)),
                     1, 1)
         for price, up, down in zip(
@@ -493,7 +493,7 @@ class Strategies(object):
         filt = (*nans, *frame.T[0])
         if plot:
             self.fig.add_trace(
-                go.Line(
+                Line(
                     name='predict',
                     y=filt,
                     line=dict(width=SUB_LINES_WIDTH, color=C)),
@@ -665,7 +665,7 @@ class Strategies(object):
         lower = bollinger.bollinger_lband()
         if plot:
             for TR, name in zip([upper, mid_, lower], ['upper band', 'mid band', 'lower band']):
-                self.fig.add_trace(go.Line(y=TR, name=name, line=dict(width=SUB_LINES_WIDTH)), col=1, row=1)
+                self.fig.add_trace(Line(y=TR, name=name, line=dict(width=SUB_LINES_WIDTH)), col=1, row=1)
         for close, up, mid, low in zip(self.df['Close'].values,
                                        upper,
                                        mid_,
@@ -945,21 +945,21 @@ class Strategies(object):
         if plot:
             if self.take_profit != np.inf:
                 self.fig.add_trace(
-                    go.Line(
+                    Line(
                         y=take_profits,
                         line=dict(width=TAKE_STOP_OPN_WIDTH, color=G),
                         opacity=STOP_TAKE_OPN_ALPHA,
                         name='take profit'), 1, 1)
             if self.stop_loss != np.inf:
                 self.fig.add_trace(
-                    go.Line(
+                    Line(
                         y=stop_losses,
                         line=dict(width=TAKE_STOP_OPN_WIDTH, color=R),
                         opacity=STOP_TAKE_OPN_ALPHA,
                         name='stop loss'), 1, 1)
 
             self.fig.add_trace(
-                go.Line(
+                Line(
                     y=self.open_lot_prices,
                     line=dict(width=TAKE_STOP_OPN_WIDTH, color=B),
                     opacity=STOP_TAKE_OPN_ALPHA,
@@ -982,11 +982,11 @@ class Strategies(object):
         linear_dat = self.linear_(resur)
         if plot:
             self.fig.add_trace(
-                go.Line(
+                Line(
                     y=resur,
                     line=dict(color=COLOR_DEPOSIT),
                     name=f'D E P O S I T  (S T A R T: ${money_start})'), 2, 1)
-            self.fig.add_trace(go.Line(y=linear_dat, name='L I N E A R'), 2, 1)
+            self.fig.add_trace(Line(y=linear_dat, name='L I N E A R'), 2, 1)
             for e, i in enumerate(resur):
                 if i < 0:
                     self.fig.add_scatter(
@@ -1047,7 +1047,7 @@ class Strategies(object):
         """
         if row_heights is None:
             row_heights = [100, 160]
-        self.fig = sub_make(2, 1, row_heights=row_heights, **subplot_kwargs)
+        self.fig = make_subplots(2, 1, row_heights=row_heights, **subplot_kwargs)
         self.fig.update_layout(
             height=height,
             width=width,
@@ -1581,7 +1581,7 @@ class Strategies(object):
                 col=1,
                 name=self.ticker)
             self.fig.add_trace(
-                go.Line(
+                Line(
                     y=self.take_profits.values.T[0],
                     line=dict(width=TAKE_STOP_OPN_WIDTH, color=G),
                     opacity=STOP_TAKE_OPN_ALPHA,
@@ -1589,7 +1589,7 @@ class Strategies(object):
                 row=1,
                 col=1)
             self.fig.add_trace(
-                go.Line(
+                Line(
                     y=self.stop_losses.values.T[0],
                     line=dict(width=TAKE_STOP_OPN_WIDTH, color=R),
                     opacity=STOP_TAKE_OPN_ALPHA,
@@ -1597,7 +1597,7 @@ class Strategies(object):
                 row=1,
                 col=1)
             self.fig.add_trace(
-                go.Line(
+                Line(
                     y=self.open_lot_prices.values.T[0],
                     line=dict(width=TAKE_STOP_OPN_WIDTH, color=B),
                     opacity=STOP_TAKE_OPN_ALPHA,
@@ -1615,7 +1615,7 @@ class Strategies(object):
                 row=2,
                 col=1)
             self.fig.add_trace(
-                go.Line(y=self.linear.values.T[0], name='L I N E A R'),
+                Line(y=self.linear.values.T[0], name='L I N E A R'),
                 row=2,
                 col=1)
             for e, i in enumerate(set_(self.returns)):
