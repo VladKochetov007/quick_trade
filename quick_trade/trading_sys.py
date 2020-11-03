@@ -212,7 +212,7 @@ class Strategies(object):
         self.mean_diff = mean_diff
         return np.array(return_list)
 
-    def get_stop_take(self, sig):
+    def __get_stop_take(self, sig):
         """
         calculating stop loss and take profit.
 
@@ -224,14 +224,14 @@ class Strategies(object):
 
         """
 
-        if self.stop_loss is not np.inf:
+        if self.stop_loss is not None:
             _stop_loss = self.stop_loss / 10_000 * self.open_price
         else:
-            _stop_loss = np.inf
-        if self.take_profit is not np.inf:
+            _stop_loss = None
+        if self.take_profit is not None:
             take = self.take_profit / 10_000 * self.open_price
         else:
-            take = np.inf
+            take = None
 
         if sig == BUY:
             _stop_loss = self.open_price - _stop_loss
@@ -240,9 +240,9 @@ class Strategies(object):
             take = self.open_price - take
             _stop_loss = self.open_price + _stop_loss
         else:
-            if self.take_profit is not np.inf:
+            if self.take_profit is not None:
                 take = self.open_price
-            if self.stop_loss is not np.inf:
+            if self.stop_loss is not None:
                 _stop_loss = self.open_price
 
         return {'stop': _stop_loss, 'take': take}
@@ -709,8 +709,6 @@ class Strategies(object):
                        credit_leverage=1,
                        bet=None,
                        commission: float = 0.0,
-                       stop_loss=None,
-                       take_profit=None,
                        plot=True,
                        print_out=True,
                        column='Close',
@@ -727,10 +725,6 @@ class Strategies(object):
         bet:             | int, float, | fixed bet to quick_trade. None = all moneys.
 
         commission:      | int, float. | percentage commission (0 -- 100).
-
-        stop_loss:       | int, float. | stop loss in points.
-
-        take_profit:     | int, float. | take profit in points.
 
         plot:            |    bool.    | plotting.
 
@@ -752,283 +746,11 @@ class Strategies(object):
 
         """
 
-        if stop_loss is None:
-            self.stop_loss = np.inf
-        else:
-            self.stop_loss = stop_loss
-        if take_profit is None:
-            self.take_profit = np.inf
-        else:
-            self.take_profit = take_profit
+        data_column = self.df[column]
+        deposit_history = []
 
-        saved_del = self.returns[len(self.returns) - 1]
-
-        if set_(self.returns)[len(self.returns) - 1] is np.nan:
-            self.returns[len(self.returns) - 1] = EXIT
-
-        loc = list(self.df[column].values)
-
-        if plot:
-            self.fig.add_candlestick(
-                close=self.df['Close'],
-                high=self.df['High'],
-                low=self.df['Low'],
-                open=self.df['Open'],
-                row=1,
-                col=1,
-                name=self.ticker)
-
-        predictions__ = {}
-        for e, i in enumerate(set_(self.returns)):
-            if i is not np.nan:
-                predictions__[e] = i
-            # marker's 'y' coordinate on real price of stock/forex
-            if plot:
-                if i == SELL:
-                    self.fig.add_scatter(
-                        name='Sell',
-                        y=[loc[e]],
-                        x=[e],
-                        row=1,
-                        col=1,
-                        line=dict(color='#FF0000'),
-                        marker=dict(
-                            symbol='triangle-down',
-                            size=SCATTER_SIZE,
-                            opacity=SCATTER_ALPHA))
-                elif i == BUY:
-                    self.fig.add_scatter(
-                        name='Buy',
-                        y=[loc[e]],
-                        x=[e],
-                        row=1,
-                        col=1,
-                        line=dict(color='#00FF00'),
-                        marker=dict(
-                            symbol='triangle-up',
-                            size=SCATTER_SIZE,
-                            opacity=SCATTER_ALPHA))
-                elif i == EXIT:
-                    self.fig.add_scatter(
-                        name='Exit',
-                        y=[loc[e]],
-                        x=[e],
-                        row=1,
-                        col=1,
-                        line=dict(color='#2a00ff'),
-                        marker=dict(
-                            symbol='triangle-left',
-                            size=SCATTER_SIZE,
-                            opacity=SCATTER_ALPHA))
-
-        sigs = list(predictions__.values())
-        vals = list(predictions__.keys())
-
-        self.moneys = deposit
-        leverage = credit_leverage
-        rate = bet
-
-        money_start = self.moneys
-        resur = [self.moneys]
-        self.losses = 0
-        self.trades = 0
-        self.open_lot_prices = []
-        stop_losses = []
-        take_profits = []
-        exit = False
-
-        e = 0
-        _stop_loss = 0
-        take = 0
-        for enum, (val, val2, sig) in enumerate(
-                zip(vals[:len(vals) - 1],
-                    vals[1:],
-                    sigs[:len(sigs) - 1])):
-            coefficient = self.moneys / loc[val]
-            self.open_price = loc[val]
-
-            _rate = self.moneys if rate is None else rate
-            if e != 0 and not exit:
-                commission_real = _rate * (commission / 100) * credit_leverage
-                if self.__oldsig != EXIT:
-                    commission_real *= 2
-                self.moneys -= commission_real
-                if _rate > self.moneys:
-                    _rate = self.moneys
-            mons = self.moneys
-
-            for i in (pd.DataFrame(loc).diff().values *
-                      coefficient)[val + 1:val2 + 1]:
-
-                min_price = self.df['Low'][e + 1]
-                max_price = self.df['High'][e + 1]
-                self.open_lot_prices.append(self.open_price)
-
-                take_stop = self.get_stop_take(sig)
-                _stop_loss = take_stop['stop']
-                take = take_stop['take']
-
-                stop_losses.append(_stop_loss)
-                take_profits.append(take)
-
-                def get_condition(value):
-                    return min(_stop_loss, take) < value < max(
-                        _stop_loss, take)
-
-                cond = get_condition(min_price) and get_condition(max_price)
-
-                if cond and not exit:
-                    if self.moneys > 0:
-                        if sig == SELL:
-                            self.moneys -= i[0] * leverage * (_rate / mons)
-                            resur.append(self.moneys)
-                        elif sig == BUY:
-                            self.moneys += i[0] * leverage * (_rate / mons)
-                            resur.append(self.moneys)
-                        elif sig == EXIT:
-                            resur.append(self.moneys)
-                    else:
-                        resur.append(0)  # 0 because it's deposit
-                else:
-                    flag = True
-
-                    if e != 0 and not exit:
-                        commission_real = _rate * (commission / 100) * credit_leverage
-                        try:
-                            if self.__oldsig != EXIT:
-                                commission_real *= 2
-                        except AttributeError:
-                            pass
-                        self.moneys -= commission_real
-                        if _rate > self.moneys:
-                            _rate = self.moneys
-                    if cond and self.moneys > 0:
-                        close = self.df['Close'][e + 1]
-                        open_ = self.df['Open'][e + 1]
-                        if sig == BUY and close < _stop_loss:
-                            diff = _stop_loss - open_
-                        elif sig == BUY and close > take:
-                            diff = take - open_
-                        elif sig == SELL and close < take:
-                            diff = take - close
-                        elif sig == SELL and close > _stop_loss:
-                            diff = _stop_loss - open_
-                        else:
-                            diff = 0
-                            flag = False
-                        if flag:
-                            if bet is None:
-                                _rate = self.moneys
-                            if bet is None:
-                                _rate = self.moneys
-                            if sig == SELL:
-                                self.moneys -= diff * coefficient * leverage * (
-                                        _rate / mons)
-                                resur.append(self.moneys)
-                            elif sig == BUY:
-                                self.moneys += diff * coefficient * leverage * (
-                                        _rate / mons)
-                                resur.append(self.moneys)
-                    exit = True
-                    resur.append(self.moneys)
-
-                e += 1
-
-            self.trades += 1
-            if self.moneys < mons:
-                self.losses += 1
-            if self.moneys < 0:
-                self.moneys = 0
-            exit = False
-            self.__oldsig = sig
-
-        if plot:
-            if self.take_profit != np.inf:
-                self.fig.add_trace(
-                    Line(
-                        y=take_profits,
-                        line=dict(width=TAKE_STOP_OPN_WIDTH, color=G),
-                        opacity=STOP_TAKE_OPN_ALPHA,
-                        name='take profit'), 1, 1)
-            if self.stop_loss != np.inf:
-                self.fig.add_trace(
-                    Line(
-                        y=stop_losses,
-                        line=dict(width=TAKE_STOP_OPN_WIDTH, color=R),
-                        opacity=STOP_TAKE_OPN_ALPHA,
-                        name='stop loss'), 1, 1)
-
-            self.fig.add_trace(
-                Line(
-                    y=self.open_lot_prices,
-                    line=dict(width=TAKE_STOP_OPN_WIDTH, color=B),
-                    opacity=STOP_TAKE_OPN_ALPHA,
-                    name='open lot'), 1, 1)
-
-        self.returns[len(self.returns) - 1] = saved_del
-        if set_(self.returns)[len(self.returns) - 1] is np.nan:
-            stop_losses.append(_stop_loss)
-            take_profits.append(take)
-            self.open_lot_prices.append(self.open_price)
-        else:
-            sig = sigs[len(sigs) - 1]
-            take_stop = self.get_stop_take(sig)
-            _stop_loss = take_stop['stop']
-            take = take_stop['take']
-            stop_losses.append(_stop_loss)
-            take_profits.append(take)
-            self.open_lot_prices.append(loc[len(loc) - 1])
-
-        linear_dat = self.linear_(resur)
-        if plot:
-            self.fig.add_trace(
-                Line(
-                    y=resur,
-                    line=dict(color=COLOR_DEPOSIT),
-                    name=f'D E P O S I T  (S T A R T: ${money_start})'), 2, 1)
-            self.fig.add_trace(Line(y=linear_dat, name='L I N E A R'), 2, 1)
-            for e, i in enumerate(resur):
-                if i < 0:
-                    self.fig.add_scatter(
-                        y=[i],
-                        x=[e],
-                        row=2,
-                        col=1,
-                        line=dict(color=R),
-                        marker=dict(
-                            symbol='triangle-down',
-                            size=SCATTER_SIZE,
-                            opacity=SCATTER_DEPO_ALPHA))
-
-        start = linear_dat[0]
-        end = linear_dat[len(linear_dat) - 1]
-        self.year_profit = (end - start) / start * 100
-        self.year_profit /= len(resur) * self.profit_calculate_coef
-        self.linear = linear_dat
-        self.profits = self.trades - self.losses
-        if print_out:
-            print(f'L O S S E S: {self.losses}')
-            print(f'T R A D E S: {self.trades}')
-            print(f'P R O F I T S: {self.profits}')
-            print(
-                'M E A N   P E R C E N T A G E   Y E A R   P R O F I T: ',
-                self.year_profit,
-                '%',
-                sep='')
-        if plot:
-            self.fig.show()
-        self.stop_losses = stop_losses
-        self.take_profits = take_profits
-        self.money_list = resur
-        self.backtest_out = pd.DataFrame(
-            (resur, stop_losses, take_profits, self.returns,
-             self.open_lot_prices, loc, self.linear),
-            index=[
-                f'deposit ({column})', 'stop loss', 'take profit',
-                'predictions', 'open deal/lot', column,
-                f"linear deposit data ({column})"
-            ]).T.dropna()
-        return self.backtest_out
+        for sig, price, stop_loss, take_profit in zip(self.returns, data_column, self.stop_losses, self.take_profits):
+            pass
 
     def set_pyplot(self,
                    height=900,
@@ -1309,7 +1031,7 @@ class Strategies(object):
                 if sig != EXIT:
                     self.open_price = close_
                     break
-            rets = self.get_stop_take(predict)
+            rets = self.__get_stop_take(predict)
             self._predict = predict
             self.__stop_loss = rets['stop']
             self.__take_profit = rets['take']
@@ -1667,6 +1389,7 @@ class Strategies(object):
     def set_client(self, your_client):
         """
         :param your_client: TradingClient object
+
         """
         self.client = your_client
 
@@ -1674,6 +1397,24 @@ class Strategies(object):
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
+
+    def set_stop_and_take(self,
+                          take_profit=None,
+                          stop_loss=None):
+        """
+        :param take_profit: take profit in points
+        :param stop_loss: stop loss in points
+
+        """
+        self.stop_losses = []
+        self.take_profits = []
+        closes = self.df['Close'].values
+        for sig, close, seted in zip(self.returns, closes, set_(closes)):
+            if seted is not np.nan:
+                self.open_price = close
+            ts = self.__get_stop_take(sig)
+            self.take_profits.append(ts['take'])
+            self.stop_losses.append(ts['stop'])
 
 
 class PatternFinder(Strategies):
