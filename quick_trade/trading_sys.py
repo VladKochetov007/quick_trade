@@ -706,7 +706,6 @@ class Strategies(object):
 
     def basic_backtest(self,
                        deposit=10_000,
-                       credit_leverage=1,
                        bet=None,
                        commission: float = 0.0,
                        plot=True,
@@ -719,8 +718,6 @@ class Strategies(object):
 
 
         deposit:         | int, float. | start deposit.
-
-        credit_leverage: | int, float. | trading leverage. 1 = none.
 
         bet:             | int, float, | fixed bet to quick_trade. None = all moneys.
 
@@ -747,10 +744,23 @@ class Strategies(object):
         """
 
         data_column = self.df[column]
-        deposit_history = []
+        deposit_history = [deposit]
+        seted_ = set_(self.returns)
 
-        for sig, price, stop_loss, take_profit in zip(self.returns, data_column, self.stop_losses, self.take_profits):
-            pass
+        for sig, price, stop_loss, take_profit, seted, credit_lev in zip(self.returns,
+                                                                         data_column,
+                                                                         self.stop_losses,
+                                                                         self.take_profits,
+                                                                         seted_,
+                                                                         self.credit_leverages):
+            if seted is not np.nan:
+                cp = price
+                b = bet * credit_lev
+
+                def coefficient(diff):
+                    return b * diff / cp
+
+            deposit_history.append(deposit)
 
     def set_pyplot(self,
                    height=900,
@@ -1415,6 +1425,13 @@ class Strategies(object):
             ts = self.__get_stop_take(sig)
             self.take_profits.append(ts['take'])
             self.stop_losses.append(ts['stop'])
+
+    def set_credit_leverages(self, credit_lev):
+        """
+        Sets the leverage for bets.
+
+        """
+        self.credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
 
 
 class PatternFinder(Strategies):
