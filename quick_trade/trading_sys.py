@@ -129,12 +129,6 @@ class Strategies(object):
     def __repr__(self):
         return 'trader'
 
-    def __iter__(self):
-        try:
-            return iter(list(self.backtest_out.values))
-        except AttributeError:
-            raise ValueError('D O   B A C K T E S T')
-
     @classmethod
     def _get_this_instance(cls, *args, **kwargs):
         return cls(*args, **kwargs)
@@ -227,11 +221,11 @@ class Strategies(object):
         if self.stop_loss is not None:
             _stop_loss = self.stop_loss / 10_000 * self.open_price
         else:
-            _stop_loss = None
+            _stop_loss = np.inf
         if self.take_profit is not None:
             take = self.take_profit / 10_000 * self.open_price
         else:
-            take = None
+            take = np.inf
 
         if sig == BUY:
             _stop_loss = self.open_price - _stop_loss
@@ -744,8 +738,13 @@ class Strategies(object):
         """
 
         data_column = self.df[column]
-        deposit_history = [deposit]
+        self.deposit_history = [deposit]
         seted_ = set_(self.returns)
+        self.trades = 0
+        self.profits = 0
+        self.losses = 0
+        moneys_open_bet = deposit
+        money_start = deposit
 
         for e, (sig,
                 price,
@@ -759,12 +758,21 @@ class Strategies(object):
                                              seted_,
                                              self.credit_leverages)):
             if seted is not np.nan:
+                if bet is None:
+                    bet = deposit
                 open_price = price
                 bet *= credit_lev
 
                 def coefficient(difference):
                     return bet * difference / open_price
-                deposit -= bet * (100 / commission)
+                deposit -= bet * (commission / 100)
+                self.trades += 1
+                if deposit > moneys_open_bet:
+                    self.profits += 1
+                elif deposit < moneys_open_bet:
+                    self.losses += 1
+                moneys_open_bet = deposit
+
             if not e:
                 diff = 0
             elif min(stop_loss, take_profit) < price < max(stop_loss, take_profit):
@@ -787,7 +795,21 @@ class Strategies(object):
                 diff = 0
 
             deposit += coefficient(diff)
-            deposit_history.append(deposit)
+            self.deposit_history.append(deposit)
+
+        self.linear = self.linear_(self.deposit_history)
+        lin_calc_df = pd.DataFrame(self.linear)
+        mean_diff = float(lin_calc_df.diff().mean())
+        self.year_profit = mean_diff / self.profit_calculate_coef + money_start
+        self.year_profit = ((self.year_profit - money_start) / money_start) * 100
+        self.info = (
+            f"L O S S E S: {self.losses}\n"
+            f"T R A D E S: {self.trades}\n"
+            f"P R O F I T S: {self.profits}\n"
+            f"M E A N   Y E A R   P E R C E N T A G E   R O F I T: {self.year_profit}%\n"
+        )
+        if print_out:
+            print(self.info)
 
     def set_pyplot(self,
                    height=900,
@@ -1296,8 +1318,8 @@ class Strategies(object):
         self.lin_calc = self.linear_(
             MinMaxScaler(
                 feature_range=(
-                    min(self.money_list),
-                    max(self.money_list)
+                    min(self.deposit_history),
+                    max(self.deposit_history)
                 )
             ).fit_transform(
                 np.array([_log(deposit_df['deposit Close'].values)]).T
@@ -1443,6 +1465,8 @@ class Strategies(object):
         :param stop_loss: stop loss in points
 
         """
+        self.take_profit = take_profit
+        self.stop_loss = stop_loss
         self.stop_losses = []
         self.take_profits = []
         closes = self.df['Close'].values
