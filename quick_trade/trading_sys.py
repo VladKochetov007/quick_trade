@@ -747,19 +747,46 @@ class Strategies(object):
         deposit_history = [deposit]
         seted_ = set_(self.returns)
 
-        for sig, price, stop_loss, take_profit, seted, credit_lev in zip(self.returns,
-                                                                         data_column,
-                                                                         self.stop_losses,
-                                                                         self.take_profits,
-                                                                         seted_,
-                                                                         self.credit_leverages):
+        for e, (sig,
+                price,
+                stop_loss,
+                take_profit,
+                seted,
+                credit_lev) in enumerate(zip(self.returns,
+                                             data_column,
+                                             self.stop_losses,
+                                             self.take_profits,
+                                             seted_,
+                                             self.credit_leverages)):
             if seted is not np.nan:
-                cp = price
-                b = bet * credit_lev
+                open_price = price
+                bet *= credit_lev
 
-                def coefficient(diff):
-                    return b * diff / cp
+                def coefficient(difference):
+                    return bet * difference / open_price
+                deposit -= bet * (100 / commission)
+            if not e:
+                diff = 0
+            elif min(stop_loss, take_profit) < price < max(stop_loss, take_profit):
+                diff = data_column[e] - data_column[e-1]
+            else:
+                if sig == BUY and price >= take_profit:
+                    diff = take_profit - data_column[e-1]
+                elif sig == BUY and price <= stop_loss:
+                    diff = stop_loss - data_column[e-1]
+                elif sig == SELL and price >= stop_loss:
+                    diff = stop_loss - data_column[e-1]
+                elif sig == SELL and price <= take_profit:
+                    diff = take_profit - data_column[e-1]
+                else:
+                    diff = 0
 
+            if sig == SELL:
+                diff = -diff
+            elif sig == EXIT:
+                diff = 0
+
+            deposit += coefficient(diff)
             deposit_history.append(deposit)
 
     def set_pyplot(self,
