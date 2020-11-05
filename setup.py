@@ -9,10 +9,9 @@ setup(
     author='Vlad Kochetov',
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=setuptools.find_packages(),
-    version='3.0',
+    version='3.0.1',
     description='Trading system for stocks, forex and others',
-    long_description=open(os.path.join(os.path.dirname(__file__), 'README.md'),
-                          encoding='utf-8').read(),
+    long_description=open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
     long_description_content_type='text/markdown',
     url='https://github.com/VladKochetov007/quick_trade',
     install_requires=[

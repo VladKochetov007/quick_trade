@@ -1260,12 +1260,12 @@ class Strategies(object):
         _df_flag = self.df
         self.df = pd.concat(
             [
-                self.df['Close'], self.df['Open'], self.df['High'],
-                self.df['Low']
+                self.df['Open'], self.df['High'],
+                self.df['Low'], self.df['Close']
             ],
             axis=1)
         __df = self.df
-        df = inverse_4_col_df(self.df, ['Close', 'Open', 'High', 'Low'])
+        df = inverse_4_col_df(self.df, ['Open', 'High', 'Low', 'Close'])
 
         self.df = df
         _returns_flag = self.returns
@@ -1274,6 +1274,9 @@ class Strategies(object):
         for pred in _returns_flag:
             for column in range(4):
                 self.returns.append(pred)
+        for i in range(3):
+            self.returns.insert(0, EXIT)
+        del self.returns[:-3]
 
         self.basic_backtest(
             deposit=deposit,
@@ -1297,8 +1300,8 @@ class Strategies(object):
             return frame
 
         deposit_df = rets['deposit (Close)'].values
-        deposit_df = to_4_col_df(deposit_df, 'deposit Close', 'deposit Open',
-                                 'deposit High', 'deposit Low')
+        deposit_df = to_4_col_df(deposit_df, 'deposit Open',
+                                 'deposit High', 'deposit Low', 'deposit Close')
 
         self.linear = pd.DataFrame(
             self.linear_(deposit_df['deposit Close'].values),
