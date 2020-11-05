@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
+import os
 
 import setuptools
 
@@ -10,7 +11,9 @@ setup(
     packages=setuptools.find_packages(),
     version='3.0',
     description='Trading system for stocks, forex and others',
-    long_description='Please, view page on github.',
+    long_description=open(os.path.join(os.path.dirname(__file__), 'README.md'),
+                          encoding='utf-8').read(),
+    long_description_content_type='text/markdown',
     url='https://github.com/VladKochetov007/quick_trade',
     install_requires=[
         "iexfinance==0.4.3",

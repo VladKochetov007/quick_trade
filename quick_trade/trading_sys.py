@@ -736,6 +736,7 @@ class Strategies(object):
 
 
         """
+        start_bet = bet
 
         data_column = self.df[column]
         self.deposit_history = [deposit]
@@ -747,24 +748,24 @@ class Strategies(object):
         money_start = deposit
 
         for e, (sig,
-                price,
                 stop_loss,
                 take_profit,
                 seted,
-                credit_lev) in enumerate(zip(self.returns,
-                                             data_column,
-                                             self.stop_losses,
-                                             self.take_profits,
-                                             seted_,
-                                             self.credit_leverages)):
+                credit_lev) in enumerate(zip(self.returns[:-1],
+                                             self.stop_losses[:-1],
+                                             self.take_profits[:-1],
+                                             seted_[:-1],
+                                             self.credit_leverages[:-1]), 1):
+            price = data_column[e]
             if seted is not np.nan:
-                if bet is None:
+                if start_bet is None:
                     bet = deposit
                 open_price = price
                 bet *= credit_lev
 
                 def coefficient(difference):
                     return bet * difference / open_price
+
                 deposit -= bet * (commission / 100)
                 self.trades += 1
                 if deposit > moneys_open_bet:
@@ -775,17 +776,17 @@ class Strategies(object):
 
             if not e:
                 diff = 0
-            elif min(stop_loss, take_profit) < price < max(stop_loss, take_profit):
-                diff = data_column[e] - data_column[e-1]
+            if min(stop_loss, take_profit) < price < max(stop_loss, take_profit):
+                diff = data_column[e] - data_column[e - 1]
             else:
                 if sig == BUY and price >= take_profit:
-                    diff = take_profit - data_column[e-1]
+                    diff = take_profit - data_column[e - 1]
                 elif sig == BUY and price <= stop_loss:
-                    diff = stop_loss - data_column[e-1]
+                    diff = stop_loss - data_column[e - 1]
                 elif sig == SELL and price >= stop_loss:
-                    diff = stop_loss - data_column[e-1]
+                    diff = stop_loss - data_column[e - 1]
                 elif sig == SELL and price <= take_profit:
-                    diff = take_profit - data_column[e-1]
+                    diff = take_profit - data_column[e - 1]
                 else:
                     diff = 0
 
@@ -810,6 +811,15 @@ class Strategies(object):
         )
         if print_out:
             print(self.info)
+        self.backtest_out = pd.DataFrame(
+            (self.deposit_history, self.stop_losses, self.take_profits, self.returns,
+             self.open_lot_prices, data_column, self.linear),
+            index=[
+                f'deposit ({column})', 'stop loss', 'take profit',
+                'predictions', 'open deal/lot', column,
+                f"linear deposit data ({column})"
+            ]).T.dropna()
+        return self.backtest_out
 
     def set_pyplot(self,
                    height=900,
@@ -1467,12 +1477,14 @@ class Strategies(object):
         """
         self.take_profit = take_profit
         self.stop_loss = stop_loss
+        self.open_lot_prices = []
         self.stop_losses = []
         self.take_profits = []
         closes = self.df['Close'].values
         for sig, close, seted in zip(self.returns, closes, set_(closes)):
             if seted is not np.nan:
                 self.open_price = close
+            self.open_lot_prices.append(self.open_price)
             ts = self.__get_stop_take(sig)
             self.take_profits.append(ts['take'])
             self.stop_losses.append(ts['stop'])
