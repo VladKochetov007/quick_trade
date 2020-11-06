@@ -45,6 +45,16 @@ logger.setLevel(50)
 logging.basicConfig(level=20, filename='trading.log')
 
 
+def expansion_with_shear(values, ins=EXIT):
+    ret = []
+    for value in values:
+        for column in range(4):
+            ret.append(value)
+    for i in range(3):
+        ret.insert(0, ins)
+    return ret[:-3]
+
+
 def set_(data):
     ret = list(data.copy())
     for e, i in enumerate(data[1:]):

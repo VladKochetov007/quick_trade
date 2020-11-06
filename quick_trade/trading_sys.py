@@ -811,14 +811,15 @@ class Strategies(object):
         )
         if print_out:
             print(self.info)
-        self.backtest_out = pd.DataFrame(
+        self.backtest_out_no_drop = pd.DataFrame(
             (self.deposit_history, self.stop_losses, self.take_profits, self.returns,
              self.open_lot_prices, data_column, self.linear),
             index=[
                 f'deposit ({column})', 'stop loss', 'take profit',
                 'predictions', 'open deal/lot', column,
                 f"linear deposit data ({column})"
-            ]).T.dropna()
+            ]).T
+        self.backtest_out = self.backtest_out_no_drop.dropna()
         return self.backtest_out
 
     def set_pyplot(self,
@@ -1257,26 +1258,24 @@ class Strategies(object):
 
         money_start = deposit
         loc = self.df['Close'].values
+
         _df_flag = self.df
-        self.df = pd.concat(
-            [
-                self.df['Open'], self.df['High'],
-                self.df['Low'], self.df['Close']
-            ],
-            axis=1)
-        __df = self.df
-        df = inverse_4_col_df(self.df, ['Open', 'High', 'Low', 'Close'])
+        self.df = inverse_4_col_df(self.df, ['Open', 'High', 'Low', 'Close'])
 
-        self.df = df
         _returns_flag = self.returns
+        self.returns = expansion_with_shear(self.returns)
 
-        self.returns = []
-        for pred in _returns_flag:
-            for column in range(4):
-                self.returns.append(pred)
-        for i in range(3):
-            self.returns.insert(0, EXIT)
-        del self.returns[:-3]
+        _stop_loss_flag = self.stop_losses
+        self.stop_losses = expansion_with_shear(self.stop_losses, loc[0])
+
+        _take_profit_flag = self.take_profits
+        self.take_profits = expansion_with_shear(self.take_profits, loc[0])
+
+        _credit_flag = self.credit_leverages
+        self.credit_leverages = expansion_with_shear(self.credit_leverages, 0)
+
+        _open_lot_flag = self.open_lot_prices
+        self.open_lot_prices = expansion_with_shear(self.open_lot_prices, loc[0])
 
         self.basic_backtest(
             deposit=deposit,
@@ -1289,7 +1288,11 @@ class Strategies(object):
             print_out=False)
 
         self.df = _df_flag
+        self.credit_leverages = _credit_flag
         self.returns = _returns_flag
+        self.take_profits = _take_profit_flag
+        self.stop_losses = _stop_loss_flag
+        self.open_lot_prices = _open_lot_flag
 
         rets = self.backtest_out
 
@@ -1307,17 +1310,18 @@ class Strategies(object):
             self.linear_(deposit_df['deposit Close'].values),
             columns=['deposit Close linear'])
 
-        self.open_lot_prices = __4_div(
-            self.open_lot_prices, columns=['open lot price'])
-        self.take_profits = __4_div(self.take_profits, columns=['take profit'])
-        self.stop_losses = __4_div(self.stop_losses, columns=['stop loss'])
+        self.open_lot_prices_calc = pd.DataFrame({'open lot price': self.open_lot_prices})
+        self.take_profits_calc = pd.DataFrame({'take profit': self.take_profits})
+        self.stop_losses_calc = pd.DataFrame({'stop loss': self.stop_losses})
         self.backtest_out = pd.concat(
             [
-                __df.reset_index(),
+                _df_flag.reset_index(),
                 deposit_df.reset_index(),
-                pd.DataFrame(self.returns, columns=['predictions'
-                                                    ]), self.stop_losses,
-                self.take_profits, self.open_lot_prices, self.linear
+                pd.DataFrame({'predictions': self.returns}),
+                self.stop_losses_calc,
+                self.take_profits_calc,
+                self.open_lot_prices_calc,
+                self.linear
             ],
             axis=1)
         del __4_div
@@ -1376,7 +1380,7 @@ class Strategies(object):
                 name=self.ticker)
             self.fig.add_trace(
                 Line(
-                    y=self.take_profits.values.T[0],
+                    y=self.take_profits,
                     line=dict(width=TAKE_STOP_OPN_WIDTH, color=G),
                     opacity=STOP_TAKE_OPN_ALPHA,
                     name='take profit'),
@@ -1384,7 +1388,7 @@ class Strategies(object):
                 col=1)
             self.fig.add_trace(
                 Line(
-                    y=self.stop_losses.values.T[0],
+                    y=self.stop_losses,
                     line=dict(width=TAKE_STOP_OPN_WIDTH, color=R),
                     opacity=STOP_TAKE_OPN_ALPHA,
                     name='stop loss'),
@@ -1392,7 +1396,7 @@ class Strategies(object):
                 col=1)
             self.fig.add_trace(
                 Line(
-                    y=self.open_lot_prices.values.T[0],
+                    y=self.open_lot_prices,
                     line=dict(width=TAKE_STOP_OPN_WIDTH, color=B),
                     opacity=STOP_TAKE_OPN_ALPHA,
                     name='open lot'),
