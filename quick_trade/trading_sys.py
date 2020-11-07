@@ -824,6 +824,85 @@ class Strategies(object):
                 f"linear deposit data ({column})"
             ]).T
         self.backtest_out = self.backtest_out_no_drop.dropna()
+        if plot:
+            loc = self.df[column]
+            self.fig.add_candlestick(
+                close=self.df['Close'],
+                high=self.df['High'],
+                low=self.df['Low'],
+                open=self.df['Open'],
+                row=1,
+                col=1,
+                name=self.ticker)
+            self.fig.add_trace(
+                Line(
+                    y=self.take_profits,
+                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.G),
+                    opacity=utils.STOP_TAKE_OPN_ALPHA,
+                    name='take profit'),
+                row=1,
+                col=1)
+            self.fig.add_trace(
+                Line(
+                    y=self.stop_losses,
+                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.R),
+                    opacity=utils.STOP_TAKE_OPN_ALPHA,
+                    name='stop loss'),
+                row=1,
+                col=1)
+            self.fig.add_trace(
+                Line(
+                    y=self.open_lot_prices,
+                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.B),
+                    opacity=utils.STOP_TAKE_OPN_ALPHA,
+                    name='open lot'),
+                row=1,
+                col=1)
+            self.fig.add_trace(
+                Line(
+                    y=self.deposit_history,
+                    line=dict(color=utils.COLOR_DEPOSIT),
+                    name=f'D E P O S I T  (S T A R T: ${money_start})'), 2, 1)
+            self.fig.add_trace(Line(y=self.linear, name='L I N E A R'), 2, 1)
+            for e, i in enumerate(utils.set_(self.returns)):
+                if i == utils.SELL:
+                    self.fig.add_scatter(
+                        name='Sell',
+                        y=[loc[e]],
+                        x=[e],
+                        row=1,
+                        col=1,
+                        line=dict(color='#FF0000'),
+                        marker=dict(
+                            symbol='triangle-down',
+                            size=utils.SCATTER_SIZE,
+                            opacity=utils.SCATTER_ALPHA))
+                elif i == utils.BUY:
+                    self.fig.add_scatter(
+                        name='Buy',
+                        y=[loc[e]],
+                        x=[e],
+                        row=1,
+                        col=1,
+                        line=dict(color='#00FF00'),
+                        marker=dict(
+                            symbol='triangle-up',
+                            size=utils.SCATTER_SIZE,
+                            opacity=utils.SCATTER_ALPHA))
+                elif i == utils.EXIT:
+                    self.fig.add_scatter(
+                        name='Exit',
+                        y=[loc[e]],
+                        x=[e],
+                        row=1,
+                        col=1,
+                        line=dict(color='#2a00ff'),
+                        marker=dict(
+                            symbol='triangle-left',
+                            size=utils.SCATTER_SIZE,
+                            opacity=utils.SCATTER_ALPHA))
+            self.fig.update_layout(xaxis_rangeslider_visible=False)
+            self.fig.show()
         return self.backtest_out
 
     def set_pyplot(self,
@@ -1119,8 +1198,10 @@ class Strategies(object):
                          generate_take_stop=True,
                          generate_credit=True,
                          credit_leverage=1,
+                         gen_take_stop_kw=None,
                          **strategy_kwargs):
         """
+        :param gen_take_stop_kw: named arguments for set_stop_and_take
         :param credit_leverage: credit leverage for client.
         :param generate_credit: If your strategy does not provide for the generation credit leverage.
         :param ticker: ticker for trading.
@@ -1141,6 +1222,8 @@ class Strategies(object):
 
         """
 
+        if gen_take_stop_kw is None:
+            gen_take_stop_kw = {}
         if get_data_kwargs is None:
             get_data_kwargs = dict()
         self._ret = {}
@@ -1154,7 +1237,8 @@ class Strategies(object):
 
                 if generate_take_stop:
                     self.set_stop_and_take(take_profit=take_profit,
-                                           stop_loss=stop_loss)
+                                           stop_loss=stop_loss,
+                                           **gen_take_stop_kw)
                 if generate_credit:
                     self.set_credit_leverages(credit_lev=credit_leverage)
 
@@ -1471,8 +1555,12 @@ class Strategies(object):
 
     def set_stop_and_take(self,
                           take_profit=None,
-                          stop_loss=None):
+                          stop_loss=None,
+                          set_stop=True,
+                          set_take=True):
         """
+        :param set_take: create new take profits.
+        :param set_stop: create new stop losses.
         :param take_profit: take profit in points
         :param stop_loss: stop loss in points
 
@@ -1480,16 +1568,21 @@ class Strategies(object):
         self.take_profit = take_profit
         self.stop_loss = stop_loss
         self.open_lot_prices = []
-        self.stop_losses = []
-        self.take_profits = []
+        if set_stop:
+            self.stop_losses = []
+        if set_take:
+            self.take_profits = []
         closes = self.df['Close'].values
         for sig, close, seted in zip(self.returns, closes, utils.set_(closes)):
             if seted is not np.nan:
                 self.open_price = close
             self.open_lot_prices.append(self.open_price)
-            ts = self.__get_stop_take(sig)
-            self.take_profits.append(ts['take'])
-            self.stop_losses.append(ts['stop'])
+            if set_take and set_stop:
+                ts = self.__get_stop_take(sig)
+            if set_take:
+                self.take_profits.append(ts['take'])
+            if set_stop:
+                self.stop_losses.append(ts['stop'])
 
     def set_credit_leverages(self, credit_lev):
         """
@@ -1568,18 +1661,33 @@ class PatternFinder(Strategies):
     def find_DBLHC_DBHLC(self):
         ret = [utils.EXIT]
         flag = utils.EXIT
-        for e, (high, low, open_pr, close) in enumerate(
-                zip(
-                    self._window_('High'), self._window_('Low'),
-                    self._window_('Open'), self._window_('Close')), 1):
+        flag_open_lot = self.df['Open'].values[0]
+        self.stop_losses = [np.inf]
+        self.open_lot_prices = [flag_open_lot]
+        self.take_profits = [np.inf]
+        for high, low, open_pr, close in zip(
+                                             self._window_('High'),
+                                             self._window_('Low'),
+                                             self._window_('Open'),
+                                             self._window_('Close')
+                                             ):
             if low[0] == low[1] and close[1] > high[0]:
-                ret.append(utils.BUY)
                 flag = utils.BUY
+                flag_open_lot = close[1]
+                flag_stop_loss = min(high[0], high[1])
+                flag_take_prof = np.inf
             elif high[0] == high[1] and close[0] > low[1]:
-                ret.append(utils.SELL)
                 flag = utils.SELL
+                flag_open_lot = close[1]
+                flag_stop_loss = max(high[0], high[1])
+                flag_take_prof = -np.inf
             else:
-                ret.append(flag)
+                flag_stop_loss = flag_take_prof = flag_open_lot
+
+            ret.append(flag)
+            self.take_profits.append(flag_take_prof)
+            self.stop_losses.append(flag_stop_loss)
+            self.open_lot_prices.append(flag_open_lot)
         self.returns = ret
         return ret
 
@@ -1591,13 +1699,10 @@ class PatternFinder(Strategies):
                     self._window_('High'), self._window_('Low'),
                     self._window_('Open'), self._window_('Close')), 1):
             if high[0] == high[1]:
-                ret.append(utils.BUY)
                 flag = utils.BUY
             elif low[0] == low[1]:
-                ret.append(utils.SELL)
                 flag = utils.SELL
-            else:
-                ret.append(flag)
+            ret.append(flag)
         self.returns = ret
         return ret
 
