@@ -61,7 +61,7 @@ class TradingClient(Client):
             self.__side__ = 'Exit'
             self.ordered = False
 
-    def get_balance_ticker(self, ticker):
+    def get_balance_ticker(self, ticker: str) -> float:
         for asset in self.get_account()['balances']:
             if asset['asset'] == ticker:
                 return float(asset['free'])
@@ -703,12 +703,12 @@ class Strategies(object):
         return return_list
 
     def basic_backtest(self,
-                       deposit=10_000,
-                       bet=None,
+                       deposit: float = 10_000,
+                       bet: float = None,
                        commission: float = 0.0,
-                       plot=True,
-                       print_out=True,
-                       column='Close',
+                       plot: bool = True,
+                       print_out: bool = True,
+                       column: str = 'Close',
                        *args,
                        **kwargs):
         """
@@ -906,10 +906,10 @@ class Strategies(object):
         return self.backtest_out
 
     def set_pyplot(self,
-                   height=900,
-                   width=1300,
-                   template='plotly_dark',
-                   row_heights=None,
+                   height: int = 900,
+                   width: int = 1300,
+                   template: str = 'plotly_dark',
+                   row_heights: list = None,
                    **subplot_kwargs):
         """
 
@@ -940,11 +940,11 @@ class Strategies(object):
             title_text='D A T A', row=1, col=1, color=utils.TEXT_COLOR)
 
     def strategy_collider(self,
-                          first_func=utils.nothing,
+                          first_func = utils.nothing,
                           second_func=utils.nothing,
-                          args_first_func=(),
-                          args_second_func=(),
-                          mode='minimalist',
+                          kwargs_first_func: dict=None,
+                          kwargs_second_func: dict=None,
+                          mode: str='minimalist',
                           *args,
                           **kwargs):
         """
@@ -958,9 +958,9 @@ class Strategies(object):
 
         standard: nothing.
 
-        args_first_func: |    tuple, list     |   arguments to first function.
+        kwargs_first_func: |       dict         |   named arguments to first function.
 
-        args_second_func:|    tuple, list     |   arguments to second function.
+        kwargs_second_func:|       dict         |   named arguments to second function.
 
         mode:            |         str        |   mode of combining:
             example :
@@ -1031,8 +1031,12 @@ class Strategies(object):
 
         """
 
-        first_returns = first_func(*args_first_func)
-        second_returns = second_func(*args_second_func)
+        if kwargs_second_func is None:
+            kwargs_second_func = {}
+        if kwargs_first_func is None:
+            kwargs_first_func = {}
+        first_returns = first_func(**kwargs_first_func)
+        second_returns = second_func(**kwargs_second_func)
         return_list = []
         if mode == 'minimalist':
             for ret1, ret2 in zip(first_returns, second_returns):
@@ -1076,12 +1080,12 @@ class Strategies(object):
         return utils.anti_set_(return_list)
 
     def get_trading_predict(self,
-                            inverse=False,
-                            trading_on_client=False,
+                            inverse: bool = False,
+                            trading_on_client: bool = False,
                             bet_for_trading_on_client='all depo',
-                            second_symbol_of_ticker=None,
-                            can_sell=False,
-                            rounding_bet=4,
+                            second_symbol_of_ticker: str = None,
+                            can_sell: bool = False,
+                            rounding_bet: int = 4,
                             *args,
                             **kwargs):
         """
@@ -1182,22 +1186,22 @@ class Strategies(object):
         }
 
     def realtime_trading(self,
-                         ticker,
+                         ticker: str,
                          strategy,
                          get_data_kwargs=None,
-                         sleeping_time=60,
-                         print_out=True,
-                         take_profit=None,
-                         stop_loss=None,
-                         inverse=False,
-                         trading_on_client=False,
+                         sleeping_time: float = 60,
+                         print_out: bool = True,
+                         take_profit: float = None,
+                         stop_loss: float = None,
+                         inverse: bool = False,
+                         trading_on_client: bool = False,
                          bet_for_trading_on_client='all depo',
-                         can_sell_client=False,
-                         second_symbol_of_ticker=None,
-                         rounding_bet=4,
-                         generate_take_stop=True,
-                         generate_credit=True,
-                         credit_leverage=1,
+                         can_sell_client: bool = False,
+                         second_symbol_of_ticker: str = None,
+                         rounding_bet: int = 4,
+                         generate_take_stop: bool = True,
+                         generate_credit: bool = True,
+                         credit_leverage: float = 1,
                          gen_take_stop_kw=None,
                          **strategy_kwargs):
         """
@@ -1213,7 +1217,7 @@ class Strategies(object):
         :param stop_loss: stop loss. If generate_take_stop = False
         :param inverse: use inverse_strategy
         :param trading_on_client: trading on client
-        :param bet_for_trading_on_client: bet
+        :param bet_for_trading_on_client: trading bet
         :param can_sell_client: if your client can sell - True
         :param second_symbol_of_ticker: USDUAH -> UAH
         :param rounding_bet: maximum accuracy for trading
@@ -1288,33 +1292,33 @@ class Strategies(object):
         self.fig.update_yaxes(row=2, col=1, type='log')
 
     def backtest(self,
-                 deposit=10_000,
-                 credit_leverage=1,
+                 deposit: float = 10_000,
+                 credit_leverage: float = 1,
                  bet: int = None,
                  commission: float = 0,
                  stop_loss: int = None,
                  take_profit: int = None,
-                 plot=True,
-                 print_out=True,
-                 show=True,
-                 log_profit_calc=True,
+                 plot: bool = True,
+                 print_out: bool = True,
+                 show: bool = True,
+                 log_profit_calc: bool = True,
                  *args,
                  **kwargs):
         """
         testing the strategy.
 
 
-        deposit:         | int, float. | start deposit.
+        deposit:         |    float    | start deposit.
 
-        credit_leverage: | int, float. | trading leverage. 1 = none.
+        credit_leverage: |    float.   | trading leverage. 1 = none.
 
-        bet:             | int, float, | fixed bet to quick_trade--. None = all moneys.
+        bet:             |     float   | fixed bet to quick_trade--. None = all moneys.
 
-        commission:      | int, float. | percentage commission (0 -- 100).
+        commission:      |      float  | percentage commission (0 -- 100).
 
-        stop_loss:       | int, float. | stop loss in points.
+        stop_loss:       |      float. | stop loss in points.
 
-        take_profit:     | int, float. | take profit in points.
+        take_profit:     |      float. | take profit in points.
 
         plot:            |    bool.    | plotting.
 
@@ -1324,7 +1328,7 @@ class Strategies(object):
 
 
 
-        returns: 2 pd.DataFrames with data of:
+        returns: pd.DataFrame with data of:
             signals,
             deposit (high, low, open, close)'
             stop loss,
@@ -1538,10 +1542,10 @@ class Strategies(object):
 
         return self.backtest_out
 
-    def load_model(self, path):
+    def load_model(self, path: str):
         self.model = load_model(path)
 
-    def set_client(self, your_client):
+    def set_client(self, your_client: TradingClient):
         """
         :param your_client: TradingClient object
 
@@ -1554,10 +1558,10 @@ class Strategies(object):
                 self.returns[pos] = new
 
     def set_stop_and_take(self,
-                          take_profit=None,
-                          stop_loss=None,
-                          set_stop=True,
-                          set_take=True):
+                          take_profit: float=None,
+                          stop_loss: float=None,
+                          set_stop: bool=True,
+                          set_take: bool=True):
         """
         :param set_take: create new take profits.
         :param set_stop: create new stop losses.
@@ -1584,7 +1588,7 @@ class Strategies(object):
             if set_stop:
                 self.stop_losses.append(ts['stop'])
 
-    def set_credit_leverages(self, credit_lev):
+    def set_credit_leverages(self, credit_lev: float):
         """
         Sets the leverage for bets.
 
@@ -1632,10 +1636,10 @@ class PatternFinder(Strategies):
 
     """
 
-    def _window_(self, column, n=2):
+    def _window_(self, column: str, n: int=2):
         return utils.get_window(self.df[column].values, n)
 
-    def find_pip_bar(self, min_diff_coef=2, body_coef=10):
+    def find_pip_bar(self, min_diff_coef: float=2, body_coef: float=10):
         ret = []
         flag = utils.EXIT
         for e, (high, low, open_price, close) in enumerate(
@@ -1666,11 +1670,11 @@ class PatternFinder(Strategies):
         self.open_lot_prices = [flag_open_lot]
         self.take_profits = [np.inf]
         for high, low, open_pr, close in zip(
-                                             self._window_('High'),
-                                             self._window_('Low'),
-                                             self._window_('Open'),
-                                             self._window_('Close')
-                                             ):
+                self._window_('High'),
+                self._window_('Low'),
+                self._window_('Open'),
+                self._window_('Close')
+        ):
             if low[0] == low[1] and close[1] > high[0]:
                 flag = utils.BUY
                 flag_open_lot = close[1]
