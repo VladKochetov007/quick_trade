@@ -7,13 +7,13 @@ import time
 
 import numpy as np
 import pandas as pd
-from quick_trade import utils
 import ta
 import ta.volatility
 from binance.client import Client
 from plotly.graph_objs import Line
 from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
+from quick_trade import utils
 from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
@@ -87,7 +87,7 @@ class Strategies(object):
         diff = utils.digit(df_['Close'].diff().values)[1:]
         self.__oldsig = utils.EXIT
         self.diff = [utils.EXIT, *diff]
-        self.df = df_.reset_index(drop=True)
+        self.df: pd.DataFrame = df_.reset_index(drop=True)
         self.ticker = ticker
         self.interval = interval
         if interval == '1m':
@@ -704,7 +704,7 @@ class Strategies(object):
 
     def basic_backtest(self,
                        deposit: float = 10_000,
-                       bet: float = None,
+                       bet: float = np.inf,
                        commission: float = 0.0,
                        plot: bool = True,
                        print_out: bool = True,
@@ -717,7 +717,7 @@ class Strategies(object):
 
         deposit:         | int, float. | start deposit.
 
-        bet:             | int, float, | fixed bet to quick_trade. None = all moneys.
+        bet:             | int, float, | fixed bet to quick_trade. np.inf = all moneys.
 
         commission:      | int, float. | percentage commission (0 -- 100).
 
@@ -740,6 +740,8 @@ class Strategies(object):
 
 
         """
+        exit_take_stop: bool
+        no_order: bool
         start_bet = bet
 
         data_column = self.df[column]
@@ -762,12 +764,12 @@ class Strategies(object):
                                              self.credit_leverages[:-1]), 1):
             price = data_column[e]
             if seted is not np.nan:
-                if start_bet is None:
+                if start_bet > deposit:
                     bet = deposit
                 open_price = price
                 bet *= credit_lev
 
-                def coefficient(difference):
+                def coefficient(difference: float) -> float:
                     return bet * difference / open_price
 
                 deposit -= bet * (commission / 100)
@@ -777,12 +779,15 @@ class Strategies(object):
                 elif deposit < moneys_open_bet:
                     self.losses += 1
                 moneys_open_bet = deposit
+                no_order = False
+                exit_take_stop = False
 
             if not e:
                 diff = 0
             if min(stop_loss, take_profit) < price < max(stop_loss, take_profit):
                 diff = data_column[e] - data_column[e - 1]
             else:
+                exit_take_stop = True
                 if sig == utils.BUY and price >= take_profit:
                     diff = take_profit - data_column[e - 1]
                 elif sig == utils.BUY and price <= stop_loss:
@@ -798,8 +803,9 @@ class Strategies(object):
                 diff = -diff
             elif sig == utils.EXIT:
                 diff = 0
-
-            deposit += coefficient(diff)
+            if not no_order:
+                deposit += coefficient(diff)
+            no_order = exit_take_stop
             self.deposit_history.append(deposit)
 
         self.linear = self.linear_(self.deposit_history)
@@ -940,11 +946,11 @@ class Strategies(object):
             title_text='D A T A', row=1, col=1, color=utils.TEXT_COLOR)
 
     def strategy_collider(self,
-                          first_func = utils.nothing,
+                          first_func=utils.nothing,
                           second_func=utils.nothing,
-                          kwargs_first_func: dict=None,
-                          kwargs_second_func: dict=None,
-                          mode: str='minimalist',
+                          kwargs_first_func: dict = None,
+                          kwargs_second_func: dict = None,
+                          mode: str = 'minimalist',
                           *args,
                           **kwargs):
         """
@@ -1082,7 +1088,7 @@ class Strategies(object):
     def get_trading_predict(self,
                             inverse: bool = False,
                             trading_on_client: bool = False,
-                            bet_for_trading_on_client='all depo',
+                            bet_for_trading_on_client: float = np.inf,
                             second_symbol_of_ticker: str = None,
                             can_sell: bool = False,
                             rounding_bet: int = 4,
@@ -1094,7 +1100,7 @@ class Strategies(object):
         :param can_sell: use order sell (client)
         :param inverse: inverting(bool)
         :param trading_on_client: trading on real client (boll)
-        :param bet_for_trading_on_client: (float or "all depo")
+        :param bet_for_trading_on_client: standard: all deposit
         :return: dict with prediction
         """
 
@@ -1111,7 +1117,7 @@ class Strategies(object):
 
         if trading_on_client:
             _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
-            if bet_for_trading_on_client == 'all depo':
+            if bet_for_trading_on_client is np.inf:
                 bet = _moneys_
             elif bet_for_trading_on_client > _moneys_:
                 bet = _moneys_
@@ -1195,7 +1201,7 @@ class Strategies(object):
                          stop_loss: float = None,
                          inverse: bool = False,
                          trading_on_client: bool = False,
-                         bet_for_trading_on_client='all depo',
+                         bet_for_trading_on_client: float = np.inf,
                          can_sell_client: bool = False,
                          second_symbol_of_ticker: str = None,
                          rounding_bet: int = 4,
@@ -1217,7 +1223,7 @@ class Strategies(object):
         :param stop_loss: stop loss. If generate_take_stop = False
         :param inverse: use inverse_strategy
         :param trading_on_client: trading on client
-        :param bet_for_trading_on_client: trading bet
+        :param bet_for_trading_on_client: trading bet, standard: all deposit
         :param can_sell_client: if your client can sell - True
         :param second_symbol_of_ticker: USDUAH -> UAH
         :param rounding_bet: maximum accuracy for trading
@@ -1240,9 +1246,9 @@ class Strategies(object):
                 strategy(**strategy_kwargs)
 
                 if generate_take_stop:
-                    self.set_stop_and_take(take_profit=take_profit,
-                                           stop_loss=stop_loss,
-                                           **gen_take_stop_kw)
+                    self.set_open_stop_and_take(take_profit=take_profit,
+                                                stop_loss=stop_loss,
+                                                **gen_take_stop_kw)
                 if generate_credit:
                     self.set_credit_leverages(credit_lev=credit_leverage)
 
@@ -1557,11 +1563,11 @@ class Strategies(object):
             if val == old:
                 self.returns[pos] = new
 
-    def set_stop_and_take(self,
-                          take_profit: float=None,
-                          stop_loss: float=None,
-                          set_stop: bool=True,
-                          set_take: bool=True):
+    def set_open_stop_and_take(self,
+                               take_profit: float = None,
+                               stop_loss: float = None,
+                               set_stop: bool = True,
+                               set_take: bool = True):
         """
         :param set_take: create new take profits.
         :param set_stop: create new stop losses.
@@ -1569,24 +1575,31 @@ class Strategies(object):
         :param stop_loss: stop loss in points
 
         """
-        self.take_profit = take_profit
-        self.stop_loss = stop_loss
-        self.open_lot_prices = []
+        self.take_profit: float = take_profit
+        self.stop_loss: float = stop_loss
+        take_flag: float = np.inf
+        stop_flag: float = np.inf
+        open_flag: float = np.inf
+        self.open_lot_prices: list = []
         if set_stop:
             self.stop_losses = []
         if set_take:
             self.take_profits = []
         closes = self.df['Close'].values
-        for sig, close, seted in zip(self.returns, closes, utils.set_(closes)):
+        for sig, close, seted in zip(self.returns, closes, utils.set_(self.returns)):
             if seted is not np.nan:
                 self.open_price = close
+                if set_take or set_stop:
+                    ts = self.__get_stop_take(sig)
+                if set_take:
+                    take_flag = ts['take']
+                if set_stop:
+                    stop_flag = ts['stop']
             self.open_lot_prices.append(self.open_price)
-            if set_take and set_stop:
-                ts = self.__get_stop_take(sig)
             if set_take:
-                self.take_profits.append(ts['take'])
+                self.take_profits.append(take_flag)
             if set_stop:
-                self.stop_losses.append(ts['stop'])
+                self.stop_losses.append(stop_flag)
 
     def set_credit_leverages(self, credit_lev: float):
         """
@@ -1636,10 +1649,10 @@ class PatternFinder(Strategies):
 
     """
 
-    def _window_(self, column: str, n: int=2):
+    def _window_(self, column: str, n: int = 2):
         return utils.get_window(self.df[column].values, n)
 
-    def find_pip_bar(self, min_diff_coef: float=2, body_coef: float=10):
+    def find_pip_bar(self, min_diff_coef: float = 2, body_coef: float = 10):
         ret = []
         flag = utils.EXIT
         for e, (high, low, open_price, close) in enumerate(
@@ -1665,10 +1678,10 @@ class PatternFinder(Strategies):
     def find_DBLHC_DBHLC(self):
         ret = [utils.EXIT]
         flag = utils.EXIT
-        flag_open_lot = self.df['Open'].values[0]
-        self.stop_losses = [np.inf]
-        self.open_lot_prices = [flag_open_lot]
-        self.take_profits = [np.inf]
+
+        flag_stop_loss = np.inf
+        self.stop_losses = [flag_stop_loss]
+
         for high, low, open_pr, close in zip(
                 self._window_('High'),
                 self._window_('Low'),
@@ -1677,21 +1690,14 @@ class PatternFinder(Strategies):
         ):
             if low[0] == low[1] and close[1] > high[0]:
                 flag = utils.BUY
-                flag_open_lot = close[1]
-                flag_stop_loss = min(high[0], high[1])
-                flag_take_prof = np.inf
+                flag_stop_loss = min(low[0], low[1])
             elif high[0] == high[1] and close[0] > low[1]:
                 flag = utils.SELL
-                flag_open_lot = close[1]
                 flag_stop_loss = max(high[0], high[1])
-                flag_take_prof = -np.inf
-            else:
-                flag_stop_loss = flag_take_prof = flag_open_lot
 
             ret.append(flag)
-            self.take_profits.append(flag_take_prof)
             self.stop_losses.append(flag_stop_loss)
-            self.open_lot_prices.append(flag_open_lot)
+        self.set_open_stop_and_take(set_take=False, set_stop=False)
         self.returns = ret
         return ret
 
