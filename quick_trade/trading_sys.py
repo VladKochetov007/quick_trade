@@ -752,6 +752,8 @@ class Strategies(object):
         self.losses = 0
         moneys_open_bet = deposit
         money_start = deposit
+        oldsig = utils.EXIT
+        start_commision = commission
 
         for e, (sig,
                 stop_loss,
@@ -763,8 +765,13 @@ class Strategies(object):
                                              seted_[:-1],
                                              self.credit_leverages[:-1]), 1):
             price = data_column[e]
+
             if seted is not np.nan:
-                if start_bet > deposit:
+                if oldsig != utils.EXIT:
+                    commission = start_commision * 2
+                else:
+                    commission = start_commision
+                if bet > deposit:
                     bet = deposit
                 open_price = price
                 bet *= credit_lev
@@ -773,6 +780,8 @@ class Strategies(object):
                     return bet * difference / open_price
 
                 deposit -= bet * (commission / 100)
+                if bet > deposit:
+                    bet = deposit
                 self.trades += 1
                 if deposit > moneys_open_bet:
                     self.profits += 1
@@ -807,6 +816,7 @@ class Strategies(object):
                 deposit += coefficient(diff)
             no_order = exit_take_stop
             self.deposit_history.append(deposit)
+            oldsig = sig
 
         self.linear = self.linear_(self.deposit_history)
         lin_calc_df = pd.DataFrame(self.linear)
@@ -1300,10 +1310,8 @@ class Strategies(object):
     def backtest(self,
                  deposit: float = 10_000,
                  credit_leverage: float = 1,
-                 bet: int = None,
+                 bet: float = np.inf,
                  commission: float = 0,
-                 stop_loss: int = None,
-                 take_profit: int = None,
                  plot: bool = True,
                  print_out: bool = True,
                  show: bool = True,
@@ -1311,242 +1319,19 @@ class Strategies(object):
                  *args,
                  **kwargs):
         """
-        testing the strategy.
 
-
-        deposit:         |    float    | start deposit.
-
-        credit_leverage: |    float.   | trading leverage. 1 = none.
-
-        bet:             |     float   | fixed bet to quick_trade--. None = all moneys.
-
-        commission:      |      float  | percentage commission (0 -- 100).
-
-        stop_loss:       |      float. | stop loss in points.
-
-        take_profit:     |      float. | take profit in points.
-
-        plot:            |    bool.    | plotting.
-
-        print_out:       |    bool.    | printing.
-
-        show:            |    bool.    | showing figure.
-
-
-
-        returns: pd.DataFrame with data of:
-            signals,
-            deposit (high, low, open, close)'
-            stop loss,
-            take profit,
-            linear deposit,
-            price (high, low, open, close),
-            open lot price.
+        :param deposit: start deposit.
+        :param credit_leverage: trading leverage. 1 = none.
+        :param bet: fixed bet to quick_trade--. np.inf = all moneys.
+        :param commission: percentage commission (0 -- 100).
+        :param plot: plotting.
+        :param print_out: printing.
+        :param show: showing figure.
+        :param log_profit_calc: calculating profit logarithmic
 
         """
 
-        money_start = deposit
-        loc = self.df['Close'].values
-
-        _df_flag = self.df
-        self.df = utils.inverse_4_col_df(self.df, ['Open', 'High', 'Low', 'Close'])
-
-        _returns_flag = self.returns
-        self.returns = utils.expansion_with_shear(self.returns)
-
-        _stop_loss_flag = self.stop_losses
-        self.stop_losses = utils.expansion_with_shear(self.stop_losses, loc[0])
-
-        _take_profit_flag = self.take_profits
-        self.take_profits = utils.expansion_with_shear(self.take_profits, loc[0])
-
-        _credit_flag = self.credit_leverages
-        self.credit_leverages = utils.expansion_with_shear(self.credit_leverages, 0)
-
-        _open_lot_flag = self.open_lot_prices
-        self.open_lot_prices = utils.expansion_with_shear(self.open_lot_prices, loc[0])
-
-        self.basic_backtest(
-            deposit=deposit,
-            credit_leverage=credit_leverage,
-            bet=bet,
-            commission=commission,
-            stop_loss=stop_loss,
-            take_profit=take_profit,
-            plot=False,
-            print_out=False)
-
-        self.df = _df_flag
-        self.credit_leverages = _credit_flag
-        self.returns = _returns_flag
-        self.take_profits = _take_profit_flag
-        self.stop_losses = _stop_loss_flag
-        self.open_lot_prices = _open_lot_flag
-
-        rets = self.backtest_out
-
-        def __4_div(obj, columns):
-            frame = list(np.array(obj))[::4]
-            frame = pd.DataFrame(frame, columns=columns).reset_index()
-            del frame['index']
-            return frame
-
-        deposit_df = rets['deposit (Close)'].values
-        deposit_df = utils.to_4_col_df(deposit_df, 'deposit Open',
-                                       'deposit High', 'deposit Low', 'deposit Close')
-
-        self.linear = pd.DataFrame(
-            self.linear_(deposit_df['deposit Close'].values),
-            columns=['deposit Close linear'])
-
-        self.open_lot_prices_calc = pd.DataFrame({'open lot price': self.open_lot_prices})
-        self.take_profits_calc = pd.DataFrame({'take profit': self.take_profits})
-        self.stop_losses_calc = pd.DataFrame({'stop loss': self.stop_losses})
-        self.backtest_out = pd.concat(
-            [
-                _df_flag.reset_index(),
-                deposit_df.reset_index(),
-                pd.DataFrame({'predictions': self.returns}),
-                self.stop_losses_calc,
-                self.take_profits_calc,
-                self.open_lot_prices_calc,
-                self.linear
-            ],
-            axis=1)
-        del __4_div
-        del self.backtest_out['index']
-        self.backtest_out_no_drop = self.backtest_out
-        self.backtest_out = self.backtest_out.dropna()
-        if log_profit_calc:
-            _log = np.log
-        else:
-            _log = utils.nothing
-        self.lin_calc = self.linear_(
-            MinMaxScaler(
-                feature_range=(
-                    min(self.deposit_history),
-                    max(self.deposit_history)
-                )
-            ).fit_transform(
-                np.array([_log(deposit_df['deposit Close'].values)]).T
-            ).T[0])
-        lin_calc_df = pd.DataFrame(self.lin_calc)
-        self.mean_diff = float(lin_calc_df.diff().mean())
-        self.year_profit = self.mean_diff / self.profit_calculate_coef + money_start
-        self.year_profit = ((self.year_profit - money_start) / money_start) * 100
-        self.info = (
-            f"L O S S E S: {self.losses}\n"
-            f"T R A D E S: {self.trades}\n"
-            f"P R O F I T S: {self.profits}\n"
-            f"M E A N   Y E A R   P E R C E N T A G E   R O F I T: {self.year_profit}%\n"
-        )
-
-        MIN = []
-        MAX = []
-        CLOSE = []
-        OPEN = []
-        for C__, O, H, L in deposit_df.values:
-            sorted_ = sorted([C__, O, H, L])
-            MIN.append(min(sorted_))
-            MAX.append(max(sorted_))
-            CLOSE.append(sorted_[1])
-            OPEN.append(sorted_[2])
-        deposit_df = pd.DataFrame({'deposit Close': CLOSE,
-                                   'deposit Open': OPEN,
-                                   'deposit High': MAX,
-                                   'deposit Low': MIN})
-
-        if print_out:
-            print(self.info)
-        if plot:
-            self.fig.add_candlestick(
-                close=self.df['Close'],
-                high=self.df['High'],
-                low=self.df['Low'],
-                open=self.df['Open'],
-                row=1,
-                col=1,
-                name=self.ticker)
-            self.fig.add_trace(
-                Line(
-                    y=self.take_profits,
-                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.G),
-                    opacity=utils.STOP_TAKE_OPN_ALPHA,
-                    name='take profit'),
-                row=1,
-                col=1)
-            self.fig.add_trace(
-                Line(
-                    y=self.stop_losses,
-                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.R),
-                    opacity=utils.STOP_TAKE_OPN_ALPHA,
-                    name='stop loss'),
-                row=1,
-                col=1)
-            self.fig.add_trace(
-                Line(
-                    y=self.open_lot_prices,
-                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.B),
-                    opacity=utils.STOP_TAKE_OPN_ALPHA,
-                    name='open lot'),
-                row=1,
-                col=1)
-            self.fig.add_candlestick(
-                low=deposit_df['deposit Low'],
-                high=deposit_df['deposit High'],
-                close=deposit_df['deposit Close'],
-                open=deposit_df['deposit Open'],
-                increasing_line_color=utils.DEPO_COLOR_UP,
-                decreasing_line_color=utils.DEPO_COLOR_DOWN,
-                name=f'D E P O S I T  (S T A R T: ${money_start})',
-                row=2,
-                col=1)
-            self.fig.add_trace(
-                Line(y=self.linear.values.T[0], name='L I N E A R'),
-                row=2,
-                col=1)
-            for e, i in enumerate(utils.set_(self.returns)):
-                if i == utils.SELL:
-                    self.fig.add_scatter(
-                        name='Sell',
-                        y=[loc[e]],
-                        x=[e],
-                        row=1,
-                        col=1,
-                        line=dict(color='#FF0000'),
-                        marker=dict(
-                            symbol='triangle-down',
-                            size=utils.SCATTER_SIZE,
-                            opacity=utils.SCATTER_ALPHA))
-                elif i == utils.BUY:
-                    self.fig.add_scatter(
-                        name='Buy',
-                        y=[loc[e]],
-                        x=[e],
-                        row=1,
-                        col=1,
-                        line=dict(color='#00FF00'),
-                        marker=dict(
-                            symbol='triangle-up',
-                            size=utils.SCATTER_SIZE,
-                            opacity=utils.SCATTER_ALPHA))
-                elif i == utils.EXIT:
-                    self.fig.add_scatter(
-                        name='Exit',
-                        y=[loc[e]],
-                        x=[e],
-                        row=1,
-                        col=1,
-                        line=dict(color='#2a00ff'),
-                        marker=dict(
-                            symbol='triangle-left',
-                            size=utils.SCATTER_SIZE,
-                            opacity=utils.SCATTER_ALPHA))
-            self.fig.update_layout(xaxis_rangeslider_visible=False)
-            if show:
-                self.fig.show()
-
-        return self.backtest_out
+        
 
     def load_model(self, path: str):
         self.model = load_model(path)
@@ -1697,8 +1482,8 @@ class PatternFinder(Strategies):
 
             ret.append(flag)
             self.stop_losses.append(flag_stop_loss)
-        self.set_open_stop_and_take(set_take=False, set_stop=False)
         self.returns = ret
+        self.set_open_stop_and_take(set_take=False, set_stop=False)
         return ret
 
     def find_TBH_TBL(self):
