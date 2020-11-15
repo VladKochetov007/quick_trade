@@ -389,19 +389,14 @@ class Strategies(object):
 
         for val, diff in zip(rsi.values, rsi.diff().values):
             if val < minimum and diff > 0 and val is not pd.NA:
-                return_list.append(utils.BUY)
                 flag = utils.BUY
             elif val > maximum and diff < 0 and val is not pd.NA:
-                return_list.append(utils.SELL)
                 flag = utils.SELL
             elif flag == utils.BUY and val < max_mid:
                 flag = utils.EXIT
-                return_list.append(utils.EXIT)
             elif flag == utils.SELL and val > min_mid:
                 flag = utils.EXIT
-                return_list.append(utils.EXIT)
-            else:
-                return_list.append(flag)
+            return_list.append(flag)
 
         self.returns = return_list
         return return_list
@@ -1219,6 +1214,7 @@ class Strategies(object):
                          generate_credit: bool = True,
                          credit_leverage: float = 1,
                          gen_take_stop_kw=None,
+                         *strategy_args,
                          **strategy_kwargs):
         """
         :param gen_take_stop_kw: named arguments for set_stop_and_take
@@ -1239,21 +1235,22 @@ class Strategies(object):
         :param rounding_bet: maximum accuracy for trading
         :param generate_take_stop: If your strategy does not provide for the generation of stop loss and take profit.
         :param strategy_kwargs: named arguments to <<strategy>>.
+        :param strategy_args: arguments to <<strategy>>.
 
         """
 
         if gen_take_stop_kw is None:
-            gen_take_stop_kw = {}
+            gen_take_stop_kw = dict()
         if get_data_kwargs is None:
             get_data_kwargs = dict()
         self._ret = {}
         self.ticker = ticker
-        __now__ = time.time()
         try:
+            __now__ = time.time()
             while True:
                 self.prepare_realtime = True
                 self.df = self.client.get_data(ticker, **get_data_kwargs).reset_index(drop=True)
-                strategy(**strategy_kwargs)
+                strategy(*strategy_args, **strategy_kwargs)
 
                 if generate_take_stop:
                     self.set_open_stop_and_take(take_profit=take_profit,
@@ -1448,13 +1445,10 @@ class PatternFinder(Strategies):
             shadow_low = min(open_price, close) - low
             if body < (max(shadow_high, shadow_low) * body_coef):
                 if shadow_low > (shadow_high * min_diff_coef):
-                    ret.append(utils.BUY)
                     flag = utils.BUY
                 elif shadow_high > (shadow_low * min_diff_coef):
-                    ret.append(utils.SELL)
                     flag = utils.SELL
-                else:
-                    ret.append(flag)
+                ret.append(flag)
             else:
                 ret.append(flag)
         self.returns = ret
@@ -1509,14 +1503,11 @@ class PatternFinder(Strategies):
                     self._window_('High', 3), self._window_('Low', 3),
                     self._window_('Open', 3), self._window_('Close', 3)), 1):
             if min(low) == low[1] and close[1] < close[2] and high[2] < high[0]:
-                ret.append(utils.BUY)
                 flag = utils.BUY
             elif max(high
                      ) == high[1] and close[2] < close[1] and low[2] > low[0]:
-                ret.append(utils.SELL)
                 flag = utils.SELL
-            else:
-                ret.append(flag)
+            ret.append(flag)
         self.returns = ret
         return ret
 

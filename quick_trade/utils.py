@@ -94,10 +94,8 @@ def get_data(ticker, undo_days):
     date_list = [end - dt.timedelta(days=d) for d in range(undo_days)]
     for i in range(len(date_list)):
         ret = str(np.array(date_list[::-1])[i])[:10]
-        ret = ret.split('-')
-        for e, dat in enumerate(ret):
-            ret[e] = int(dat)
-        tuples.append(tuple(ret))
+        ret = tuple(map(int, ret.split('-')))
+        tuples.append(ret)
 
     dataframes = []
     for date_ in tuples:
