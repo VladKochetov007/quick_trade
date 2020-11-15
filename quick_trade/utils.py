@@ -18,10 +18,10 @@ BUY = 1
 SELL = 0
 EXIT = 2
 
-TOKEN = 'Tpk_a4bc3e95d4c94810a3b2d4138dc81c5d'
+IEX_TOKEN = 'Tpk_a4bc3e95d4c94810a3b2d4138dc81c5d'
 
 os.environ['IEX_API_VERSION'] = 'iexcloud-sandbox'
-os.environ['IEX_TOKEN'] = TOKEN
+os.environ['IEX_TOKEN'] = IEX_TOKEN
 __author__ = 'Vlad Kochetov'
 __credits__ = ["Hemerson Tacon -- Stack overflow",
                "hpaulj -- Stack overflow",
