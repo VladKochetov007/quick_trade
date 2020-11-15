@@ -3,6 +3,17 @@ VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io
 
 ![image](logo_with_slogan.PNG)
 
+4.0 COMING SOON!!!:
+
+BIG DEBUG OF BACKTESTS
+
+LIB OF PATTERNS
+
+SUPERTREND AND HEIKIN ASHI
+
+~ AI PATTERNS DETECTING
+
+
 ```
 used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
