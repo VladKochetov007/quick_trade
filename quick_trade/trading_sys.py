@@ -676,14 +676,14 @@ class Strategies(object):
             return_list.append(flag)
         self.returns = return_list
 
-    def heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()):
+    def get_heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()):
         """
 
         :param df: dataframe, standard: self.df
         :return: heikin ashi
         """
         if df is pd.DataFrame():
-            df = self.df
+            df: pd.DataFrame = self.df
         df['HA_Close'] = (df['Open'] + df['High'] + df['Low'] + df['Close']) / 4
         df['HA_Open'] = (df['Open'].shift(1) + df['Open'].shift(1)) / 2
         df.iloc[0, df.columns.get_loc("HA_Open")] = (df.iloc[0]['Open'] + df.iloc[0]['Close']) / 2
@@ -720,7 +720,7 @@ class Strategies(object):
         return return_list
 
     def basic_backtest(self,
-                       deposit: float = 10_000,
+                       deposit: float = 10_000.0,
                        bet: float = np.inf,
                        commission: float = 0.0,
                        plot: bool = True,
@@ -759,18 +759,22 @@ class Strategies(object):
         """
         exit_take_stop: bool
         no_order: bool
-        start_bet = bet
+        stop_loss: float
+        diff: float
+        lin_calc_df: pd.DataFrame
+        price: float
+        start_bet: float = bet
 
-        data_column = self.df[column]
+        data_column: pd.Series = self.df[column]
         self.deposit_history = [deposit]
         seted_ = utils.set_(self.returns)
-        self.trades = 0
-        self.profits = 0
-        self.losses = 0
-        moneys_open_bet = deposit
-        money_start = deposit
+        self.trades: int = 0
+        self.profits: int = 0
+        self.losses: int = 0
+        moneys_open_bet: float = deposit
+        money_start: float = deposit
         oldsig = utils.EXIT
-        start_commision = commission
+        start_commision: float = commission
 
         for e, (sig,
                 stop_loss,
@@ -809,7 +813,7 @@ class Strategies(object):
                 exit_take_stop = False
 
             if not e:
-                diff = 0
+                diff = 0.0
             if min(stop_loss, take_profit) < price < max(stop_loss, take_profit):
                 diff = data_column[e] - data_column[e - 1]
             else:
@@ -823,12 +827,12 @@ class Strategies(object):
                 elif sig == utils.SELL and price <= take_profit:
                     diff = take_profit - data_column[e - 1]
                 else:
-                    diff = 0
+                    diff = 0.0
 
             if sig == utils.SELL:
                 diff = -diff
             elif sig == utils.EXIT:
-                diff = 0
+                diff = 0.0
             if not no_order:
                 deposit += coefficient(diff)
             no_order = exit_take_stop
@@ -858,7 +862,7 @@ class Strategies(object):
             ]).T
         self.backtest_out = self.backtest_out_no_drop.dropna()
         if plot:
-            loc = self.df[column]
+            loc: pd.Series = self.df[column]
             self.fig.add_candlestick(
                 close=self.df['Close'],
                 high=self.df['High'],
