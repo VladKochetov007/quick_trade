@@ -4,6 +4,7 @@
 import itertools
 import random
 import time
+import typing
 
 import numpy as np
 import pandas as pd
@@ -13,30 +14,37 @@ from binance.client import Client
 from plotly.graph_objs import Line
 from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
-from quick_trade import utils
 from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.layers import Dropout, Dense, LSTM
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.models import load_model
 
+try:
+    from quick_trade import utils
+except ImportError:
+    from quick_trade.quick_trade import utils
 
-# я понял свои ошибки
-# я пишу на русском комментарии
-# и они без смысла
-# и нет комментов к коду
+try:  # in 3.9 tensorflow doesn't work
+    from tensorflow.keras.layers import Dropout, Dense, LSTM
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.models import load_model
+except ImportError:
+    pass  # python 3.9 support
+
 
 class TradingClient(Client):
-    ordered = False
+    ordered: bool = False
+    __side__: str
+    quantity: float
+    ticker: str
+    order: dict[str, typing.Any]
 
-    def get_ticker_price(self, ticker):
+    def get_ticker_price(self, ticker: str):
         return float(self.get_symbol_ticker(symbol=ticker)['price'])
 
     @staticmethod
-    def get_data(ticker=None, interval=None, **get_kw):
+    def get_data(ticker: str = 'None', interval: str = 'None', **get_kw):
         return utils.get_binance_data(ticker, interval, **get_kw)
 
-    def new_order_buy(self, ticker=None, quantity=None, credit_leverage=None):
+    def new_order_buy(self, ticker: str = 'None', quantity: float = 0.0, credit_leverage: float = 1.0):
         self.__side__ = 'Buy'
         self.quantity = quantity
         self.ticker = ticker
@@ -44,7 +52,7 @@ class TradingClient(Client):
         self.order_id = self.order['orderId']
         self.ordered = True
 
-    def new_order_sell(self, ticker=None, quantity=None, credit_leverage=None):
+    def new_order_sell(self, ticker: str = 'None', quantity: float = 0.0, credit_leverage: float = 1.0):
         self.__side__ = 'Sell'
         self.quantity = quantity
         self.ticker = ticker
@@ -73,6 +81,7 @@ class Strategies(object):
     basic class for PatternFinder (but without patterns).
 
     """
+    profit_calculate_coef: float
 
     def __init__(self,
                  ticker='AAPL',
@@ -81,15 +90,13 @@ class Strategies(object):
                  rounding=5,
                  *args,
                  **kwargs):
-        df_ = round(df, rounding)
-        self.__first__ = True
-        self.__rounding__ = rounding
-        diff = utils.digit(df_['Close'].diff().values)[1:]
+        df_: pd.DataFrame = round(df, rounding)
+        self.__first__: bool = True
+        self.__rounding__: int = rounding
         self.__oldsig = utils.EXIT
-        self.diff = [utils.EXIT, *diff]
         self.df: pd.DataFrame = df_.reset_index(drop=True)
-        self.ticker = ticker
-        self.interval = interval
+        self.ticker: str = ticker
+        self.interval: str = interval
         if interval == '1m':
             self.profit_calculate_coef = 1 / (60 / 24 / 365)
         if interval == '2m':
@@ -126,11 +133,14 @@ class Strategies(object):
             self.profit_calculate_coef = 1 / 2
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
-        self.__inputs = utils.INPUTS
-        self.__exit_order__ = False
+        self.__inputs: int = utils.INPUTS
+        self.__exit_order__: bool = False
 
     def __repr__(self):
         return 'trader'
+
+    def _get_attr(self, attr: str):
+        return getattr(self, attr)
 
     @classmethod
     def _get_this_instance(cls, *args, **kwargs):
@@ -139,12 +149,14 @@ class Strategies(object):
     def kalman_filter(self,
                       df='self.df["Close"]',
                       iters=5,
-                      plot=True,
+                      plot: bool = True,
                       *args,
                       **kwargs):
-        k_filter = KalmanFilter()
+        filtered: np.ndarray
+        k_filter: KalmanFilter = KalmanFilter()
         if isinstance(df, str):
-            df = eval(df)
+            df: pd.Series = eval(df)
+        df: pd.Series
         filtered = k_filter.filter(np.array(df))[0]
         for i in range(iters):
             filtered = k_filter.smooth(filtered)[0]
@@ -682,7 +694,7 @@ class Strategies(object):
         :param df: dataframe, standard: self.df
         :return: heikin ashi
         """
-        if df is pd.DataFrame():
+        if 'Close' not in df.columns:
             df: pd.DataFrame = self.df
         df['HA_Close'] = (df['Open'] + df['High'] + df['Low'] + df['Close']) / 4
         df['HA_Open'] = (df['Open'].shift(1) + df['Open'].shift(1)) / 2
@@ -757,14 +769,15 @@ class Strategies(object):
 
 
         """
+
         exit_take_stop: bool
         no_order: bool
         stop_loss: float
         diff: float
         lin_calc_df: pd.DataFrame
         price: float
-        start_bet: float = bet
 
+        start_bet: float = bet
         data_column: pd.Series = self.df[column]
         self.deposit_history = [deposit]
         seted_ = utils.set_(self.returns)
@@ -1353,8 +1366,6 @@ class Strategies(object):
         :param log_profit_calc: calculating profit logarithmic
 
         """
-
-        
 
     def load_model(self, path: str):
         self.model = load_model(path)
