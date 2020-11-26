@@ -28,6 +28,7 @@ try:  # in 3.9 tensorflow doesn't work
     from tensorflow.keras.models import load_model
 except ImportError:
     pass  # python 3.9 support
+    utils.logger.critical('the tensorflow package will not work')
 
 
 class TradingClient(Client):
@@ -75,10 +76,22 @@ class TradingClient(Client):
                 return float(asset['free'])
 
 
-class Strategies(object):
+class Trader(object):
     """
+    algo-trading system.
 
-    basic class for PatternFinder (but without patterns).
+
+    ticker:   |     str      |  ticker/symbol of chart
+
+    df:       |   dataframe  |  data of chart
+
+    interval: |     str      |  interval of df.
+    one of:
+    1m    30m    3h    3M
+    2m    45m    4h    6M
+    3m    1h     1d
+    5m    90m    1w
+    15m   2h     1M
 
     """
     profit_calculate_coef: float
@@ -87,7 +100,7 @@ class Strategies(object):
                  ticker='AAPL',
                  df: pd.DataFrame = np.nan,
                  interval='1d',
-                 rounding=5,
+                 rounding=50,
                  *args,
                  **kwargs):
         df_: pd.DataFrame = round(df, rounding)
@@ -258,7 +271,7 @@ class Strategies(object):
 
     def strategy_diff(self, frame_to_diff, *args, **kwargs):
         """
-        frame_to_diff:  |   pd.DataFrame  |  example:  Strategies.df['Close']
+        frame_to_diff:  |   pd.DataFrame  |  example:  Trader.df['Close']
 
         """
         if isinstance(frame_to_diff, str):
@@ -1002,7 +1015,7 @@ class Strategies(object):
 
         standard: utils.nothing.
 
-        example:  Strategies.strategy_macd.
+        example:  Trader.strategy_macd.
 
         second_func:     |  trading strategy  |   strategy to combine.
 
@@ -1063,20 +1076,20 @@ class Strategies(object):
 
         example:
 
-        Strategies.strategy_collider(
-           Strategies.strategy_2_sma,
-           Strategies.strategy_3_ema,
+        Trader.strategy_collider(
+           Trader.strategy_2_sma,
+           Trader.strategy_3_ema,
            (30, 10)
         )
 
         or:
 
-        Strategies.strategy_collider(Strategies.strategy_2_sma,
-                             Strategies.strategy_2_sma,
+        Trader.strategy_collider(Trader.strategy_2_sma,
+                             Trader.strategy_2_sma,
                              (300, 200),
                              (200, 100))
                                   =
-                   Strategies.strategy_3_sma(300, 200, 100)
+                   Trader.strategy_3_sma(300, 200, 100)
 
 
         """
@@ -1426,47 +1439,6 @@ class Strategies(object):
 
         """
         self.credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
-
-
-class PatternFinder(Strategies):
-    """
-    algo-trading system.
-
-
-    ticker:   |     str      |  ticker/symbol of chart
-
-    df:       |   dataframe  |  data of chart
-
-    interval: |     str      |  interval of df.
-    one of:
-    1m    30m    3h    3M
-    2m    45m    4h    6M
-    3m    1h     1d
-    5m    90m    1w
-    15m   2h     1M
-
-
-    step 1:
-    creating a plotter
-
-    step 2:
-    using strategy
-
-    step 3:
-    backtesting a strategy
-
-
-    example:
-
-    trader = PatternFinder(df=mydf)
-
-    trader.set_pyplot()
-
-    trader.strategy_3_sma()
-
-    return = trader.backtest(credit_leverage=40)
-
-    """
 
     def _window_(self, column: str, n: int = 2):
         return utils.get_window(self.df[column].values, n)
