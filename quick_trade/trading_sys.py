@@ -1,6 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
+
+
+# TODO:
+#   eval to getatrr
+#   rewrite extra in get-predict and realtime...
+
 import itertools
 import random
 import time
@@ -27,8 +33,7 @@ try:  # in 3.9 tensorflow doesn't work
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.models import load_model
 except ImportError:
-    pass  # python 3.9 support
-    utils.logger.critical('the tensorflow package will not work')
+    utils.logger.critical('the tensorflow package will not work')  # python 3.9 support
 
 
 class TradingClient(Client):
@@ -1143,19 +1148,16 @@ class Trader(object):
         return utils.anti_set_(return_list)
 
     def get_trading_predict(self,
-                            inverse: bool = False,
                             trading_on_client: bool = False,
                             bet_for_trading_on_client: float = np.inf,
-                            second_symbol_of_ticker: str = None,
-                            can_sell: bool = False,
+                            second_symbol_of_ticker: str = 'None',
                             rounding_bet: int = 4,
-                            *args,
-                            **kwargs):
+                            #*args,
+                            #**kwargs
+                            ):
         """
         :param rounding_bet: maximum permissible accuracy with your api
         :param second_symbol_of_ticker: BTCUSDT -> USDT
-        :param can_sell: use order sell (client)
-        :param inverse: inverting(bool)
         :param trading_on_client: trading on real client (boll)
         :param bet_for_trading_on_client: standard: all deposit
         :return: dict with prediction
@@ -1188,14 +1190,9 @@ class Trader(object):
             bet = round(bet, rounding_bet) - min_r(rounding_bet)
             bet = round(bet, rounding_bet)
 
-        if inverse:
-            self.inverse_strategy()
-
         predict = self.returns[-1]
         if self.__exit_order__:
             predict = utils.EXIT
-        if not can_sell:
-            self.convert_signal(utils.SELL, utils.EXIT)
 
         cond = "_predict" not in self.__dir__()
         if not cond:
@@ -1219,9 +1216,8 @@ class Trader(object):
                     if not self.__first__:
                         self.client.exit_last_order()
                         utils.logger.info('client exit')
-                    if can_sell:
-                        self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
-                        utils.logger.info('client sell')
+                    self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
+                    utils.logger.info('client sell')
                     self.__first__ = False
                     self.__exit_order__ = False
 
@@ -1254,67 +1250,43 @@ class Trader(object):
                          get_data_kwargs=None,
                          sleeping_time: float = 60,
                          print_out: bool = True,
-                         take_profit: float = None,
-                         stop_loss: float = None,
-                         inverse: bool = False,
                          trading_on_client: bool = False,
                          bet_for_trading_on_client: float = np.inf,
-                         can_sell_client: bool = False,
                          second_symbol_of_ticker: str = None,
                          rounding_bet: int = 4,
-                         generate_take_stop: bool = True,
-                         generate_credit: bool = True,
-                         credit_leverage: float = 1,
-                         gen_take_stop_kw=None,
                          *strategy_args,
                          **strategy_kwargs):
         """
-        :param gen_take_stop_kw: named arguments for set_stop_and_take
-        :param credit_leverage: credit leverage for client.
-        :param generate_credit: If your strategy does not provide for the generation credit leverage.
+
         :param ticker: ticker for trading.
         :param strategy: trading strategy.
         :param get_data_kwargs: named arguments to self.client.get_data WITHOUT TICKER.
         :param sleeping_time: sleeping time.
         :param print_out: printing.
-        :param take_profit: take profit. If generate_take_stop = False
-        :param stop_loss: stop loss. If generate_take_stop = False
-        :param inverse: use inverse_strategy
         :param trading_on_client: trading on client
         :param bet_for_trading_on_client: trading bet, standard: all deposit
-        :param can_sell_client: if your client can sell - True
         :param second_symbol_of_ticker: USDUAH -> UAH
         :param rounding_bet: maximum accuracy for trading
-        :param generate_take_stop: If your strategy does not provide for the generation of stop loss and take profit.
         :param strategy_kwargs: named arguments to <<strategy>>.
         :param strategy_args: arguments to <<strategy>>.
 
         """
 
-        if gen_take_stop_kw is None:
-            gen_take_stop_kw = dict()
+
         if get_data_kwargs is None:
             get_data_kwargs = dict()
-        self._ret = {}
+        self.realtie_returns = {}
         self.ticker = ticker
         try:
             __now__ = time.time()
             while True:
                 self.prepare_realtime = True
-                self.df = self.client.get_data(ticker, **get_data_kwargs).reset_index(drop=True)
+                self.df = self.client.get_data(self.ticker, **get_data_kwargs).reset_index(drop=True)
                 strategy(*strategy_args, **strategy_kwargs)
 
-                if generate_take_stop:
-                    self.set_open_stop_and_take(take_profit=take_profit,
-                                                stop_loss=stop_loss,
-                                                **gen_take_stop_kw)
-                if generate_credit:
-                    self.set_credit_leverages(credit_lev=credit_leverage)
-
                 prediction = self.get_trading_predict(
-                    inverse=inverse, trading_on_client=trading_on_client,
+                    trading_on_client=trading_on_client,
                     bet_for_trading_on_client=bet_for_trading_on_client,
-                    can_sell=can_sell_client,
                     second_symbol_of_ticker=second_symbol_of_ticker,
                     rounding_bet=rounding_bet)
 
@@ -1322,7 +1294,7 @@ class Trader(object):
                 if print_out:
                     print(index, prediction)
                 utils.logger.info(f"trading prediction at {index}: {prediction}")
-                self._ret[index] = prediction
+                self.realtie_returns[index] = prediction
                 while True:
                     if not self.__exit_order__:
                         price = self.client.get_ticker_price(ticker)
@@ -1338,11 +1310,12 @@ class Trader(object):
                                 if print_out:
                                     print(index, prediction)
                                 utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
-                                self._ret[index] = prediction
+                                self.realtie_returns[index] = prediction
                                 if trading_on_client:
                                     self.client.exit_last_order()
+                                    utils.logger.info('client exit lot')
                     if not (time.time() < (__now__ + sleeping_time)):
-                        __now__ = time.time()
+                        __now__ += sleeping_time
                         break
 
         except Exception as e:
