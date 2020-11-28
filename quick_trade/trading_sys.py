@@ -15,16 +15,15 @@ import typing
 
 import numpy as np
 import pandas as pd
+import plotly
 import ta
 import ta.volatility
 from binance.client import Client
-from pandas import Series
 from plotly.graph_objs import Line
 from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
 from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
-import plotly
 
 try:
     from quick_trade import utils
@@ -119,10 +118,10 @@ class Trader(object):
     open_price: float
 
     def __init__(self,
-                 ticker: str='AAPL',
+                 ticker: str = 'AAPL',
                  df: pd.DataFrame = pd.DataFrame(),
-                 interval: str='1d',
-                 rounding: int=50,
+                 interval: str = '1d',
+                 rounding: int = 50,
                  *args,
                  **kwargs):
         df_: pd.DataFrame = round(df, rounding)
@@ -182,8 +181,8 @@ class Trader(object):
         return cls(*args, **kwargs)
 
     def kalman_filter(self,
-                      df: pd.Series=df['Close'],
-                      iters: int=5,
+                      df: pd.Series = df['Close'],
+                      iters: int = 5,
                       plot: bool = True,
                       *args,
                       **kwargs) -> pd.DataFrame:
@@ -203,10 +202,10 @@ class Trader(object):
         return pd.DataFrame(filtered)
 
     def scipy_filter(self,
-                     window_length: int=101,
-                     df: pd.Series=df['Close'],
-                     polyorder: int=3,
-                     plot: bool=True,
+                     window_length: int = 101,
+                     df: pd.Series = df['Close'],
+                     polyorder: int = 3,
+                     plot: bool = True,
                      **scipy_savgol_filter_kwargs) -> pd.DataFrame:
         filtered = signal.savgol_filter(
             df,
@@ -307,9 +306,9 @@ class Trader(object):
         return self.returns
 
     def strategy_2_sma(self,
-                       slow: int=100,
-                       fast: int=30,
-                       plot: bool=True,
+                       slow: int = 100,
+                       fast: int = 30,
+                       plot: bool = True,
                        *args,
                        **kwargs) -> list[utils.PREDICT_TYPE]:
         self.returns = []
@@ -337,10 +336,10 @@ class Trader(object):
         return self.returns
 
     def strategy_3_sma(self,
-                       slow: int=100,
-                       mid: int=26,
-                       fast: int=13,
-                       plot: bool=True,
+                       slow: int = 100,
+                       mid: int = 26,
+                       fast: int = 13,
+                       plot: bool = True,
                        *args,
                        **kwargs) -> list[utils.PREDICT_TYPE]:
         self.returns = []
@@ -369,10 +368,10 @@ class Trader(object):
         return self.returns
 
     def strategy_3_ema(self,
-                       slow: int=3,
-                       mid: int=21,
-                       fast: int=46,
-                       plot: bool=True,
+                       slow: int = 3,
+                       mid: int = 21,
+                       fast: int = 46,
+                       plot: bool = True,
                        *args,
                        **kwargs) -> list[utils.PREDICT_TYPE]:
         self.returns = []
@@ -399,8 +398,8 @@ class Trader(object):
         return self.returns
 
     def strategy_macd(self,
-                      slow: int=100,
-                      fast: int=30,
+                      slow: int = 100,
+                      fast: int = 30,
                       *args,
                       **kwargs) -> list[utils.PREDICT_TYPE]:
         self.returns = []
@@ -417,8 +416,8 @@ class Trader(object):
         return self.returns
 
     def strategy_exp_diff(self,
-                          period: int=70,
-                          plot: bool=True,
+                          period: int = 70,
+                          plot: bool = True,
                           *args,
                           **kwargs) -> list[utils.PREDICT_TYPE]:
         exp: pd.Series = self.tema(period)
@@ -433,10 +432,10 @@ class Trader(object):
         return self.returns
 
     def strategy_rsi(self,
-                     minimum: int=20,
-                     maximum: int=80,
-                     max_mid: int=75,
-                     min_mid: int=35,
+                     minimum: int = 20,
+                     maximum: int = 80,
+                     max_mid: int = 75,
+                     min_mid: int = 35,
                      *args,
                      **rsi_kwargs) -> list[utils.PREDICT_TYPE]:
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
@@ -1295,7 +1294,6 @@ class Trader(object):
         :param strategy_args: arguments to <<strategy>>.
 
         """
-
 
         if get_data_kwargs is None:
             get_data_kwargs = dict()
