@@ -6,6 +6,7 @@
 # TODO:
 #   eval to getatrr
 #   rewrite extra in get-predict and realtime...
+#   425 string edit continue
 
 import itertools
 import random
@@ -100,6 +101,7 @@ class Trader(object):
 
     """
     profit_calculate_coef: float
+    returns: list[utils.PREDICT_TYPE] = []
 
     def __init__(self,
                  ticker='AAPL',
@@ -111,7 +113,7 @@ class Trader(object):
         df_: pd.DataFrame = round(df, rounding)
         self.__first__: bool = True
         self.__rounding__: int = rounding
-        self.__oldsig = utils.EXIT
+        self.__oldsig: utils.PREDICT_TYPE = utils.EXIT
         self.df: pd.DataFrame = df_.reset_index(drop=True)
         self.ticker: str = ticker
         self.interval: str = interval
@@ -289,7 +291,6 @@ class Trader(object):
         return self.returns
 
     def strategy_2_sma(self, slow=100, fast=30, plot=True, *args, **kwargs):
-        return_list = []
         SMA1 = ta.trend.sma(self.df['Close'], fast)
         SMA2 = ta.trend.sma(self.df['Close'], slow)
         if plot:
@@ -306,13 +307,12 @@ class Trader(object):
 
         for SMA13, SMA26 in zip(SMA1, SMA2):
             if SMA26 < SMA13:
-                return_list.append(utils.BUY)
+                self.returns.append(utils.BUY)
             elif SMA13 < SMA26:
-                return_list.append(utils.SELL)
+                self.returns.append(utils.SELL)
             else:
-                return_list.append(utils.EXIT)
-        self.returns = return_list
-        return return_list
+                self.returns.append(utils.EXIT)
+        return self.returns
 
     def strategy_3_sma(self,
                        slow=100,
@@ -321,7 +321,6 @@ class Trader(object):
                        plot=True,
                        *args,
                        **kwargs):
-        return_list = []
         SMA1 = ta.trend.sma(self.df['Close'], fast)
         SMA2 = ta.trend.sma(self.df['Close'], mid)
         SMA3 = ta.trend.sma(self.df['Close'], slow)
@@ -338,14 +337,13 @@ class Trader(object):
 
         for SMA13, SMA26, SMA100 in zip(SMA1, SMA2, SMA3):
             if SMA100 < SMA26 < SMA13:
-                return_list.append(utils.BUY)
+                self.returns.append(utils.BUY)
             elif SMA100 > SMA26 > SMA13:
-                return_list.append(utils.SELL)
+                self.returns.append(utils.SELL)
             else:
-                return_list.append(utils.EXIT)
+                self.returns.append(utils.EXIT)
 
-        self.returns = return_list
-        return return_list
+        return self.returns
 
     def strategy_3_ema(self,
                        slow=3,
@@ -357,7 +355,6 @@ class Trader(object):
         ema3 = ta.trend.ema(self.df['Close'], slow)
         ema21 = ta.trend.ema(self.df['Close'], mid)
         ema46 = ta.trend.ema(self.df['Close'], fast)
-        return_list = []
 
         if plot:
             for ema, Co, name in zip([ema3.values, ema21.values, ema46.values],
@@ -370,32 +367,30 @@ class Trader(object):
 
         for EMA1, EMA2, EMA3 in zip(ema3, ema21, ema46):
             if EMA1 > EMA2 > EMA3:
-                return_list.append(utils.BUY)
+                self.returns.append(utils.BUY)
             elif EMA1 < EMA2 < EMA3:
-                return_list.append(utils.SELL)
+                self.returns.append(utils.SELL)
             else:
-                return_list.append(utils.EXIT)
-        self.returns = return_list
-        return return_list
+                self.returns.append(utils.EXIT)
+        return self.returns
 
     def strategy_macd(self, slow=100, fast=30, *args, **kwargs):
-        return_list = []
+        self.returns = []
         level = ta.trend.macd_signal(self.df['Close'], slow, fast)
         macd = ta.trend.macd(self.df['Close'], slow, fast)
 
         for j, k in zip(level.values, macd.values):
             if j > k:
-                return_list.append(utils.SELL)
+                self.returns.append(utils.SELL)
             elif k > j:
-                return_list.append(utils.BUY)
+                self.returns.append(utils.BUY)
             else:
-                return_list.append(utils.EXIT)
-        self.returns = return_list
-        return return_list
+                self.returns.append(utils.EXIT)
+        return self.returns
 
     def strategy_exp_diff(self, period=70, plot=True, *args, **kwargs):
         exp = self.tema(period)
-        return_list = self.strategy_diff(exp)
+        self.returns = self.strategy_diff(exp)
         if plot:
             self.fig.add_trace(
                 Line(
@@ -403,8 +398,7 @@ class Trader(object):
                     y=exp.values.T[0],
                     line=dict(width=utils.SUB_LINES_WIDTH)), 1, 1)
 
-        self.returns = return_list
-        return return_list
+        return self.returns
 
     def strategy_rsi(self,
                      minimum=20,
@@ -414,7 +408,6 @@ class Trader(object):
                      *args,
                      **rsi_kwargs):
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
-        return_list = []
         flag = utils.EXIT
 
         for val, diff in zip(rsi.values, rsi.diff().values):
@@ -426,10 +419,9 @@ class Trader(object):
                 flag = utils.EXIT
             elif flag == utils.SELL and val > min_mid:
                 flag = utils.EXIT
-            return_list.append(flag)
+            self.returns.append(flag)
 
-        self.returns = return_list
-        return return_list
+        return self.returns
 
     def strategy_macd_rsi(self,
                           mac_slow=26,
@@ -1152,8 +1144,8 @@ class Trader(object):
                             bet_for_trading_on_client: float = np.inf,
                             second_symbol_of_ticker: str = 'None',
                             rounding_bet: int = 4,
-                            #*args,
-                            #**kwargs
+                            *args,
+                            **kwargs
                             ):
         """
         :param rounding_bet: maximum permissible accuracy with your api
@@ -1248,11 +1240,11 @@ class Trader(object):
                          ticker: str,
                          strategy,
                          get_data_kwargs=None,
-                         sleeping_time: float = 60,
+                         sleeping_time: float = 60.0,
                          print_out: bool = True,
                          trading_on_client: bool = False,
                          bet_for_trading_on_client: float = np.inf,
-                         second_symbol_of_ticker: str = None,
+                         second_symbol_of_ticker: str = 'None',
                          rounding_bet: int = 4,
                          *strategy_args,
                          **strategy_kwargs):
@@ -1261,7 +1253,7 @@ class Trader(object):
         :param ticker: ticker for trading.
         :param strategy: trading strategy.
         :param get_data_kwargs: named arguments to self.client.get_data WITHOUT TICKER.
-        :param sleeping_time: sleeping time.
+        :param sleeping_time: sleeping time / timeframe in seconds.
         :param print_out: printing.
         :param trading_on_client: trading on client
         :param bet_for_trading_on_client: trading bet, standard: all deposit
@@ -1320,8 +1312,7 @@ class Trader(object):
 
         except Exception as e:
             self.prepare_realtime = False
-            if print_out:
-                print(e)
+            raise e
 
     def log_data(self):
         self.fig.update_yaxes(row=1, col=1, type='log')
@@ -1330,10 +1321,10 @@ class Trader(object):
         self.fig.update_yaxes(row=2, col=1, type='log')
 
     def backtest(self,
-                 deposit: float = 10_000,
-                 credit_leverage: float = 1,
+                 deposit: float = 10_000.0,
+                 credit_leverage: float = 1.0,
                  bet: float = np.inf,
-                 commission: float = 0,
+                 commission: float = 0.0,
                  plot: bool = True,
                  print_out: bool = True,
                  show: bool = True,
@@ -1364,6 +1355,8 @@ class Trader(object):
         self.client = your_client
 
     def convert_signal(self, old=utils.SELL, new=utils.EXIT):
+        pos: int
+        val: utils.PREDICT_TYPE
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
