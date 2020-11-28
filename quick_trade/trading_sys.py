@@ -6,7 +6,7 @@
 # TODO:
 #   eval to getatrr
 #   rewrite extra in get-predict and realtime...
-#   425 string edit continue
+#   441 string edit continue
 
 import itertools
 import random
@@ -18,11 +18,13 @@ import pandas as pd
 import ta
 import ta.volatility
 from binance.client import Client
+from pandas import Series
 from plotly.graph_objs import Line
 from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
 from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
+import plotly
 
 try:
     from quick_trade import utils
@@ -102,21 +104,34 @@ class Trader(object):
     """
     profit_calculate_coef: float
     returns: list[utils.PREDICT_TYPE] = []
+    __first__: bool
+    __rounding__: int
+    __oldsig: utils.PREDICT_TYPE
+    df: pd.DataFrame
+    ticker: str
+    interval: str
+    __exit_order__: bool
+    _regression_inputs: int
+    fig: plotly.graph_objs._figure.Figure
+    mean_diff: float
+    stop_loss: float
+    take_profit: float
+    open_price: float
 
     def __init__(self,
-                 ticker='AAPL',
-                 df: pd.DataFrame = np.nan,
-                 interval='1d',
-                 rounding=50,
+                 ticker: str='AAPL',
+                 df: pd.DataFrame = pd.DataFrame(),
+                 interval: str='1d',
+                 rounding: int=50,
                  *args,
                  **kwargs):
         df_: pd.DataFrame = round(df, rounding)
-        self.__first__: bool = True
-        self.__rounding__: int = rounding
-        self.__oldsig: utils.PREDICT_TYPE = utils.EXIT
-        self.df: pd.DataFrame = df_.reset_index(drop=True)
-        self.ticker: str = ticker
-        self.interval: str = interval
+        self.__first__ = True
+        self.__rounding__ = rounding
+        self.__oldsig = utils.EXIT
+        self.df = df_.reset_index(drop=True)
+        self.ticker = ticker
+        self.interval = interval
         if interval == '1m':
             self.profit_calculate_coef = 1 / (60 / 24 / 365)
         if interval == '2m':
@@ -153,8 +168,8 @@ class Trader(object):
             self.profit_calculate_coef = 1 / 2
         else:
             raise ValueError('I N C O R R E C T   I N T E R V A L')
-        self.__inputs: int = utils.INPUTS
-        self.__exit_order__: bool = False
+        self._regression_inputs = utils.REGRESSION_INPUTS
+        self.__exit_order__ = False
 
     def __repr__(self):
         return 'trader'
@@ -163,20 +178,19 @@ class Trader(object):
         return getattr(self, attr)
 
     @classmethod
-    def _get_this_instance(cls, *args, **kwargs):
+    def _get_this_instance(cls, *args, **kwargs) -> object:
         return cls(*args, **kwargs)
 
     def kalman_filter(self,
-                      df='self.df["Close"]',
-                      iters=5,
+                      df: pd.Series=df['Close'],
+                      iters: int=5,
                       plot: bool = True,
                       *args,
-                      **kwargs):
+                      **kwargs) -> pd.DataFrame:
         filtered: np.ndarray
         k_filter: KalmanFilter = KalmanFilter()
-        if isinstance(df, str):
-            df: pd.Series = eval(df)
         df: pd.Series
+        i: int
         filtered = k_filter.filter(np.array(df))[0]
         for i in range(iters):
             filtered = k_filter.smooth(filtered)[0]
@@ -189,13 +203,11 @@ class Trader(object):
         return pd.DataFrame(filtered)
 
     def scipy_filter(self,
-                     window_length=101,
-                     df='self.df["Close"]',
-                     polyorder=3,
-                     plot=True,
-                     **scipy_savgol_filter_kwargs):
-        if isinstance(df, str):
-            df = eval(df)
+                     window_length: int=101,
+                     df: pd.Series=df['Close'],
+                     polyorder: int=3,
+                     plot: bool=True,
+                     **scipy_savgol_filter_kwargs) -> pd.DataFrame:
         filtered = signal.savgol_filter(
             df,
             window_length=window_length,
@@ -209,39 +221,42 @@ class Trader(object):
                     line=dict(width=utils.SUB_LINES_WIDTH)), 1, 1)
         return pd.DataFrame(filtered)
 
-    def bull_power(self, periods):
+    def bull_power(self, periods: int) -> np.ndarray:
         EMA = ta.trend.ema(self.df['Close'], periods)
         return np.array(self.df['High']) - EMA
 
-    def tema(self, periods, *args, **kwargs):
+    def tema(self, periods: int, *args, **kwargs) -> pd.Series:
+        """
+
+        :rtype: pd.Series
+        """
         ema = ta.trend.ema(self.df['Close'], periods)
         ema2 = ta.trend.ema(ema, periods)
         ema3 = ta.trend.ema(ema2, periods)
-        return pd.DataFrame(3 * ema.values - 3 * ema2.values + ema3.values)
+        return pd.Series(3 * ema.values - 3 * ema2.values + ema3.values)
 
-    def linear_(self, dataset):
+    def linear_(self, dataset) -> np.ndarray:
         """
         linear data. mean + (mean diff * n)
 
         """
-        if isinstance(dataset, str):
-            dataset = eval(dataset)
-        data = pd.DataFrame(dataset).copy()
+        data: pd.DataFrame = pd.DataFrame(dataset).copy()
 
-        mean = float(data.mean())
-        mean_diff = float(data.diff().mean())
-        start = mean - (mean_diff * (len(data) / 2))
-        end = start + (mean - start) * 2
+        mean: float = float(data.mean())
+        mean_diff: float = float(data.diff().mean())
+        start: float = mean - (mean_diff * (len(data) / 2))
+        end: float = start + (mean - start) * 2
 
-        length = len(data)
-        return_list = []
-        mean_diff = (end - start) / length
+        length: int = len(data)
+        return_list: list[float] = []
+        mean_diff: float = (end - start) / length
+        i: int
         for i in range(length):
             return_list.append(start + mean_diff * i)
         self.mean_diff = mean_diff
         return np.array(return_list)
 
-    def __get_stop_take(self, sig):
+    def __get_stop_take(self, sig: utils.PREDICT_TYPE) -> dict[str, float]:
         """
         calculating stop loss and take profit.
 
@@ -253,6 +268,8 @@ class Trader(object):
 
         """
 
+        _stop_loss: float
+        take: float
         if self.stop_loss is not None:
             _stop_loss = self.stop_loss / 10_000 * self.open_price
         else:
@@ -274,23 +291,28 @@ class Trader(object):
             if self.stop_loss is not None:
                 _stop_loss = self.open_price
 
-        return {'stop': _stop_loss, 'take': take}
+        return {'stop': _stop_loss,
+                'take': take}
 
-    def strategy_diff(self, frame_to_diff, *args, **kwargs):
+    def strategy_diff(self, frame_to_diff: pd.Series, *args, **kwargs) -> list[utils.PREDICT_TYPE]:
         """
-        frame_to_diff:  |   pd.DataFrame  |  example:  Trader.df['Close']
+        frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
 
         """
-        if isinstance(frame_to_diff, str):
-            frame_to_diff = eval(frame_to_diff)
         self.returns = list(np.digitize(frame_to_diff.diff(), bins=[0]))
         return self.returns
 
-    def strategy_buy_hold(self, *args, **kwargs):
+    def strategy_buy_hold(self, *args, **kwargs) -> list[utils.PREDICT_TYPE]:
         self.returns = [utils.BUY for _ in range(len(self.df))]
         return self.returns
 
-    def strategy_2_sma(self, slow=100, fast=30, plot=True, *args, **kwargs):
+    def strategy_2_sma(self,
+                       slow: int=100,
+                       fast: int=30,
+                       plot: bool=True,
+                       *args,
+                       **kwargs) -> list[utils.PREDICT_TYPE]:
+        self.returns = []
         SMA1 = ta.trend.sma(self.df['Close'], fast)
         SMA2 = ta.trend.sma(self.df['Close'], slow)
         if plot:
@@ -315,12 +337,13 @@ class Trader(object):
         return self.returns
 
     def strategy_3_sma(self,
-                       slow=100,
-                       mid=26,
-                       fast=13,
-                       plot=True,
+                       slow: int=100,
+                       mid: int=26,
+                       fast: int=13,
+                       plot: bool=True,
                        *args,
-                       **kwargs):
+                       **kwargs) -> list[utils.PREDICT_TYPE]:
+        self.returns = []
         SMA1 = ta.trend.sma(self.df['Close'], fast)
         SMA2 = ta.trend.sma(self.df['Close'], mid)
         SMA3 = ta.trend.sma(self.df['Close'], slow)
@@ -346,12 +369,13 @@ class Trader(object):
         return self.returns
 
     def strategy_3_ema(self,
-                       slow=3,
-                       mid=21,
-                       fast=46,
-                       plot=True,
+                       slow: int=3,
+                       mid: int=21,
+                       fast: int=46,
+                       plot: bool=True,
                        *args,
-                       **kwargs):
+                       **kwargs) -> list[utils.PREDICT_TYPE]:
+        self.returns = []
         ema3 = ta.trend.ema(self.df['Close'], slow)
         ema21 = ta.trend.ema(self.df['Close'], mid)
         ema46 = ta.trend.ema(self.df['Close'], fast)
@@ -374,7 +398,11 @@ class Trader(object):
                 self.returns.append(utils.EXIT)
         return self.returns
 
-    def strategy_macd(self, slow=100, fast=30, *args, **kwargs):
+    def strategy_macd(self,
+                      slow: int=100,
+                      fast: int=30,
+                      *args,
+                      **kwargs) -> list[utils.PREDICT_TYPE]:
         self.returns = []
         level = ta.trend.macd_signal(self.df['Close'], slow, fast)
         macd = ta.trend.macd(self.df['Close'], slow, fast)
@@ -388,9 +416,13 @@ class Trader(object):
                 self.returns.append(utils.EXIT)
         return self.returns
 
-    def strategy_exp_diff(self, period=70, plot=True, *args, **kwargs):
-        exp = self.tema(period)
-        self.returns = self.strategy_diff(exp)
+    def strategy_exp_diff(self,
+                          period: int=70,
+                          plot: bool=True,
+                          *args,
+                          **kwargs) -> list[utils.PREDICT_TYPE]:
+        exp: pd.Series = self.tema(period)
+        self.strategy_diff(exp)
         if plot:
             self.fig.add_trace(
                 Line(
@@ -401,14 +433,14 @@ class Trader(object):
         return self.returns
 
     def strategy_rsi(self,
-                     minimum=20,
-                     maximum=80,
-                     max_mid=75,
-                     min_mid=35,
+                     minimum: int=20,
+                     maximum: int=80,
+                     max_mid: int=75,
+                     min_mid: int=35,
                      *args,
-                     **rsi_kwargs):
+                     **rsi_kwargs) -> list[utils.PREDICT_TYPE]:
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
-        flag = utils.EXIT
+        flag: utils.PREDICT_TYPE = utils.EXIT
 
         for val, diff in zip(rsi.values, rsi.diff().values):
             if val < minimum and diff > 0 and val is not pd.NA:
@@ -487,10 +519,10 @@ class Trader(object):
 
     def strategy_regression_model(self, plot=True, *args, **kwargs):
         return_list = []
-        for i in range(self.__inputs - 1):
+        for i in range(self._regression_inputs - 1):
             return_list.append(utils.EXIT)
         data_to_pred = np.array(
-            utils.get_window(np.array([self.df['Close'].values]).T, self.__inputs))
+            utils.get_window(np.array([self.df['Close'].values]).T, self._regression_inputs))
 
         data_to_pred = data_to_pred.T
         for e, data in enumerate(data_to_pred):
@@ -504,7 +536,7 @@ class Trader(object):
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
         self.returns = [*return_list, *predictions]
-        nans = itertools.chain.from_iterable([(np.nan,) * self.__inputs])
+        nans = itertools.chain.from_iterable([(np.nan,) * self._regression_inputs])
         filt = (*nans, *frame.T[0])
         if plot:
             self.fig.add_trace(
@@ -528,7 +560,7 @@ class Trader(object):
 
         """
 
-        self.__inputs = inputs
+        self._regression_inputs = inputs
         model = Sequential()
         model.add(
             LSTM(units=50, return_sequences=True, input_shape=(inputs, 1)))
