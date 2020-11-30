@@ -25,7 +25,7 @@ setup(
         "numpy==1.19.2",
         "pandas==1.1.4",
         "python-binance==0.7.5",
-        "requests==2.24.0",
+        "requests==2.25.0",
     ],
     download_url='https://github.com/VladKochetov007/quick_trade/archive/3.0.tar.gz',
     keywords=['technical analysis',
