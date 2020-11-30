@@ -25,19 +25,17 @@ from pykalman import KalmanFilter
 from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
 
-
-__pynew__: bool = False
+__pynew__: bool = False  # py3.9
 try:
     from quick_trade import utils
-except ImportError:
-    __pynew__ = True
-    from quick_trade.quick_trade import utils
-
-if not __pynew__:  # in 3.9 tensorflow doesn't work
     from tensorflow.keras.layers import Dropout, Dense, LSTM
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.models import load_model
-else:
+except ImportError:
+    from quick_trade.quick_trade import utils
+    __pynew__ = True
+
+if  __pynew__:
     utils.logger.critical('the tensorflow package will not work')  # python 3.9 support
 
 
@@ -467,9 +465,9 @@ class Trader(object):
         return self.returns
 
     def strategy_macd_rsi(self,
-                          mac_slow: int=26,
-                          mac_fast: int=12,
-                          rsi_level: int=50,
+                          mac_slow: int = 26,
+                          mac_fast: int = 12,
+                          rsi_level: int = 50,
                           rsi_kwargs: dict[str, typing.Any] = __default_str_any_dict__,
                           *args,
                           **macd_kwargs) -> list[utils.PREDICT_TYPE]:
@@ -486,10 +484,10 @@ class Trader(object):
                 self.returns.append(utils.EXIT)
         return self.returns
 
-    def strategy_parabolic_SAR(self, plot: bool=True, *args, **sar_kwargs) -> list[utils.PREDICT_TYPE]:
+    def strategy_parabolic_SAR(self, plot: bool = True, *args, **sar_kwargs) -> list[utils.PREDICT_TYPE]:
         self.returns = []
         sar: ta.trend.PSARIndicator = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
-                                     self.df['Close'], **sar_kwargs)
+                                                             self.df['Close'], **sar_kwargs)
         sardown: np.ndarray = sar.psar_down().values
         sarup: np.ndarray = sar.psar_up().values
 
@@ -512,8 +510,8 @@ class Trader(object):
         return self.returns
 
     def strategy_macd_histogram_diff(self,
-                                     slow: int=23,
-                                     fast: int=12,
+                                     slow: int = 23,
+                                     fast: int = 12,
                                      *args,
                                      **macd_kwargs) -> list[utils.PREDICT_TYPE]:
         _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
@@ -523,7 +521,7 @@ class Trader(object):
         self.returns = utils.digit(histogram.diff().values)
         return self.returns
 
-    def strategy_regression_model(self, plot: bool=True, *args, **kwargs):
+    def strategy_regression_model(self, plot: bool = True, *args, **kwargs):
         self.returns = [utils.EXIT for i in range(self._regression_inputs - 1)]
         data_to_pred: np.ndarray = np.array(
             utils.get_window(np.array([self.df['Close'].values]).T, self._regression_inputs)
@@ -554,8 +552,8 @@ class Trader(object):
 
     def get_network_regression(self,
                                dataframes: list[pd.DataFrame],
-                               inputs: int=_regression_inputs,
-                               network_save_path: str='./model_regression',
+                               inputs: int = _regression_inputs,
+                               network_save_path: str = './model_regression',
                                **fit_kwargs) -> __Sequential_type:
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
@@ -588,7 +586,7 @@ class Trader(object):
         self.model.save(network_save_path)
         return self.model
 
-    def prepare_scaler(self, dataframe: pd.DataFrame, regression_net: bool=True):
+    def prepare_scaler(self, dataframe: pd.DataFrame, regression_net: bool = True):
         """
         if you are loading a neural network.
 
