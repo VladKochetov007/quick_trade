@@ -16,7 +16,7 @@ setup(
     url='https://github.com/VladKochetov007/quick_trade',
     install_requires=[
         "iexfinance==0.4.3",
-        "plotly==4.12.0",
+        "plotly==4.13.0",
         "ta==0.5.25",
         "scikit-learn==0.23.2",
         "tensorflow==2.3.1",
