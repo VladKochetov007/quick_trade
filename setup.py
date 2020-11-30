@@ -23,7 +23,7 @@ setup(
         "pykalman==0.9.5",
         "scipy==1.5.4",
         "numpy==1.19.2",
-        "pandas==1.1.3",
+        "pandas==1.1.4",
         "python-binance==0.7.5",
         "requests==2.24.0",
     ],
