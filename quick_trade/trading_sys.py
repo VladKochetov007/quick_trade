@@ -7,6 +7,7 @@
 #   eval to getatrr
 #   rewrite extra in get-predict and realtime...
 #   590 string edit continue
+#   add inner class with non-trading utils
 
 import itertools
 import random
