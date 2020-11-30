@@ -6,7 +6,7 @@
 # TODO:
 #   eval to getatrr
 #   rewrite extra in get-predict and realtime...
-#   441 string edit continue
+#   590 string edit continue
 
 import itertools
 import random
@@ -25,16 +25,19 @@ from pykalman import KalmanFilter
 from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
 
+
+__pynew__: bool = False
 try:
     from quick_trade import utils
 except ImportError:
+    __pynew__ = True
     from quick_trade.quick_trade import utils
 
-try:  # in 3.9 tensorflow doesn't work
+if not __pynew__:  # in 3.9 tensorflow doesn't work
     from tensorflow.keras.layers import Dropout, Dense, LSTM
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.models import load_model
-except ImportError:
+else:
     utils.logger.critical('the tensorflow package will not work')  # python 3.9 support
 
 
@@ -101,6 +104,8 @@ class Trader(object):
     15m   2h     1M
 
     """
+    __default_str_any_dict__: dict[str, typing.Any] = {}
+
     profit_calculate_coef: float
     returns: list[utils.PREDICT_TYPE] = []
     __first__: bool
@@ -116,6 +121,12 @@ class Trader(object):
     stop_loss: float
     take_profit: float
     open_price: float
+    scaler: MinMaxScaler
+    if not __pynew__:
+        __Sequential_type = Sequential
+    else:
+        __Sequential_type = typing.Any
+    model: __Sequential_type
 
     def __init__(self,
                  ticker: str = 'AAPL',
@@ -438,6 +449,7 @@ class Trader(object):
                      min_mid: int = 35,
                      *args,
                      **rsi_kwargs) -> list[utils.PREDICT_TYPE]:
+        self.returns = []
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
         flag: utils.PREDICT_TYPE = utils.EXIT
 
@@ -455,34 +467,31 @@ class Trader(object):
         return self.returns
 
     def strategy_macd_rsi(self,
-                          mac_slow=26,
-                          mac_fast=12,
-                          rsi_level=50,
-                          rsi_kwargs: dict = None,
+                          mac_slow: int=26,
+                          mac_fast: int=12,
+                          rsi_level: int=50,
+                          rsi_kwargs: dict[str, typing.Any] = __default_str_any_dict__,
                           *args,
-                          **macd_kwargs):
-        if rsi_kwargs is None:
-            rsi_kwargs = {}
-        return_list = []
+                          **macd_kwargs) -> list[utils.PREDICT_TYPE]:
+        self.returns = []
         macd = ta.trend.macd(self.df['Close'], mac_slow, mac_fast,
                              **macd_kwargs)
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
         for MACD, RSI in zip(macd.values, rsi.values):
             if MACD > 0 and RSI > rsi_level:
-                return_list.append(utils.BUY)
+                self.returns.append(utils.BUY)
             elif MACD < 0 and RSI < rsi_level:
-                return_list.append(utils.SELL)
+                self.returns.append(utils.SELL)
             else:
-                return_list.append(utils.EXIT)
-        self.returns = return_list
-        return return_list
+                self.returns.append(utils.EXIT)
+        return self.returns
 
-    def strategy_parabolic_SAR(self, plot=True, *args, **sar_kwargs):
-        return_list = []
-        sar = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
+    def strategy_parabolic_SAR(self, plot: bool=True, *args, **sar_kwargs) -> list[utils.PREDICT_TYPE]:
+        self.returns = []
+        sar: ta.trend.PSARIndicator = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
                                      self.df['Close'], **sar_kwargs)
-        sardown = sar.psar_down().values
-        sarup = sar.psar_up().values
+        sardown: np.ndarray = sar.psar_down().values
+        sarup: np.ndarray = sar.psar_up().values
 
         if plot:
             for SAR_ in (sarup, sardown):
@@ -492,49 +501,45 @@ class Trader(object):
                     1, 1)
         for price, up, down in zip(
                 list(self.df['Close'].values), list(sarup), list(sardown)):
-            numup = np.nan_to_num(up, nan=-9999)
-            numdown = np.nan_to_num(down, nan=-9999)
+            numup = np.nan_to_num(up, nan=-9999.0)
+            numdown = np.nan_to_num(down, nan=-9999.0)
             if numup != -9999:
-                return_list.append(utils.BUY)
+                self.returns.append(utils.BUY)
             elif numdown != -9999:
-                return_list.append(utils.SELL)
+                self.returns.append(utils.SELL)
             else:
-                return_list.append(utils.EXIT)
-        self.returns = return_list
-        return return_list
+                self.returns.append(utils.EXIT)
+        return self.returns
 
     def strategy_macd_histogram_diff(self,
-                                     slow=23,
-                                     fast=12,
+                                     slow: int=23,
+                                     fast: int=12,
                                      *args,
-                                     **macd_kwargs):
+                                     **macd_kwargs) -> list[utils.PREDICT_TYPE]:
         _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
         signal_ = _MACD_.macd_signal()
         macd_ = _MACD_.macd()
-        histogram = pd.DataFrame(macd_.values - signal_.values)
-        return_list = utils.digit(histogram.diff().values)
-        self.returns = return_list
-        return return_list
+        histogram: pd.DataFrame = pd.DataFrame(macd_.values - signal_.values)
+        self.returns = utils.digit(histogram.diff().values)
+        return self.returns
 
-    def strategy_regression_model(self, plot=True, *args, **kwargs):
-        return_list = []
-        for i in range(self._regression_inputs - 1):
-            return_list.append(utils.EXIT)
-        data_to_pred = np.array(
-            utils.get_window(np.array([self.df['Close'].values]).T, self._regression_inputs))
+    def strategy_regression_model(self, plot: bool=True, *args, **kwargs):
+        self.returns = [utils.EXIT for i in range(self._regression_inputs - 1)]
+        data_to_pred: np.ndarray = np.array(
+            utils.get_window(np.array([self.df['Close'].values]).T, self._regression_inputs)
+        ).T
 
-        data_to_pred = data_to_pred.T
         for e, data in enumerate(data_to_pred):
             data_to_pred[e] = self.scaler.fit_transform(data)
         data_to_pred = data_to_pred.T
 
         predictions = itertools.chain.from_iterable(
             self.model.predict(data_to_pred))
-        predictions = pd.DataFrame(predictions)
+        predictions = pd.Series(predictions)
         frame = predictions
         predictions = self.strategy_diff(predictions)
         frame = self.scaler.inverse_transform(frame.values.T).T
-        self.returns = [*return_list, *predictions]
+        self.returns = [*self.returns, *predictions]
         nans = itertools.chain.from_iterable([(np.nan,) * self._regression_inputs])
         filt = (*nans, *frame.T[0])
         if plot:
@@ -548,32 +553,28 @@ class Trader(object):
         return self.returns, filt
 
     def get_network_regression(self,
-                               dataframes,
-                               inputs=60,
-                               network_save_path='./model_regression',
-                               **fit_kwargs):
+                               dataframes: list[pd.DataFrame],
+                               inputs: int=_regression_inputs,
+                               network_save_path: str='./model_regression',
+                               **fit_kwargs) -> __Sequential_type:
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
 
-        please, use one dataframe.
-
         """
 
-        self._regression_inputs = inputs
-        model = Sequential()
-        model.add(
+        self.model = Sequential()
+        self.model.add(
             LSTM(units=50, return_sequences=True, input_shape=(inputs, 1)))
-        model.add(LSTM(units=50, return_sequences=False))
-        model.add(Dense(units=25))
-        model.add(Dense(units=1))
-        model.compile(optimizer='adam', loss='mean_squared_error')
+        self.model.add(LSTM(units=50, return_sequences=False))
+        self.model.add(Dense(units=25))
+        self.model.add(Dense(units=1))
+        self.model.compile(optimizer='adam', loss='mean_squared_error')
 
         self.scaler = MinMaxScaler(feature_range=(0, 1))
 
+        scaled_data: np.ndarray
         for df in dataframes:
-            data = df.filter(['Close'])
-            dataset = data.values
-            scaled_data = self.scaler.fit_transform(dataset)
+            scaled_data = self.prepare_scaler(df)
             train_data = scaled_data[0:len(scaled_data), :]
             x_train = []
             y_train = []
@@ -583,24 +584,22 @@ class Trader(object):
             x_train, y_train = np.array(x_train), np.array(y_train)
             x_train = np.reshape(x_train,
                                  (x_train.shape[0], x_train.shape[1], 1))
-            model.fit(x_train, y_train, **fit_kwargs)
-        self.model = model
-        model.save(network_save_path)
-        return model
+            self.model.fit(x_train, y_train, **fit_kwargs)
+        self.model.save(network_save_path)
+        return self.model
 
-    def prepare_scaler(self, dataframe: pd.DataFrame, regression_net=True):
+    def prepare_scaler(self, dataframe: pd.DataFrame, regression_net: bool=True):
         """
         if you are loading a neural network.
 
         """
-        scaler = MinMaxScaler(feature_range=(0, 1))
+        self.scaler = MinMaxScaler(feature_range=(0, 1))
         if regression_net:
             data = dataframe.filter(['Close'])
             dataset = data.values
         else:
             dataset = dataframe.values
-        scaled_data = scaler.fit_transform(dataset)
-        self.scaler = scaler
+        scaled_data = self.scaler.fit_transform(dataset)
         return scaled_data
 
     def get_trained_network(self,
