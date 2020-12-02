@@ -255,7 +255,7 @@ class Trader(object):
         return pd.DataFrame(filtered)
 
     def bull_power(self, periods: int) -> np.ndarray:
-        EMA = ta.trend.ema(self.df['Close'], periods)
+        EMA = ta.trend.ema_indicator(self.df['Close'], periods)
         return np.array(self.df['High']) - EMA
 
     def tema(self, periods: int, *args, **kwargs) -> pd.Series:
@@ -263,9 +263,9 @@ class Trader(object):
 
         :rtype: pd.Series
         """
-        ema = ta.trend.ema(self.df['Close'], periods)
-        ema2 = ta.trend.ema(ema, periods)
-        ema3 = ta.trend.ema(ema2, periods)
+        ema = ta.trend.ema_indicator(self.df['Close'], periods)
+        ema2 = ta.trend.ema_indicator(ema, periods)
+        ema3 = ta.trend.ema_indicator(ema2, periods)
         return pd.Series(3 * ema.values - 3 * ema2.values + ema3.values)
 
     def linear_(self, dataset) -> np.ndarray:
@@ -346,8 +346,8 @@ class Trader(object):
                        *args,
                        **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
-        SMA1 = ta.trend.sma(self.df['Close'], fast)
-        SMA2 = ta.trend.sma(self.df['Close'], slow)
+        SMA1 = ta.trend.sma_indicator(self.df['Close'], fast)
+        SMA2 = ta.trend.sma_indicator(self.df['Close'], slow)
         if plot:
             self.fig.add_trace(
                 Line(
@@ -377,9 +377,9 @@ class Trader(object):
                        *args,
                        **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
-        SMA1 = ta.trend.sma(self.df['Close'], fast)
-        SMA2 = ta.trend.sma(self.df['Close'], mid)
-        SMA3 = ta.trend.sma(self.df['Close'], slow)
+        SMA1 = ta.trend.sma_indicator(self.df['Close'], fast)
+        SMA2 = ta.trend.sma_indicator(self.df['Close'], mid)
+        SMA3 = ta.trend.sma_indicator(self.df['Close'], slow)
 
         if plot:
             for SMA, Co, name in zip([SMA1, SMA2, SMA3],
@@ -409,9 +409,9 @@ class Trader(object):
                        *args,
                        **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
-        ema3 = ta.trend.ema(self.df['Close'], slow)
-        ema21 = ta.trend.ema(self.df['Close'], mid)
-        ema46 = ta.trend.ema(self.df['Close'], fast)
+        ema3 = ta.trend.ema_indicator(self.df['Close'], slow)
+        ema21 = ta.trend.ema_indicator(self.df['Close'], mid)
+        ema46 = ta.trend.ema_indicator(self.df['Close'], fast)
 
         if plot:
             for ema, Co, name in zip([ema3.values, ema21.values, ema46.values],
@@ -870,7 +870,7 @@ class Trader(object):
         moneys_open_bet: float = deposit
         money_start: float = deposit
         oldsig = utils.EXIT
-        start_commision: float = commission
+        start_commission: float = commission
 
         e: int
         sig: utils.PREDICT_TYPE
@@ -887,9 +887,9 @@ class Trader(object):
 
             if seted is not np.nan:
                 if oldsig != utils.EXIT:
-                    commission = start_commision * 2
+                    commission = start_commission * 2
                 else:
-                    commission = start_commision
+                    commission = start_commission
                 if bet > deposit:
                     bet = deposit
                 open_price = price
