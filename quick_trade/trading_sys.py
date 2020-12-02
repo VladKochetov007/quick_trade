@@ -6,7 +6,7 @@
 # TODO:
 #   eval to getatrr
 #   rewrite extra in get-predict and realtime...
-#   590 string edit continue
+#   1485 string edit continue
 #   add inner class with non-trading utils
 
 import itertools
@@ -18,7 +18,11 @@ import numpy as np
 import pandas as pd
 import plotly
 import ta
+import ta.momentum
+import ta.others
+import ta.trend
 import ta.volatility
+import ta.volume
 from binance.client import Client
 from plotly.graph_objs import Line
 from plotly.subplots import make_subplots
@@ -28,15 +32,16 @@ from sklearn.preprocessing import MinMaxScaler
 
 __pynew__: bool = False  # py3.9
 try:
-    from quick_trade import utils
     from tensorflow.keras.layers import Dropout, Dense, LSTM
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.models import load_model
+    from quick_trade import utils
 except ImportError:
-    from quick_trade.quick_trade import utils
+    from . import utils
+
     __pynew__ = True
 
-if  __pynew__:
+if __pynew__:
     utils.logger.critical('the tensorflow package will not work')  # python 3.9 support
 
 
@@ -103,10 +108,8 @@ class Trader(object):
     15m   2h     1M
 
     """
-    __default_str_any_dict__: dict[str, typing.Any] = {}
-
     profit_calculate_coef: float
-    returns: list[utils.PREDICT_TYPE] = []
+    returns: utils.PREDICT_TYPE_LIST = []
     __first__: bool
     __rounding__: int
     __oldsig: utils.PREDICT_TYPE
@@ -126,6 +129,27 @@ class Trader(object):
     else:
         __Sequential_type = typing.Any
     model: __Sequential_type
+    history: dict[str, list[int]]
+    training_set: tuple[np.ndarray, np.ndarray]
+    trades: int = 0
+    profits: int = 0
+    losses: int = 0
+    stop_losses: list[float]
+    take_profits: list[float]
+    credit_leverages: list[float]
+    deposit_history: list[float]
+    year_profit: float
+    linear: np.ndarray
+    info: str
+    backtest_out_no_drop: pd.DataFrame
+    backtest_out: pd.DataFrame
+    open_lot_prices: list[float]
+    realtie_returns: dict[str, dict[str, typing.Union[str, float]]]
+    prepare_realtime: bool
+    client: TradingClient
+    __stop_loss: float
+    __take_profit: float
+    _predict: utils.PREDICT_TYPE
 
     def __init__(self,
                  ticker: str = 'AAPL',
@@ -303,7 +327,7 @@ class Trader(object):
         return {'stop': _stop_loss,
                 'take': take}
 
-    def strategy_diff(self, frame_to_diff: pd.Series, *args, **kwargs) -> list[utils.PREDICT_TYPE]:
+    def strategy_diff(self, frame_to_diff: pd.Series, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         """
         frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
 
@@ -311,7 +335,7 @@ class Trader(object):
         self.returns = list(np.digitize(frame_to_diff.diff(), bins=[0]))
         return self.returns
 
-    def strategy_buy_hold(self, *args, **kwargs) -> list[utils.PREDICT_TYPE]:
+    def strategy_buy_hold(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.BUY for _ in range(len(self.df))]
         return self.returns
 
@@ -320,7 +344,7 @@ class Trader(object):
                        fast: int = 30,
                        plot: bool = True,
                        *args,
-                       **kwargs) -> list[utils.PREDICT_TYPE]:
+                       **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         SMA1 = ta.trend.sma(self.df['Close'], fast)
         SMA2 = ta.trend.sma(self.df['Close'], slow)
@@ -351,7 +375,7 @@ class Trader(object):
                        fast: int = 13,
                        plot: bool = True,
                        *args,
-                       **kwargs) -> list[utils.PREDICT_TYPE]:
+                       **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         SMA1 = ta.trend.sma(self.df['Close'], fast)
         SMA2 = ta.trend.sma(self.df['Close'], mid)
@@ -383,7 +407,7 @@ class Trader(object):
                        fast: int = 46,
                        plot: bool = True,
                        *args,
-                       **kwargs) -> list[utils.PREDICT_TYPE]:
+                       **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         ema3 = ta.trend.ema(self.df['Close'], slow)
         ema21 = ta.trend.ema(self.df['Close'], mid)
@@ -411,7 +435,7 @@ class Trader(object):
                       slow: int = 100,
                       fast: int = 30,
                       *args,
-                      **kwargs) -> list[utils.PREDICT_TYPE]:
+                      **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         level = ta.trend.macd_signal(self.df['Close'], slow, fast)
         macd = ta.trend.macd(self.df['Close'], slow, fast)
@@ -429,7 +453,7 @@ class Trader(object):
                           period: int = 70,
                           plot: bool = True,
                           *args,
-                          **kwargs) -> list[utils.PREDICT_TYPE]:
+                          **kwargs) -> utils.PREDICT_TYPE_LIST:
         exp: pd.Series = self.tema(period)
         self.strategy_diff(exp)
         if plot:
@@ -447,7 +471,7 @@ class Trader(object):
                      max_mid: int = 75,
                      min_mid: int = 35,
                      *args,
-                     **rsi_kwargs) -> list[utils.PREDICT_TYPE]:
+                     **rsi_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
         flag: utils.PREDICT_TYPE = utils.EXIT
@@ -469,9 +493,9 @@ class Trader(object):
                           mac_slow: int = 26,
                           mac_fast: int = 12,
                           rsi_level: int = 50,
-                          rsi_kwargs: dict[str, typing.Any] = __default_str_any_dict__,
+                          rsi_kwargs: dict[str, typing.Any] = {},
                           *args,
-                          **macd_kwargs) -> list[utils.PREDICT_TYPE]:
+                          **macd_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         macd = ta.trend.macd(self.df['Close'], mac_slow, mac_fast,
                              **macd_kwargs)
@@ -485,7 +509,7 @@ class Trader(object):
                 self.returns.append(utils.EXIT)
         return self.returns
 
-    def strategy_parabolic_SAR(self, plot: bool = True, *args, **sar_kwargs) -> list[utils.PREDICT_TYPE]:
+    def strategy_parabolic_SAR(self, plot: bool = True, *args, **sar_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         sar: ta.trend.PSARIndicator = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
                                                              self.df['Close'], **sar_kwargs)
@@ -514,7 +538,7 @@ class Trader(object):
                                      slow: int = 23,
                                      fast: int = 12,
                                      *args,
-                                     **macd_kwargs) -> list[utils.PREDICT_TYPE]:
+                                     **macd_kwargs) -> utils.PREDICT_TYPE_LIST:
         _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
         signal_ = _MACD_.macd_signal()
         macd_ = _MACD_.macd()
@@ -552,9 +576,9 @@ class Trader(object):
         return self.returns, filt
 
     def get_network_regression(self,
-                               dataframes: list[pd.DataFrame],
+                               dataframes: typing.Iterable[pd.DataFrame],
                                inputs: int = _regression_inputs,
-                               network_save_path: str = './model_regression',
+                               network_save_path: str = './model_regression.h5',
                                **fit_kwargs) -> __Sequential_type:
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
@@ -587,33 +611,35 @@ class Trader(object):
         self.model.save(network_save_path)
         return self.model
 
-    def prepare_scaler(self, dataframe: pd.DataFrame, regression_net: bool = True):
-        """
-        if you are loading a neural network.
-
-        """
+    def prepare_scaler(self,
+                       dataframe: pd.DataFrame,
+                       regression_net: bool = True) -> np.ndarray:
         self.scaler = MinMaxScaler(feature_range=(0, 1))
+        data: pd.DataFrame
+        dataset: np.ndarray
         if regression_net:
             data = dataframe.filter(['Close'])
             dataset = data.values
         else:
             dataset = dataframe.values
-        scaled_data = self.scaler.fit_transform(dataset)
+        scaled_data: np.ndarray = self.scaler.fit_transform(dataset)
         return scaled_data
 
     def get_trained_network(self,
-                            dataframes,
-                            filter_='kalman_filter',
-                            filter_kwargs=None,
-                            optimizer='adam',
-                            loss='mse',
-                            metrics=None,
-                            network_save_path='./model_predicting',
-                            **fit_kwargs):
+                            dataframes: typing.Iterable[pd.DataFrame],
+                            filter_: str = 'kalman_filter',
+                            filter_kwargs: dict[str, typing.Any] = {},
+                            optimizer: str = 'adam',
+                            loss: str = 'mse',
+                            metrics: typing.Iterable[str] = ['mse'],
+                            network_save_path: str = './model_predicting.h5',
+                            **fit_kwargs) -> tuple[__Sequential_type,
+                                                   dict[str, list[int]],
+                                                   tuple[np.ndarray, np.ndarray]]:
         """
         getting trained neural network to trading.
 
-        dataframes:  | list, tuple. |   list of pandas dataframes with columns:
+        dataframes:  | typing.Iterable[pd.DataFrame] |   list of pandas dataframes with columns:
             'High'
             'Low'
             'Open'
@@ -628,7 +654,7 @@ class Trader(object):
 
         loss:         |       str         |   loss for .compile of network.
 
-        metrics:      |  list of strings  |   metrics for .compile of network:
+        metrics:      |  typing.Iterable[str]  |   metrics for .compile of network:
             standard: ['acc']
 
         fit_kwargs:   | *named arguments* |   arguments to .fit of network.
@@ -641,21 +667,18 @@ class Trader(object):
 
         """
 
-        if filter_kwargs is None:
-            filter_kwargs = dict()
-        if metrics is None:
-            metrics = ['acc']
-        list_input = []
-        list_output = []
-        flag = self.df
+        list_input: list[pd.DataFrame] = []
+        list_output: list[int] = []
+        flag: pd.DataFrame = self.df
 
+        df: pd.DataFrame
+        filter_kwargs['plot'] = False
         for df in dataframes:
             self.df = df
             all_ta = ta.add_all_ta_features(df, 'Open', 'High', 'Low', 'Close',
                                             'Volume', True)
-            filter_kwargs['plot'] = False
             output1 = self.strategy_diff(
-                eval('self.' + filter_ + '(**filter_kwargs)'))
+                self._get_attr(filter_)(**filter_kwargs))
 
             for output in output1:
                 list_output.append(output[0])
@@ -665,51 +688,70 @@ class Trader(object):
                         pd.DataFrame(all_ta), regression_net=False)))
         self.df = flag
         del flag
-        input_df = pd.concat(list_input, axis=0).dropna(1)
+        input_df: pd.DataFrame = pd.concat(list_input, axis=0).dropna(1)
 
-        input_train_array = input_df.values
-        output_train_array = np.array([list_output]).T
+        input_train_array: np.ndarray = input_df.values
+        output_train_array: np.ndarray = np.array([list_output]).T
 
-        model = Sequential()
-        model.add(
+        self.model = Sequential()
+        self.model.add(
             Dense(20, input_dim=len(input_train_array[0]), activation='tanh'))
-        model.add(Dropout(0.3))
-        model.add(Dense(1, 'sigmoid'))
-        model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
-        hist = model.fit(input_train_array, output_train_array, **fit_kwargs)
+        self.model.add(Dropout(0.3))
+        self.model.add(Dense(1, 'sigmoid'))
+        self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 
-        self.model = model
-        self.history = hist
+        self.history = self.model.fit(input_train_array, output_train_array, **fit_kwargs)
         self.training_set = (input_train_array, output_train_array)
-        model.save(network_save_path)
-        return model, hist, self.training_set
+        self.model.save(network_save_path)
+        return self.model, self.history, self.training_set
 
-    def strategy_random_pred(self, *args, **kwargs):
-        self.returns = []
-        for i in range(len(self.df)):
-            self.returns.append(random.randint(0, 2))
+    def strategy_random_pred(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
+        self.returns = [random.randint(0, 2) for i in range(len(self.df))]
+        return self.returns
 
-    def strategy_with_network(self, rounding=0, *args, **kwargs):
-        scaler = MinMaxScaler(feature_range=(0, 1))
-        all_ta = ta.add_all_ta_features(self.df, "Open", 'High', 'Low',
-                                        'Close', "Volume", True).values
-        preds = self.model.predict(scaler.fit_transform(all_ta))
+    def strategy_with_network(self,
+                              rounding: int = 0,
+                              _rounding_prediction_func=round,
+                              *args,
+                              **kwargs) -> utils.PREDICT_TYPE_LIST:
+        """
+
+        :param rounding: rounding degree for _rounding_prediction_func
+        :param _rounding_prediction_func: A function that will be used to round off the neural network result.
+        """
+        scaler: MinMaxScaler = MinMaxScaler(feature_range=(0, 1))
+        all_ta: np.ndarray = ta.add_all_ta_features(self.df, "Open", 'High', 'Low',
+                                                    'Close', "Volume", True).values
+        preds: np.ndarray = self.model.predict(scaler.fit_transform(all_ta))
         for e, i in enumerate(preds):
-            preds[e] = round(i[0], rounding)
-        self.returns = preds
-        return preds
+            preds[e] = _rounding_prediction_func(i[0], rounding)
+        self.returns = list(preds)
+        return self.returns
 
-    def strategy_bollinger(self, plot=True, to_mid=True, *bollinger_args, **bollinger_kwargs):
-        return_list = []
-        flag = utils.EXIT
-        bollinger = ta.volatility.BollingerBands(self.df['Close'], fillna=True, *bollinger_args, **bollinger_kwargs)
+    def strategy_bollinger(self,
+                           plot: bool = True,
+                           to_mid: bool = True,
+                           *bollinger_args,
+                           **bollinger_kwargs) -> utils.PREDICT_TYPE_LIST:
+        self.returns = []
+        flag: utils.PREDICT_TYPE = utils.EXIT
+        bollinger: ta.volatility.BollingerBands = ta.volatility.BollingerBands(self.df['Close'],
+                                                                               fillna=True,
+                                                                               *bollinger_args,
+                                                                               **bollinger_kwargs)
 
-        mid_ = bollinger.bollinger_mavg()
-        upper = bollinger.bollinger_hband()
-        lower = bollinger.bollinger_lband()
+        mid_: pd.Series = bollinger.bollinger_mavg()
+        upper: pd.Series = bollinger.bollinger_hband()
+        lower: pd.Series = bollinger.bollinger_lband()
         if plot:
+            name: str
+            TR: pd.Series
             for TR, name in zip([upper, mid_, lower], ['upper band', 'mid band', 'lower band']):
                 self.fig.add_trace(Line(y=TR, name=name, line=dict(width=utils.SUB_LINES_WIDTH)), col=1, row=1)
+        close: float
+        up: float
+        mid: float
+        low: float
         for close, up, mid, low in zip(self.df['Close'].values,
                                        upper,
                                        mid_,
@@ -724,10 +766,10 @@ class Trader(object):
                     flag = utils.EXIT
                 if flag == utils.BUY and close >= mid:
                     flag = utils.EXIT
-            return_list.append(flag)
-        self.returns = return_list
+            self.returns.append(flag)
+        return self.returns
 
-    def get_heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()):
+    def get_heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()) -> pd.DataFrame:
         """
 
         :param df: dataframe, standard: self.df
@@ -749,7 +791,7 @@ class Trader(object):
 
         return df
 
-    def inverse_strategy(self, *args, **kwargs):
+    def inverse_strategy(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         """
         makes signals inverse:
 
@@ -759,16 +801,15 @@ class Trader(object):
 
         """
 
-        return_list = []
+        self.returns = []
+        flag: utils.PREDICT_TYPE = utils.EXIT
         for signal_key in self.returns:
             if signal_key == utils.BUY:
-                return_list.append(utils.SELL)
+                flag = utils.SELL
             elif signal_key == utils.SELL:
-                return_list.append(utils.BUY)
-            else:
-                return_list.append(utils.EXIT)
-        self.returns = return_list
-        return return_list
+                flag = utils.BUY
+            self.returns.append(flag)
+        return self.returns
 
     def basic_backtest(self,
                        deposit: float = 10_000.0,
@@ -778,7 +819,7 @@ class Trader(object):
                        print_out: bool = True,
                        column: str = 'Close',
                        *args,
-                       **kwargs):
+                       **kwargs) -> pd.DataFrame:
         """
         testing the strategy.
 
@@ -812,22 +853,27 @@ class Trader(object):
         exit_take_stop: bool
         no_order: bool
         stop_loss: float
+        take_profit: float
+        seted: list[typing.Any]
         diff: float
         lin_calc_df: pd.DataFrame
         price: float
+        credit_lev: float
 
         start_bet: float = bet
         data_column: pd.Series = self.df[column]
         self.deposit_history = [deposit]
         seted_ = utils.set_(self.returns)
-        self.trades: int = 0
-        self.profits: int = 0
-        self.losses: int = 0
+        self.trades = 0
+        self.profits = 0
+        self.losses = 0
         moneys_open_bet: float = deposit
         money_start: float = deposit
         oldsig = utils.EXIT
         start_commision: float = commission
 
+        e: int
+        sig: utils.PREDICT_TYPE
         for e, (sig,
                 stop_loss,
                 take_profit,
@@ -998,7 +1044,7 @@ class Trader(object):
                    height: int = 900,
                    width: int = 1300,
                    template: str = 'plotly_dark',
-                   row_heights: list = None,
+                   row_heights: list = [100, 160],
                    **subplot_kwargs):
         """
 
@@ -1006,52 +1052,28 @@ class Trader(object):
         :param width: window width
         :param template: plotly template
         :param row_heights: standard [100, 160]
-        :param subplot_kwargs: kw
-        :return:
         """
-        if row_heights is None:
-            row_heights = [100, 160]
         self.fig = make_subplots(2, 1, row_heights=row_heights, **subplot_kwargs)
         self.fig.update_layout(
             height=height,
             width=width,
             template=template,
             xaxis_rangeslider_visible=False)
-        if self.interval == '1m':
-            title_ax = 'M I N U T E S'
-        else:
-            title_ax = 'D A Y S'
         self.fig.update_xaxes(
-            title_text=title_ax, row=2, col=1, color=utils.TEXT_COLOR)
+            title_text='T I M E', row=2, col=1, color=utils.TEXT_COLOR)
         self.fig.update_yaxes(
             title_text='M O N E Y S', row=2, col=1, color=utils.TEXT_COLOR)
         self.fig.update_yaxes(
             title_text='D A T A', row=1, col=1, color=utils.TEXT_COLOR)
 
     def strategy_collider(self,
-                          first_func=utils.nothing,
-                          second_func=utils.nothing,
-                          kwargs_first_func: dict = None,
-                          kwargs_second_func: dict = None,
+                          first_returns: utils.PREDICT_TYPE_LIST,
+                          second_returns: utils.PREDICT_TYPE_LIST,
                           mode: str = 'minimalist',
                           *args,
-                          **kwargs):
+                          **kwargs) -> utils.PREDICT_TYPE_LIST:
         """
-        first_func:      |  trading strategy  |   strategy to combine.
-
-        standard: utils.nothing.
-
-        example:  Trader.strategy_macd.
-
-        second_func:     |  trading strategy  |   strategy to combine.
-
-        standard: nothing.
-
-        kwargs_first_func: |       dict         |   named arguments to first function.
-
-        kwargs_second_func:|       dict         |   named arguments to second function.
-
-        mode:            |         str        |   mode of combining:
+        :param mode:  mode of combining:
             example :
                 mode = 'minimalist':
                     1,1 = 1
@@ -1090,61 +1112,28 @@ class Trader(object):
                         [1,0,0,2,1,1,0,0,1]
 
 
-        !!!
-
-        if your function/strategy is <<nothing>>, then your <<args_x_func>>
-        should be an output data: [1,1,0 ... 0,2,1]
-
-        !!!
-
-
-        returns: combining of 2 strategies:
-
-        example:
-
-        Trader.strategy_collider(
-           Trader.strategy_2_sma,
-           Trader.strategy_3_ema,
-           (30, 10)
-        )
-
-        or:
-
-        Trader.strategy_collider(Trader.strategy_2_sma,
-                             Trader.strategy_2_sma,
-                             (300, 200),
-                             (200, 100))
-                                  =
-                   Trader.strategy_3_sma(300, 200, 100)
-
-
+        returns: combining of 2 strategies
         """
 
-        if kwargs_second_func is None:
-            kwargs_second_func = {}
-        if kwargs_first_func is None:
-            kwargs_first_func = {}
-        first_returns = first_func(**kwargs_first_func)
-        second_returns = second_func(**kwargs_second_func)
-        return_list = []
         if mode == 'minimalist':
+            self.returns = []
             for ret1, ret2 in zip(first_returns, second_returns):
                 if ret1 == ret2:
-                    return_list.append(ret1)
+                    self.returns.append(ret1)
                 else:
-                    return_list.append(utils.EXIT)
+                    self.returns.append(utils.EXIT)
         elif mode == 'maximalist':
-            return_list = self.__maximalist(first_returns, second_returns)
+            self.returns = self.__maximalist(first_returns, second_returns)
         elif mode == 'super':
-            return_list = self.__collide_super(first_returns, second_returns)
+            self.returns = self.__collide_super(first_returns, second_returns)
         else:
             raise ValueError('I N C O R R E C T   M O D E')
-        self.returns = return_list
-        return return_list
+        return self.returns
 
     @staticmethod
-    def __maximalist(returns1, returns2):
-        return_list = []
+    def __maximalist(returns1: utils.PREDICT_TYPE_LIST,
+                     returns2: utils.PREDICT_TYPE_LIST) -> utils.PREDICT_TYPE_LIST:
+        return_list: utils.PREDICT_TYPE_LIST = []
         flag = utils.EXIT
         for a, b in zip(returns1, returns2):
             if a == b:
@@ -1155,8 +1144,8 @@ class Trader(object):
         return return_list
 
     @staticmethod
-    def __collide_super(l1, l2):
-        return_list = []
+    def __collide_super(l1, l2) -> utils.PREDICT_TYPE_LIST:
+        return_list: utils.PREDICT_TYPE_LIST = []
         for first, sec in zip(utils.set_(l1), utils.set_(l2)):
             if first is not np.nan and sec is not np.nan and first is not sec:
                 return_list.append(utils.EXIT)
@@ -1175,25 +1164,18 @@ class Trader(object):
                             rounding_bet: int = 4,
                             *args,
                             **kwargs
-                            ):
+                            ) -> dict[str, typing.Union[str, float]]:
         """
-        :param rounding_bet: maximum permissible accuracy with your api
+        :param rounding_bet: maximum permissible accuracy with your api. Bigger than 0
         :param second_symbol_of_ticker: BTCUSDT -> USDT
         :param trading_on_client: trading on real client (boll)
         :param bet_for_trading_on_client: standard: all deposit
         :return: dict with prediction
         """
 
-        def convert():
-            nonlocal predict
-            if predict == utils.BUY:
-                predict = 'Buy'
-            elif predict == utils.SELL:
-                predict = 'Sell'
-            elif predict == utils.EXIT:
-                predict = 'Exit'
-
-        credit_leverage = self.credit_leverages[-1]
+        credit_leverage: float = self.credit_leverages[-1]
+        _moneys_: float
+        bet: float
 
         if trading_on_client:
             _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
@@ -1205,11 +1187,9 @@ class Trader(object):
                 bet = bet_for_trading_on_client
             bet /= self.client.get_ticker_price(self.ticker)
 
-            def min_r(r):
-                return round(float('0.' + '0' * (r - 1) + '1'), r)
-
-            bet = round(bet, rounding_bet) - min_r(rounding_bet)
             bet = round(bet, rounding_bet)
+            if bet > _moneys_:
+                bet -= utils._min_r(rounding_bet)
 
         predict = self.returns[-1]
         if self.__exit_order__:
@@ -1221,32 +1201,38 @@ class Trader(object):
         close = self.df['Close'].values
 
         if cond:
-            convert()
+            predict = utils._convert_signal(predict=predict)
             utils.logger.info(f'open lot {predict}')
             if trading_on_client:
+
                 if predict == 'Buy':
+
                     if not self.__first__:
                         self.client.exit_last_order()
                         utils.logger.info('client exit')
-                    self.client.new_order_buy(self.ticker, bet, credit_leverage=credit_leverage)
+
+                    self.client.new_order_buy(self.ticker,
+                                              bet,
+                                              credit_leverage=credit_leverage)
                     utils.logger.info('client buy')
                     self.__exit_order__ = False
                     self.__first__ = False
 
                 if predict == 'Sell':
+
                     if not self.__first__:
                         self.client.exit_last_order()
                         utils.logger.info('client exit')
+
                     self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
                     utils.logger.info('client sell')
                     self.__first__ = False
                     self.__exit_order__ = False
 
-                if predict == 'Exit':
-                    if not self.__first__:
-                        self.client.exit_last_order()
-                        utils.logger.info('client exit')
-                        self.__exit_order__ = True
+                if predict == 'Exit' and not self.__first__:
+                    self.client.exit_last_order()
+                    utils.logger.info('client exit')
+                    self.__exit_order__ = True
 
             for sig, close_ in zip(self.returns[::-1],
                                    self.df['Close'].values[::-1]):
@@ -1256,7 +1242,7 @@ class Trader(object):
             self._predict = predict
             self.__stop_loss = self.stop_losses[-1]
             self.__take_profit = self.take_profits[-1]
-        convert()
+        predict = utils._convert_signal(predict=predict)
         return {
             'predict': predict,
             'open lot price': self.open_price,
@@ -1266,9 +1252,9 @@ class Trader(object):
         }
 
     def realtime_trading(self,
-                         ticker: str,
                          strategy,
-                         get_data_kwargs=None,
+                         ticker: str = ticker,
+                         get_data_kwargs: dict[str, typing.Any] = {},
                          sleeping_time: float = 60.0,
                          print_out: bool = True,
                          trading_on_client: bool = False,
@@ -1288,13 +1274,11 @@ class Trader(object):
         :param bet_for_trading_on_client: trading bet, standard: all deposit
         :param second_symbol_of_ticker: USDUAH -> UAH
         :param rounding_bet: maximum accuracy for trading
-        :param strategy_kwargs: named arguments to <<strategy>>.
-        :param strategy_args: arguments to <<strategy>>.
+        :param strategy_kwargs: named arguments to -strategy.
+        :param strategy_args: arguments to -strategy.
 
         """
 
-        if get_data_kwargs is None:
-            get_data_kwargs = dict()
         self.realtie_returns = {}
         self.ticker = ticker
         try:
@@ -1382,16 +1366,19 @@ class Trader(object):
         """
         self.client = your_client
 
-    def convert_signal(self, old=utils.SELL, new=utils.EXIT):
+    def convert_signal(self,
+                       old: utils.PREDICT_TYPE = utils.SELL,
+                       new: utils.PREDICT_TYPE = utils.EXIT) -> utils.PREDICT_TYPE_LIST:
         pos: int
         val: utils.PREDICT_TYPE
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
+        return self.returns
 
     def set_open_stop_and_take(self,
-                               take_profit: float = None,
-                               stop_loss: float = None,
+                               take_profit: float = 0.0,
+                               stop_loss: float = 0.0,
                                set_stop: bool = True,
                                set_take: bool = True):
         """
@@ -1401,17 +1388,21 @@ class Trader(object):
         :param stop_loss: stop loss in points
 
         """
-        self.take_profit: float = take_profit
-        self.stop_loss: float = stop_loss
+        self.take_profit = take_profit
+        self.stop_loss = stop_loss
         take_flag: float = np.inf
         stop_flag: float = np.inf
         open_flag: float = np.inf
-        self.open_lot_prices: list = []
+        self.open_lot_prices = []
         if set_stop:
             self.stop_losses = []
         if set_take:
             self.take_profits = []
-        closes = self.df['Close'].values
+        closes: np.ndarray = self.df['Close'].values
+        sig: utils.PREDICT_TYPE
+        close: float
+        seted: utils.SETED_TYPE
+        ts: dict[str, float]
         for sig, close, seted in zip(self.returns, closes, utils.set_(self.returns)):
             if seted is not np.nan:
                 self.open_price = close
@@ -1427,19 +1418,33 @@ class Trader(object):
             if set_stop:
                 self.stop_losses.append(stop_flag)
 
-    def set_credit_leverages(self, credit_lev: float):
+    def set_credit_leverages(self, credit_lev: float = 0.0):
         """
         Sets the leverage for bets.
+        :param credit_lev: leverage in points
 
         """
         self.credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
 
-    def _window_(self, column: str, n: int = 2):
+    def _window_(self,
+                 column: str,
+                 n: int = 2) -> list[typing.Any]:
         return utils.get_window(self.df[column].values, n)
 
-    def find_pip_bar(self, min_diff_coef: float = 2, body_coef: float = 10):
-        ret = []
+    def find_pip_bar(self,
+                     min_diff_coef: float = 2.0,
+                     body_coef: float = 10.0) -> utils.PREDICT_TYPE_LIST:
+        self.returns = []
         flag = utils.EXIT
+        e: int
+        high: float
+        low: float
+        open_price: float
+        close: float
+
+        body: float
+        shadow_high: float
+        shadow_low: float
         for e, (high, low, open_price, close) in enumerate(
                 zip(self.df['High'], self.df['Low'], self.df['Open'],
                     self.df['Close']), 1):
@@ -1451,18 +1456,21 @@ class Trader(object):
                     flag = utils.BUY
                 elif shadow_high > (shadow_low * min_diff_coef):
                     flag = utils.SELL
-                ret.append(flag)
+                self.returns.append(flag)
             else:
-                ret.append(flag)
-        self.returns = ret
-        return ret
+                self.returns.append(flag)
+        return self.returns
 
-    def find_DBLHC_DBHLC(self):
-        ret = [utils.EXIT]
-        flag = utils.EXIT
+    def find_DBLHC_DBHLC(self) -> utils.PREDICT_TYPE_LIST:
+        self.returns = [utils.EXIT]
+        flag: utils.PREDICT_TYPE = utils.EXIT
 
-        flag_stop_loss = np.inf
+        flag_stop_loss: float = np.inf
         self.stop_losses = [flag_stop_loss]
+        high: list[float]
+        low: list[float]
+        open_pr: list[float]
+        close: list[float]
 
         for high, low, open_pr, close in zip(
                 self._window_('High'),
@@ -1477,15 +1485,19 @@ class Trader(object):
                 flag = utils.SELL
                 flag_stop_loss = max(high[0], high[1])
 
-            ret.append(flag)
+            self.returns.append(flag)
             self.stop_losses.append(flag_stop_loss)
-        self.returns = ret
         self.set_open_stop_and_take(set_take=False, set_stop=False)
-        return ret
+        return self.returns
 
-    def find_TBH_TBL(self):
-        ret = [utils.EXIT]
-        flag = utils.EXIT
+    def find_TBH_TBL(self) -> utils.PREDICT_TYPE_LIST:
+        self.returns = [utils.EXIT]
+        flag: utils.PREDICT_TYPE = utils.EXIT
+        high: list[float]
+        low: list[float]
+        open_: list[float]
+        close: list[float]
+
         for e, (high, low, open_, close) in enumerate(
                 zip(
                     self._window_('High'), self._window_('Low'),
@@ -1494,13 +1506,16 @@ class Trader(object):
                 flag = utils.BUY
             elif low[0] == low[1]:
                 flag = utils.SELL
-            ret.append(flag)
-        self.returns = ret
-        return ret
+            self.returns.append(flag)
+        return self.returns
 
-    def find_PPR(self):
-        ret = [utils.EXIT] * 2
-        flag = utils.EXIT
+    def find_PPR(self) -> utils.PREDICT_TYPE_LIST:
+        self.returns = [utils.EXIT] * 2
+        flag: utils.PREDICT_TYPE = utils.EXIT
+        high: list[float]
+        low: list[float]
+        opn: list[float]
+        close: list[float]
         for e, (high, low, opn, close) in enumerate(
                 zip(
                     self._window_('High', 3), self._window_('Low', 3),
@@ -1510,16 +1525,15 @@ class Trader(object):
             elif max(high
                      ) == high[1] and close[2] < close[1] and low[2] > low[0]:
                 flag = utils.SELL
-            ret.append(flag)
-        self.returns = ret
-        return ret
+            self.returns.append(flag)
+        return self.returns
 
-    def is_doji(self):
+    def is_doji(self) -> list[bool]:
         """
         :returns: list of booleans.
 
         """
-        ret = []
+        ret: list[bool] = []
         for close, open_ in zip(self.df['Close'].values,
                                 self.df['Open'].values):
             if close == open_:

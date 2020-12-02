@@ -3,6 +3,7 @@ import itertools
 import json
 import logging
 import os
+import typing
 from typing import Any
 
 import numpy as np
@@ -10,7 +11,10 @@ import pandas as pd
 import requests
 from iexfinance.stocks import get_historical_intraday
 
-PREDICT_TYPE = int
+PREDICT_TYPE: type = int
+PREDICT_TYPE_LIST: type = list[PREDICT_TYPE]
+SETED_TYPE: type = typing.Union[PREDICT_TYPE, float]
+SETED_TYPE_LIST: type = list[SETED_TYPE]
 
 R: str = '#ff0000'
 G: str = '#55ff00'
@@ -59,7 +63,7 @@ def expansion_with_shear(values, ins=EXIT) -> list[PREDICT_TYPE]:
     return ret[:-3]
 
 
-def set_(data: Any) -> list[Any]:
+def set_(data: Any) -> SETED_TYPE_LIST:
     ret: list[Any] = list(data.copy())
     e: int
     for e, i in enumerate(data[1:]):
@@ -170,3 +174,21 @@ def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: b
     if date_index:
         df.index = [dt.datetime.fromtimestamp(i / 1000) for i in df.close_time]
     return df
+
+
+def _min_r(r: int) -> float:
+    """
+
+    to math.floor analogue.
+    """
+    return round(float('0.' + '0' * (r - 1) + '1'), r)
+
+
+def _convert_signal(predict: PREDICT_TYPE):
+    if predict == utils.BUY:
+        predict = 'Buy'
+    elif predict == utils.SELL:
+        predict = 'Sell'
+    elif predict == utils.EXIT:
+        predict = 'Exit'
+    return predict
