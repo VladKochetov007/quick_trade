@@ -53,8 +53,8 @@ logger.setLevel(50)
 logging.basicConfig(level=20, filename=FILE_LOG_NAME)
 
 
-def expansion_with_shear(values, ins=EXIT) -> list[PREDICT_TYPE]:
-    ret: list[PREDICT_TYPE] = []
+def expansion_with_shear(values, ins=EXIT) -> PREDICT_TYPE_LIST:
+    ret: PREDICT_TYPE_LIST = []
     for value in values:
         for column in range(4):
             ret.append(value)
@@ -138,8 +138,8 @@ def anti_set_(seted: list[Any]) -> list[Any]:
     return ret
 
 
-def digit(data) -> list[PREDICT_TYPE]:
-    ret: list[PREDICT_TYPE] = []
+def digit(data) -> PREDICT_TYPE_LIST:
+    ret: PREDICT_TYPE_LIST = []
     for element in list(data):
         if element == 0:
             ret.append(EXIT)
@@ -176,7 +176,7 @@ def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: b
     return df
 
 
-def _min_r(r: int) -> float:
+def min_r(r: int) -> float:
     """
 
     to math.floor analogue.
@@ -184,11 +184,10 @@ def _min_r(r: int) -> float:
     return round(float('0.' + '0' * (r - 1) + '1'), r)
 
 
-def _convert_signal(predict: PREDICT_TYPE):
-    if predict == utils.BUY:
-        predict = 'Buy'
-    elif predict == utils.SELL:
-        predict = 'Sell'
-    elif predict == utils.EXIT:
-        predict = 'Exit'
-    return predict
+def convert_signal(predict: PREDICT_TYPE) -> str:
+    if predict == BUY:
+        return 'Buy'
+    elif predict == SELL:
+        return 'Sell'
+    elif predict == EXIT:
+        return 'Exit'
