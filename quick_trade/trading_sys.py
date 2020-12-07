@@ -4,11 +4,8 @@
 
 
 # TODO:
-#   eval to getatrr
-#   rewrite extra in get-predict and realtime...
-#   1485 string edit continue
 #   add inner class with non-trading utils
-#   add type-hints py3.8 and 3.9 checking
+#   fix realtime
 
 import itertools
 import random
@@ -17,7 +14,6 @@ import typing
 
 import numpy as np
 import pandas as pd
-import plotly
 import ta
 import ta.momentum
 import ta.others
@@ -30,20 +26,12 @@ from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
 from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
-import talib
-import sys
 
+from typing import Dict, List, Tuple
 
-__python_version: float = float(sys.version[:3])
-if __python_version < 3.9:
-    from tensorflow.keras.layers import Dropout, Dense, LSTM
-    from tensorflow.keras.models import Sequential
-    from tensorflow.keras.models import load_model
-    from quick_trade import utils
-    _Sequential_type = Sequential
-else:
-    from . import utils
-    _Sequential_type = typing.Any
+from tensorflow.keras.layers import Dropout, Dense, LSTM
+from tensorflow.keras.models import Sequential, load_model
+from quick_trade import utils
 
 
 class TradingClient(Client):
@@ -51,30 +39,64 @@ class TradingClient(Client):
     __side__: str
     quantity: float
     ticker: str
-    order: dict[str, typing.Any]
+    order: Dict[str, typing.Any]
 
-    def get_ticker_price(self, ticker):
+    def order_create(self,
+                     side: str,
+                     ticker: str = 'None',
+                     quantity: float = 0.0,
+                     credit_leverage: float = 1.0,
+                     *args,
+                     **kwargs):
+        self.__side__ = side
+        self.quantity = quantity
+        self.ticker = ticker
+        if '_moneys_' in kwargs:
+            if quantity > kwargs['_moneys_']:
+                quantity -= utils.min_admit(kwargs['rounding_bet'])
+            quantity = round(quantity, kwargs['rounding_bet'])
+        if side == 'Buy':
+            self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
+        elif side == 'Sell':
+            self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
+        self.order_id = self.order['orderId']
+        self.ordered = True
+
+    def get_ticker_price(self,
+                         ticker: str) -> float:
         return float(self.get_symbol_ticker(symbol=ticker)['price'])
 
     @staticmethod
-    def get_data(ticker= 'None', interval= 'None', **get_kw):
+    def get_data(ticker: str = 'None',
+                 interval: str = 'None',
+                 **get_kw) -> pd.DataFrame:
         return utils.get_binance_data(ticker, interval, **get_kw)
 
-    def new_order_buy(self, ticker: str = 'None', quantity: float = 0.0, credit_leverage: float = 1.0):
-        self.__side__ = 'Buy'
-        self.quantity = quantity
-        self.ticker = ticker
-        self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
-        self.order_id = self.order['orderId']
-        self.ordered = True
+    def new_order_buy(self,
+                      ticker: str = 'None',
+                      quantity: float = 0.0,
+                      credit_leverage: float = 1.0,
+                      *args,
+                      **kwargs):
+        self.order_create('Buy',
+                          ticker=ticker,
+                          quantity=quantity,
+                          credit_leverage=credit_leverage,
+                          *args,
+                          **kwargs)
 
-    def new_order_sell(self, ticker: str = 'None', quantity: float = 0.0, credit_leverage: float = 1.0):
-        self.__side__ = 'Sell'
-        self.quantity = quantity
-        self.ticker = ticker
-        self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
-        self.order_id = self.order['orderId']
-        self.ordered = True
+    def new_order_sell(self,
+                       ticker: str = 'None',
+                       quantity: float = 0.0,
+                       credit_leverage: float = 1.0,
+                       *args,
+                       **kwargs):
+        self.order_create('Sell',
+                          ticker=ticker,
+                          quantity=quantity,
+                          credit_leverage=credit_leverage,
+                          *args,
+                          **kwargs)
 
     def exit_last_order(self):
         if self.ordered:
@@ -119,33 +141,32 @@ class Trader(object):
     interval: str
     __exit_order__: bool
     _regression_inputs: int
-    fig: plotly.graph_objs._figure.Figure
     mean_diff: float
     stop_loss: float
     take_profit: float
     open_price: float
     scaler: MinMaxScaler
-    history: dict[str, list[int]]
-    training_set: tuple[np.ndarray, np.ndarray]
+    history: Dict[str, List[float]]
+    training_set: Tuple[np.ndarray, np.ndarray]
     trades: int = 0
     profits: int = 0
     losses: int = 0
-    stop_losses: list[float]
-    take_profits: list[float]
-    credit_leverages: list[float]
-    deposit_history: list[float]
+    stop_losses: List[float]
+    take_profits: List[float]
+    credit_leverages: List[float]
+    deposit_history: List[float]
     year_profit: float
     linear: np.ndarray
     info: str
     backtest_out_no_drop: pd.DataFrame
     backtest_out: pd.DataFrame
-    open_lot_prices: list[float]
-    realtie_returns: dict[str, dict[str, typing.Union[str, float]]]
+    open_lot_prices: List[float]
+    realtime_returns: Dict[str, Dict[str, typing.Union[str, float]]]
     prepare_realtime: bool
     client: TradingClient
     __stop_loss: float
     __take_profit: float
-    model: _Sequential_type
+    model: Sequential
 
     def __init__(self,
                  ticker: str = 'AAPL',
@@ -211,7 +232,7 @@ class Trader(object):
         return cls(*args, **kwargs)
 
     def kalman_filter(self,
-                      df: pd.Series = df['Close'],
+                      df: pd.Series,
                       iters: int = 5,
                       plot: bool = True,
                       *args,
@@ -232,8 +253,8 @@ class Trader(object):
         return pd.DataFrame(filtered)
 
     def scipy_filter(self,
+                     df: pd.Series,
                      window_length: int = 101,
-                     df: pd.Series = df['Close'],
                      polyorder: int = 3,
                      plot: bool = True,
                      **scipy_savgol_filter_kwargs) -> pd.DataFrame:
@@ -277,7 +298,7 @@ class Trader(object):
         end: float = start + (mean - start) * 2
 
         length: int = len(data)
-        return_list: list[float] = []
+        return_list: List[float] = []
         mean_diff: float = (end - start) / length
         i: int
         for i in range(length):
@@ -285,7 +306,7 @@ class Trader(object):
         self.mean_diff = mean_diff
         return np.array(return_list)
 
-    def __get_stop_take(self, sig: utils.PREDICT_TYPE) -> dict[str, float]:
+    def __get_stop_take(self, sig: utils.PREDICT_TYPE) -> Dict[str, float]:
         """
         calculating stop loss and take profit.
 
@@ -489,7 +510,7 @@ class Trader(object):
                           mac_slow: int = 26,
                           mac_fast: int = 12,
                           rsi_level: int = 50,
-                          rsi_kwargs: dict[str, typing.Any] = {},
+                          rsi_kwargs: Dict[str, typing.Any] = {},
                           *args,
                           **macd_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
@@ -573,9 +594,9 @@ class Trader(object):
 
     def get_network_regression(self,
                                dataframes: typing.Iterable[pd.DataFrame],
-                               inputs: int = _regression_inputs,
+                               inputs: int = utils.REGRESSION_INPUTS,
                                network_save_path: str = './model_regression.h5',
-                               **fit_kwargs) -> _Sequential_type:
+                               **fit_kwargs) -> Sequential:
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
 
@@ -624,14 +645,12 @@ class Trader(object):
     def get_trained_network(self,
                             dataframes: typing.Iterable[pd.DataFrame],
                             filter_: str = 'kalman_filter',
-                            filter_kwargs: dict[str, typing.Any] = {},
+                            filter_kwargs: Dict[str, typing.Any] = {},
                             optimizer: str = 'adam',
                             loss: str = 'mse',
                             metrics: typing.Iterable[str] = ['mse'],
                             network_save_path: str = './model_predicting.h5',
-                            **fit_kwargs) -> tuple[_Sequential_type,
-                                                   dict[str, list[int]],
-                                                   tuple[np.ndarray, np.ndarray]]:
+                            **fit_kwargs) -> Tuple[Sequential, Dict[str, List[float]], Tuple[np.ndarray, np.ndarray]]:
         """
         getting trained neural network to trading.
 
@@ -663,8 +682,8 @@ class Trader(object):
 
         """
 
-        list_input: list[pd.DataFrame] = []
-        list_output: list[int] = []
+        list_input: List[pd.DataFrame] = []
+        list_output: List[int] = []
         flag: pd.DataFrame = self.df
 
         df: pd.DataFrame
@@ -850,7 +869,7 @@ class Trader(object):
         no_order: bool
         stop_loss: float
         take_profit: float
-        seted: list[typing.Any]
+        seted: List[typing.Any]
         diff: float
         lin_calc_df: pd.DataFrame
         price: float
@@ -890,10 +909,6 @@ class Trader(object):
                     bet = deposit
                 open_price = price
                 bet *= credit_lev
-
-                def coefficient(difference: float) -> float:
-                    return bet * difference / open_price
-
                 deposit -= bet * (commission / 100)
                 if bet > deposit:
                     bet = deposit
@@ -932,7 +947,7 @@ class Trader(object):
             elif sig == utils.EXIT:
                 diff = 0.0
             if not no_order:
-                deposit += coefficient(diff)
+                deposit += bet * diff / open_price
             no_order = exit_take_stop
             self.deposit_history.append(deposit)
             oldsig = sig
@@ -1166,7 +1181,7 @@ class Trader(object):
                             rounding_bet: int = 4,
                             *args,
                             **kwargs
-                            ) -> dict[str, typing.Union[str, float]]:
+                            ) -> Dict[str, typing.Union[str, float]]:
         """
         :param rounding_bet: maximum permissible accuracy with your api. Bigger than 0
         :param second_symbol_of_ticker: BTCUSDT -> USDT
@@ -1183,15 +1198,11 @@ class Trader(object):
             _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
             if bet_for_trading_on_client is np.inf:
                 bet = _moneys_
-            elif bet_for_trading_on_client > _moneys_:
+            if bet_for_trading_on_client > _moneys_:
                 bet = _moneys_
-            else:
+            if bet_for_trading_on_client is not np.inf and bet_for_trading_on_client <= _moneys_:
                 bet = bet_for_trading_on_client
             bet /= self.client.get_ticker_price(self.ticker)
-
-            bet = round(bet, rounding_bet)
-            if bet > _moneys_:
-                bet -= utils.min_r(rounding_bet)
 
         predict = self.returns[-1]
         if self.__exit_order__:
@@ -1215,18 +1226,23 @@ class Trader(object):
 
                     self.client.new_order_buy(self.ticker,
                                               bet,
-                                              credit_leverage=credit_leverage)
+                                              credit_leverage=credit_leverage,
+                                              rounding_bet=rounding_bet,
+                                              _moneys_=_moneys_)
                     utils.logger.info('client buy')
                     self.__exit_order__ = False
                     self.__first__ = False
 
                 if predict == 'Sell':
-
                     if not self.__first__:
                         self.client.exit_last_order()
                         utils.logger.info('client exit')
 
-                    self.client.new_order_sell(self.ticker, bet, credit_leverage=credit_leverage)
+                    self.client.new_order_sell(self.ticker,
+                                               bet,
+                                               credit_leverage=credit_leverage,
+                                               rounding_bet=rounding_bet,
+                                               _moneys_=_moneys_)
                     utils.logger.info('client sell')
                     self.__first__ = False
                     self.__exit_order__ = False
@@ -1244,7 +1260,6 @@ class Trader(object):
             self._predict = predict
             self.__stop_loss = self.stop_losses[-1]
             self.__take_profit = self.take_profits[-1]
-        predict = utils.convert_signal(predict=predict)
         return {
             'predict': predict,
             'open lot price': self.open_price,
@@ -1255,8 +1270,8 @@ class Trader(object):
 
     def realtime_trading(self,
                          strategy,
-                         ticker: str = ticker,
-                         get_data_kwargs: dict[str, typing.Any] = {},
+                         ticker: str = utils.BASE_TICKER,
+                         get_data_kwargs: Dict[str, typing.Any] = {},
                          sleeping_time: float = 60.0,
                          print_out: bool = True,
                          trading_on_client: bool = False,
@@ -1379,8 +1394,8 @@ class Trader(object):
         return self.returns
 
     def set_open_stop_and_take(self,
-                               take_profit: float = 0.0,
-                               stop_loss: float = 0.0,
+                               take_profit: float = np.inf,
+                               stop_loss: float = np.inf,
                                set_stop: bool = True,
                                set_take: bool = True):
         """
@@ -1404,7 +1419,7 @@ class Trader(object):
         sig: utils.PREDICT_TYPE
         close: float
         seted: utils.SETED_TYPE
-        ts: dict[str, float]
+        ts: Dict[str, float]
         for sig, close, seted in zip(self.returns, closes, utils.set_(self.returns)):
             if seted is not np.nan:
                 self.open_price = close
@@ -1430,7 +1445,7 @@ class Trader(object):
 
     def _window_(self,
                  column: str,
-                 n: int = 2) -> list[typing.Any]:
+                 n: int = 2) -> List[typing.Any]:
         return utils.get_window(self.df[column].values, n)
 
     def find_pip_bar(self,
@@ -1469,10 +1484,10 @@ class Trader(object):
 
         flag_stop_loss: float = np.inf
         self.stop_losses = [flag_stop_loss]
-        high: list[float]
-        low: list[float]
-        open_pr: list[float]
-        close: list[float]
+        high: List[float]
+        low: List[float]
+        open_pr: List[float]
+        close: List[float]
 
         for high, low, open_pr, close in zip(
                 self._window_('High'),
@@ -1495,10 +1510,10 @@ class Trader(object):
     def find_TBH_TBL(self) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.EXIT]
         flag: utils.PREDICT_TYPE = utils.EXIT
-        high: list[float]
-        low: list[float]
-        open_: list[float]
-        close: list[float]
+        high: List[float]
+        low: List[float]
+        open_: List[float]
+        close: List[float]
 
         for e, (high, low, open_, close) in enumerate(
                 zip(
@@ -1514,10 +1529,10 @@ class Trader(object):
     def find_PPR(self) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.EXIT] * 2
         flag: utils.PREDICT_TYPE = utils.EXIT
-        high: list[float]
-        low: list[float]
-        opn: list[float]
-        close: list[float]
+        high: List[float]
+        low: List[float]
+        opn: List[float]
+        close: List[float]
         for e, (high, low, opn, close) in enumerate(
                 zip(
                     self._window_('High', 3), self._window_('Low', 3),
@@ -1530,12 +1545,12 @@ class Trader(object):
             self.returns.append(flag)
         return self.returns
 
-    def is_doji(self) -> list[bool]:
+    def is_doji(self) -> List[bool]:
         """
         :returns: list of booleans.
 
         """
-        ret: list[bool] = []
+        ret: List[bool] = []
         for close, open_ in zip(self.df['Close'].values,
                                 self.df['Open'].values):
             if close == open_:

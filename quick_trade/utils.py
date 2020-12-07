@@ -4,7 +4,7 @@ import json
 import logging
 import os
 import typing
-from typing import Any
+from typing import Any, List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -12,9 +12,9 @@ import requests
 from iexfinance.stocks import get_historical_intraday
 
 PREDICT_TYPE: type = int
-PREDICT_TYPE_LIST: type = list[PREDICT_TYPE]
+PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
 SETED_TYPE: type = typing.Union[PREDICT_TYPE, float]
-SETED_TYPE_LIST: type = list[SETED_TYPE]
+SETED_TYPE_LIST: type = List[SETED_TYPE]
 
 R: str = '#ff0000'
 G: str = '#55ff00'
@@ -30,13 +30,13 @@ IEX_TOKEN: str = 'Tpk_a4bc3e95d4c94810a3b2d4138dc81c5d'
 os.environ['IEX_API_VERSION'] = 'iexcloud-sandbox'
 os.environ['IEX_TOKEN'] = IEX_TOKEN
 __author__: str = 'Vlad Kochetov'
-__credits__: list[str] = ["Hemerson Tacon -- Stack overflow",
+__credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "hpaulj -- Stack overflow",
                           "Войтенко Николай Поликарпович (Vojtenko Nikolaj Polikarpovich) -- helped me test the "
                           "system of interaction with the binance crypto exchange with 50 dollars."]
 __version__: str = "3.0"
 
-TICKER: str = '^DJI'
+BASE_TICKER: str = '^DJI'
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
 TAKE_STOP_OPN_WIDTH: float = 1.0
@@ -64,7 +64,7 @@ def expansion_with_shear(values, ins=EXIT) -> PREDICT_TYPE_LIST:
 
 
 def set_(data: Any) -> SETED_TYPE_LIST:
-    ret: list[Any] = list(data.copy())
+    ret: List[Any] = list(data.copy())
     e: int
     for e, i in enumerate(data[1:]):
         if i == data[e]:
@@ -80,17 +80,17 @@ def to_4_col_df(data: Any, *columns) -> pd.DataFrame:
     pd.DataFrame with 4 your columns
 
     """
-    predict: list[list[float]] = [[] for _ in range(4)]
+    predict: List[List[float]] = [[] for _ in range(4)]
     for it in range(4):
         for i in range(it, len(data), 4):
             predict[it].append(data[i])
     return pd.DataFrame(predict, index=columns).T
 
 
-def inverse_4_col_df(df: pd.DataFrame, columns: list[Any]) -> pd.DataFrame:
+def inverse_4_col_df(df: pd.DataFrame, columns: List[Any]) -> pd.DataFrame:
     df: pd.DataFrame = pd.DataFrame(df)
     ret: np.ndarray = df.values
-    rets: list[pd.DataFrame] = []
+    rets: List[pd.DataFrame] = []
     for column in columns:
         rets.append(
             pd.DataFrame(itertools.chain.from_iterable(ret), columns=[column]))
@@ -98,16 +98,16 @@ def inverse_4_col_df(df: pd.DataFrame, columns: list[Any]) -> pd.DataFrame:
 
 
 def get_data(ticker: str, undo_days: int) -> pd.DataFrame:
-    tuples: list[tuple[int]] = []
+    tuples: List[Tuple[int]] = []
     returns: pd.DataFrame
     end: dt.datetime = dt.datetime.today()
-    date_list: list[dt.datetime] = [end - dt.timedelta(days=d) for d in range(undo_days)]
+    date_list: List[dt.datetime] = [end - dt.timedelta(days=d) for d in range(undo_days)]
     for i in range(len(date_list)):
         ret = str(np.array(date_list[::-1])[i])[:10]
         ret = tuple(map(int, ret.split('-')))
         tuples.append(ret)
 
-    dataframes: list[pd.DataFrame] = []
+    dataframes: List[pd.DataFrame] = []
     df_: pd.DataFrame
     dat: dt.datetime
     for date_ in tuples:
@@ -125,8 +125,8 @@ def get_data(ticker: str, undo_days: int) -> pd.DataFrame:
     return returns.dropna()
 
 
-def anti_set_(seted: list[Any]) -> list[Any]:
-    ret: list[Any] = [seted[0]]
+def anti_set_(seted: List[Any]) -> List[Any]:
+    ret: List[Any] = [seted[0]]
     flag = seted[0]
     e: int
     for e, i in enumerate(seted[1:]):
@@ -150,8 +150,8 @@ def digit(data) -> PREDICT_TYPE_LIST:
     return ret
 
 
-def get_window(values, window_length: int) -> list[Any]:
-    ret: list[Any] = []
+def get_window(values, window_length: int) -> List[Any]:
+    ret: List[Any] = []
     for e, i in enumerate(values[:len(values) - window_length + 1]):
         ret.append(values[e:e + window_length])
     return ret
@@ -163,7 +163,7 @@ def nothing(ret: Any) -> Any:
 
 def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: bool = False):
     url: str = f"https://api.binance.com/api/v1/klines?symbol={ticker}&interval={interval}"
-    data: list[list[Any]] = json.loads(requests.get(url).text)
+    data: List[List[Any]] = json.loads(requests.get(url).text)
     df: pd.DataFrame = pd.DataFrame(data)
     df.columns = ["open_time",
                   "Open", "High", "Low", 'Close', 'Volume',
@@ -176,7 +176,7 @@ def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: b
     return df
 
 
-def min_r(r: int) -> float:
+def min_admit(r: int) -> float:
     """
 
     to math.floor analogue.
