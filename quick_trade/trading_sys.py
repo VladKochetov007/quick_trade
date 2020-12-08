@@ -84,6 +84,7 @@ class TradingClient(Client):
                           credit_leverage=credit_leverage,
                           *args,
                           **kwargs)
+        utils.logger.info('client buy')
 
     def new_order_sell(self,
                        ticker: str = 'None',
@@ -97,6 +98,7 @@ class TradingClient(Client):
                           credit_leverage=credit_leverage,
                           *args,
                           **kwargs)
+        utils.logger.info('client sell')
 
     def exit_last_order(self):
         if self.ordered:
@@ -106,6 +108,7 @@ class TradingClient(Client):
                 self.new_order_sell(self.ticker, self.quantity)
             self.__side__ = 'Exit'
             self.ordered = False
+        utils.logger.info('client exit')
 
     def get_balance_ticker(self, ticker: str) -> float:
         for asset in self.get_account()['balances']:
@@ -164,8 +167,8 @@ class Trader(object):
     realtime_returns: Dict[str, Dict[str, typing.Union[str, float]]]
     prepare_realtime: bool
     client: TradingClient
-    __stop_loss: float
-    __take_profit: float
+    __last_stop_loss: float
+    __last_take_profit: float
     model: Sequential
 
     def __init__(self,
@@ -320,11 +323,11 @@ class Trader(object):
 
         _stop_loss: float
         take: float
-        if self.stop_loss is not None:
+        if self.stop_loss is not np.inf:
             _stop_loss = self.stop_loss / 10_000 * self.open_price
         else:
             _stop_loss = np.inf
-        if self.take_profit is not None:
+        if self.take_profit is not np.inf:
             take = self.take_profit / 10_000 * self.open_price
         else:
             take = np.inf
@@ -336,9 +339,9 @@ class Trader(object):
             take = self.open_price - take
             _stop_loss = self.open_price + _stop_loss
         else:
-            if self.take_profit is not None:
+            if self.take_profit is not np.inf:
                 take = self.open_price
-            if self.stop_loss is not None:
+            if self.stop_loss is not np.inf:
                 _stop_loss = self.open_price
 
         return {'stop': _stop_loss,
@@ -1193,78 +1196,60 @@ class Trader(object):
         credit_leverage: float = self.credit_leverages[-1]
         _moneys_: float
         bet: float
+        close: np.ndarray = self.df["Close"].values
+        cond: bool
 
+        # calculating bet
         if trading_on_client:
             _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
-            if bet_for_trading_on_client is np.inf:
-                bet = _moneys_
-            if bet_for_trading_on_client > _moneys_:
-                bet = _moneys_
-            if bet_for_trading_on_client is not np.inf and bet_for_trading_on_client <= _moneys_:
+            if bet_for_trading_on_client is not np.inf:
                 bet = bet_for_trading_on_client
+            if bet > _moneys_:
+                bet = _moneys_
+
             bet /= self.client.get_ticker_price(self.ticker)
 
+        # get prediction
         predict = self.returns[-1]
+        predict = utils.convert_signal_str(predict)
         if self.__exit_order__:
-            predict = utils.EXIT
+            predict = 'Exit'
 
-        cond = "_predict" not in self.__dir__()
+        # trading
+        cond = "_old_predict" not in self.__dir__()
         if not cond:
-            cond = self._predict != predict
-        close = self.df['Close'].values
-
+            cond = self._old_predict != predict
         if cond:
-            predict = utils.convert_signal(predict=predict)
             utils.logger.info(f'open lot {predict}')
-            if trading_on_client:
-
-                if predict == 'Buy':
-
-                    if not self.__first__:
-                        self.client.exit_last_order()
-                        utils.logger.info('client exit')
-
-                    self.client.new_order_buy(self.ticker,
-                                              bet,
-                                              credit_leverage=credit_leverage,
-                                              rounding_bet=rounding_bet,
-                                              _moneys_=_moneys_)
-                    utils.logger.info('client buy')
-                    self.__exit_order__ = False
-                    self.__first__ = False
-
-                if predict == 'Sell':
-                    if not self.__first__:
-                        self.client.exit_last_order()
-                        utils.logger.info('client exit')
-
-                    self.client.new_order_sell(self.ticker,
-                                               bet,
-                                               credit_leverage=credit_leverage,
-                                               rounding_bet=rounding_bet,
-                                               _moneys_=_moneys_)
-                    utils.logger.info('client sell')
-                    self.__first__ = False
-                    self.__exit_order__ = False
-
-                if predict == 'Exit' and not self.__first__:
-                    self.client.exit_last_order()
-                    utils.logger.info('client exit')
-                    self.__exit_order__ = True
-
+            self.__last_stop_loss = self.stop_losses[-1]
+            self.__last_take_profit = self.take_profits[-1]
             for sig, close_ in zip(self.returns[::-1],
-                                   self.df['Close'].values[::-1]):
+                                   close[::-1]):
                 if sig != utils.EXIT:
                     self.open_price = close_
                     break
-            self._predict = predict
-            self.__stop_loss = self.stop_losses[-1]
-            self.__take_profit = self.take_profits[-1]
+            if trading_on_client:
+                if predict == 'Exit':
+                    self.client.exit_last_order()
+                    self.__exit_order__ = True
+
+                else:
+                    if not self.__first__:
+                        self.client.exit_last_order()
+
+                    self.client.order_create(predict,
+                                             self.ticker,
+                                             bet,
+                                             credit_leverage=credit_leverage,
+                                             rounding_bet=rounding_bet,
+                                             _moneys_=_moneys_)
+                    self.__exit_order__ = False
+                    self.__first__ = False
         return {
             'predict': predict,
             'open lot price': self.open_price,
-            'stop loss': self.__stop_loss,
-            'take profit': self.__take_profit,
+            'stop loss': self.__last_stop_loss,
+            'take profit': self.__last_take_profit,
             'currency close': close[-1]
         }
 
@@ -1319,23 +1304,23 @@ class Trader(object):
                 while True:
                     if not self.__exit_order__:
                         price = self.client.get_ticker_price(ticker)
-                        min_ = min(self.__stop_loss, self.__take_profit)
-                        max_ = max(self.__stop_loss, self.__take_profit)
-                        if (not min_ < price < max_) and (not self.__exit_order__):
-                            if self._predict != utils.EXIT:
-                                self.__exit_order__ = True
-                                utils.logger.info('exit lot')
-                                prediction['predict'] = 'Exit'
-                                prediction['currency close'] = price
-                                index = f'{self.ticker}, {time.ctime()}'
-                                if print_out:
-                                    print(index, prediction)
-                                utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
-                                self.realtie_returns[index] = prediction
-                                if trading_on_client:
-                                    self.client.exit_last_order()
-                                    utils.logger.info('client exit lot')
+                        min_ = min(self.__last_stop_loss, self.__last_take_profit)
+                        max_ = max(self.__last_stop_loss, self.__last_take_profit)
+                        if (not min_ < price < max_) and self._old_predict != utils.EXIT:
+                            self.__exit_order__ = True
+                            utils.logger.info('exit lot')
+                            prediction['predict'] = 'Exit'
+                            prediction['currency close'] = price
+                            index = f'{self.ticker}, {time.ctime()}'
+                            if print_out:
+                                print(index, prediction)
+                            utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
+                            self.realtie_returns[index] = prediction
+                            if trading_on_client:
+                                self.client.exit_last_order()
                     if not (time.time() < (__now__ + sleeping_time)):
+                        self._old_predict = prediction['predict']
+                        self.__exit_order__ = False
                         __now__ += sleeping_time
                         break
 
@@ -1409,7 +1394,6 @@ class Trader(object):
         self.stop_loss = stop_loss
         take_flag: float = np.inf
         stop_flag: float = np.inf
-        open_flag: float = np.inf
         self.open_lot_prices = []
         if set_stop:
             self.stop_losses = []

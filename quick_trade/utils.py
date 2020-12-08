@@ -184,7 +184,7 @@ def min_admit(r: int) -> float:
     return round(float('0.' + '0' * (r - 1) + '1'), r)
 
 
-def convert_signal(predict: PREDICT_TYPE) -> str:
+def convert_signal_str(predict: PREDICT_TYPE) -> str:
     if predict == BUY:
         return 'Buy'
     elif predict == SELL:
