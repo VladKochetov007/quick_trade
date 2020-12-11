@@ -5,7 +5,7 @@
 
 # TODO:
 #   add inner class with non-trading utils
-#   fix realtime
+#   fix ichimoku
 
 import itertools
 import random
@@ -486,20 +486,20 @@ class Trader(object):
         return self.returns
 
     def strategy_rsi(self,
-                     minimum: int = 20,
-                     maximum: int = 80,
-                     max_mid: int = 75,
-                     min_mid: int = 35,
+                     minimum: float = 20,
+                     maximum: float = 80,
+                     max_mid: float = 75,
+                     min_mid: float = 35,
                      *args,
                      **rsi_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
         flag: utils.PREDICT_TYPE = utils.EXIT
 
-        for val, diff in zip(rsi.values, rsi.diff().values):
-            if val < minimum and diff > 0 and val is not pd.NA:
+        for val in rsi.values:
+            if val < minimum and val is not pd.NA:
                 flag = utils.BUY
-            elif val > maximum and diff < 0 and val is not pd.NA:
+            elif val > maximum and val is not pd.NA:
                 flag = utils.SELL
             elif flag == utils.BUY and val < max_mid:
                 flag = utils.EXIT
@@ -507,26 +507,6 @@ class Trader(object):
                 flag = utils.EXIT
             self.returns.append(flag)
 
-        return self.returns
-
-    def strategy_macd_rsi(self,
-                          mac_slow: int = 26,
-                          mac_fast: int = 12,
-                          rsi_level: int = 50,
-                          rsi_kwargs: Dict[str, typing.Any] = {},
-                          *args,
-                          **macd_kwargs) -> utils.PREDICT_TYPE_LIST:
-        self.returns = []
-        macd = ta.trend.macd(self.df['Close'], mac_slow, mac_fast,
-                             **macd_kwargs)
-        rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
-        for MACD, RSI in zip(macd.values, rsi.values):
-            if MACD > 0 and RSI > rsi_level:
-                self.returns.append(utils.BUY)
-            elif MACD < 0 and RSI < rsi_level:
-                self.returns.append(utils.SELL)
-            else:
-                self.returns.append(utils.EXIT)
         return self.returns
 
     def strategy_parabolic_SAR(self, plot: bool = True, *args, **sar_kwargs) -> utils.PREDICT_TYPE_LIST:
@@ -808,6 +788,82 @@ class Trader(object):
                      "HA_Close": "Close"})
 
         return df
+
+    def strategy_ichimoku(self,
+                          tenkansen: int = 9,
+                          kijunsen: int = 26,
+                          senkouspan: int = 52,
+                          chinkouspan: int = 26,
+                          stop_loss_plus: float = 15,
+                          plot: bool = True,
+                          *args,
+                          **kwargs): # TODO: доделать
+        cloud = ta.trend.IchimokuIndicator(self.df["High"],
+                                           self.df["Low"],
+                                           tenkansen,
+                                           kijunsen,
+                                           senkouspan,
+                                           visual=True)
+        tenkan_sen: np.ndarray = cloud.ichimoku_conversion_line().values
+        kinjun_sen: np.ndarray = cloud.ichimoku_base_line().values
+        senkou_span_a: np.ndarray = cloud.ichimoku_a().values
+        senkou_span_b: np.ndarray = cloud.ichimoku_b().values
+        chenkou_span: np.ndarray = self.df['Close'].shift(-chinkouspan)
+        flag1: utils.PREDICT_TYPE = utils.EXIT
+        flag2: utils.PREDICT_TYPE = utils.EXIT
+        flag3: utils.PREDICT_TYPE = utils.EXIT
+        name: str
+        data: np.ndarray
+        e: int
+        close: float
+        tenkan: float
+        kijun: float
+        A: float
+        B: float
+        chickou: float
+
+        if plot:
+            for name, data in zip(['tenkan-sen',
+                                   'kijun-sen',
+                                   'chinkou-span'],
+                                  [tenkan_sen,
+                                   kinjun_sen,
+                                   chenkou_span]):
+                self.fig.add_trace(Line(y=data, name=name, line=dict(width=utils.ICHIMOKU_LINES_WIDTH)), col=1, row=1)
+
+            self.fig.add_trace(Line(y=senkou_span_a,
+                                     fill=None,
+                                     line_color=utils.ICHIMOKU_CLOUD_COLOR,
+                                     ))
+            self.fig.add_trace(Line(
+                y=senkou_span_b,
+                fill='tonexty',
+                line_color=utils.ICHIMOKU_CLOUD_COLOR))
+
+            self.returns = []
+            self.stop_losses = [utils.EXIT] * chinkouspan
+            for e, (close, tenkan, kijun, A, B, chickou) in enumerate(zip(
+                    self.df['Close'].values,
+                    tenkan_sen,
+                    kinjun_sen,
+                    senkou_span_a,
+                    senkou_span_b,
+                    chenkou_span
+            )):
+                max_cloud = max((A, B))
+                min_cloud = min((A, B))
+
+                stop_loss_adder = stop_loss_plus * (close / 10_000)
+
+                if tenkan > kijun:
+                    flag1 = utils.BUY
+                elif tenkan < kijun:
+                    flag1 = utils.SELL
+
+                if close > max_cloud:
+                    flag2 = utils.BUY
+                elif close < min_cloud:
+                    flag2 = utils.SELL
 
     def inverse_strategy(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         """

@@ -34,19 +34,21 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "hpaulj -- Stack overflow",
                           "Войтенко Николай Поликарпович (Vojtenko Nikolaj Polikarpovich) -- helped me test the "
                           "system of interaction with the binance crypto exchange with 50 dollars."]
-__version__: str = "3.0"
+__version__: str = "3.5"
 
 BASE_TICKER: str = '^DJI'
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
 TAKE_STOP_OPN_WIDTH: float = 1.0
+ICHIMOKU_LINES_WIDTH: float = 2.0
+ICHIMOKU_CLOUD_COLOR: str = '#BE9FFF'
 TEXT_COLOR: str = 'white'
 SUB_LINES_WIDTH: float = 3.0
 STOP_TAKE_OPN_ALPHA: float = 1.0
 COLOR_DEPOSIT: str = 'white'
-SCATTER_DEPO_ALPHA: float = SCATTER_ALPHA
 DEPO_COLOR_UP: str = 'green'
 DEPO_COLOR_DOWN: str = 'red'
+
 FILE_LOG_NAME: str = 'trading.log'
 logger = logging.getLogger()
 logger.setLevel(50)
