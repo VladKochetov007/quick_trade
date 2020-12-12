@@ -41,10 +41,12 @@ SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
 TAKE_STOP_OPN_WIDTH: float = 1.0
 ICHIMOKU_LINES_WIDTH: float = 2.0
-ICHIMOKU_CLOUD_COLOR: str = '#BE9FFF'
+ICHIMOKU_CLOUD_COLORS: List[str] = ['rgb(0,250,0)',
+                                    'rgb(250,0,0)']
+ICHIMOKU_CLOUD_ALPHA: float = 0.4
 TEXT_COLOR: str = 'white'
 SUB_LINES_WIDTH: float = 3.0
-STOP_TAKE_OPN_ALPHA: float = 1.0
+STOP_TAKE_OPN_ALPHA: float = 0.5
 COLOR_DEPOSIT: str = 'white'
 DEPO_COLOR_UP: str = 'green'
 DEPO_COLOR_DOWN: str = 'red'

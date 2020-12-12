@@ -22,6 +22,7 @@ import ta.volatility
 import ta.volume
 from binance.client import Client
 from plotly.graph_objs import Line
+from plotly.graph_objs import Scatter
 from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
 from scipy import signal
@@ -797,7 +798,7 @@ class Trader(object):
                           stop_loss_plus: float = 15,
                           plot: bool = True,
                           *args,
-                          **kwargs): # TODO: доделать
+                          **kwargs):
         cloud = ta.trend.IchimokuIndicator(self.df["High"],
                                            self.df["Low"],
                                            tenkansen,
@@ -808,10 +809,12 @@ class Trader(object):
         kinjun_sen: np.ndarray = cloud.ichimoku_base_line().values
         senkou_span_a: np.ndarray = cloud.ichimoku_a().values
         senkou_span_b: np.ndarray = cloud.ichimoku_b().values
-        chenkou_span: np.ndarray = self.df['Close'].shift(-chinkouspan)
+        prices: pd.Series = self.df['Close']
+        chenkou_span: np.ndarray = prices.shift(-chinkouspan).values
         flag1: utils.PREDICT_TYPE = utils.EXIT
         flag2: utils.PREDICT_TYPE = utils.EXIT
         flag3: utils.PREDICT_TYPE = utils.EXIT
+        trade: utils.PREDICT_TYPE = utils.EXIT
         name: str
         data: np.ndarray
         e: int
@@ -822,34 +825,45 @@ class Trader(object):
         B: float
         chickou: float
 
+        fillcolor: List[str] = []
+
+        for A, B in zip(senkou_span_a,
+                        senkou_span_b):
+            if A > B:
+                fillcolor.append(utils.ICHIMOKU_CLOUD_COLORS[0])
+            else:
+                fillcolor.append(utils.ICHIMOKU_CLOUD_COLORS[1])
+
         if plot:
-            for name, data in zip(['tenkan-sen',
-                                   'kijun-sen',
-                                   'chinkou-span'],
-                                  [tenkan_sen,
-                                   kinjun_sen,
-                                   chenkou_span]):
-                self.fig.add_trace(Line(y=data, name=name, line=dict(width=utils.ICHIMOKU_LINES_WIDTH)), col=1, row=1)
+            for name, data, color in zip(['tenkan-sen',
+                                          'kijun-sen',
+                                          'chinkou-span'],
+                                         [tenkan_sen,
+                                          kinjun_sen,
+                                          chenkou_span],
+                                         ['red',
+                                          'blue',
+                                          'green']):
+                self.fig.add_trace(Line(y=data, name=name, line=dict(width=utils.ICHIMOKU_LINES_WIDTH, color=color)), col=1, row=1)
 
             self.fig.add_trace(Line(y=senkou_span_a,
                                      fill=None,
-                                     line_color=utils.ICHIMOKU_CLOUD_COLOR,
+                                     line_color=utils.ICHIMOKU_CLOUD_COLORS[0],
                                      ))
             self.fig.add_trace(Line(
                 y=senkou_span_b,
                 fill='tonexty',
-                line_color=utils.ICHIMOKU_CLOUD_COLOR))
+                line_color=utils.ICHIMOKU_CLOUD_COLORS[0]))
 
-            self.returns = []
-            self.stop_losses = [utils.EXIT] * chinkouspan
-            for e, (close, tenkan, kijun, A, B, chickou) in enumerate(zip(
-                    self.df['Close'].values,
-                    tenkan_sen,
-                    kinjun_sen,
-                    senkou_span_a,
-                    senkou_span_b,
-                    chenkou_span
-            )):
+            self.returns = [utils.EXIT for i in range(chinkouspan)]
+            self.stop_losses = [np.inf] * chinkouspan
+            for e, (close, tenkan, kijun, A, B) in enumerate(zip(
+                    prices.values[chinkouspan:],
+                    tenkan_sen[chinkouspan:],
+                    kinjun_sen[chinkouspan:],
+                    senkou_span_a[chinkouspan:],
+                    senkou_span_b[chinkouspan:],
+            ), chinkouspan):
                 max_cloud = max((A, B))
                 min_cloud = min((A, B))
 
@@ -864,6 +878,18 @@ class Trader(object):
                     flag2 = utils.BUY
                 elif close < min_cloud:
                     flag2 = utils.SELL
+
+                if close > prices[e-chinkouspan]:
+                    flag3 = utils.BUY
+                elif close < prices[e-chinkouspan]:
+                    flag3 = utils.SELL
+
+                if flag3 == flag1 == flag2:
+                    trade = flag1
+                if (trade == utils.BUY and flag1 == utils.SELL) or (trade == utils.SELL and flag1 == utils.BUY):
+                    trade = utils.EXIT
+                self.returns.append(trade)
+
 
     def inverse_strategy(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         """
