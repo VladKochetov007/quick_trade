@@ -22,7 +22,6 @@ import ta.volatility
 import ta.volume
 from binance.client import Client
 from plotly.graph_objs import Line
-from plotly.graph_objs import Scatter
 from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
 from scipy import signal
@@ -795,10 +794,10 @@ class Trader(object):
                           kijunsen: int = 26,
                           senkouspan: int = 52,
                           chinkouspan: int = 26,
-                          stop_loss_plus: float = 15,
+                          stop_loss_plus: float = 40.0,
                           plot: bool = True,
                           *args,
-                          **kwargs):
+                          **kwargs) -> utils.PREDICT_TYPE_LIST:
         cloud = ta.trend.IchimokuIndicator(self.df["High"],
                                            self.df["Low"],
                                            tenkansen,
@@ -825,15 +824,6 @@ class Trader(object):
         B: float
         chickou: float
 
-        fillcolor: List[str] = []
-
-        for A, B in zip(senkou_span_a,
-                        senkou_span_b):
-            if A > B:
-                fillcolor.append(utils.ICHIMOKU_CLOUD_COLORS[0])
-            else:
-                fillcolor.append(utils.ICHIMOKU_CLOUD_COLORS[1])
-
         if plot:
             for name, data, color in zip(['tenkan-sen',
                                           'kijun-sen',
@@ -844,16 +834,17 @@ class Trader(object):
                                          ['red',
                                           'blue',
                                           'green']):
-                self.fig.add_trace(Line(y=data, name=name, line=dict(width=utils.ICHIMOKU_LINES_WIDTH, color=color)), col=1, row=1)
+                self.fig.add_trace(Line(y=data, name=name, line=dict(width=utils.ICHIMOKU_LINES_WIDTH, color=color)),
+                                   col=1, row=1)
 
             self.fig.add_trace(Line(y=senkou_span_a,
-                                     fill=None,
-                                     line_color=utils.ICHIMOKU_CLOUD_COLORS[0],
-                                     ))
+                                    fill=None,
+                                    line_color=utils.R,
+                                    ))
             self.fig.add_trace(Line(
                 y=senkou_span_b,
                 fill='tonexty',
-                line_color=utils.ICHIMOKU_CLOUD_COLORS[0]))
+                line_color=utils.ICHIMOKU_CLOUD_COLOR))
 
             self.returns = [utils.EXIT for i in range(chinkouspan)]
             self.stop_losses = [np.inf] * chinkouspan
@@ -869,27 +860,34 @@ class Trader(object):
 
                 stop_loss_adder = stop_loss_plus * (close / 10_000)
 
-                if tenkan > kijun:
-                    flag1 = utils.BUY
-                elif tenkan < kijun:
-                    flag1 = utils.SELL
+                if not min_cloud < close < max_cloud:
+                    if tenkan > kijun:
+                        flag1 = utils.BUY
+                    elif tenkan < kijun:
+                        flag1 = utils.SELL
 
-                if close > max_cloud:
-                    flag2 = utils.BUY
-                elif close < min_cloud:
-                    flag2 = utils.SELL
+                    if close > max_cloud:
+                        flag2 = utils.BUY
+                    elif close < min_cloud:
+                        flag2 = utils.SELL
 
-                if close > prices[e-chinkouspan]:
-                    flag3 = utils.BUY
-                elif close < prices[e-chinkouspan]:
-                    flag3 = utils.SELL
+                    if close > prices[e - chinkouspan]:
+                        flag3 = utils.BUY
+                    elif close < prices[e - chinkouspan]:
+                        flag3 = utils.SELL
 
-                if flag3 == flag1 == flag2:
-                    trade = flag1
-                if (trade == utils.BUY and flag1 == utils.SELL) or (trade == utils.SELL and flag1 == utils.BUY):
-                    trade = utils.EXIT
+                    if flag3 == flag1 == flag2:
+                        trade = flag1
+                    if (trade == utils.BUY and flag1 == utils.SELL) or (trade == utils.SELL and flag1 == utils.BUY):
+                        trade = utils.EXIT
                 self.returns.append(trade)
-
+                if trade == utils.BUY:
+                    self.stop_losses.append(min_cloud - stop_loss_adder)
+                else:
+                    self.stop_losses.append(max_cloud + stop_loss_adder)
+        self.set_open_stop_and_take(set_take=True,
+                                    set_stop=False)
+        return self.returns
 
     def inverse_strategy(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         """
@@ -1099,43 +1097,44 @@ class Trader(object):
                     line=dict(color=utils.COLOR_DEPOSIT),
                     name=f'D E P O S I T  (S T A R T: ${money_start})'), 2, 1)
             self.fig.add_trace(Line(y=self.linear, name='L I N E A R'), 2, 1)
+            preds: Dict[str, List[typing.Union[int, float]]] = {'sellind': [],
+                                                                'exitind': [],
+                                                                'buyind': [],
+                                                                'bprice': [],
+                                                                'sprice': [],
+                                                                'eprice': []}
             for e, i in enumerate(utils.set_(self.returns)):
                 if i == utils.SELL:
-                    self.fig.add_scatter(
-                        name='Sell',
-                        y=[loc[e]],
-                        x=[e],
-                        row=1,
-                        col=1,
-                        line=dict(color='#FF0000'),
-                        marker=dict(
-                            symbol='triangle-down',
-                            size=utils.SCATTER_SIZE,
-                            opacity=utils.SCATTER_ALPHA))
+                    preds['sellind'].append(e)
+                    preds['sprice'].append(loc[e])
                 elif i == utils.BUY:
-                    self.fig.add_scatter(
-                        name='Buy',
-                        y=[loc[e]],
-                        x=[e],
-                        row=1,
-                        col=1,
-                        line=dict(color='#00FF00'),
-                        marker=dict(
-                            symbol='triangle-up',
-                            size=utils.SCATTER_SIZE,
-                            opacity=utils.SCATTER_ALPHA))
+                    preds['buyind'].append(e)
+                    preds['bprice'].append(loc[e])
                 elif i == utils.EXIT:
-                    self.fig.add_scatter(
-                        name='Exit',
-                        y=[loc[e]],
-                        x=[e],
-                        row=1,
-                        col=1,
-                        line=dict(color='#2a00ff'),
-                        marker=dict(
-                            symbol='triangle-left',
-                            size=utils.SCATTER_SIZE,
-                            opacity=utils.SCATTER_ALPHA))
+                    preds['exitind'].append(e)
+                    preds['eprice'].append(loc[e])
+            name: str
+            index: int
+            price: float
+            for name, index, price, triangle_type, color in zip(
+                    ['Buy', 'Sell', 'Exit'],
+                    [preds['buyind'], preds['sellind'], preds['exitind']],
+                    [preds['bprice'], preds['sprice'], preds['eprice']],
+                    ['triangle-up', 'triangle-down', 'triangle-left'],
+                    [utils.G, utils.R, utils.B]
+            ):
+                self.fig.add_scatter(
+                    mode='markers',
+                    name=name,
+                    y=price,
+                    x=index,
+                    row=1,
+                    col=1,
+                    line=dict(color=color),
+                    marker=dict(
+                        symbol=triangle_type,
+                        size=utils.SCATTER_SIZE,
+                        opacity=utils.SCATTER_ALPHA))
             self.fig.update_layout(xaxis_rangeslider_visible=False)
             self.fig.show()
         return self.backtest_out

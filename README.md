@@ -1,4 +1,5 @@
 # quick_trade
+
 VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io
 
 ![image](logo_with_slogan.PNG)
@@ -21,9 +22,7 @@ used:
  └──iexfinance (https://github.com/addisonlynch/iexfinance)
 ```
 
-algo-trading system.
-trading with python.
-
+algo-trading system. trading with python.
 
 ## customize your strategy!
 
@@ -46,6 +45,7 @@ a.set_pyplot()
 a.strategy_buy_and_hold()
 a.backtest()
 ```
+
 *
 
 1 -- Buy
@@ -55,17 +55,22 @@ a.backtest()
 0 -- Sell
 
 *
+
 ## installing:
+
 ```
 $ git clone https://github.com/VladKochetov007/quick_trade.git
 $ pip3 install -r quick_trade/requirements.txt
 ```
+
 or
+
 ```
 $ pip install quick-trade==3.0
 ```
 
 ## your project tree:
+
 ```
 project
  ├── quick_trade
@@ -95,6 +100,7 @@ project
 ```
 
 #### user_code example:
+
 ```
 import quick_trade.trading_sys as qt
 import yfinance as yf
@@ -105,6 +111,7 @@ a.backtest()
 ```
 
 ## output plot:
+
 <div align="left">
   <img src="https://i.ibb.co/ThYVwpq/imgonline-com-ua-Big-Picture-afe-Xd-HJoldw-Tp.jpg" width=900">
 </div>
