@@ -13,7 +13,7 @@ setup(
     long_description='Please, view page on github.',
     url='https://github.com/VladKochetov007/quick_trade',
     install_requires=[
-        "iexfinance==0.4.3",
+        "iexfinance==0.5.0",
         "plotly==4.13.0",
         "ta==0.7.0",
         "scikit-learn==0.23.2",
