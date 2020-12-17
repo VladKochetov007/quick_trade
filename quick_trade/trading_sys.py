@@ -5,7 +5,6 @@
 
 # TODO:
 #   add inner class with non-trading utils
-#   fix ichimoku
 
 import itertools
 import random
@@ -186,29 +185,29 @@ class Trader(object):
         self.ticker = ticker
         self.interval = interval
         if interval == '1m':
-            self.profit_calculate_coef = 1 / (60 / 24 / 365)
-        if interval == '2m':
-            self.profit_calculate_coef = 1 / (30 / 24 / 365)
+            self.profit_calculate_coef = 1 / (60 * 24 * 365)
+        elif interval == '2m':
+            self.profit_calculate_coef = 1 / (30 * 24 * 365)
         elif interval == '3m':
-            self.profit_calculate_coef = 1 / (20 / 24 / 365)
+            self.profit_calculate_coef = 1 / (20 * 24 * 365)
         elif interval == '5m':
-            self.profit_calculate_coef = 1 / (12 / 24 / 365)
+            self.profit_calculate_coef = 1 / (12 * 24 * 365)
         elif interval == '15m':
-            self.profit_calculate_coef = 1 / (4 / 24 / 365)
+            self.profit_calculate_coef = 1 / (4 * 24 * 365)
         elif interval == '30m':
-            self.profit_calculate_coef = 1 / (2 / 24 / 365)
+            self.profit_calculate_coef = 1 / (2 * 24 * 365)
         elif interval == '45m':
-            self.profit_calculate_coef = 1 / (32 / 365)
+            self.profit_calculate_coef = 1 / (32 * 365)
         elif interval == '1h':
-            self.profit_calculate_coef = 1 / (24 / 365)
+            self.profit_calculate_coef = 1 / (24 * 365)
         elif interval == '90m':
-            self.profit_calculate_coef = 1 / (18 / 365)
+            self.profit_calculate_coef = 1 / (18 * 365)
         elif interval == '2h':
-            self.profit_calculate_coef = 1 / (12 / 365)
+            self.profit_calculate_coef = 1 / (12 * 365)
         elif interval == '3h':
-            self.profit_calculate_coef = 1 / (8 / 365)
+            self.profit_calculate_coef = 1 / (8 * 365)
         elif interval == '4h':
-            self.profit_calculate_coef = 1 / (6 / 365)
+            self.profit_calculate_coef = 1 / (6 * 365)
         elif interval == '1d':
             self.profit_calculate_coef = 1 / 365
         elif interval == '1w':
@@ -220,7 +219,7 @@ class Trader(object):
         elif interval == '6M':
             self.profit_calculate_coef = 1 / 2
         else:
-            raise ValueError('I N C O R R E C T   I N T E R V A L')
+            raise ValueError(f'I N C O R R E C T   I N T E R V A L; {interval}')
         self._regression_inputs = utils.REGRESSION_INPUTS
         self.__exit_order__ = False
 
@@ -422,16 +421,16 @@ class Trader(object):
         return self.returns
 
     def strategy_3_ema(self,
-                       slow: int = 3,
+                       slow: int = 46,
                        mid: int = 21,
-                       fast: int = 46,
+                       fast: int = 3,
                        plot: bool = True,
                        *args,
                        **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
-        ema3 = ta.trend.ema_indicator(self.df['Close'], slow)
+        ema3 = ta.trend.ema_indicator(self.df['Close'], fast)
         ema21 = ta.trend.ema_indicator(self.df['Close'], mid)
-        ema46 = ta.trend.ema_indicator(self.df['Close'], fast)
+        ema46 = ta.trend.ema_indicator(self.df['Close'], slow)
 
         if plot:
             for ema, Co, name in zip([ema3.values, ema21.values, ema46.values],
@@ -457,14 +456,13 @@ class Trader(object):
                       *args,
                       **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
-        level = ta.trend.macd_signal(self.df['Close'], slow, fast)
-        macd = ta.trend.macd(self.df['Close'], slow, fast)
+        diff = ta.trend.macd_diff(self.df['Close'], slow, fast)
 
-        for j, k in zip(level.values, macd.values):
-            if j > k:
-                self.returns.append(utils.SELL)
-            elif k > j:
+        for j in diff:
+            if j > 0:
                 self.returns.append(utils.BUY)
+            elif 0 > j:
+                self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
         return self.returns
@@ -899,14 +897,15 @@ class Trader(object):
 
         """
 
-        self.returns = []
+        returns = []
         flag: utils.PREDICT_TYPE = utils.EXIT
         for signal_key in self.returns:
             if signal_key == utils.BUY:
                 flag = utils.SELL
             elif signal_key == utils.SELL:
                 flag = utils.BUY
-            self.returns.append(flag)
+            returns.append(flag)
+        self.returns = returns
         return self.returns
 
     def basic_backtest(self,
