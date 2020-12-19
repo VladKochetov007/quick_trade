@@ -30,8 +30,9 @@ IEX_TOKEN: str = 'Tpk_a4bc3e95d4c94810a3b2d4138dc81c5d'
 os.environ['IEX_API_VERSION'] = 'iexcloud-sandbox'
 os.environ['IEX_TOKEN'] = IEX_TOKEN
 __author__: str = 'Vlad Kochetov'
-__credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
-                          "hpaulj -- Stack overflow",
+__credits__: List[str] = ["Hemerson Tacon  -- Stack overflow",
+                          "hpaulj          -- Stack overflow",
+                          "furas           -- Stack overflow",
                           "Войтенко Николай Поликарпович (Vojtenko Nikolaj Polikarpovich) -- helped me test the "
                           "system of interaction with the binance crypto exchange with 50 dollars."]
 __version__: str = "3.6"
@@ -52,7 +53,7 @@ DEPO_COLOR_DOWN: str = 'red'
 
 FILE_LOG_NAME: str = 'trading.log'
 logger = logging.getLogger()
-logger.setLevel(50)
+logger.setLevel(30)
 logging.basicConfig(level=20, filename=FILE_LOG_NAME)
 
 
