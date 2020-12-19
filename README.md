@@ -22,27 +22,30 @@ used:
  └──iexfinance (https://github.com/addisonlynch/iexfinance)
 ```
 
-algo-trading system. trading with python.
+Algo-trading system with python.
 
 ## customize your strategy!
 
 ```
-from quick_trade.trading_sys import PatternFinder
+import quick_trade.quick_trade.trading_sys as qtr
+import quick_trade.quick_trade.utils. as qtrut
 import yfinance as yf
 
-class my_trader(PatternFinder):
-    def strategy_buy_and_hold(
-            self):
+class my_trader(qtr.Trader):
+    def strategy_sell_and_hold(self):
         ret = []
         for i in self.df['Close'].values:
-            ret.append(1)
+            ret.append(qtrut.SELL)
         self.returns = ret
+        self.set_credit_leverages(1.0)
+        self.set_open_stop_and_take()
         return ret
 
 
 a = my_trader('MSFT', df=yf.download('MSFT', start='2019-01-01'))
 a.set_pyplot()
-a.strategy_buy_and_hold()
+a.set_client(qtrut.TradingClient())
+a.strategy_sell_and_hold()
 a.backtest()
 ```
 
@@ -66,37 +69,7 @@ $ pip3 install -r quick_trade/requirements.txt
 or
 
 ```
-$ pip install quick-trade==3.0
-```
-
-## your project tree:
-
-```
-project
- ├── quick_trade
- │    ├── quick_trade
- │    │    ├── model-predicting
- │    │    │    ├── assets
- │    │    │    ├── varibles
- │    │    │    │    ├── varibles.data-00000-of-00001
- │    │    │    │    └── varibles.index
- │    │    │    └── saved_model.pb
- │    │    ├── model-regression
- │    │    │    ├── assets
- │    │    │    ├── varibles
- │    │    │    │    ├── varibles.data-00000-of-00001
- │    │    │    │    └── varibles.index
- │    │    │    └── saved_model.pb
- │    │    ├── trading_sys.py
- │    │    └── utils.py
- │    ├── LICENSE.md
- │    ├── .gitignore
- │    ├── logo.PNG
- │    ├── logo-with-slogan.PNG
- │    ├── README.md
- │    ├── requirements.txt
- │    └── setup.py
- └── user_code.py
+$ pip3 install quick-trade
 ```
 
 #### user_code example:
