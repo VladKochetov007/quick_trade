@@ -283,16 +283,17 @@ class Trader(object):
         """
         linear data. mean + (mean diff * n)
         """
+        mean_diff: float
         data: pd.DataFrame = pd.DataFrame(dataset).copy()
 
         mean: float = float(data.mean())
-        mean_diff: float = float(data.diff().mean())
+        mean_diff = float(data.diff().mean())
         start: float = mean - (mean_diff * (len(data) / 2))
         end: float = start + (mean - start) * 2
 
         length: int = len(data)
         return_list: List[float] = []
-        mean_diff: float = (end - start) / length
+        mean_diff = (end - start) / length
         i: int
         for i in range(length):
             return_list.append(start + mean_diff * i)
@@ -876,6 +877,8 @@ class Trader(object):
                 flag = utils.SELL
             elif signal_key == utils.SELL:
                 flag = utils.BUY
+            elif signal_key == utils.EXIT:
+                flag = utils.EXIT
             returns.append(flag)
         self.returns = returns
         return self.returns
