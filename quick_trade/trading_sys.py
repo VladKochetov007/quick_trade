@@ -128,13 +128,13 @@ class Trader(object):
     """
     profit_calculate_coef: float
     returns: utils.PREDICT_TYPE_LIST = []
-    __first__: bool
     __rounding__: int
     __oldsig: utils.PREDICT_TYPE
     df: pd.DataFrame
     ticker: str
     interval: str
     __exit_order__: bool
+    _old_predict: str = 'Exit'
     _regression_inputs: int
     mean_diff: float
     stop_loss: float
@@ -171,7 +171,6 @@ class Trader(object):
                  *args,
                  **kwargs):
         df_ = round(df, rounding)
-        self.__first__ = True
         self.__rounding__ = rounding
         self.__oldsig = utils.EXIT
         self.df = df_.reset_index(drop=True)
@@ -627,13 +626,13 @@ class Trader(object):
             'Open'
             'Close'
             'Volume'
-        optimizer:    |       str         |   optimizer for .compile of network.
-        filter_:      |       str         |    filter to training.
-        filter_kwargs:|       dict        |    named arguments for the filter.
-        loss:         |       str         |   loss for .compile of network.
-        metrics:      |  typing.Iterable[str]  |   metrics for .compile of network:
+        optimizer:    |        str         |   optimizer for .compile of network.
+        filter_:      |        str         |    filter to training.
+        filter_kwargs:|       dict         |    named arguments for the filter.
+        loss:         |        str         |   loss for .compile of network.
+        metrics:      |typing.Iterable[str]|   metrics for .compile of network:
             standard: ['acc']
-        fit_kwargs:   | *named arguments* |   arguments to .fit of network.
+        fit_kwargs:   |  *named arguments* |   arguments to .fit of network.
         returns:
             (tensorflow model,
             history of training,
@@ -698,6 +697,25 @@ class Trader(object):
         for e, i in enumerate(preds):
             preds[e] = _rounding_prediction_func(i[0], rounding)
         self.returns = list(preds)
+        return self.returns
+
+    def strategy_supertrend(self, plot: bool=True, *ST_args, **ST_kwargs) -> utils.PREDICT_TYPE_LIST:
+        st: utils.SuperTrendIndicator = utils.SuperTrendIndicator(self.df['Close'],
+                                                                   self.df['High'],
+                                                                   self.df['Low'],
+                                                                   *ST_args,
+                                                                   **ST_kwargs)
+        if plot:
+            self.fig.add_trace(Line(y=st.get_supertrend_upper(),
+                                    name='supertrend upper',
+                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.R)))
+            self.fig.add_trace(Line(y=st.get_supertrend_lower(),
+                                    name='supertrend lower',
+                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.G)))
+        self.stop_losses = list(st.get_supertrend())
+        self.returns = list(st.get_supertrend_strategy_returns())
+        self.set_open_stop_and_take(set_stop=False)
+        self.stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
         return self.returns
 
     def strategy_bollinger(self,
@@ -883,15 +901,15 @@ class Trader(object):
         self.returns = returns
         return self.returns
 
-    def basic_backtest(self,
-                       deposit: float = 10_000.0,
-                       bet: float = np.inf,
-                       commission: float = 0.0,
-                       plot: bool = True,
-                       print_out: bool = True,
-                       column: str = 'Close',
-                       *args,
-                       **kwargs) -> pd.DataFrame:
+    def backtest(self,
+                 deposit: float = 10_000.0,
+                 bet: float = np.inf,
+                 commission: float = 0.0,
+                 plot: bool = True,
+                 print_out: bool = True,
+                 column: str = 'Close',
+                 *args,
+                 **kwargs) -> pd.DataFrame:
         """
         testing the strategy.
         deposit:         | int, float. | start deposit.
@@ -1135,7 +1153,7 @@ class Trader(object):
         """
         :param second_returns: returns of strategy
         :param first_returns: returns of strategy
-        :param mode:  mode of combining:
+        :param mode:  mode of combining
             example :
                 mode = 'minimalist':
                     1,1 = 1
@@ -1241,6 +1259,8 @@ class Trader(object):
             _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
             if bet_for_trading_on_client is not np.inf:
                 bet = bet_for_trading_on_client
+            else:
+                bet = _moneys_
             if bet > _moneys_:
                 bet = _moneys_
 
@@ -1253,13 +1273,10 @@ class Trader(object):
             predict = 'Exit'
 
         # trading
-        cond = "_old_predict" not in self.__dir__()
-        if not cond:
-            cond = self._old_predict != predict
-        if cond:
+        self.__last_stop_loss = self.stop_losses[-1]
+        self.__last_take_profit = self.take_profits[-1]
+        if self._old_predict != predict:
             utils.logger.info(f'open lot {predict}')
-            self.__last_stop_loss = self.stop_losses[-1]
-            self.__last_take_profit = self.take_profits[-1]
             for sig, close_ in zip(self.returns[::-1],
                                    close[::-1]):
                 if sig != utils.EXIT:
@@ -1271,8 +1288,7 @@ class Trader(object):
                     self.__exit_order__ = True
 
                 else:
-                    if not self.__first__:
-                        self.client.exit_last_order()
+                    self.client.exit_last_order()
 
                     self.client.order_create(predict,
                                              self.ticker,
@@ -1281,7 +1297,6 @@ class Trader(object):
                                              rounding_bet=rounding_bet,
                                              _moneys_=_moneys_)
                     self.__exit_order__ = False
-                    self.__first__ = False
         return {
             'predict': predict,
             'open lot price': self.open_price,
@@ -1368,28 +1383,6 @@ class Trader(object):
 
     def log_deposit(self):
         self.fig.update_yaxes(row=2, col=1, type='log')
-
-    def backtest(self,
-                 deposit: float = 10_000.0,
-                 credit_leverage: float = 1.0,
-                 bet: float = np.inf,
-                 commission: float = 0.0,
-                 plot: bool = True,
-                 print_out: bool = True,
-                 show: bool = True,
-                 log_profit_calc: bool = True,
-                 *args,
-                 **kwargs):
-        """
-        :param deposit: start deposit.
-        :param credit_leverage: trading leverage. 1 = none.
-        :param bet: fixed bet to quick_trade--. np.inf = all moneys.
-        :param commission: percentage commission (0 -- 100).
-        :param plot: plotting.
-        :param print_out: printing.
-        :param show: showing figure.
-        :param log_profit_calc: calculating profit logarithmic
-        """
 
     def load_model(self, path: str):
         self.model = load_model(path)

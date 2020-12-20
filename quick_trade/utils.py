@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import requests
 from iexfinance.stocks import get_historical_intraday
+from ta.volatility import AverageTrueRange
 
 PREDICT_TYPE: type = int
 PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
@@ -42,11 +43,11 @@ SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
 TAKE_STOP_OPN_WIDTH: float = 1.0
 ICHIMOKU_LINES_WIDTH: float = 2.0
-ICHIMOKU_CLOUD_COLOR: str = 'rgb(250,250,0)'
+ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
 ICHIMOKU_CLOUD_ALPHA: float = 0.4
 TEXT_COLOR: str = 'white'
 SUB_LINES_WIDTH: float = 3.0
-STOP_TAKE_OPN_ALPHA: float = 0.5
+STOP_TAKE_OPN_ALPHA: float = 0.8
 COLOR_DEPOSIT: str = 'white'
 DEPO_COLOR_UP: str = 'green'
 DEPO_COLOR_DOWN: str = 'red'
@@ -55,6 +56,93 @@ FILE_LOG_NAME: str = 'trading.log'
 logger = logging.getLogger()
 logger.setLevel(30)
 logging.basicConfig(level=20, filename=FILE_LOG_NAME)
+
+
+class SuperTrendIndicator(object):
+    """
+
+    Supertrend (ST)
+    """
+    close: pd.Series
+    high: pd.Series
+    low: pd.Series
+
+    def __init__(self,
+                 close: pd.Series,
+                 high: pd.Series,
+                 low: pd.Series,
+                 multiplier: float = 3.0,
+                 length: int = 10):
+        self.close = close
+        self.high = high
+        self.low = low
+        self.multiplier: float = float(multiplier) if multiplier and multiplier > 0 else 3.0
+        self.length = int(length) if length and length > 0 else 7
+        self._all = self._get_all_ST()
+
+    def get_supertrend(self) -> pd.Series:
+        return self._all['ST']
+
+    def get_supertrend_upper(self) -> pd.Series:
+        return self._all['ST_upper']
+
+    def get_supertrend_lower(self) -> pd.Series:
+        return self._all['ST_lower']
+
+    def get_supertrend_strategy_returns(self) -> pd.Series:
+        """
+
+        :return: pd.Series with 1 or -1 (buy, sell)
+        """
+        return self._all['ST_strategy']
+
+    def get_all_ST(self) -> pd.DataFrame:
+        return self._all
+
+    def _get_all_ST(self) -> pd.DataFrame:
+        """
+
+        ST Indicator, trading predictions, ST high/low
+        """
+        m = self.close.size
+        dir_, trend = [1] * m, [0] * m
+        long, short = [np.NaN] * m, [np.NaN] * m
+        ATR = AverageTrueRange(self.high, self.low, self.close, self.length)
+
+        hl2_ = (self.high + self.low) / 2
+        matr = ATR.average_true_range() * self.multiplier
+        upperband = hl2_ + matr
+        lowerband = hl2_ - matr
+
+        for i in range(1, m):
+            if self.close.iloc[i] > upperband.iloc[i - 1]:
+                dir_[i] = BUY
+            elif self.close.iloc[i] < lowerband.iloc[i - 1]:
+                dir_[i] = SELL
+            else:
+                dir_[i] = dir_[i - 1]
+                if dir_[i] > 0 and lowerband.iloc[i] < lowerband.iloc[i - 1]:
+                    lowerband.iloc[i] = lowerband.iloc[i - 1]
+                if dir_[i] < 0 and upperband.iloc[i] > upperband.iloc[i - 1]:
+                    upperband.iloc[i] = upperband.iloc[i - 1]
+
+            if dir_[i] > 0:
+                trend[i] = long[i] = lowerband.iloc[i]
+            else:
+                trend[i] = short[i] = upperband.iloc[i]
+
+        # Prepare DataFrame to return
+        df = pd.DataFrame(
+            {
+                f"ST": trend,
+                f"ST_strategy": dir_,
+                f"ST_lower": long,
+                f"ST_upper": short,
+            },
+            index=self.close.index
+        )
+
+        return df
 
 
 def expansion_with_shear(values, ins=EXIT) -> PREDICT_TYPE_LIST:
