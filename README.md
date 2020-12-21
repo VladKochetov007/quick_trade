@@ -2,6 +2,8 @@
 
 VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io
 
+P.S.: documentation now in v3.0
+
 ![image](logo_with_slogan.PNG)
 
 ```
@@ -31,7 +33,7 @@ import quick_trade.quick_trade.trading_sys as qtr
 import quick_trade.quick_trade.utils. as qtrut
 import yfinance as yf
 
-class my_trader(qtr.Trader):
+class My_trader(qtr.Trader):
     def strategy_sell_and_hold(self):
         ret = []
         for i in self.df['Close'].values:
@@ -42,22 +44,12 @@ class my_trader(qtr.Trader):
         return ret
 
 
-a = my_trader('MSFT', df=yf.download('MSFT', start='2019-01-01'))
+a = My_trader('MSFT', df=yf.download('MSFT', start='2019-01-01'))
 a.set_pyplot()
 a.set_client(qtrut.TradingClient())
 a.strategy_sell_and_hold()
 a.backtest()
 ```
-
-*
-
-1 -- Buy
-
-2 -- Exit
-
-0 -- Sell
-
-*
 
 ## installing:
 
@@ -75,35 +67,38 @@ $ pip3 install quick-trade
 #### user_code example:
 
 ```
-import quick_trade.trading_sys as qt
+import quick_trade.trading_sys as qtr
 import yfinance as yf
-a = qt.PatternFinder('AAPL', df=yf.download('AAPL', period='1y'))
-a.set_pyplot()
-a.strategy_macd()
-a.backtest()
+
+
+df = yf.download(tickers='XRP-USD', period='5d', interval='1m')
+trader = qtr.Trader('XRP-USD', df=df, interval='1m')
+trader.set_client(qtr.TradingClient())
+trader.set_pyplot()
+trader.strategy_parabolic_SAR()
+trader.set_credit_leverages(1)
+trader.backtest(commission=0.075)
 ```
 
-## output plot:
+## output plotly chart:
+![image](https://i.ibb.co/WzxXNY7/Unknown.png)
 
-<div align="left">
-  <img src="https://i.ibb.co/ThYVwpq/imgonline-com-ua-Big-Picture-afe-Xd-HJoldw-Tp.jpg" width=900">
-</div>
+
 
 ![image](https://i.ibb.co/mFLDJsX/IMG-5613.png)
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
-<img alt="Creative Commons License" style="border-width:0"
+<img alt="Creative Commons License" 
 src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
 </a><br/>
 <span  property="dct:title">quick_trade</span> by 
 <a 
-href="https://github.com/VladKochetov007" property="cc:attributionName"
-rel="cc:attributionURL">Vlad Kochetov</a> is licensed under a <a rel="license"
+href="https://github.com/VladKochetov007" 
+rel="cc:attributionURL">Vlad Kochetov</a> is licensed under a <a 
 href="http://creativecommons.org/licenses/by-sa/4.0/">
 Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 <br />Based on a work at 
 <a 
-href="https://github.com/VladKochetov007/quick_trade"
 rel="dct:source">https://github.com/VladKochetov007/quick_trade</a>.
 <br />Permissions beyond the scope of this license may be available at
 <a

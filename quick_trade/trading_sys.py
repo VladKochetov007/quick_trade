@@ -52,6 +52,8 @@ class TradingClient(Client):
             if quantity > kwargs['_moneys_']:
                 quantity -= utils.min_admit(kwargs['rounding_bet'])
             quantity = round(quantity, kwargs['rounding_bet'])
+            if quantity > kwargs['_moneys_'] or (quantity % utils.min_admit(kwargs['rounding_bet']) != 0):
+                utils.logger.error(f'invalid quantity: {quantity}, moneys: {kwargs["_moneys_"]}')
         if side == 'Buy':
             self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
         elif side == 'Sell':
@@ -278,12 +280,12 @@ class Trader(object):
         ema3 = ta.trend.ema_indicator(ema2, periods)
         return pd.Series(3 * ema.values - 3 * ema2.values + ema3.values)
 
-    def linear_(self, dataset) -> np.ndarray:
+    def get_linear(self, dataset) -> np.ndarray:
         """
         linear data. mean + (mean diff * n)
         """
         mean_diff: float
-        data: pd.DataFrame = pd.DataFrame(dataset).copy()
+        data: pd.DataFrame = pd.DataFrame(dataset)
 
         mean: float = float(data.mean())
         mean_diff = float(data.diff().mean())
@@ -500,6 +502,7 @@ class Trader(object):
                                                              self.df['Close'], **sar_kwargs)
         sardown: np.ndarray = sar.psar_down().values
         sarup: np.ndarray = sar.psar_up().values
+        self.stop_losses = list(sar.psar().values)
 
         if plot:
             for SAR_ in (sarup, sardown):
@@ -517,6 +520,7 @@ class Trader(object):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
+        self.set_open_stop_and_take(set_stop=False)
         return self.returns
 
     def strategy_macd_histogram_diff(self,
@@ -699,12 +703,12 @@ class Trader(object):
         self.returns = list(preds)
         return self.returns
 
-    def strategy_supertrend(self, plot: bool=True, *ST_args, **ST_kwargs) -> utils.PREDICT_TYPE_LIST:
+    def strategy_supertrend(self, plot: bool = True, *st_args, **st_kwargs) -> utils.PREDICT_TYPE_LIST:
         st: utils.SuperTrendIndicator = utils.SuperTrendIndicator(self.df['Close'],
-                                                                   self.df['High'],
-                                                                   self.df['Low'],
-                                                                   *ST_args,
-                                                                   **ST_kwargs)
+                                                                  self.df['High'],
+                                                                  self.df['Low'],
+                                                                  *st_args,
+                                                                  **st_kwargs)
         if plot:
             self.fig.add_trace(Line(y=st.get_supertrend_upper(),
                                     name='supertrend upper',
@@ -908,24 +912,19 @@ class Trader(object):
                  plot: bool = True,
                  print_out: bool = True,
                  column: str = 'Close',
+                 show: bool = True,
                  *args,
                  **kwargs) -> pd.DataFrame:
         """
         testing the strategy.
-        deposit:         | int, float. | start deposit.
-        bet:             | int, float, | fixed bet to quick_trade. np.inf = all moneys.
-        commission:      | int, float. | percentage commission (0 -- 100).
-        plot:            |    bool.    | plotting.
-        print_out:       |    bool.    | printing.
-        column:          |     str     | column of dataframe to backtest.
-        returns: pd.DataFrame with data of:
-            signals,
-            deposit'
-            stop loss,
-            take profit,
-            linear deposit,
-            <<column>> price,
-            open lot price.
+        :param deposit: start deposit.
+        :param bet: fixed bet to quick_trade. np.inf = all moneys.
+        :param commission: percentage commission (0 -- 100).
+        :param plot: plotting.
+        :param print_out: printing.
+        :param column: column of dataframe to backtest
+        :param show: show the graph
+        returns: pd.DataFrame with data of test
         """
 
         exit_take_stop: bool
@@ -1015,17 +1014,17 @@ class Trader(object):
             self.deposit_history.append(deposit)
             oldsig = sig
 
-        self.linear = self.linear_(self.deposit_history)
+        self.linear = self.get_linear(self.deposit_history)
         lin_calc_df = pd.DataFrame(self.linear)
         mean_diff = float(lin_calc_df.diff().mean())
         self.year_profit = mean_diff / self.profit_calculate_coef + money_start
         self.year_profit = ((self.year_profit - money_start) / money_start) * 100
-        self.info = (
-            f"L O S S E S: {self.losses}\n"
-            f"T R A D E S: {self.trades}\n"
-            f"P R O F I T S: {self.profits}\n"
-            f"M E A N   Y E A R   P E R C E N T A G E   R O F I T: {self.year_profit}%\n"
-        )
+        self.winrate = (self.profits / self.trades) * 100
+        self.info = f"""losses: {self.losses}
+trades: {self.trades}
+profits: {self.profits}
+mean year percentage profit: {self.year_profit}%
+winrate: {self.winrate}%"""
         if print_out:
             print(self.info)
         self.backtest_out_no_drop = pd.DataFrame(
@@ -1115,8 +1114,8 @@ class Trader(object):
                         symbol=triangle_type,
                         size=utils.SCATTER_SIZE,
                         opacity=utils.SCATTER_ALPHA))
-            self.fig.update_layout(xaxis_rangeslider_visible=False)
-            self.fig.show()
+            if show:
+                self.fig.show()
         return self.backtest_out
 
     def set_pyplot(self,
@@ -1254,18 +1253,6 @@ class Trader(object):
         close: np.ndarray = self.df["Close"].values
         cond: bool
 
-        # calculating bet
-        if trading_on_client:
-            _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
-            if bet_for_trading_on_client is not np.inf:
-                bet = bet_for_trading_on_client
-            else:
-                bet = _moneys_
-            if bet > _moneys_:
-                bet = _moneys_
-
-            bet /= self.client.get_ticker_price(self.ticker)
-
         # get prediction
         predict = self.returns[-1]
         predict = utils.convert_signal_str(predict)
@@ -1283,11 +1270,20 @@ class Trader(object):
                     self.open_price = close_
                     break
             if trading_on_client:
+
+                bet /= self.client.get_ticker_price(self.ticker)
                 if predict == 'Exit':
                     self.client.exit_last_order()
                     self.__exit_order__ = True
 
                 else:
+                    _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
+                    if bet_for_trading_on_client is not np.inf:
+                        bet = bet_for_trading_on_client
+                    else:
+                        bet = _moneys_
+                    if bet > _moneys_:
+                        bet = _moneys_
                     self.client.exit_last_order()
 
                     self.client.order_create(predict,

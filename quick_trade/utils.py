@@ -3,8 +3,7 @@ import itertools
 import json
 import logging
 import os
-import typing
-from typing import Any, List, Tuple
+from typing import Any, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -14,7 +13,7 @@ from ta.volatility import AverageTrueRange
 
 PREDICT_TYPE: type = int
 PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
-SETED_TYPE: type = typing.Union[PREDICT_TYPE, float]
+SETED_TYPE: type = Union[PREDICT_TYPE, float]
 SETED_TYPE_LIST: type = List[SETED_TYPE]
 
 R: str = '#ff0000'
@@ -189,7 +188,7 @@ def inverse_4_col_df(df: pd.DataFrame, columns: List[Any]) -> pd.DataFrame:
     return pd.concat(rets, axis=1)
 
 
-def get_data(ticker: str, undo_days: int) -> pd.DataFrame:
+def get_IEX_minutely(ticker: str, undo_days: int) -> pd.DataFrame:
     tuples: List[Tuple[int]] = []
     returns: pd.DataFrame
     end: dt.datetime = dt.datetime.today()
