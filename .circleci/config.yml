@@ -11,9 +11,8 @@ jobs:
       - python/load-cache
       - python/install-deps
       - python/save-cache
-      - run: |
-          echo 32
-          echo 64
+      - run:
+          command: echo 123456789
 
 workflows:
   main:
