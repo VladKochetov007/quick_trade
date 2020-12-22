@@ -10,12 +10,9 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - python/load-cache
-      name: deps
+      - python/load-cache=
       - run: |
-          pip3 install --upgrade pip
-          pip3 wheel
-          pip3 install ta-lib
+          pip3 install TA-Lib
           pip3 -q install -r requirements.txt
       - python/save-cache
       - run:
