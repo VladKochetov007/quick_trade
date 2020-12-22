@@ -11,6 +11,7 @@ jobs:
     steps:
       - checkout
       - python/load-cache
+        name: deps
       - run: |
           pip3 install --upgrade pip
           pip3 wheel
