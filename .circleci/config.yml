@@ -1,5 +1,5 @@
 jobs:
-  build-and-test:
+  build:
     docker:
       - image: cimg/python:3.8
     steps:
