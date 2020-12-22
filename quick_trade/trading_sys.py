@@ -1155,40 +1155,64 @@ winrate: {self.winrate}%"""
         :param second_returns: returns of strategy
         :param first_returns: returns of strategy
         :param mode:  mode of combining
+
             example :
                 mode = 'minimalist':
                     1,1 = 1
+
                     0,0 = 0
+
                     2,2 = 2
+
                     0,1 = 2
+
                     1,0 = 2
+
                     2,1 = 2
+
                     1,2 = 2
+
                     ...
+
                     first_returns = [1,1,0,0,2,0,2,2,0,0,1]
+
                     second_returns = [1,2,2,2,2,2,0,0,0,0,1]
-                                ====
+
                         [1,2,2,2,2,2,2,2,0,0,1]
+
                 mode = 'maximalist':
                     1,1 = 1
+
                     0,0 = 0
+
                     2,2 = 2
+
                     0,1 = last sig
+
                     1,0 = last sig
+
                     2,1 = last sig
+
                     1,2 = last sig
+
                     ...
+
                     first_returns = [1,1,0,0,2,0,2,2,0,0,1]
+
                     second_returns = [1,2,2,2,2,2,0,0,0,0,1]
-                                ====
+
                         [1,1,1,1,2,2,2,2,0,0,1]
+
                 mode = 'super':
                     ...
+
                     first_returns = [1,1,1,2,2,2,0,0,1]
+
                     second_returns = [1,0,0,0,1,1,1,0,0]
-                                ====
+
                         [1,0,0,2,1,1,0,0,1]
-        returns: combining of 2 strategies
+
+        :return: combining of 2 strategies
         """
 
         if mode == 'minimalist':
@@ -1233,18 +1257,26 @@ winrate: {self.winrate}%"""
                 return_list.append(first)
         return utils.anti_set_(return_list)
 
+    def multi_strategy_collider(self, *strategies, mode: str = 'minimalist') -> utils.PREDICT_TYPE_LIST:
+        self.strategy_collider(strategies[0], strategies[1], mode=mode)
+        if len(strategies) >= 3:
+            for ret in strategies[2:]:
+                self.strategy_collider(self.returns, ret, mode=mode)
+        return self.returns
+
     def get_trading_predict(self,
                             trading_on_client: bool = False,
                             bet_for_trading_on_client: float = np.inf,
                             second_symbol_of_ticker: str = 'None',
                             rounding_bet: int = 4,
-                            coin_lotsize_devision=True,
+                            coin_lotsize_division=True,
                             *args,
                             **kwargs
                             ) -> Dict[str, typing.Union[str, float]]:
         """
         predict and trading.
-        :param coin_lotsize_devision: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
+
+        :param coin_lotsize_division: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
         :param rounding_bet: maximum permissible accuracy with your api. Bigger than 0
         :param second_symbol_of_ticker: BTCUSDT -> USDT, for calculate bet. As deposit
         :param trading_on_client: trading on real client
@@ -1283,7 +1315,7 @@ winrate: {self.winrate}%"""
                 else:
                     _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
                     ticker_price = self.client.get_ticker_price(self.ticker)
-                    if coin_lotsize_devision:
+                    if coin_lotsize_division:
                         _moneys_ /= ticker_price
                     if bet_for_trading_on_client is not np.inf:
                         bet = bet_for_trading_on_client
@@ -1291,7 +1323,7 @@ winrate: {self.winrate}%"""
                         bet = _moneys_
                     if bet > _moneys_:
                         bet = _moneys_
-                    if coin_lotsize_devision:
+                    if coin_lotsize_division:
                         bet /= ticker_price
                     self.client.exit_last_order()
 
@@ -1320,11 +1352,11 @@ winrate: {self.winrate}%"""
                          bet_for_trading_on_client: float = np.inf,
                          second_symbol_of_ticker: str = 'None',
                          rounding_bet: int = 4,
-                         coin_lotsize_devision=True,
+                         coin_lotsize_division=True,
                          *strategy_args,
                          **strategy_kwargs):
         """
-        :param coin_lotsize_devision: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
+        :param coin_lotsize_division: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
         :param ticker: ticker for trading.
         :param strategy: trading strategy.
         :param get_data_kwargs: named arguments to self.client.get_data WITHOUT TICKER.
@@ -1351,7 +1383,7 @@ winrate: {self.winrate}%"""
                     bet_for_trading_on_client=bet_for_trading_on_client,
                     second_symbol_of_ticker=second_symbol_of_ticker,
                     rounding_bet=rounding_bet,
-                    coin_lotsize_devision=coin_lotsize_devision)
+                    coin_lotsize_division=coin_lotsize_division)
 
                 index = f'{self.ticker}, {time.ctime()}'
                 if print_out:
