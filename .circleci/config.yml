@@ -12,6 +12,7 @@ jobs:
       - checkout
       - python/load-cache
       - run: |
+          pip install --upgrade pip
           wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
           tar -xvf ta-lib-0.4.0-src.tar.gz
           cd ta-lib
@@ -19,8 +20,9 @@ jobs:
           make
           sudo make install
           sudo apt upgrade
-          pip3 install ta-lib
-          pip3 -q install -r requirements.txt
+          pip install ta-lib
+          cd ..
+          pip -q install -r requirements.txt
       - python/save-cache
       - run:
           command: ./manage.py test
