@@ -11,7 +11,9 @@ jobs:
     steps:
       - checkout
       - python/load-cache
-      - run: pip3 -q install -r requirements.txt
+      - run: |
+          pip3 -q install -r requirements.txt
+          conda install -c quantopian ta-lib
       - python/save-cache
       - run:
           command: ./manage.py test
