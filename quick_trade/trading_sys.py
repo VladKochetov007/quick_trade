@@ -31,7 +31,7 @@ from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential, load_model
 
 
-class TradingClient(Client):
+class BinanceTradingClient(Client):
     ordered: bool = False
     __side__: str
     quantity: float
@@ -127,6 +127,7 @@ class Trader(object):
     3m    1h     1d
     5m    90m    1w
     15m   2h     1M
+
     """
     profit_calculate_coef: float
     returns: utils.PREDICT_TYPE_LIST = []
@@ -159,7 +160,7 @@ class Trader(object):
     backtest_out: pd.DataFrame
     open_lot_prices: List[float]
     realtime_returns: Dict[str, Dict[str, typing.Union[str, float]]]
-    client: TradingClient
+    client: BinanceTradingClient
     __last_stop_loss: float
     __last_take_profit: float
     model: Sequential
@@ -1235,13 +1236,15 @@ winrate: {self.winrate}%"""
                             bet_for_trading_on_client: float = np.inf,
                             second_symbol_of_ticker: str = 'None',
                             rounding_bet: int = 4,
+                            coin_lotsize_devision=True,
                             *args,
                             **kwargs
                             ) -> Dict[str, typing.Union[str, float]]:
         """
+        :param coin_lotsize_devision: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
         :param rounding_bet: maximum permissible accuracy with your api. Bigger than 0
-        :param second_symbol_of_ticker: BTCUSDT -> USDT
-        :param trading_on_client: trading on real client (boll)
+        :param second_symbol_of_ticker: BTCUSDT -> USDT, for calculate bet. As deposit
+        :param trading_on_client: trading on real client
         :param bet_for_trading_on_client: standard: all deposit
         :return: dict with prediction
         """
@@ -1282,7 +1285,8 @@ winrate: {self.winrate}%"""
                         bet = _moneys_
                     if bet > _moneys_:
                         bet = _moneys_
-                    bet /= self.client.get_ticker_price(self.ticker)
+                    if coin_lotsize_devision:
+                        bet /= self.client.get_ticker_price(self.ticker)
                     self.client.exit_last_order()
 
                     self.client.order_create(predict,
@@ -1310,9 +1314,11 @@ winrate: {self.winrate}%"""
                          bet_for_trading_on_client: float = np.inf,
                          second_symbol_of_ticker: str = 'None',
                          rounding_bet: int = 4,
+                         coin_lotsize_devision=True,
                          *strategy_args,
                          **strategy_kwargs):
         """
+        :param coin_lotsize_devision: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
         :param ticker: ticker for trading.
         :param strategy: trading strategy.
         :param get_data_kwargs: named arguments to self.client.get_data WITHOUT TICKER.
@@ -1338,7 +1344,8 @@ winrate: {self.winrate}%"""
                     trading_on_client=trading_on_client,
                     bet_for_trading_on_client=bet_for_trading_on_client,
                     second_symbol_of_ticker=second_symbol_of_ticker,
-                    rounding_bet=rounding_bet)
+                    rounding_bet=rounding_bet,
+                    coin_lotsize_devision=coin_lotsize_devision)
 
                 index = f'{self.ticker}, {time.ctime()}'
                 if print_out:
@@ -1378,9 +1385,9 @@ winrate: {self.winrate}%"""
     def load_model(self, path: str):
         self.model = load_model(path)
 
-    def set_client(self, your_client: TradingClient):
+    def set_client(self, your_client: BinanceTradingClient):
         """
-        :param your_client: TradingClient object
+        :param your_client: trading client
         """
         self.client = your_client
 
