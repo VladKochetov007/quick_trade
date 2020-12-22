@@ -4,10 +4,9 @@ orbs:
   python: circleci/python@0.2.1
 
 jobs:
-  build:
-    docker:
-      - image: cimg/python:3.8.6
   build-and-test:
+    docker:
+      - image: cimg/python:3.8.7
     executor: python/default
     steps:
       - checkout
