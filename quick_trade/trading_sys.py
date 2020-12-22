@@ -5,6 +5,8 @@
 
 # TODO:
 #   add inner class with non-trading utils
+#   all talib patterns
+#   strategy collides with *strategies
 
 import itertools
 import random
@@ -1241,6 +1243,7 @@ winrate: {self.winrate}%"""
                             **kwargs
                             ) -> Dict[str, typing.Union[str, float]]:
         """
+        predict and trading.
         :param coin_lotsize_devision: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
         :param rounding_bet: maximum permissible accuracy with your api. Bigger than 0
         :param second_symbol_of_ticker: BTCUSDT -> USDT, for calculate bet. As deposit
@@ -1279,6 +1282,9 @@ winrate: {self.winrate}%"""
 
                 else:
                     _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
+                    ticker_price = self.client.get_ticker_price(self.ticker)
+                    if coin_lotsize_devision:
+                        _moneys_ /= ticker_price
                     if bet_for_trading_on_client is not np.inf:
                         bet = bet_for_trading_on_client
                     else:
@@ -1286,7 +1292,7 @@ winrate: {self.winrate}%"""
                     if bet > _moneys_:
                         bet = _moneys_
                     if coin_lotsize_devision:
-                        bet /= self.client.get_ticker_price(self.ticker)
+                        bet /= ticker_price
                     self.client.exit_last_order()
 
                     self.client.order_create(predict,
