@@ -46,7 +46,6 @@ class TradingClient(Client):
                      *args,
                      **kwargs):
         self.__side__ = side
-        self.quantity = quantity
         self.ticker = ticker
         if '_moneys_' in kwargs:
             if quantity > kwargs['_moneys_']:
@@ -59,6 +58,7 @@ class TradingClient(Client):
         elif side == 'Sell':
             self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
         self.order_id = self.order['orderId']
+        self.quantity = quantity
         self.ordered = True
 
     def get_ticker_price(self,
@@ -135,7 +135,7 @@ class Trader(object):
     df: pd.DataFrame
     ticker: str
     interval: str
-    __exit_order__: bool
+    __exit_order__: bool = False
     _old_predict: str = 'Exit'
     _regression_inputs: int
     mean_diff: float
@@ -159,7 +159,6 @@ class Trader(object):
     backtest_out: pd.DataFrame
     open_lot_prices: List[float]
     realtime_returns: Dict[str, Dict[str, typing.Union[str, float]]]
-    prepare_realtime: bool
     client: TradingClient
     __last_stop_loss: float
     __last_take_profit: float
@@ -1271,7 +1270,6 @@ winrate: {self.winrate}%"""
                     break
             if trading_on_client:
 
-                bet /= self.client.get_ticker_price(self.ticker)
                 if predict == 'Exit':
                     self.client.exit_last_order()
                     self.__exit_order__ = True
@@ -1284,6 +1282,7 @@ winrate: {self.winrate}%"""
                         bet = _moneys_
                     if bet > _moneys_:
                         bet = _moneys_
+                    bet /= self.client.get_ticker_price(self.ticker)
                     self.client.exit_last_order()
 
                     self.client.order_create(predict,
@@ -1332,7 +1331,6 @@ winrate: {self.winrate}%"""
         try:
             __now__ = time.time()
             while True:
-                self.prepare_realtime = True
                 self.df = self.client.get_data(self.ticker, **get_data_kwargs).reset_index(drop=True)
                 strategy(*strategy_args, **strategy_kwargs)
 
@@ -1358,8 +1356,6 @@ winrate: {self.winrate}%"""
                             prediction['predict'] = 'Exit'
                             prediction['currency close'] = price
                             index = f'{self.ticker}, {time.ctime()}'
-                            if print_out:
-                                print(index, prediction)
                             utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
                             self.realtie_returns[index] = prediction
                             if trading_on_client:
@@ -1371,7 +1367,6 @@ winrate: {self.winrate}%"""
                         break
 
         except Exception as e:
-            self.prepare_realtime = False
             raise e
 
     def log_data(self):
