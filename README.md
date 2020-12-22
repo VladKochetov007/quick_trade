@@ -83,6 +83,16 @@ trader.backtest(commission=0.075)
 ## output plotly chart:
 ![image](https://i.ibb.co/WzxXNY7/Unknown.png)
 
+## output print
+
+```
+losses: 226
+trades: 460
+profits: 232
+mean year percentage profit: 9075.656014641549%
+winrate: 50.43478260869565%
+```
+
 
 
 ![image](https://i.ibb.co/mFLDJsX/IMG-5613.png)
