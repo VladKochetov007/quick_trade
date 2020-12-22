@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - python/load-cache
-      - pip3 -q install -r requirements.txt
+      - run: pip3 -q install -r requirements.txt
       - python/save-cache
       - run:
           command: ./manage.py test
