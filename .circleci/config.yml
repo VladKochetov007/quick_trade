@@ -3,18 +3,15 @@ version: 2.1
 orbs:
   python: circleci/python@0.2.1
 
+
+
 jobs:
-  build-and-test:
+  build:
     docker:
-      - image: cimg/python:3.8.7
-    executor: python/default
+      - image: cimg/python:3.8
     steps:
       - checkout
-      - python/load-cache
-      - run:
-          command: pip3 install -r requirements.txt
-          name: install deps
-      - python/save-cache
+      - run: python --version
 
 workflows:
   main:
