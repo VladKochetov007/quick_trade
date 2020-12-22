@@ -10,7 +10,7 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - python/load-cache=
+      - python/load-cache
       - run: |
           wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
           tar -xzvf ta-lib-0.4.0-src.tar.gz
