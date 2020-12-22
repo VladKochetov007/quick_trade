@@ -10,7 +10,7 @@ jobs:
       - checkout
       - python/load-cache
       - run:
-          command: ls
+          command: pip3 install -r requirements.txt
           name: install deps
       - python/install-deps
       - python/save-cache
