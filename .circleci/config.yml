@@ -12,8 +12,9 @@ jobs:
       - checkout
       - python/load-cache
       - run: |
+          pip3 wheel
+          pip3 install ta-lib
           pip3 -q install -r requirements.txt
-          conda install -c quantopian ta-lib
       - python/save-cache
       - run:
           command: ./manage.py test
