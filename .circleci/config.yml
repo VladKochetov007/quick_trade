@@ -4,11 +4,7 @@ jobs:
       - image: cimg/python:3.8
     steps:
       - checkout
+      - run: python --version
       - python/load-cache
       - python/install-deps
       - python/save-cache
-
-workflows:
-   main:
-     jobs:
-       - build-and-test
