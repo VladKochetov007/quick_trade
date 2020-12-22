@@ -24,7 +24,7 @@ jobs:
               pip install ta-lib
               cd ..
               pip -q install -r requirements.txt
-          name: deps
+          name: loading dependencies
       - python/save-cache
 
 workflows:
