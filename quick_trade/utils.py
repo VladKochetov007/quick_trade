@@ -34,7 +34,9 @@ __credits__: List[str] = ["Hemerson Tacon  -- Stack overflow",
                           "hpaulj          -- Stack overflow",
                           "furas           -- Stack overflow",
                           "Войтенко Николай Поликарпович (Vojtenko Nikolaj Polikarpovich) -- helped me test the "
-                          "system of interaction with the binance crypto exchange with 50 dollars."]
+                          "system of interaction with the binance crypto exchange with 50 dollars.",
+                          "https://fxgears.com/index.php?threads/how-to-acquire-free-historical-tick-and-bar-data-for"
+                          "-algo-trading-and-backtesting-in-2020-stocks-forex-and-crypto-currency.1229/#post-19305"]
 __version__: str = "3.8.5"
 
 BASE_TICKER: str = '^DJI'
