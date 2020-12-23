@@ -6,16 +6,6 @@ P.S.: documentation now in v3.0
 
 ![image](logo_with_slogan.PNG)
 
-4.0 COMING SOON!!!:
-
-BIG DEBUG OF BACKTESTS
-
-LIB OF PATTERNS
-
-SUPERTREND AND HEIKIN ASHI
-
-~ AI PATTERNS DETECTING
-
 
 ```
 used:
