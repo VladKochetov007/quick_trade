@@ -31,6 +31,7 @@ from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential, load_model
+import datetime
 
 
 class BinanceTradingClient(Client):
@@ -100,6 +101,32 @@ class BinanceTradingClient(Client):
                           *args,
                           **kwargs)
         utils.logger.info('client sell')
+
+    def get_data_historical(self,
+                            ticker: str = 'None',
+                            start: Tuple[str, str]=('15 Dec 2020', '%d %b %Y'),
+                            interval: str = '1m',
+                            limit: int = 1000):
+        start_date = datetime.datetime.strptime(*start)
+        today = datetime.datetime.now()
+
+        klines = self.get_historical_klines(ticker,
+                                            interval,
+                                            start_date.strftime("%d %b %Y %H:%M:%S"),
+                                            today.strftime("%d %b %Y %H:%M:%S"),
+                                            limit)
+        data = pd.DataFrame(klines,
+                            columns=['timestamp', 'open', 'high', 'low', 'close', 'volume', 'close_time', 'quote_av',
+                                     'trades', 'tb_base_av', 'tb_quote_av', 'ignore'])
+        data['timestamp'] = pd.to_datetime(data['timestamp'], unit='ms')
+
+        data.set_index('timestamp', inplace=True)
+        return pd.DataFrame({'Close': data['close'],
+                             'Open': data['open'],
+                             'High': data['high'],
+                             'Low': data['low'],
+                             'Volume': data['volume']
+                             }).astype(float)
 
     def exit_last_order(self):
         if self.ordered:

@@ -35,7 +35,7 @@ __credits__: List[str] = ["Hemerson Tacon  -- Stack overflow",
                           "furas           -- Stack overflow",
                           "Войтенко Николай Поликарпович (Vojtenko Nikolaj Polikarpovich) -- helped me test the "
                           "system of interaction with the binance crypto exchange with 50 dollars."]
-__version__: str = "3.6"
+__version__: str = "3.8.5"
 
 BASE_TICKER: str = '^DJI'
 SCATTER_SIZE: float = 12.0
@@ -75,8 +75,8 @@ class SuperTrendIndicator(object):
         self.close = close
         self.high = high
         self.low = low
-        self.multiplier: float = float(multiplier) if multiplier and multiplier > 0 else 3.0
-        self.length = int(length) if length and length > 0 else 7
+        self.multiplier: float = multiplier
+        self.length = length
         self._all = self._get_all_ST()
 
     def get_supertrend(self) -> pd.Series:
@@ -106,7 +106,7 @@ class SuperTrendIndicator(object):
         m = self.close.size
         dir_, trend = [1] * m, [0] * m
         long, short = [np.NaN] * m, [np.NaN] * m
-        ATR = AverageTrueRange(self.high, self.low, self.close, self.length)
+        ATR = AverageTrueRange(high=self.high, low=self.low, close=self.close, window=self.length)
 
         hl2_ = (self.high + self.low) / 2
         matr = ATR.average_true_range() * self.multiplier
@@ -120,9 +120,9 @@ class SuperTrendIndicator(object):
                 dir_[i] = SELL
             else:
                 dir_[i] = dir_[i - 1]
-                if dir_[i] > 0 and lowerband.iloc[i] < lowerband.iloc[i - 1]:
+                if dir_[i] == BUY and lowerband.iloc[i] < lowerband.iloc[i - 1]:
                     lowerband.iloc[i] = lowerband.iloc[i - 1]
-                if dir_[i] < 0 and upperband.iloc[i] > upperband.iloc[i - 1]:
+                if dir_[i] == SELL and upperband.iloc[i] > upperband.iloc[i - 1]:
                     upperband.iloc[i] = upperband.iloc[i - 1]
 
             if dir_[i] > 0:
@@ -248,10 +248,6 @@ def get_window(values, window_length: int) -> List[Any]:
     return ret
 
 
-def nothing(ret: Any) -> Any:
-    return ret
-
-
 def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: bool = False):
     url: str = f"https://api.binance.com/api/v1/klines?symbol={ticker}&interval={interval}"
     data: List[List[Any]] = json.loads(requests.get(url).text)
@@ -282,19 +278,3 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
         return 'Sell'
     elif predict == EXIT:
         return 'Exit'
-
-
-def where_df(df_1: np.ndarray,
-             df_2: np.ndarray):
-    bigger_lower: np.ndarray = df_2 > df_1
-    bigger: List[float] = []
-    lower: List[float] = []
-
-    for i, j in zip(bigger_lower, df_2):
-        if i:
-            bigger.append(j)
-            lower.append(np.nan)
-        else:
-            bigger.append(np.nan)
-            lower.append(j)
-    return bigger, lower

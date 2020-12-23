@@ -9,17 +9,14 @@ P.S.: documentation now in v3.0
 ```
 used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
- ├──tensorflow==2.2 (https://github.com/tensorflow/tensorflow)
+ ├──tensorflow (https://github.com/tensorflow/tensorflow)
  ├──pykalman (https://github.com/pykalman/pykalman)
  ├──plotly (https://github.com/plotly/plotly.py)
  ├──scipy (https://github.com/scipy/scipy)
- ├──logging
  ├──pandas (https://github.com/pandas-dev/pandas)
  ├──numpy (https://github.com/numpy/numpy)
  ├──itertools
  ├──datetime
- ├──os
- ├──scipy
  ├──python-binance
  └──iexfinance (https://github.com/addisonlynch/iexfinance)
 ```
@@ -30,7 +27,6 @@ Algo-trading system with python.
 
 ```
 import quick_trade.quick_trade.trading_sys as qtr
-import quick_trade.quick_trade.utils. as qtrut
 import yfinance as yf
 
 class My_trader(qtr.Trader):
@@ -46,7 +42,7 @@ class My_trader(qtr.Trader):
 
 a = My_trader('MSFT', df=yf.download('MSFT', start='2019-01-01'))
 a.set_pyplot()
-a.set_client(qtrut.TradingClient())
+a.set_client(qtr.BinanceTradingClient())
 a.strategy_sell_and_hold()
 a.backtest()
 ```
