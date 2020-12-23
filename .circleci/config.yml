@@ -1,0 +1,33 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/python:3.8
+    executor: python/default
+    steps:
+      - checkout
+      - python/load-cache
+      - run:
+          command: |
+              pip install --upgrade pip
+              wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
+              tar -xvf ta-lib-0.4.0-src.tar.gz
+              cd ta-lib
+              ./configure --prefix=/usr
+              make
+              sudo make install
+              sudo apt upgrade
+              pip install ta-lib
+              cd ..
+              pip -q install -r requirements.txt
+          name: loading dependencies
+      - python/save-cache
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
