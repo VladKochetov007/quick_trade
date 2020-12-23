@@ -4,7 +4,7 @@ VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io
 
 P.S.: documentation now in v3.0
 
-![image](logo_with_slogan.PNG)
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/logo_with_slogan.PNG?raw=true)
 
 
 ```
