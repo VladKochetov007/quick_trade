@@ -18,7 +18,7 @@ setup(
         "iexfinance==0.4.3",
         "plotly==4.13.0",
         "ta==0.7.0",
-        "scikit-learn==0.23.2",
+        "scikit-learn==0.24.0",
         "tensorflow==2.3.1",
         "pykalman==0.9.5",
         "scipy==1.5.4",
