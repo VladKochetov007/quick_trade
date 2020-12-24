@@ -30,13 +30,14 @@ IEX_TOKEN: str = 'Tpk_a4bc3e95d4c94810a3b2d4138dc81c5d'
 os.environ['IEX_API_VERSION'] = 'iexcloud-sandbox'
 os.environ['IEX_TOKEN'] = IEX_TOKEN
 __author__: str = 'Vlad Kochetov'
-__credits__: List[str] = ["Hemerson Tacon  -- Stack overflow",
-                          "hpaulj          -- Stack overflow",
-                          "furas           -- Stack overflow",
+__credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
+                          "hpaulj -- Stack overflow",
+                          "furas -- Stack overflow",
                           "Войтенко Николай Поликарпович (Vojtenko Nikolaj Polikarpovich) -- helped me test the "
                           "system of interaction with the binance crypto exchange with 50 dollars.",
                           "https://fxgears.com/index.php?threads/how-to-acquire-free-historical-tick-and-bar-data-for"
-                          "-algo-trading-and-backtesting-in-2020-stocks-forex-and-crypto-currency.1229/#post-19305"]
+                          "-algo-trading-and-backtesting-in-2020-stocks-forex-and-crypto-currency.1229/#post-19305"
+                          " -- binance get historical data method"]
 __version__: str = "3.8.5"
 
 BASE_TICKER: str = '^DJI'
@@ -280,3 +281,10 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
         return 'Sell'
     elif predict == EXIT:
         return 'Exit'
+
+def ta_lib_to_returns(talib_returns: pd.Series, exit_=EXIT, *args, **kwargs) -> PREDICT_TYPE_LIST:
+    return list(talib_returns.replace({-200: SELL,
+                                       200: BUY,
+                                       100: BUY,
+                                       -100: SELL,
+                                       0: exit_}).values)

@@ -11,7 +11,6 @@ Trading project.
 # TODO:
 #   add inner class with non-trading utils
 #   all talib patterns
-#   strategy collides with *strategies
 
 import itertools
 import random
@@ -109,10 +108,11 @@ class BinanceTradingClient(Client):
 
     def get_data_historical(self,
                             ticker: str = 'None',
-                            start: Tuple[str, str]=('15 Dec 2020', '%d %b %Y'),
+                            start: str = '15 Dec 2020',
                             interval: str = '1m',
-                            limit: int = 1000):
-        start_date = datetime.datetime.strptime(*start)
+                            limit: int = 1000,
+                            start_type: str = '%d %b %Y'):
+        start_date = datetime.datetime.strptime(start, start_type)
         today = datetime.datetime.now()
 
         klines = self.get_historical_klines(ticker,
@@ -121,17 +121,12 @@ class BinanceTradingClient(Client):
                                             today.strftime("%d %b %Y %H:%M:%S"),
                                             limit)
         data = pd.DataFrame(klines,
-                            columns=['timestamp', 'open', 'high', 'low', 'close', 'volume', 'close_time', 'quote_av',
+                            columns=['timestamp', 'Open', 'High', 'Low', 'Close', 'Volume', 'close_time', 'quote_av',
                                      'trades', 'tb_base_av', 'tb_quote_av', 'ignore'])
         data['timestamp'] = pd.to_datetime(data['timestamp'], unit='ms')
 
         data.set_index('timestamp', inplace=True)
-        return pd.DataFrame({'Close': data['close'],
-                             'Open': data['open'],
-                             'High': data['high'],
-                             'Low': data['low'],
-                             'Volume': data['volume']
-                             }).astype(float)
+        return data.astype(float)
 
     def exit_last_order(self):
         if self.ordered:

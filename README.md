@@ -34,7 +34,7 @@ class My_trader(qtr.Trader):
     def strategy_sell_and_hold(self):
         ret = []
         for i in self.df['Close'].values:
-            ret.append(qtrut.SELL)
+            ret.append(qtr.utils.SELL)
         self.returns = ret
         self.set_credit_leverages(1.0)
         self.set_open_stop_and_take()
