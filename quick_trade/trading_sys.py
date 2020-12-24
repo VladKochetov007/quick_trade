@@ -160,7 +160,6 @@ class Trader(object):
     """
     profit_calculate_coef: float
     returns: utils.PREDICT_TYPE_LIST = []
-    __rounding__: int
     __oldsig: utils.PREDICT_TYPE
     df: pd.DataFrame
     ticker: str
@@ -202,7 +201,6 @@ class Trader(object):
                  *args,
                  **kwargs):
         df_ = round(df, rounding)
-        self.__rounding__ = rounding
         self.__oldsig = utils.EXIT
         self.df = df_.reset_index(drop=True)
         self.ticker = ticker
