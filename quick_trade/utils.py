@@ -219,12 +219,13 @@ def get_IEX_minutely(ticker: str, undo_days: int) -> pd.DataFrame:
     return returns.dropna()
 
 
-def anti_set_(seted: List[Any]) -> List[Any]:
+def anti_set_(seted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
+    seted = np.nan_to_num(seted, nan=_nan_num)
     ret: List[Any] = [seted[0]]
     flag = seted[0]
     e: int
-    for e, i in enumerate(seted[1:]):
-        if i is np.nan:
+    for i in seted[1:]:
+        if i == _nan_num:
             ret.append(flag)
         else:
             ret.append(i)
@@ -288,3 +289,7 @@ def ta_lib_to_returns(talib_returns: pd.Series, exit_=EXIT, *args, **kwargs) -> 
                                        100: BUY,
                                        -100: SELL,
                                        0: exit_}).values)
+
+
+def ta_lib_collider_all(data, *args, **kwargs):
+    return ta_lib_to_returns(data, exit_=np.nan)

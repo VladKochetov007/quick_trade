@@ -1,5 +1,7 @@
 """
-Trading project.
+Trading project:
+- testing
+- trading
 
 """
 
@@ -36,6 +38,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential, load_model
 import datetime
+import talib
 
 
 class BinanceTradingClient(Client):
@@ -1056,15 +1059,25 @@ winrate: {self.winrate}%"""
             print(self.info)
         self.backtest_out_no_drop = pd.DataFrame(
             (self.deposit_history, self.stop_losses, self.take_profits, self.returns,
-             self.open_lot_prices, data_column, self.linear),
+             self.open_lot_prices, data_column, self.linear, pd.Series(self.deposit_history).diff().values),
             index=[
                 f'deposit ({column})', 'stop loss', 'take profit',
                 'predictions', 'open deal/lot', column,
-                f"linear deposit data ({column})"
+                f"linear deposit data ({column})",
+                "returns"
             ]).T
         self.backtest_out = self.backtest_out_no_drop.dropna()
         if plot:
             loc: pd.Series = self.df[column]
+            self.fig.add_trace(
+                Line(
+                    y=self.backtest_out_no_drop['returns'].values,
+                    line=dict(color=utils.COLOR_DEPOSIT),
+                    name='returns'
+                    ),
+                row=3,
+                col=1
+            )
             self.fig.add_candlestick(
                 close=self.df['Close'],
                 high=self.df['High'],
@@ -1149,7 +1162,7 @@ winrate: {self.winrate}%"""
                    height: int = 900,
                    width: int = 1300,
                    template: str = 'plotly_dark',
-                   row_heights: list = [100, 160],
+                   row_heights: list = [100, 160, 70],
                    **subplot_kwargs):
         """
         :param height: window height
@@ -1157,7 +1170,7 @@ winrate: {self.winrate}%"""
         :param template: plotly template
         :param row_heights: standard [100, 160]
         """
-        self.fig = make_subplots(2, 1, row_heights=row_heights, **subplot_kwargs)
+        self.fig = make_subplots(3, 1, row_heights=row_heights, **subplot_kwargs)
         self.fig.update_layout(
             height=height,
             width=width,
@@ -1167,6 +1180,8 @@ winrate: {self.winrate}%"""
             title_text='T I M E', row=2, col=1, color=utils.TEXT_COLOR)
         self.fig.update_yaxes(
             title_text='M O N E Y S', row=2, col=1, color=utils.TEXT_COLOR)
+        self.fig.update_yaxes(
+            title_text='R E T U R N S', row=3, col=1, color=utils.TEXT_COLOR)
         self.fig.update_yaxes(
             title_text='D A T A', row=1, col=1, color=utils.TEXT_COLOR)
 
@@ -1439,16 +1454,16 @@ winrate: {self.winrate}%"""
         except Exception as e:
             raise e
 
-    def log_data(self):
+    def log_data(self, *args, **kwargs):
         self.fig.update_yaxes(row=1, col=1, type='log')
 
-    def log_deposit(self):
+    def log_deposit(self, *args, **kwargs):
         self.fig.update_yaxes(row=2, col=1, type='log')
 
-    def load_model(self, path: str):
+    def load_model(self, path: str, *args, **kwargs):
         self.model = load_model(path)
 
-    def set_client(self, your_client: BinanceTradingClient):
+    def set_client(self, your_client: BinanceTradingClient, *args, **kwargs):
         """
         :param your_client: trading client
         """
@@ -1456,7 +1471,9 @@ winrate: {self.winrate}%"""
 
     def convert_signal(self,
                        old: utils.PREDICT_TYPE = utils.SELL,
-                       new: utils.PREDICT_TYPE = utils.EXIT) -> utils.PREDICT_TYPE_LIST:
+                       new: utils.PREDICT_TYPE = utils.EXIT,
+                       *args,
+                       **kwargs) -> utils.PREDICT_TYPE_LIST:
         pos: int
         val: utils.PREDICT_TYPE
         for pos, val in enumerate(self.returns):
@@ -1468,7 +1485,9 @@ winrate: {self.winrate}%"""
                                take_profit: float = np.inf,
                                stop_loss: float = np.inf,
                                set_stop: bool = True,
-                               set_take: bool = True):
+                               set_take: bool = True,
+                               *args,
+                               **kwargs):
         """
         :param set_take: create new take profits.
         :param set_stop: create new stop losses.
@@ -1504,7 +1523,7 @@ winrate: {self.winrate}%"""
             if set_stop:
                 self.stop_losses.append(stop_flag)
 
-    def set_credit_leverages(self, credit_lev: float = 0.0):
+    def set_credit_leverages(self, credit_lev: float = 0.0, *args, **kwargs):
         """
         Sets the leverage for bets.
         :param credit_lev: leverage in points
@@ -1513,12 +1532,16 @@ winrate: {self.winrate}%"""
 
     def _window_(self,
                  column: str,
-                 n: int = 2) -> List[typing.Any]:
+                 n: int = 2,
+                 *args,
+                 **kwargs) -> List[typing.Any]:
         return utils.get_window(self.df[column].values, n)
 
     def find_pip_bar(self,
                      min_diff_coef: float = 2.0,
-                     body_coef: float = 10.0) -> utils.PREDICT_TYPE_LIST:
+                     body_coef: float = 10.0,
+                     *args,
+                     **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         flag = utils.EXIT
         e: int
@@ -1546,7 +1569,7 @@ winrate: {self.winrate}%"""
                 self.returns.append(flag)
         return self.returns
 
-    def find_DBLHC_DBHLC(self) -> utils.PREDICT_TYPE_LIST:
+    def find_DBLHC_DBHLC(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.EXIT]
         flag: utils.PREDICT_TYPE = utils.EXIT
 
@@ -1575,7 +1598,7 @@ winrate: {self.winrate}%"""
         self.set_open_stop_and_take(set_take=False, set_stop=False)
         return self.returns
 
-    def find_TBH_TBL(self) -> utils.PREDICT_TYPE_LIST:
+    def find_TBH_TBL(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.EXIT]
         flag: utils.PREDICT_TYPE = utils.EXIT
         high: List[float]
@@ -1594,7 +1617,7 @@ winrate: {self.winrate}%"""
             self.returns.append(flag)
         return self.returns
 
-    def find_PPR(self) -> utils.PREDICT_TYPE_LIST:
+    def find_PPR(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.EXIT] * 2
         flag: utils.PREDICT_TYPE = utils.EXIT
         high: List[float]
@@ -1613,7 +1636,7 @@ winrate: {self.winrate}%"""
             self.returns.append(flag)
         return self.returns
 
-    def is_doji(self) -> List[bool]:
+    def is_doji(self, *args, **kwargs) -> List[bool]:
         """
         :returns: list of booleans.
         """
@@ -1625,3 +1648,76 @@ winrate: {self.winrate}%"""
             else:
                 ret.append(False)
         return ret
+
+    def find_all_talib_paterns(self, *args, **kwargs):
+        open_ = self.df['Open']
+        high = self.df['High']
+        low = self.df['Low']
+        close = self.df['Close']
+
+        patterns = map(utils.ta_lib_collider_all, [
+            talib.CDL2CROWS(open_, high, low, close),
+            talib.CDL3BLACKCROWS(open_, high, low, close),
+            talib.CDL3INSIDE(open_, high, low, close),
+            talib.CDL3LINESTRIKE(open_, high, low, close),
+            talib.CDL3OUTSIDE(open_, high, low, close),
+            talib.CDL3STARSINSOUTH(open_, high, low, close),
+            talib.CDL3WHITESOLDIERS(open_, high, low, close),
+            talib.CDLABANDONEDBABY(open_, high, low, close),
+            talib.CDLADVANCEBLOCK(open_, high, low, close),
+            talib.CDLBELTHOLD(open_, high, low, close),
+            talib.CDLBREAKAWAY(open_, high, low, close),
+            talib.CDLCLOSINGMARUBOZU(open_, high, low, close),
+            talib.CDLCONCEALBABYSWALL(open_, high, low, close),
+            talib.CDLCOUNTERATTACK(open_, high, low, close),
+            talib.CDLDARKCLOUDCOVER(open_, high, low, close),
+            talib.CDLDOJI(open_, high, low, close),
+            talib.CDLDOJISTAR(open_, high, low, close),
+            talib.CDLDRAGONFLYDOJI(open_, high, low, close),
+            talib.CDLENGULFING(open_, high, low, close),
+            talib.CDLEVENINGDOJISTAR(open_, high, low, close),
+            talib.CDLEVENINGSTAR(open_, high, low, close),
+            talib.CDLGAPSIDESIDEWHITE(open_, high, low, close),
+            talib.CDLGRAVESTONEDOJI(open_, high, low, close),
+            talib.CDLHAMMER(open_, high, low, close),
+            talib.CDLHANGINGMAN(open_, high, low, close),
+            talib.CDLHARAMI(open_, high, low, close),
+            talib.CDLHARAMICROSS(open_, high, low, close),
+            talib.CDLHIGHWAVE(open_, high, low, close),
+            talib.CDLHIKKAKE(open_, high, low, close),
+            talib.CDLHIKKAKEMOD(open_, high, low, close),
+            talib.CDLHOMINGPIGEON(open_, high, low, close),
+            talib.CDLIDENTICAL3CROWS(open_, high, low, close),
+            talib.CDLINNECK(open_, high, low, close),
+            talib.CDLINVERTEDHAMMER(open_, high, low, close),
+            talib.CDLKICKING(open_, high, low, close),
+            talib.CDLKICKINGBYLENGTH(open_, high, low, close),
+            talib.CDLLADDERBOTTOM(open_, high, low, close),
+            talib.CDLLONGLEGGEDDOJI(open_, high, low, close),
+            talib.CDLLONGLINE(open_, high, low, close),
+            talib.CDLMARUBOZU(open_, high, low, close),
+            talib.CDLMATCHINGLOW(open_, high, low, close),
+            talib.CDLMATHOLD(open_, high, low, close),
+            talib.CDLMORNINGDOJISTAR(open_, high, low, close),
+            talib.CDLMORNINGSTAR(open_, high, low, close),
+            talib.CDLONNECK(open_, high, low, close),
+            talib.CDLPIERCING(open_, high, low, close),
+            talib.CDLRICKSHAWMAN(open_, high, low, close),
+            talib.CDLRISEFALL3METHODS(open_, high, low, close),
+            talib.CDLSEPARATINGLINES(open_, high, low, close),
+            talib.CDLSHOOTINGSTAR(open_, high, low, close),
+            talib.CDLSHORTLINE(open_, high, low, close),
+            talib.CDLSPINNINGTOP(open_, high, low, close),
+            talib.CDLSTALLEDPATTERN(open_, high, low, close),
+            talib.CDLSTICKSANDWICH(open_, high, low, close),
+            talib.CDLTAKURI(open_, high, low, close),
+            talib.CDLTASUKIGAP(open_, high, low, close),
+            talib.CDLTHRUSTING(open_, high, low, close),
+            talib.CDLTRISTAR(open_, high, low, close),
+            talib.CDLUNIQUE3RIVER(open_, high, low, close),
+            talib.CDLUPSIDEGAP2CROWS(open_, high, low, close),
+            talib.CDLXSIDEGAP3METHODS(open_, high, low, close)
+        ])
+
+        patterns = map(utils.anti_set_, patterns)
+        return self.multi_strategy_collider(*patterns, mode='super')
