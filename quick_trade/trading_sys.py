@@ -1177,7 +1177,7 @@ winrate: {self.winrate}%"""
             template=template,
             xaxis_rangeslider_visible=False)
         self.fig.update_xaxes(
-            title_text='T I M E', row=2, col=1, color=utils.TEXT_COLOR)
+            title_text='T I M E', row=3, col=1, color=utils.TEXT_COLOR)
         self.fig.update_yaxes(
             title_text='M O N E Y S', row=2, col=1, color=utils.TEXT_COLOR)
         self.fig.update_yaxes(

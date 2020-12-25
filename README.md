@@ -78,7 +78,7 @@ trader.backtest(commission=0.075)
 ```
 
 ## output plotly chart:
-![image](https://i.ibb.co/WzxXNY7/Unknown.png)
+![image](https://i.ibb.co/NyxbsV2/Unknown-2.png)
 
 ## output print
 
