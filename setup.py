@@ -11,7 +11,7 @@ setup(
     author='Vlad Kochetov',
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=setuptools.find_packages(),
-    version='3.8.7',
+    version='3.9.5',
     description='Trading system for stocks, forex and others',
     long_description=long_desc,
     long_description_content_type="text/markdown",
@@ -29,7 +29,7 @@ setup(
         'scikit-learn==0.23.2',
         'tensorflow==2.4.0',
     ],
-    download_url='https://github.com/VladKochetov007/quick_trade/archive/3.8.6.tar.gz',
+    download_url='https://github.com/VladKochetov007/quick_trade/archive/3.9.5.tar.gz',
     keywords=[
         'technical-analysis',
         'python3',
