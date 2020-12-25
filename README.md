@@ -6,7 +6,6 @@ P.S.: documentation now in v3.0
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/logo_with_slogan.PNG?raw=true)
 
-
 ```
 used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
@@ -78,6 +77,7 @@ trader.backtest(commission=0.075)
 ```
 
 ## output plotly chart:
+
 ![image](https://i.ibb.co/NyxbsV2/Unknown-2.png)
 
 ## output print

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
-import setuptools
 
+import setuptools
 
 with open('./README.md') as file:
     long_desc = file.read()
@@ -38,7 +38,7 @@ setup(
         'trading-bot',
         'trading',
         'binance-trading'
-              ],
+    ],
     license='cc-by-sa-4.0',
     classifiers=[
         'Intended Audience :: Financial and Insurance Industry',

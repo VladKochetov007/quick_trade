@@ -1,11 +1,11 @@
 """
 Trading project:
-- testing
-- trading
+    - testing
+    - trading
 
 """
 
-#!/usr/bin/python
+# !/usr/bin/python
 # -*- coding: utf-8 -*-
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
@@ -14,6 +14,7 @@ Trading project:
 #   add inner class with non-trading utils
 #   all talib patterns
 
+import datetime
 import itertools
 import random
 import time
@@ -28,6 +29,7 @@ import ta.others
 import ta.trend
 import ta.volatility
 import ta.volume
+import talib
 from binance.client import Client
 from plotly.graph_objs import Line
 from plotly.subplots import make_subplots
@@ -37,8 +39,6 @@ from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential, load_model
-import datetime
-import talib
 
 
 class BinanceTradingClient(Client):
@@ -1074,7 +1074,7 @@ winrate: {self.winrate}%"""
                     y=self.backtest_out_no_drop['returns'].values,
                     line=dict(color=utils.COLOR_DEPOSIT),
                     name='returns'
-                    ),
+                ),
                 row=3,
                 col=1
             )
@@ -1162,13 +1162,13 @@ winrate: {self.winrate}%"""
                    height: int = 900,
                    width: int = 1300,
                    template: str = 'plotly_dark',
-                   row_heights: list = [100, 160, 70],
+                   row_heights: list = [10, 16, 7],
                    **subplot_kwargs):
         """
         :param height: window height
         :param width: window width
         :param template: plotly template
-        :param row_heights: standard [100, 160]
+        :param row_heights: standard
         """
         self.fig = make_subplots(3, 1, row_heights=row_heights, **subplot_kwargs)
         self.fig.update_layout(

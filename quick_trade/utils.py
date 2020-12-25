@@ -1,5 +1,4 @@
 import datetime as dt
-import itertools
 import json
 import logging
 import os
@@ -35,6 +34,7 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "furas -- Stack overflow",
                           "Войтенко Николай Поликарпович (Vojtenko Nikolaj Polikarpovich) -- helped me test the "
                           "system of interaction with the binance crypto exchange with 50 dollars.",
+
                           "https://fxgears.com/index.php?threads/how-to-acquire-free-historical-tick-and-bar-data-for"
                           "-algo-trading-and-backtesting-in-2020-stocks-forex-and-crypto-currency.1229/#post-19305"
                           " -- binance get historical data method"]
@@ -54,10 +54,9 @@ COLOR_DEPOSIT: str = 'white'
 DEPO_COLOR_UP: str = 'green'
 DEPO_COLOR_DOWN: str = 'red'
 
-FILE_LOG_NAME: str = 'trading.log'
 logger = logging.getLogger()
 logger.setLevel(30)
-logging.basicConfig(level=20, filename=FILE_LOG_NAME)
+logging.basicConfig(level=20, filename='trading.log')
 
 
 class SuperTrendIndicator(object):
@@ -146,17 +145,6 @@ class SuperTrendIndicator(object):
 
         return df
 
-
-def expansion_with_shear(values, ins=EXIT) -> PREDICT_TYPE_LIST:
-    ret: PREDICT_TYPE_LIST = []
-    for value in values:
-        for column in range(4):
-            ret.append(value)
-    for i in range(3):
-        ret.insert(0, ins)
-    return ret[:-3]
-
-
 def set_(data: Any) -> SETED_TYPE_LIST:
     ret: List[Any] = list(data.copy())
     e: int
@@ -164,32 +152,6 @@ def set_(data: Any) -> SETED_TYPE_LIST:
         if i == data[e]:
             ret[e + 1] = np.nan
     return ret
-
-
-def to_4_col_df(data: Any, *columns) -> pd.DataFrame:
-    """
-    data:  |  array-like  |  data to converting
-
-    returns:
-    pd.DataFrame with 4 your columns
-
-    """
-    predict: List[List[float]] = [[] for _ in range(4)]
-    for it in range(4):
-        for i in range(it, len(data), 4):
-            predict[it].append(data[i])
-    return pd.DataFrame(predict, index=columns).T
-
-
-def inverse_4_col_df(df: pd.DataFrame, columns: List[Any]) -> pd.DataFrame:
-    df: pd.DataFrame = pd.DataFrame(df)
-    ret: np.ndarray = df.values
-    rets: List[pd.DataFrame] = []
-    for column in columns:
-        rets.append(
-            pd.DataFrame(itertools.chain.from_iterable(ret), columns=[column]))
-    return pd.concat(rets, axis=1)
-
 
 def get_IEX_minutely(ticker: str, undo_days: int) -> pd.DataFrame:
     tuples: List[Tuple[int]] = []
@@ -291,5 +253,5 @@ def ta_lib_to_returns(talib_returns: pd.Series, exit_=EXIT, *args, **kwargs) -> 
                                        0: exit_}).values)
 
 
-def ta_lib_collider_all(data, *args, **kwargs):
+def ta_lib_collider_all(data: pd.Series, *args, **kwargs) -> PREDICT_TYPE_LIST:
     return ta_lib_to_returns(data, exit_=np.nan)
