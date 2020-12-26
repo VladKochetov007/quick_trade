@@ -200,7 +200,7 @@ class Trader(object):
                  ticker: str = 'AAPL',
                  df: pd.DataFrame = pd.DataFrame(),
                  interval: str = '1d',
-                 rounding: int = 50,
+                 rounding: int = 500,
                  *args,
                  **kwargs):
         df_ = round(df, rounding)
@@ -510,13 +510,13 @@ class Trader(object):
                      *args,
                      **rsi_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
-        rsi = ta.momentum.rsi(self.df['Close'], **rsi_kwargs)
+        rsi = ta.momentum.rsi(close=self.df['Close'], **rsi_kwargs)
         flag: utils.PREDICT_TYPE = utils.EXIT
 
         for val in rsi.values:
-            if val < minimum and val is not pd.NA:
+            if val < minimum:
                 flag = utils.BUY
-            elif val > maximum and val is not pd.NA:
+            elif val > maximum:
                 flag = utils.SELL
             elif flag == utils.BUY and val < max_mid:
                 flag = utils.EXIT
@@ -562,10 +562,16 @@ class Trader(object):
         signal_ = _MACD_.macd_signal()
         macd_ = _MACD_.macd()
         histogram: pd.DataFrame = pd.DataFrame(macd_.values - signal_.values)
-        self.returns = utils.digit(histogram.diff().values)
+        for element in histogram.diff().values:
+            if element == 0:
+                self.returns.append(utils.EXIT)
+            elif element > 0:
+                self.returns.append(utils.BUY)
+            else:
+                self.returns.append(utils.SELL)
         return self.returns
 
-    def strategy_regression_model(self, plot: bool = True, *args, **kwargs):
+    def strategy_regression_model(self, plot: bool = True, *args, **kwargs): # TODO: fix
         self.returns = [utils.EXIT for i in range(self._regression_inputs - 1)]
         data_to_pred: np.ndarray = np.array(
             utils.get_window(np.array([self.df['Close'].values]).T, self._regression_inputs)
@@ -598,7 +604,7 @@ class Trader(object):
                                dataframes: typing.Iterable[pd.DataFrame],
                                inputs: int = utils.REGRESSION_INPUTS,
                                network_save_path: str = './model_regression.h5',
-                               **fit_kwargs) -> Sequential:
+                               **fit_kwargs) -> Sequential: # TODO: fix
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
         """
@@ -651,7 +657,7 @@ class Trader(object):
                             loss: str = 'mse',
                             metrics: typing.Iterable[str] = ['mse'],
                             network_save_path: str = './model_predicting.h5',
-                            **fit_kwargs) -> Tuple[Sequential, Dict[str, List[float]], Tuple[np.ndarray, np.ndarray]]:
+                            **fit_kwargs) -> Tuple[Sequential, Dict[str, List[float]], Tuple[np.ndarray, np.ndarray]]: # TODO: fix
         """
         getting trained neural network to trading.
         dataframes:  | typing.Iterable[pd.DataFrame] |   list of pandas dataframes with columns:
@@ -661,7 +667,7 @@ class Trader(object):
             'Close'
             'Volume'
         optimizer:    |        str         |   optimizer for .compile of network.
-        filter_:      |        str         |    filter to training.
+        filter_:      |        str         |    filter for training.
         filter_kwargs:|       dict         |    named arguments for the filter.
         loss:         |        str         |   loss for .compile of network.
         metrics:      |typing.Iterable[str]|   metrics for .compile of network:
@@ -719,7 +725,7 @@ class Trader(object):
                               rounding: int = 0,
                               _rounding_prediction_func=round,
                               *args,
-                              **kwargs) -> utils.PREDICT_TYPE_LIST:
+                              **kwargs) -> utils.PREDICT_TYPE_LIST: # TODO: fix
         """
         :param rounding: rounding degree for _rounding_prediction_func
         :param _rounding_prediction_func: A function that will be used to round off the neural network result.

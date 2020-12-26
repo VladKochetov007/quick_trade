@@ -194,19 +194,6 @@ def anti_set_(seted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
             flag = i
     return ret
 
-
-def digit(data) -> PREDICT_TYPE_LIST:
-    ret: PREDICT_TYPE_LIST = []
-    for element in list(data):
-        if element == 0:
-            ret.append(EXIT)
-        elif element > 0:
-            ret.append(BUY)
-        else:
-            ret.append(SELL)
-    return ret
-
-
 def get_window(values, window_length: int) -> List[Any]:
     ret: List[Any] = []
     for e, i in enumerate(values[:len(values) - window_length + 1]):
@@ -230,10 +217,6 @@ def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: b
 
 
 def min_admit(r: int) -> float:
-    """
-
-    to math.floor analogue.
-    """
     return round(float('0.' + '0' * (r - 1) + '1'), r)
 
 
