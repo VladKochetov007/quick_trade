@@ -1466,6 +1466,9 @@ winrate: {self.winrate}%"""
     def log_deposit(self, *args, **kwargs):
         self.fig.update_yaxes(row=2, col=1, type='log')
 
+    def log_returns(self, *args, **kwargs):
+        self.fig.update_yaxes(row=3, col=1, type='log')
+
     def load_model(self, path: str, *args, **kwargs):
         self.model = load_model(path)
 
