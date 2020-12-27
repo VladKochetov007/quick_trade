@@ -90,8 +90,6 @@ mean year percentage profit: 9075.656014641549%
 winrate: 50.43478260869565%
 ```
 
-
-
 ![image](https://i.ibb.co/mFLDJsX/IMG-5613.png)
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">

@@ -13,6 +13,7 @@ Trading project:
 # TODO:
 #   add inner class with non-trading utils
 #   debug neural networks
+#   add quick_trade tuner (as keras-tuner)
 
 import datetime
 import itertools
@@ -195,6 +196,7 @@ class Trader(object):
     __last_stop_loss: float
     __last_take_profit: float
     model: Sequential
+    returns_strategy: List[float]
 
     def __init__(self,
                  ticker: str = 'AAPL',
@@ -571,7 +573,7 @@ class Trader(object):
                 self.returns.append(utils.SELL)
         return self.returns
 
-    def strategy_regression_model(self, plot: bool = True, *args, **kwargs): # TODO: fix
+    def strategy_regression_model(self, plot: bool = True, *args, **kwargs):  # TODO: fix
         self.returns = [utils.EXIT for i in range(self._regression_inputs - 1)]
         data_to_pred: np.ndarray = np.array(
             utils.get_window(np.array([self.df['Close'].values]).T, self._regression_inputs)
@@ -604,7 +606,7 @@ class Trader(object):
                                dataframes: typing.Iterable[pd.DataFrame],
                                inputs: int = utils.REGRESSION_INPUTS,
                                network_save_path: str = './model_regression.h5',
-                               **fit_kwargs) -> Sequential: # TODO: fix
+                               **fit_kwargs) -> Sequential:  # TODO: fix
         """based on
         https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
         """
@@ -657,7 +659,9 @@ class Trader(object):
                             loss: str = 'mse',
                             metrics: typing.Iterable[str] = ['mse'],
                             network_save_path: str = './model_predicting.h5',
-                            **fit_kwargs) -> Tuple[Sequential, Dict[str, List[float]], Tuple[np.ndarray, np.ndarray]]: # TODO: fix
+                            **fit_kwargs) -> Tuple[Sequential,
+                                                   Dict[str, List[float]],
+                                                   Tuple[np.ndarray, np.ndarray]]:  # TODO: fix
         """
         getting trained neural network to trading.
         dataframes:  | typing.Iterable[pd.DataFrame] |   list of pandas dataframes with columns:
@@ -725,7 +729,7 @@ class Trader(object):
                               rounding: int = 0,
                               _rounding_prediction_func=round,
                               *args,
-                              **kwargs) -> utils.PREDICT_TYPE_LIST: # TODO: fix
+                              **kwargs) -> utils.PREDICT_TYPE_LIST:  # TODO: fix
         """
         :param rounding: rounding degree for _rounding_prediction_func
         :param _rounding_prediction_func: A function that will be used to round off the neural network result.
@@ -1063,9 +1067,10 @@ mean year percentage profit: {self.year_profit}%
 winrate: {self.winrate}%"""
         if print_out:
             print(self.info)
+        self.returns_strategy = list(pd.Series(self.deposit_history).diff().values)
         self.backtest_out_no_drop = pd.DataFrame(
             (self.deposit_history, self.stop_losses, self.take_profits, self.returns,
-             self.open_lot_prices, data_column, self.linear, pd.Series(self.deposit_history).diff().values),
+             self.open_lot_prices, data_column, self.linear, self.returns_strategy),
             index=[
                 f'deposit ({column})', 'stop loss', 'take profit',
                 'predictions', 'open deal/lot', column,

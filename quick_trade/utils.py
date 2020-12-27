@@ -145,6 +145,7 @@ class SuperTrendIndicator(object):
 
         return df
 
+
 def set_(data: Any) -> SETED_TYPE_LIST:
     ret: List[Any] = list(data.copy())
     e: int
@@ -152,6 +153,7 @@ def set_(data: Any) -> SETED_TYPE_LIST:
         if i == data[e]:
             ret[e + 1] = np.nan
     return ret
+
 
 def get_IEX_minutely(ticker: str, undo_days: int) -> pd.DataFrame:
     tuples: List[Tuple[int]] = []
@@ -194,6 +196,7 @@ def anti_set_(seted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
             flag = i
     return ret
 
+
 def get_window(values, window_length: int) -> List[Any]:
     ret: List[Any] = []
     for e, i in enumerate(values[:len(values) - window_length + 1]):
@@ -227,6 +230,7 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
         return 'Sell'
     elif predict == EXIT:
         return 'Exit'
+
 
 def ta_lib_to_returns(talib_returns: pd.Series, exit_=EXIT, *args, **kwargs) -> PREDICT_TYPE_LIST:
     return list(talib_returns.replace({-200: SELL,
