@@ -12,7 +12,7 @@ Trading project:
 
 # TODO:
 #   add inner class with non-trading utils
-#   all talib patterns
+#   debug neural networks
 
 import datetime
 import itertools
@@ -111,7 +111,7 @@ class BinanceTradingClient(Client):
 
     def get_data_historical(self,
                             ticker: str = 'None',
-                            start: str = '15 Dec 2020',
+                            start: str = '25 Dec 2020',
                             interval: str = '1m',
                             limit: int = 1000,
                             start_type: str = '%d %b %Y'):
@@ -200,7 +200,7 @@ class Trader(object):
                  ticker: str = 'AAPL',
                  df: pd.DataFrame = pd.DataFrame(),
                  interval: str = '1d',
-                 rounding: int = 500,
+                 rounding: int = 50,
                  *args,
                  **kwargs):
         df_ = round(df, rounding)
@@ -1091,7 +1091,7 @@ winrate: {self.winrate}%"""
                 open=self.df['Open'],
                 row=1,
                 col=1,
-                name=self.ticker)
+                name=f'{self.ticker} {self.interval}')
             self.fig.add_trace(
                 Line(
                     y=self.take_profits,
