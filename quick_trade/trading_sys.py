@@ -61,9 +61,11 @@ class BinanceTradingClient(Client):
         if '_moneys_' in kwargs:
             if quantity > kwargs['_moneys_']:
                 quantity -= utils.min_admit(kwargs['rounding_bet'])
+            quantity -= utils.min_admit(kwargs['rounding_bet'])
             quantity = round(quantity, kwargs['rounding_bet'])
-            if quantity > kwargs['_moneys_'] or (quantity % utils.min_admit(kwargs['rounding_bet']) != 0):
-                utils.logger.error(f'invalid quantity: {quantity}, moneys: {kwargs["_moneys_"]}')
+            utils.logger.info(f'quantity: {quantity}, moneys: {kwargs["_moneys_"]}, side: {side}')
+        else:
+            utils.logger.info(f'quantity: {quantity}, side: {side}')
         if side == 'Buy':
             self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
         elif side == 'Sell':
@@ -86,6 +88,7 @@ class BinanceTradingClient(Client):
                       ticker: str = 'None',
                       quantity: float = 0.0,
                       credit_leverage: float = 1.0,
+                      logging=True,
                       *args,
                       **kwargs):
         self.order_create('Buy',
@@ -94,12 +97,14 @@ class BinanceTradingClient(Client):
                           credit_leverage=credit_leverage,
                           *args,
                           **kwargs)
-        utils.logger.info('client buy')
+        if logging:
+            utils.logger.info('client buy')
 
     def new_order_sell(self,
                        ticker: str = 'None',
                        quantity: float = 0.0,
                        credit_leverage: float = 1.0,
+                       logging=True,
                        *args,
                        **kwargs):
         self.order_create('Sell',
@@ -108,7 +113,8 @@ class BinanceTradingClient(Client):
                           credit_leverage=credit_leverage,
                           *args,
                           **kwargs)
-        utils.logger.info('client sell')
+        if logging:
+            utils.logger.info('client sell')
 
     def get_data_historical(self,
                             ticker: str = 'None',
@@ -135,12 +141,12 @@ class BinanceTradingClient(Client):
     def exit_last_order(self):
         if self.ordered:
             if self.__side__ == 'Sell':
-                self.new_order_buy(self.ticker, self.quantity)
+                self.new_order_buy(self.ticker, self.quantity, logging=False)
             elif self.__side__ == 'Buy':
-                self.new_order_sell(self.ticker, self.quantity)
+                self.new_order_sell(self.ticker, self.quantity, logging=False)
             self.__side__ = 'Exit'
             self.ordered = False
-        utils.logger.info('client exit')
+            utils.logger.info('client exit')
 
     def get_balance_ticker(self, ticker: str) -> float:
         for asset in self.get_account()['balances']:
@@ -758,8 +764,8 @@ class Trader(object):
                                     line=dict(width=utils.SUB_LINES_WIDTH, color=utils.G)))
         self.stop_losses = list(st.get_supertrend())
         self.returns = list(st.get_supertrend_strategy_returns())
-        self.set_open_stop_and_take(set_stop=False)
         self.stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
+        self.set_open_stop_and_take(set_stop=False)
         return self.returns
 
     def strategy_bollinger(self,
@@ -943,6 +949,7 @@ class Trader(object):
                 flag = utils.EXIT
             returns.append(flag)
         self.returns = returns
+        self.stop_losses, self.take_profits = self.take_profits, self.stop_losses
         return self.returns
 
     def backtest(self,
@@ -1352,16 +1359,11 @@ winrate: {self.winrate}%"""
         self.__last_take_profit = self.take_profits[-1]
         if self._old_predict != predict:
             utils.logger.info(f'open lot {predict}')
-            for sig, close_ in zip(self.returns[::-1],
-                                   close[::-1]):
-                if sig != utils.EXIT:
-                    self.open_price = close_
-                    break
+            self.open_price = close[-1]
             if trading_on_client:
 
                 if predict == 'Exit':
                     self.client.exit_last_order()
-                    self.__exit_order__ = True
 
                 else:
                     _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
@@ -1369,13 +1371,11 @@ winrate: {self.winrate}%"""
                     if coin_lotsize_division:
                         _moneys_ /= ticker_price
                     if bet_for_trading_on_client is not np.inf:
-                        bet = bet_for_trading_on_client
+                        bet = bet_for_trading_on_client / ticker_price
                     else:
                         bet = _moneys_
                     if bet > _moneys_:
                         bet = _moneys_
-                    if coin_lotsize_division:
-                        bet /= ticker_price
                     self.client.exit_last_order()
 
                     self.client.order_create(predict,
@@ -1437,9 +1437,9 @@ winrate: {self.winrate}%"""
                     coin_lotsize_division=coin_lotsize_division)
 
                 index = f'{self.ticker}, {time.ctime()}'
+                utils.logger.info(f"trading prediction at {index}: {prediction}")
                 if print_out:
                     print(index, prediction)
-                utils.logger.info(f"trading prediction at {index}: {prediction}")
                 self.realtie_returns[index] = prediction
                 while True:
                     if not self.__exit_order__:
@@ -1453,16 +1453,20 @@ winrate: {self.winrate}%"""
                             prediction['currency close'] = price
                             index = f'{self.ticker}, {time.ctime()}'
                             utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
+                            if print_out:
+                                print(f"trading prediction exit in sleeping at {index}: {prediction}")
                             self.realtie_returns[index] = prediction
                             if trading_on_client:
                                 self.client.exit_last_order()
                     if not (time.time() < (__now__ + sleeping_time)):
+                        if prediction['predict'] != self._old_predict:
+                            self.__exit_order__ = False
                         self._old_predict = prediction['predict']
-                        self.__exit_order__ = False
                         __now__ += sleeping_time
                         break
 
         except Exception as e:
+            utils.logger.error('error :(')
             raise e
 
     def log_data(self, *args, **kwargs):
