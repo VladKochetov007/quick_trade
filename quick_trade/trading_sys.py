@@ -16,7 +16,6 @@ Trading project:
 #   add quick_trade tuner (as keras-tuner)
 #   connect the FTX
 
-import datetime
 import itertools
 import random
 import time
@@ -32,7 +31,6 @@ import ta.trend
 import ta.volatility
 import ta.volume
 import talib
-from binance.client import Client
 from plotly.graph_objs import Line
 from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
@@ -41,119 +39,7 @@ from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential, load_model
-
-
-class BinanceTradingClient(Client):
-    ordered: bool = False
-    __side__: str
-    quantity: float
-    ticker: str
-    order: Dict[str, typing.Any]
-
-    def order_create(self,
-                     side: str,
-                     ticker: str = 'None',
-                     quantity: float = 0.0,
-                     credit_leverage: float = 1.0,
-                     *args,
-                     **kwargs):
-        self.__side__ = side
-        self.ticker = ticker
-        if '_moneys_' in kwargs:
-            if quantity > kwargs['_moneys_']:
-                quantity -= utils.min_admit(kwargs['rounding_bet'])
-            quantity -= utils.min_admit(kwargs['rounding_bet'])
-            quantity = round(quantity, kwargs['rounding_bet'])
-            utils.logger.info(f'client: quantity: {quantity}, moneys: {kwargs["_moneys_"]}, side: {side}')
-        else:
-            utils.logger.info(f'quantity: {quantity}, side: {side}')
-        if side == 'Buy':
-            self.order = self.order_market_buy(symbol=ticker, quantity=quantity)
-        elif side == 'Sell':
-            self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
-        self.order_id = self.order['orderId']
-        self.quantity = quantity
-        self.ordered = True
-
-    def get_ticker_price(self,
-                         ticker: str) -> float:
-        return float(self.get_symbol_ticker(symbol=ticker)['price'])
-
-    @staticmethod
-    def get_data(ticker: str = 'None',
-                 interval: str = 'None',
-                 **get_kw) -> pd.DataFrame:
-        return utils.get_binance_data(ticker, interval, **get_kw)
-
-    def new_order_buy(self,
-                      ticker: str = 'None',
-                      quantity: float = 0.0,
-                      credit_leverage: float = 1.0,
-                      logging=True,
-                      *args,
-                      **kwargs):
-        self.order_create('Buy',
-                          ticker=ticker,
-                          quantity=quantity,
-                          credit_leverage=credit_leverage,
-                          *args,
-                          **kwargs)
-        if logging:
-            utils.logger.info('client buy')
-
-    def new_order_sell(self,
-                       ticker: str = 'None',
-                       quantity: float = 0.0,
-                       credit_leverage: float = 1.0,
-                       logging=True,
-                       *args,
-                       **kwargs):
-        self.order_create('Sell',
-                          ticker=ticker,
-                          quantity=quantity,
-                          credit_leverage=credit_leverage,
-                          *args,
-                          **kwargs)
-        if logging:
-            utils.logger.info('client sell')
-
-    def get_data_historical(self,
-                            ticker: str = 'None',
-                            start: str = '25 Dec 2020',
-                            interval: str = '1m',
-                            limit: int = 1000,
-                            start_type: str = '%d %b %Y'):
-        start_date = datetime.datetime.strptime(start, start_type)
-        today = datetime.datetime.now()
-
-        klines = self.get_historical_klines(ticker,
-                                            interval,
-                                            start_date.strftime("%d %b %Y %H:%M:%S"),
-                                            today.strftime("%d %b %Y %H:%M:%S"),
-                                            limit)
-        data = pd.DataFrame(klines,
-                            columns=['timestamp', 'Open', 'High', 'Low', 'Close', 'Volume', 'close_time', 'quote_av',
-                                     'trades', 'tb_base_av', 'tb_quote_av', 'ignore'])
-        data['timestamp'] = pd.to_datetime(data['timestamp'], unit='ms')
-
-        data.set_index('timestamp', inplace=True)
-        return data.astype(float)
-
-    def exit_last_order(self):
-        if self.ordered:
-            if self.__side__ == 'Sell':
-                self.new_order_buy(self.ticker, self.quantity, logging=False)
-            elif self.__side__ == 'Buy':
-                self.new_order_sell(self.ticker, self.quantity, logging=False)
-            self.__side__ = 'Exit'
-            self.ordered = False
-            utils.logger.info('client exit')
-
-    def get_balance_ticker(self, ticker: str) -> float:
-        for asset in self.get_account()['balances']:
-            if asset['asset'] == ticker:
-                utils.logger.debug(f'client balance {asset["free"]} {ticker}')
-                return float(asset['free'])
+import brokers
 
 
 class Trader(object):
@@ -163,11 +49,11 @@ class Trader(object):
     df:       |   dataframe  |  data of chart
     interval: |     str      |  interval of df.
     one of:
-    1m    30m    3h    3M
-    2m    45m    4h    6M
-    3m    1h     1d
-    5m    90m    1w
-    15m   2h     1M
+    1m    30m    3h    1M
+    2m    45m    4h    3M
+    3m    1h     1d    6M
+    5m    90m    3d
+    15m   2h     1w
 
     """
     profit_calculate_coef: float
@@ -200,7 +86,7 @@ class Trader(object):
     backtest_out: pd.DataFrame
     open_lot_prices: List[float]
     realtime_returns: Dict[str, Dict[str, typing.Union[str, float]]]
-    client: BinanceTradingClient
+    client: brokers.TradingClient
     __last_stop_loss: float
     __last_take_profit: float
     model: Sequential
@@ -244,6 +130,8 @@ class Trader(object):
             self.profit_calculate_coef = 1 / (6 * 365)
         elif interval == '1d':
             self.profit_calculate_coef = 1 / 365
+        elif interval == '3d':
+            self.profit_calculate_coef = 1 / (365 / 2)
         elif interval == '1w':
             self.profit_calculate_coef = 1 / 52
         elif interval == '1M':
@@ -1490,7 +1378,7 @@ winrate: {self.winrate}%"""
     def load_model(self, path: str, *args, **kwargs):
         self.model = load_model(path)
 
-    def set_client(self, your_client: BinanceTradingClient, *args, **kwargs):
+    def set_client(self, your_client: brokers.TradingClient, *args, **kwargs):
         """
         :param your_client: trading client
         """
