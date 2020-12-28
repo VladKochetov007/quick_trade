@@ -63,7 +63,7 @@ class BinanceTradingClient(Client):
                 quantity -= utils.min_admit(kwargs['rounding_bet'])
             quantity -= utils.min_admit(kwargs['rounding_bet'])
             quantity = round(quantity, kwargs['rounding_bet'])
-            utils.logger.info(f'quantity: {quantity}, moneys: {kwargs["_moneys_"]}, side: {side}')
+            utils.logger.info(f'client: quantity: {quantity}, moneys: {kwargs["_moneys_"]}, side: {side}')
         else:
             utils.logger.info(f'quantity: {quantity}, side: {side}')
         if side == 'Buy':
@@ -151,6 +151,7 @@ class BinanceTradingClient(Client):
     def get_balance_ticker(self, ticker: str) -> float:
         for asset in self.get_account()['balances']:
             if asset['asset'] == ticker:
+                utils.logger.debug(f'client balance {asset["free"]} {ticker}')
                 return float(asset['free'])
 
 
@@ -337,6 +338,7 @@ class Trader(object):
         for i in range(length):
             return_list.append(start + mean_diff * i)
         self.mean_diff = mean_diff
+        utils.logger.debug(f'in linear: self.mean_diff={mean_diff}')
         return np.array(return_list)
 
     def __get_stop_take(self, sig: utils.PREDICT_TYPE) -> Dict[str, float]:
@@ -370,6 +372,7 @@ class Trader(object):
                 take = self.open_price
             if self.stop_loss is not np.inf:
                 _stop_loss = self.open_price
+        utils.logger.debug(f'stop loss: {_stop_loss} ({self.stop_loss} pips), take profin: {take} ({self.take_profit} pips)')
 
         return {'stop': _stop_loss,
                 'take': take}
@@ -645,7 +648,7 @@ class Trader(object):
 
     def prepare_scaler(self,
                        dataframe: pd.DataFrame,
-                       regression_net: bool = True) -> np.ndarray:
+                       regression_net: bool = True) -> np.ndarray:  # TODO: fix
         self.scaler = MinMaxScaler(feature_range=(0, 1))
         data: pd.DataFrame
         dataset: np.ndarray
@@ -1072,6 +1075,7 @@ trades: {self.trades}
 profits: {self.profits}
 mean year percentage profit: {self.year_profit}%
 winrate: {self.winrate}%"""
+        utils.logger.info(f'trader info: {self.info}')
         if print_out:
             print(self.info)
         self.returns_strategy = list(pd.Series(self.deposit_history).diff().values)
@@ -1446,7 +1450,7 @@ winrate: {self.winrate}%"""
                         price = self.client.get_ticker_price(ticker)
                         min_ = min(self.__last_stop_loss, self.__last_take_profit)
                         max_ = max(self.__last_stop_loss, self.__last_take_profit)
-                        if (not min_ < price < max_) and self._old_predict != utils.EXIT:
+                        if (not (min_ < price < max_)) and self._old_predict != utils.EXIT:
                             self.__exit_order__ = True
                             utils.logger.info('exit lot')
                             prediction['predict'] = 'Exit'
@@ -1466,17 +1470,20 @@ winrate: {self.winrate}%"""
                         break
 
         except Exception as e:
-            utils.logger.error('error :(')
+            utils.logger.error('error :(', exc_info=True)
             raise e
 
     def log_data(self, *args, **kwargs):
         self.fig.update_yaxes(row=1, col=1, type='log')
+        utils.logger.info('trader log data')
 
     def log_deposit(self, *args, **kwargs):
         self.fig.update_yaxes(row=2, col=1, type='log')
+        utils.logger.info('trader log deposit')
 
     def log_returns(self, *args, **kwargs):
         self.fig.update_yaxes(row=3, col=1, type='log')
+        utils.logger.info('trader log returns')
 
     def load_model(self, path: str, *args, **kwargs):
         self.model = load_model(path)
@@ -1486,6 +1493,7 @@ winrate: {self.winrate}%"""
         :param your_client: trading client
         """
         self.client = your_client
+        utils.logger.info('trader set client')
 
     def convert_signal(self,
                        old: utils.PREDICT_TYPE = utils.SELL,
@@ -1497,6 +1505,7 @@ winrate: {self.winrate}%"""
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
+        utils.logger.debug(f'trader signals converted: {old} >> {new}')
         return self.returns
 
     def set_open_stop_and_take(self,
@@ -1540,6 +1549,7 @@ winrate: {self.winrate}%"""
                 self.take_profits.append(take_flag)
             if set_stop:
                 self.stop_losses.append(stop_flag)
+        utils.logger.debug(f'trader stop loss: {stop_loss}, trader take profit: {take_profit}')
 
     def set_credit_leverages(self, credit_lev: float = 0.0, *args, **kwargs):
         """
@@ -1547,6 +1557,7 @@ winrate: {self.winrate}%"""
         :param credit_lev: leverage in points
         """
         self.credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
+        utils.logger.debug(f'trader credit leverage: {credit_lev}')
 
     def _window_(self,
                  column: str,

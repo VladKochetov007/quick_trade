@@ -56,7 +56,7 @@ DEPO_COLOR_DOWN: str = 'red'
 
 logger = logging.getLogger()
 logger.setLevel(30)
-logging.basicConfig(level=20, filename='trading.log', format='%(asctime)-15s    %(message)s')
+logging.basicConfig(level=0, filename='trading.log', format='%(levelname)s::%(name)s::%(asctime)s::    %(message)s')
 
 
 class SuperTrendIndicator(object):
