@@ -372,7 +372,8 @@ class Trader(object):
                 take = self.open_price
             if self.stop_loss is not np.inf:
                 _stop_loss = self.open_price
-        utils.logger.debug(f'stop loss: {_stop_loss} ({self.stop_loss} pips), take profin: {take} ({self.take_profit} pips)')
+        utils.logger.debug(
+            f'stop loss: {_stop_loss} ({self.stop_loss} pips), take profin: {take} ({self.take_profit} pips)')
 
         return {'stop': _stop_loss,
                 'take': take}
@@ -1216,7 +1217,7 @@ winrate: {self.winrate}%"""
         """
         :param second_returns: returns of strategy
         :param first_returns: returns of strategy
-        :param mode:  mode of combining
+        :param mode:  mode of combining:
 
             example :
                 mode = 'minimalist':
@@ -1470,7 +1471,7 @@ winrate: {self.winrate}%"""
                         break
 
         except Exception as e:
-            utils.logger.error('error :(', exc_info=True)
+            utils.logger.critical('error :(', exc_info=True)
             raise e
 
     def log_data(self, *args, **kwargs):
