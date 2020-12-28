@@ -21,7 +21,7 @@ setup(
         'plotly==4.14.1',
         'pykalman==0.9.5',
         'numpy==1.19.4',
-        'pandas==1.1.5',
+        'pandas==1.2.0',
         'python-binance==0.7.5',
         'requests==2.25.1',
         'ta==0.7.0',
