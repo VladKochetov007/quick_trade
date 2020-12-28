@@ -14,6 +14,7 @@ Trading project:
 #   add inner class with non-trading utils
 #   debug neural networks
 #   add quick_trade tuner (as keras-tuner)
+#   connect the FTX
 
 import datetime
 import itertools
