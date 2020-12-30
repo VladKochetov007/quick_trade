@@ -39,7 +39,7 @@ from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential, load_model
-import brokers
+import quick_trade.brokers as brokers
 
 
 class Trader(object):
@@ -131,7 +131,7 @@ class Trader(object):
         elif interval == '1d':
             self.profit_calculate_coef = 1 / 365
         elif interval == '3d':
-            self.profit_calculate_coef = 1 / (365 / 2)
+            self.profit_calculate_coef = 1 / (365 / 3)
         elif interval == '1w':
             self.profit_calculate_coef = 1 / 52
         elif interval == '1M':
@@ -292,12 +292,12 @@ class Trader(object):
                 Line(
                     name=f'SMA{fast}',
                     y=SMA1.values,
-                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.G)), 1, 1)
+                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.GREEN)), 1, 1)
             self.fig.add_trace(
                 Line(
                     name=f'SMA{slow}',
                     y=SMA2.values,
-                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.R)), 1, 1)
+                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.RED)), 1, 1)
 
         for SMA13, SMA26 in zip(SMA1, SMA2):
             if SMA26 < SMA13:
@@ -322,7 +322,7 @@ class Trader(object):
 
         if plot:
             for SMA, Co, name in zip([SMA1, SMA2, SMA3],
-                                     [utils.G, utils.B, utils.R],
+                                     [utils.GREEN, utils.BLUE, utils.RED],
                                      [fast, mid, slow]):
                 self.fig.add_trace(
                     Line(
@@ -354,7 +354,7 @@ class Trader(object):
 
         if plot:
             for ema, Co, name in zip([ema3.values, ema21.values, ema46.values],
-                                     [utils.G, utils.B, utils.R], [slow, mid, fast]):
+                                     [utils.GREEN, utils.BLUE, utils.RED], [slow, mid, fast]):
                 self.fig.add_trace(
                     Line(
                         name=f'SMA{name}',
@@ -496,7 +496,7 @@ class Trader(object):
                 Line(
                     name='predict',
                     y=filt,
-                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.C)),
+                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.CYAN)),
                 row=1,
                 col=1)
         return self.returns, filt
@@ -651,10 +651,10 @@ class Trader(object):
         if plot:
             self.fig.add_trace(Line(y=st.get_supertrend_upper(),
                                     name='supertrend upper',
-                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.R)))
+                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.RED)))
             self.fig.add_trace(Line(y=st.get_supertrend_lower(),
                                     name='supertrend lower',
-                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.G)))
+                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.GREEN)))
         self.stop_losses = list(st.get_supertrend())
         self.returns = list(st.get_supertrend_strategy_returns())
         self.stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
@@ -773,7 +773,7 @@ class Trader(object):
 
             self.fig.add_trace(Line(y=senkou_span_a,
                                     fill=None,
-                                    line_color=utils.R,
+                                    line_color=utils.RED,
                                     ))
             self.fig.add_trace(Line(
                 y=senkou_span_b,
@@ -1001,7 +1001,7 @@ winrate: {self.winrate}%"""
             self.fig.add_trace(
                 Line(
                     y=self.take_profits,
-                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.G),
+                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.GREEN),
                     opacity=utils.STOP_TAKE_OPN_ALPHA,
                     name='take profit'),
                 row=1,
@@ -1009,7 +1009,7 @@ winrate: {self.winrate}%"""
             self.fig.add_trace(
                 Line(
                     y=self.stop_losses,
-                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.R),
+                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.RED),
                     opacity=utils.STOP_TAKE_OPN_ALPHA,
                     name='stop loss'),
                 row=1,
@@ -1017,7 +1017,7 @@ winrate: {self.winrate}%"""
             self.fig.add_trace(
                 Line(
                     y=self.open_lot_prices,
-                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.B),
+                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.BLUE),
                     opacity=utils.STOP_TAKE_OPN_ALPHA,
                     name='open lot'),
                 row=1,
@@ -1052,7 +1052,7 @@ winrate: {self.winrate}%"""
                     [preds['buyind'], preds['sellind'], preds['exitind']],
                     [preds['bprice'], preds['sprice'], preds['eprice']],
                     ['triangle-up', 'triangle-down', 'triangle-left'],
-                    [utils.G, utils.R, utils.B]
+                    [utils.GREEN, utils.RED, utils.BLUE]
             ):
                 self.fig.add_scatter(
                     mode='markers',
@@ -1353,7 +1353,7 @@ winrate: {self.winrate}%"""
                             if trading_on_client:
                                 self.client.exit_last_order()
                     if not (time.time() < (__now__ + sleeping_time)):
-                        if prediction['predict'] != self._old_predict:
+                        if utils.convert_signal_str(self.returns[-1]) != self._old_predict:
                             self.__exit_order__ = False
                         self._old_predict = prediction['predict']
                         __now__ += sleeping_time
@@ -1441,7 +1441,7 @@ winrate: {self.winrate}%"""
                 self.stop_losses.append(stop_flag)
         utils.logger.debug(f'trader stop loss: {stop_loss}, trader take profit: {take_profit}')
 
-    def set_credit_leverages(self, credit_lev: float = 0.0, *args, **kwargs):
+    def set_credit_leverages(self, credit_lev: float = 1.0, *args, **kwargs):
         """
         Sets the leverage for bets.
         :param credit_lev: leverage in points

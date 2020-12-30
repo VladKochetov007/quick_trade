@@ -28,6 +28,7 @@ setup(
         'scipy==1.5.4',
         'scikit-learn==0.23.2',
         'tensorflow==2.4.0',
+        'ftx==1.0.2',
     ],
     download_url='https://github.com/VladKochetov007/quick_trade/archive/3.9.5.tar.gz',
     keywords=[

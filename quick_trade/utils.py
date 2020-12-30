@@ -15,10 +15,10 @@ PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
 SETED_TYPE: type = Union[PREDICT_TYPE, float]
 SETED_TYPE_LIST: type = List[SETED_TYPE]
 
-R: str = '#ff0000'
-G: str = '#55ff00'
-B: str = '#0015ff'
-C: str = 'cyan'
+RED: str = '#ff0000'
+GREEN: str = '#55ff00'
+BLUE: str = '#0015ff'
+CYAN: str = 'cyan'
 REGRESSION_INPUTS: int = 100
 BUY: PREDICT_TYPE = 1
 SELL: PREDICT_TYPE = 0
@@ -56,7 +56,7 @@ DEPO_COLOR_DOWN: str = 'red'
 
 logger = logging.getLogger()
 logger.setLevel(30)
-logging.basicConfig(level=0, filename='trading.log', format='%(levelname)s::%(name)s::%(asctime)s::    %(message)s')
+logging.basicConfig(level=20, filename='trading.log', format='%(levelname)s::%(name)s::%(asctime)s::    %(message)s')
 
 
 class SuperTrendIndicator(object):
@@ -204,8 +204,8 @@ def get_window(values, window_length: int) -> List[Any]:
     return ret
 
 
-def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: bool = False):
-    url: str = f"https://api.binance.com/api/v1/klines?symbol={ticker}&interval={interval}"
+def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: bool = False, limit=500):
+    url: str = f"https://api.binance.com/api/v1/klines?symbol={ticker}&interval={interval}&limit={limit}"
     data: List[List[Any]] = json.loads(requests.get(url).text)
     df: pd.DataFrame = pd.DataFrame(data)
     df.columns = ["open_time",
