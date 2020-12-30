@@ -23,7 +23,6 @@ setup(
         'numpy==1.19.4',
         'pandas==1.1.5',
         'python-binance==0.7.5',
-        'requests==2.25.1',
         'ta==0.7.0',
         'scipy==1.5.4',
         'scikit-learn==0.23.2',
