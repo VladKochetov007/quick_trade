@@ -621,7 +621,7 @@ class Trader(object):
         return self.model, self.history, self.training_set
 
     def strategy_random_pred(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
-        self.returns = [random.randint(0, 2) for i in range(len(self.df))]
+        self.returns = [random.choice([utils.EXIT, utils.SELL, utils.BUY]) for i in range(len(self.df))]
         return self.returns
 
     def strategy_with_network(self,
@@ -1245,8 +1245,10 @@ winrate: {self.winrate}%"""
         # get prediction
         predict = self.returns[-1]
         predict = utils.convert_signal_str(predict)
-        if self.__exit_order__:
+        if self.__exit_order__ and self._old_predict == predict:
             predict = 'Exit'
+        if predict != 'Exit':
+            self.__exit_order__ = False
 
         # trading
         self.__last_stop_loss = self.stop_losses[-1]
@@ -1315,7 +1317,7 @@ winrate: {self.winrate}%"""
         :param strategy_args: arguments to -strategy.
         """
 
-        self.realtie_returns = {}
+        self.realtime_returns = {}
         self.ticker = ticker
         try:
             __now__ = time.time()
@@ -1334,13 +1336,13 @@ winrate: {self.winrate}%"""
                 utils.logger.info(f"trading prediction at {index}: {prediction}")
                 if print_out:
                     print(index, prediction)
-                self.realtie_returns[index] = prediction
+                self.realtime_returns[index] = prediction
                 while True:
                     if not self.__exit_order__:
                         price = self.client.get_ticker_price(ticker)
                         min_ = min(self.__last_stop_loss, self.__last_take_profit)
                         max_ = max(self.__last_stop_loss, self.__last_take_profit)
-                        if (not (min_ < price < max_)) and self._old_predict != utils.EXIT:
+                        if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
                             self.__exit_order__ = True
                             utils.logger.info('exit lot')
                             prediction['predict'] = 'Exit'
@@ -1349,13 +1351,11 @@ winrate: {self.winrate}%"""
                             utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
                             if print_out:
                                 print(f"trading prediction exit in sleeping at {index}: {prediction}")
-                            self.realtie_returns[index] = prediction
+                            self.realtime_returns[index] = prediction
                             if trading_on_client:
                                 self.client.exit_last_order()
                     if not (time.time() < (__now__ + sleeping_time)):
-                        if utils.convert_signal_str(self.returns[-1]) != self._old_predict:
-                            self.__exit_order__ = False
-                        self._old_predict = prediction['predict']
+                        self._old_predict = utils.convert_signal_str(self.returns[-1])
                         __now__ += sleeping_time
                         break
 
