@@ -262,7 +262,7 @@ class Trader(object):
             if self.stop_loss is not np.inf:
                 _stop_loss = self.open_price
         utils.logger.debug(
-            f'stop loss: {_stop_loss} ({self.stop_loss} pips), take profin: {take} ({self.take_profit} pips)')
+            f'stop loss: {_stop_loss} ({self.stop_loss} pips), take profit: {take} ({self.take_profit} pips)')
 
         return {'stop': _stop_loss,
                 'take': take}
@@ -823,7 +823,7 @@ class Trader(object):
                                     set_stop=False)
         return self.returns
 
-    def inverse_strategy(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
+    def inverse_strategy(self, swap_tpop_take: bool = True, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         """
         makes signals inverse:
         buy = sell.
@@ -842,7 +842,8 @@ class Trader(object):
                 flag = utils.EXIT
             returns.append(flag)
         self.returns = returns
-        self.stop_losses, self.take_profits = self.take_profits, self.stop_losses
+        if swap_tpop_take:
+            self.stop_losses, self.take_profits = self.take_profits, self.stop_losses
         return self.returns
 
     def backtest(self,
@@ -1568,7 +1569,7 @@ winrate: {self.winrate}%"""
                 ret.append(False)
         return ret
 
-    def find_all_talib_paterns(self, *args, **kwargs):
+    def find_all_talib_patterns(self, *args, **kwargs):
         open_ = self.df['Open']
         high = self.df['High']
         low = self.df['Low']
