@@ -212,7 +212,7 @@ class FTXTradingClient(TradingClient, ftx.FtxClient):
                       **kwargs):
         self.order_create('Buy',
                           ticker=ticker,
-                          quantity=quantity * self.get_ticker_price(ticker=ticker), # At the FTX exchange, when buying, the price is in currency № 2, and when selling in currency № 1.
+                          quantity=quantity * self.get_ticker_price(ticker=ticker),  # At the FTX exchange, when buying, the price is in currency № 2, and when selling in currency № 1.
                           credit_leverage=credit_leverage,
                           *args,
                           **kwargs)
