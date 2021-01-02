@@ -24,6 +24,7 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 import pandas as pd
+import quick_trade.brokers as brokers
 import ta
 import ta.momentum
 import ta.others
@@ -39,7 +40,6 @@ from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential, load_model
-import quick_trade.brokers as brokers
 
 
 class Trader(object):

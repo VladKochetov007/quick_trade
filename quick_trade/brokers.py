@@ -1,13 +1,13 @@
 import datetime
+import time
 import typing
 from typing import Dict
 
+import ftx
 import pandas as pd
+import requests
 from binance.client import Client
 from quick_trade import utils
-import ftx
-import time
-import requests
 
 
 class TradingClient(object):
@@ -212,7 +212,8 @@ class FTXTradingClient(TradingClient, ftx.FtxClient):
                       **kwargs):
         self.order_create('Buy',
                           ticker=ticker,
-                          quantity=quantity * self.get_ticker_price(ticker=ticker),  # At the FTX exchange, when buying, the price is in currency № 2, and when selling in currency № 1.
+                          quantity=quantity * self.get_ticker_price(ticker=ticker),
+                          # At the FTX exchange, when buying, the price is in currency № 2, and when selling in currency № 1.
                           credit_leverage=credit_leverage,
                           *args,
                           **kwargs)
