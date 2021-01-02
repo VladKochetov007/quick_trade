@@ -13,7 +13,6 @@ Trading project:
 # TODO:
 #   add inner class with non-trading utils
 #   debug neural networks
-#   add quick_trade tuner (as keras-tuner)
 #   connect the FTX
 
 import itertools
