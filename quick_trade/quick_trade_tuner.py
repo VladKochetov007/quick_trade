@@ -17,7 +17,7 @@ class QuickTradeTuner(object):
         self._strategies = strategies
         self.client = client
 
-    def tune(self, your_trading_class) -> dict:
+    def tune(self, your_trading_class, backtest_kwargs=dict(plot=False, print_out=False)) -> dict:
         def best():
             return defaultdict(best)
 
@@ -33,7 +33,7 @@ class QuickTradeTuner(object):
             for strategy in self._strategies:
                 trader: Trader = your_trading_class(ticker=ticker, df=df, interval=interval)
                 trader._get_attr(strategy)()
-                trader.backtest(plot=False, print_out=False)
+                trader.backtest(**backtest_kwargs)
 
                 self.result_tunes[ticker][interval][start][strategy]['winrate'] = trader.winrate
                 self.result_tunes[ticker][interval][start][strategy]['trades'] = trader.trades
@@ -55,7 +55,7 @@ class QuickTradeTuner(object):
 
         return self.result_tunes
 
-    def filter_tunes(self, sortby: str = 'percentage year profit') -> dict:
+    def filter_tunes(self, sort_by: str = 'percentage year profit') -> dict:
         filtered = {}
         for ticker, tname in zip(self.result_tunes.values(), self.result_tunes):
             for interval, iname in zip(ticker.values(), ticker):
@@ -63,4 +63,4 @@ class QuickTradeTuner(object):
                     for strategy, stratname in zip(start.values(), start):
                         filtered[
                             f'ticker: {tname}, interval: {iname}, start(period): {sname} :: {stratname}'] = strategy
-        return {k: v for k, v in sorted(filtered.items(), key=lambda x: -x[1][sortby])}
+        return {k: v for k, v in sorted(filtered.items(), key=lambda x: -x[1][sort_by])}

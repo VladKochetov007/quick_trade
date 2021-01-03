@@ -13,7 +13,6 @@ Trading project:
 # TODO:
 #   add inner class with non-trading utils
 #   debug neural networks
-#   connect the FTX
 
 import itertools
 import random
@@ -271,10 +270,12 @@ class Trader(object):
         frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
         """
         self.returns = list(np.digitize(frame_to_diff.diff(), bins=[0]))
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_buy_hold(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.BUY for _ in range(len(self.df))]
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_2_sma(self,
@@ -305,6 +306,7 @@ class Trader(object):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_3_sma(self,
@@ -337,6 +339,7 @@ class Trader(object):
             else:
                 self.returns.append(utils.EXIT)
 
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_3_ema(self,
@@ -367,6 +370,7 @@ class Trader(object):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_macd(self,
@@ -384,6 +388,7 @@ class Trader(object):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_exp_diff(self,
@@ -400,6 +405,7 @@ class Trader(object):
                     y=exp.values.T[0],
                     line=dict(width=utils.SUB_LINES_WIDTH)), 1, 1)
 
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_rsi(self,
@@ -424,6 +430,7 @@ class Trader(object):
                 flag = utils.EXIT
             self.returns.append(flag)
 
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_parabolic_SAR(self, plot: bool = True, *args, **sar_kwargs) -> utils.PREDICT_TYPE_LIST:
@@ -469,6 +476,7 @@ class Trader(object):
                 self.returns.append(utils.BUY)
             else:
                 self.returns.append(utils.SELL)
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_regression_model(self, plot: bool = True, *args, **kwargs):  # TODO: fix
@@ -498,6 +506,7 @@ class Trader(object):
                     line=dict(width=utils.SUB_LINES_WIDTH, color=utils.CYAN)),
                 row=1,
                 col=1)
+        self.set_open_stop_and_take()
         return self.returns, filt
 
     def get_network_regression(self,
@@ -621,6 +630,7 @@ class Trader(object):
 
     def strategy_random_pred(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = [random.choice([utils.EXIT, utils.SELL, utils.BUY]) for i in range(len(self.df))]
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_with_network(self,
@@ -639,6 +649,7 @@ class Trader(object):
         for e, i in enumerate(preds):
             preds[e] = _rounding_prediction_func(i[0], rounding)
         self.returns = list(preds)
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_supertrend(self, plot: bool = True, *st_args, **st_kwargs) -> utils.PREDICT_TYPE_LIST:
@@ -699,6 +710,7 @@ class Trader(object):
                 if flag == utils.BUY and close >= mid:
                     flag = utils.EXIT
             self.returns.append(flag)
+        self.set_open_stop_and_take()
         return self.returns
 
     def get_heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()) -> pd.DataFrame:
@@ -820,6 +832,7 @@ class Trader(object):
                     self.stop_losses.append(max_cloud + stop_loss_adder)
         self.set_open_stop_and_take(set_take=True,
                                     set_stop=False)
+        self.set_open_stop_and_take()
         return self.returns
 
     def inverse_strategy(self, swap_tpop_take: bool = True, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
@@ -1486,6 +1499,7 @@ winrate: {self.winrate}%"""
                 self.returns.append(flag)
             else:
                 self.returns.append(flag)
+        self.set_open_stop_and_take()
         return self.returns
 
     def find_DBLHC_DBHLC(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
@@ -1526,14 +1540,16 @@ winrate: {self.winrate}%"""
         close: List[float]
 
         for e, (high, low, open_, close) in enumerate(
-                zip(
-                    self._window_('High'), self._window_('Low'),
-                    self._window_('Open'), self._window_('Close')), 1):
+            zip(
+                self._window_('High'), self._window_('Low'),
+                self._window_('Open'), self._window_('Close')
+            ), 1):
             if high[0] == high[1]:
                 flag = utils.BUY
             elif low[0] == low[1]:
                 flag = utils.SELL
             self.returns.append(flag)
+        self.set_open_stop_and_take()
         return self.returns
 
     def find_PPR(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
@@ -1553,6 +1569,7 @@ winrate: {self.winrate}%"""
                      ) == high[1] and close[2] < close[1] and low[2] > low[0]:
                 flag = utils.SELL
             self.returns.append(flag)
+        self.set_open_stop_and_take()
         return self.returns
 
     def is_doji(self, *args, **kwargs) -> List[bool]:
@@ -1566,6 +1583,7 @@ winrate: {self.winrate}%"""
                 ret.append(True)
             else:
                 ret.append(False)
+        self.set_open_stop_and_take()
         return ret
 
     def find_all_talib_patterns(self, *args, **kwargs):
@@ -1639,4 +1657,5 @@ winrate: {self.winrate}%"""
         ])
 
         patterns = map(utils.anti_set_, patterns)
+        self.set_open_stop_and_take()
         return self.multi_strategy_collider(*patterns, mode='super')
