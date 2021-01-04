@@ -22,7 +22,7 @@ class QuickTradeTuner(object):
         :param intervals: list of intervals -> ['1m', '4h'...]
         :param starts: starts for client.get_data_historical (['2 Dec 2020', '3 Sep 1970'])
         :param strategies: list of strategies -> ['strategy_supertrend'...]
-        :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choise, Linspace, Range
+        :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choice, Linspace, Arange
         """
         self.strategies_and_kwargs: List[str] = []
         self._strategies = []
