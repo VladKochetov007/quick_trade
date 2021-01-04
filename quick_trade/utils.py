@@ -39,9 +39,8 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "https://fxgears.com/index.php?threads/how-to-acquire-free-historical-tick-and-bar-data-for"
                           "-algo-trading-and-backtesting-in-2020-stocks-forex-and-crypto-currency.1229/#post-19305"
                           " -- binance get historical data method"]
-__version__: str = "3.9.5"
+__version__: str = "4.0"
 
-BASE_TICKER: str = '^DJI'
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
 TAKE_STOP_OPN_WIDTH: float = 1.0

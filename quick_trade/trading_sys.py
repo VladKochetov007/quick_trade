@@ -1305,7 +1305,7 @@ winrate: {self.winrate}%"""
 
     def realtime_trading(self,
                          strategy,
-                         ticker: str = utils.BASE_TICKER,
+                         ticker: str = 'AAPL',
                          get_data_kwargs: Dict[str, typing.Any] = {},
                          sleeping_time: float = 60.0,
                          print_out: bool = True,
