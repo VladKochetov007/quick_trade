@@ -4,7 +4,7 @@ from typing import Iterable, Dict, Any, List
 
 import numpy as np
 from quick_trade.brokers import TradingClient
-import core
+from . import core
 
 
 class QuickTradeTuner(object):
@@ -91,7 +91,7 @@ class Choise(core.TunableValue):
         self.values = values
 
 
-class Range(core.TunableValue):
+class Arange(core.TunableValue):
     def __init__(self, min_value, max_value, step):
         self.values = np.arange(min_value, max_value + step, step)
 
