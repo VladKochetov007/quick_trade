@@ -13,6 +13,7 @@ Trading project:
 # TODO:
 #   add inner class with non-trading utils
 #   debug neural networks
+#   do quick-trade-tuner better
 
 import itertools
 import random
@@ -1540,10 +1541,10 @@ winrate: {self.winrate}%"""
         close: List[float]
 
         for e, (high, low, open_, close) in enumerate(
-            zip(
-                self._window_('High'), self._window_('Low'),
-                self._window_('Open'), self._window_('Close')
-            ), 1):
+                zip(
+                    self._window_('High'), self._window_('Low'),
+                    self._window_('Open'), self._window_('Close')
+                ), 1):
             if high[0] == high[1]:
                 flag = utils.BUY
             elif low[0] == low[1]:
