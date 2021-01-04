@@ -39,6 +39,7 @@ from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential, load_model
+from binance.exceptions import BinanceAPIException
 
 
 class Trader(object):
@@ -57,7 +58,6 @@ class Trader(object):
     """
     profit_calculate_coef: float
     returns: utils.PREDICT_TYPE_LIST = []
-    __oldsig: utils.PREDICT_TYPE
     df: pd.DataFrame
     ticker: str
     interval: str
@@ -99,7 +99,6 @@ class Trader(object):
                  *args,
                  **kwargs):
         df_ = round(df, rounding)
-        self.__oldsig = utils.EXIT
         self.df = df_.reset_index(drop=True)
         self.ticker = ticker
         self.interval = interval
@@ -1313,10 +1312,14 @@ winrate: {self.winrate}%"""
                          bet_for_trading_on_client: float = np.inf,
                          second_symbol_of_ticker: str = 'None',
                          rounding_bet: int = 4,
-                         coin_lotsize_division=True,
+                         coin_lotsize_division: bool = True,
+                         ignore_exceptions: bool = True,
+                         print_exc: bool = True,
                          *strategy_args,
                          **strategy_kwargs):
         """
+        :param print_exc: print binance exceptions in while loop
+        :param ignore_exceptions: ignore binance exceptions in while loop
         :param coin_lotsize_division: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
         :param ticker: ticker for trading.
         :param strategy: trading strategy.
@@ -1336,42 +1339,50 @@ winrate: {self.winrate}%"""
         try:
             __now__ = time.time()
             while True:
-                self.df = self.client.get_data(self.ticker, **get_data_kwargs).reset_index(drop=True)
-                strategy(*strategy_args, **strategy_kwargs)
+                try:
+                    self.df = self.client.get_data(self.ticker, **get_data_kwargs).reset_index(drop=True)
+                    strategy(*strategy_args, **strategy_kwargs)
 
-                prediction = self.get_trading_predict(
-                    trading_on_client=trading_on_client,
-                    bet_for_trading_on_client=bet_for_trading_on_client,
-                    second_symbol_of_ticker=second_symbol_of_ticker,
-                    rounding_bet=rounding_bet,
-                    coin_lotsize_division=coin_lotsize_division)
+                    prediction = self.get_trading_predict(
+                        trading_on_client=trading_on_client,
+                        bet_for_trading_on_client=bet_for_trading_on_client,
+                        second_symbol_of_ticker=second_symbol_of_ticker,
+                        rounding_bet=rounding_bet,
+                        coin_lotsize_division=coin_lotsize_division)
 
-                index = f'{self.ticker}, {time.ctime()}'
-                utils.logger.info(f"trading prediction at {index}: {prediction}")
-                if print_out:
-                    print(index, prediction)
-                self.realtime_returns[index] = prediction
-                while True:
-                    if not self.__exit_order__:
-                        price = self.client.get_ticker_price(ticker)
-                        min_ = min(self.__last_stop_loss, self.__last_take_profit)
-                        max_ = max(self.__last_stop_loss, self.__last_take_profit)
-                        if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
-                            self.__exit_order__ = True
-                            utils.logger.info('exit lot')
-                            prediction['predict'] = 'Exit'
-                            prediction['currency close'] = price
-                            index = f'{self.ticker}, {time.ctime()}'
-                            utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
-                            if print_out:
-                                print(f"trading prediction exit in sleeping at {index}: {prediction}")
-                            self.realtime_returns[index] = prediction
-                            if trading_on_client:
-                                self.client.exit_last_order()
-                    if not (time.time() < (__now__ + sleeping_time)):
-                        self._old_predict = utils.convert_signal_str(self.returns[-1])
-                        __now__ += sleeping_time
-                        break
+                    index = f'{self.ticker}, {time.ctime()}'
+                    utils.logger.info(f"trading prediction at {index}: {prediction}")
+                    if print_out:
+                        print(index, prediction)
+                    self.realtime_returns[index] = prediction
+                    while True:
+                        if not self.__exit_order__:
+                            price = self.client.get_ticker_price(ticker)
+                            min_ = min(self.__last_stop_loss, self.__last_take_profit)
+                            max_ = max(self.__last_stop_loss, self.__last_take_profit)
+                            if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
+                                self.__exit_order__ = True
+                                utils.logger.info('exit lot')
+                                prediction['predict'] = 'Exit'
+                                prediction['currency close'] = price
+                                index = f'{self.ticker}, {time.ctime()}'
+                                utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
+                                if print_out:
+                                    print(f"trading prediction exit in sleeping at {index}: {prediction}")
+                                self.realtime_returns[index] = prediction
+                                if trading_on_client:
+                                    self.client.exit_last_order()
+                        if not (time.time() < (__now__ + sleeping_time)):
+                            self._old_predict = utils.convert_signal_str(self.returns[-1])
+                            __now__ += sleeping_time
+                            break
+                except BinanceAPIException as binance_exc:
+                    if ignore_exceptions:
+                        if print_exc:
+                            print(binance_exc)
+                        continue
+                    else:
+                        raise binance_exc
 
         except Exception as e:
             utils.logger.critical('error :(', exc_info=True)
