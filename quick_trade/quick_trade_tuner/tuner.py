@@ -24,6 +24,7 @@ class QuickTradeTuner(object):
         :param strategies: list of strategies -> ['strategy_supertrend'...]
         :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choice, Linspace, Arange
         """
+        strategies_kwargs = core.transform_all_tunable_values(strategies_kwargs)
         self.strategies_and_kwargs: List[str] = []
         self._strategies = []
         self._frames_data: tuple = tuple(itertools.product(tickers, intervals, starts))
