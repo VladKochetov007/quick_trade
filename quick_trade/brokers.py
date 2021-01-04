@@ -51,8 +51,6 @@ class BinanceTradingClient(Client, TradingClient):
                      credit_leverage: float = 1.0,
                      *args,
                      **kwargs):
-        self.__side__ = side
-        self.ticker = ticker
         if '_moneys_' in kwargs:
             if quantity > kwargs['_moneys_']:
                 quantity -= utils.min_admit(kwargs['rounding_bet'])
@@ -67,6 +65,8 @@ class BinanceTradingClient(Client, TradingClient):
             self.order = self.order_market_sell(symbol=ticker, quantity=quantity)
         self.order_id = self.order['orderId']
         self.quantity = quantity
+        self.__side__ = side
+        self.ticker = ticker
         self.ordered = True
 
     def get_ticker_price(self,
