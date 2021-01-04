@@ -7,3 +7,4 @@ dist
 quick_trade.egg-info
 *.json
 *.pyi
+/quick_trade/quick_trade_tuner/__pycache__
