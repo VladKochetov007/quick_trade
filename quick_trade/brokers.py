@@ -171,8 +171,6 @@ class FTXTradingClient(TradingClient, ftx.FtxClient):
                      credit_leverage: float = 1.0,
                      *args,
                      **kwargs):
-        self.__side__ = side
-        self.ticker = ticker
         if '_moneys_' in kwargs:
             if quantity > kwargs['_moneys_']:
                 quantity -= utils.min_admit(kwargs['rounding_bet'])
@@ -186,6 +184,8 @@ class FTXTradingClient(TradingClient, ftx.FtxClient):
         elif side == 'Sell':
             self.order = self.place_order(market=ticker, type='market', price=None, side='sell', size=quantity)
         self.quantity = quantity
+        self.__side__ = side
+        self.ticker = ticker
         self.ordered = True
 
     def get_ticker_price(self, ticker: str = None, *args, **kwargs):
