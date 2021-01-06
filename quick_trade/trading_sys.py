@@ -64,7 +64,6 @@ class Trader(object):
     __exit_order__: bool = False
     _old_predict: str = 'Exit'
     _regression_inputs: int
-    mean_diff: float
     stop_loss: float
     take_profit: float
     open_price: float
@@ -158,7 +157,7 @@ class Trader(object):
                       iters: int = 5,
                       plot: bool = True,
                       *args,
-                      **kwargs) -> pd.DataFrame:
+                      **kwargs) -> pd.Series:
         filtered: np.ndarray
         k_filter: KalmanFilter = KalmanFilter()
         df: pd.Series
@@ -172,14 +171,14 @@ class Trader(object):
                     name='kalman filter',
                     y=filtered.T[0],
                     line=dict(width=utils.SUB_LINES_WIDTH)), 1, 1)
-        return pd.DataFrame(filtered)
+        return pd.Series(filtered.T[0])
 
     def scipy_filter(self,
                      df: pd.Series,
                      window_length: int = 101,
                      polyorder: int = 3,
                      plot: bool = True,
-                     **scipy_savgol_filter_kwargs) -> pd.DataFrame:
+                     **scipy_savgol_filter_kwargs) -> pd.Series:
         filtered = signal.savgol_filter(
             df,
             window_length=window_length,
@@ -191,7 +190,7 @@ class Trader(object):
                     name='savgol filter',
                     y=filtered,
                     line=dict(width=utils.SUB_LINES_WIDTH)), 1, 1)
-        return pd.DataFrame(filtered)
+        return pd.Series(filtered)
 
     def bull_power(self, periods: int) -> np.ndarray:
         EMA = ta.trend.ema_indicator(self.df['Close'], periods)
@@ -224,7 +223,6 @@ class Trader(object):
         i: int
         for i in range(length):
             return_list.append(start + mean_diff * i)
-        self.mean_diff = mean_diff
         utils.logger.debug(f'in linear: self.mean_diff={mean_diff}')
         return np.array(return_list)
 
@@ -970,8 +968,8 @@ class Trader(object):
         self.linear = self.get_linear(self.deposit_history)
         lin_calc_df = pd.DataFrame(self.linear)
         mean_diff = float(lin_calc_df.diff().mean())
-        self.year_profit = mean_diff / self.profit_calculate_coef + money_start
-        self.year_profit = ((self.year_profit - money_start) / money_start) * 100
+        self.year_profit = mean_diff / self.profit_calculate_coef
+        self.year_profit = (self.year_profit / money_start) * 100
         self.winrate = (self.profits / self.trades) * 100
         self.info = f"""losses: {self.losses}
 trades: {self.trades}
