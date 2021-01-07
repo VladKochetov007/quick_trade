@@ -43,7 +43,7 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
                           "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests --"
                           "IEX token"]
-__version__: str = "4.0"
+__version__: str = "4.1"
 
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
