@@ -26,7 +26,8 @@ Algo-trading system with python.
 ## customize your strategy!
 
 ```
-import quick_trade.quick_trade.trading_sys as qtr
+import quick_trade.trading_sys as qtr
+from quick_trade import brokers
 import yfinance as yf
 
 class My_trader(qtr.Trader):
@@ -42,7 +43,7 @@ class My_trader(qtr.Trader):
 
 a = My_trader('MSFT', df=yf.download('MSFT', start='2019-01-01'))
 a.set_pyplot()
-a.set_client(qtr.BinanceTradingClient())
+a.set_client(brokers.BinanceTradingClient())
 a.strategy_sell_and_hold()
 a.backtest()
 ```
