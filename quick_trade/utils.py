@@ -38,7 +38,11 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
 
                           "https://fxgears.com/index.php?threads/how-to-acquire-free-historical-tick-and-bar-data-for"
                           "-algo-trading-and-backtesting-in-2020-stocks-forex-and-crypto-currency.1229/#post-19305"
-                          " -- binance get historical data method"]
+                          " -- binance get historical data method",
+                          "https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/ and "
+                          "https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
+                          "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests --"
+                          "IEX token"]
 __version__: str = "4.0"
 
 SCATTER_SIZE: float = 12.0

@@ -14,11 +14,13 @@ def transform_tunable_param(param_and_value: Dict[str, Any]):
     else:
         return [param_and_value]
 
+
 def transform_tunable_params(strategies_kwargs: List[Dict[str, Any]]):
     list_params = []
     for param in strategies_kwargs:
         list_params.extend(transform_tunable_param(param))
     return list_params
+
 
 def transform_all_tunable_values(strategies_kwargs: Dict[str, List[Dict[str, Any]]]):
     for strategy_name, strategy in zip(strategies_kwargs.keys(),
