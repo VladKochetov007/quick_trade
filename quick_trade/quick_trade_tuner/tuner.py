@@ -5,6 +5,7 @@ from typing import Iterable, Dict, Any, List
 import numpy as np
 from quick_trade.brokers import TradingClient
 from . import core
+from quick_trade.utils import logger
 
 
 class QuickTradeTuner(object):
@@ -73,15 +74,22 @@ class QuickTradeTuner(object):
 
         return self.result_tunes
 
-    def filter_tunes(self, sort_by: str = 'percentage year profit') -> dict:
+    def sort_tunes(self, sort_by: str = 'percentage year profit', print_exc=True) -> dict:
         filtered = {}
-        for ticker, tname in zip(self.result_tunes.values(), self.result_tunes):
-            for interval, iname in zip(ticker.values(), ticker):
-                for start, sname in zip(interval.values(), interval):
-                    for strategy, stratname in zip(start.values(), start):
-                        filtered[
-                            f'ticker: {tname}, interval: {iname}, start(period): {sname} :: {stratname}'] = strategy
-        return {k: v for k, v in sorted(filtered.items(), key=lambda x: -x[1][sort_by])}
+        try:
+            for ticker, tname in zip(self.result_tunes.values(), self.result_tunes):
+                for interval, iname in zip(ticker.values(), ticker):
+                    for start, sname in zip(interval.values(), interval):
+                        for strategy, stratname in zip(start.values(), start):
+                            filtered[
+                                f'ticker: {tname}, interval: {iname}, start(period): {sname} :: {stratname}'] = strategy
+        except Exception as e:
+            if print_exc:
+                print(e)
+            logger.error('error in tuner', exc_info=True)
+        finally:
+            logger.info('tunes are sorted')
+            return {k: v for k, v in sorted(filtered.items(), key=lambda x: -x[1][sort_by])}
 
 
 class Choise(core.TunableValue):

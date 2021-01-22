@@ -14,6 +14,7 @@ Trading project:
 #   add inner class with non-trading utils
 #   debug neural networks
 #   add ftx error ignore
+#   add stop loss adder
 
 import itertools
 import random
@@ -48,12 +49,6 @@ class Trader(object):
     ticker:   |     str      |  ticker/symbol of chart
     df:       |   dataframe  |  data of chart
     interval: |     str      |  interval of df.
-    one of:
-    1m    30m    3h    1M
-    2m    45m    4h    3M
-    3m    1h     1d    6M
-    5m    90m    3d
-    15m   2h     1w
 
     """
     profit_calculate_coef: float
@@ -125,6 +120,8 @@ class Trader(object):
             self.profit_calculate_coef = 1 / (8 * 365)
         elif interval == '4h':
             self.profit_calculate_coef = 1 / (6 * 365)
+        elif interval == '12h':
+            self.profit_calculate_coef = 1 / (2 * 365)
         elif interval == '1d':
             self.profit_calculate_coef = 1 / 365
         elif interval == '3d':
@@ -204,27 +201,6 @@ class Trader(object):
         ema2 = ta.trend.ema_indicator(ema, periods)
         ema3 = ta.trend.ema_indicator(ema2, periods)
         return pd.Series(3 * ema.values - 3 * ema2.values + ema3.values)
-
-    def get_linear(self, dataset) -> np.ndarray:
-        """
-        linear data. mean + (mean diff * n)
-        """
-        mean_diff: float
-        data: pd.DataFrame = pd.DataFrame(dataset)
-
-        mean: float = float(data.mean())
-        mean_diff = float(data.diff().mean())
-        start: float = mean - (mean_diff * (len(data) / 2))
-        end: float = start + (mean - start) * 2
-
-        length: int = len(data)
-        return_list: List[float] = []
-        mean_diff = (end - start) / length
-        i: int
-        for i in range(length):
-            return_list.append(start + mean_diff * i)
-        utils.logger.debug(f'in linear: self.mean_diff={mean_diff}')
-        return np.array(return_list)
 
     def __get_stop_take(self, sig: utils.PREDICT_TYPE) -> Dict[str, float]:
         """
@@ -921,7 +897,6 @@ class Trader(object):
                 if bet > deposit:
                     bet = deposit
                 open_price = price
-                bet *= credit_lev
                 deposit -= bet * (commission / 100)
                 if bet > deposit:
                     bet = deposit
@@ -934,8 +909,6 @@ class Trader(object):
                 no_order = False
                 exit_take_stop = False
 
-            if not e:
-                diff = 0.0
             if min(stop_loss, take_profit) < price < max(stop_loss, take_profit):
                 diff = data_column[e] - data_column[e - 1]
             else:
@@ -960,12 +933,12 @@ class Trader(object):
             elif sig == utils.EXIT:
                 diff = 0.0
             if not no_order:
-                deposit += bet * diff / open_price
+                deposit += bet * credit_lev * diff / open_price
             no_order = exit_take_stop
             self.deposit_history.append(deposit)
             oldsig = sig
 
-        self.linear = self.get_linear(self.deposit_history)
+        self.linear = utils.get_linear(self.deposit_history)
         lin_calc_df = pd.DataFrame(self.linear)
         mean_diff = float(lin_calc_df.diff().mean())
         self.year_profit = mean_diff / self.profit_calculate_coef
@@ -1079,6 +1052,7 @@ winrate: {self.winrate}%"""
                         opacity=utils.SCATTER_ALPHA))
             if show:
                 self.fig.show()
+
         return self.backtest_out
 
     def set_pyplot(self,

@@ -246,3 +246,24 @@ def ta_lib_to_returns(talib_returns: pd.Series, exit_=EXIT, *args, **kwargs) -> 
 
 def ta_lib_collider_all(data: pd.Series, *args, **kwargs) -> PREDICT_TYPE_LIST:
     return ta_lib_to_returns(data, exit_=np.nan)
+
+def get_linear(dataset) -> np.ndarray:
+    """
+    linear data. mean + (mean diff * n)
+    """
+    mean_diff: float
+    data: pd.DataFrame = pd.DataFrame(dataset)
+
+    mean: float = float(data.mean())
+    mean_diff = float(data.diff().mean())
+    start: float = mean - (mean_diff * (len(data) / 2))
+    end: float = start + (mean - start) * 2
+
+    length: int = len(data)
+    return_list: List[float] = []
+    mean_diff = (end - start) / length
+    i: int
+    for i in range(length):
+        return_list.append(start + mean_diff * i)
+    logger.debug(f'in linear: self.mean_diff={mean_diff}')
+    return np.array(return_list)
