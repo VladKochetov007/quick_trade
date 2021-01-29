@@ -1287,9 +1287,11 @@ winrate: {self.winrate}%"""
                          coin_lotsize_division: bool = True,
                          ignore_exceptions: bool = True,
                          print_exc: bool = True,
+                         wait_SL_TP_checking: float = 5,
                          *strategy_args,
                          **strategy_kwargs):
         """
+        :param wait_SL_TP_checking: sleeping time after stop-loaa and take-profit checking (seconds)
         :param print_exc: print binance exceptions in while loop
         :param ignore_exceptions: ignore binance exceptions in while loop
         :param coin_lotsize_division: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
@@ -1344,6 +1346,7 @@ winrate: {self.winrate}%"""
                                 self.realtime_returns[index] = prediction
                                 if trading_on_client:
                                     self.client.exit_last_order()
+                        time.sleep(wait_SL_TP_checking)
                         if not (time.time() < (__now__ + sleeping_time)):
                             self._old_predict = utils.convert_signal_str(self.returns[-1])
                             __now__ += sleeping_time
