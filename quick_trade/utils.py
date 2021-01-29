@@ -247,6 +247,7 @@ def ta_lib_to_returns(talib_returns: pd.Series, exit_=EXIT, *args, **kwargs) -> 
 def ta_lib_collider_all(data: pd.Series, *args, **kwargs) -> PREDICT_TYPE_LIST:
     return ta_lib_to_returns(data, exit_=np.nan)
 
+
 def get_linear(dataset) -> np.ndarray:
     """
     linear data. mean + (mean diff * n)
