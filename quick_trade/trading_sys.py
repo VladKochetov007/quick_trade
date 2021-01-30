@@ -15,6 +15,7 @@ Trading project:
 #   debug neural networks
 #   add ftx error ignore
 #   add stop loss adder
+#   add tradingview realtime signals
 
 import itertools
 import random
