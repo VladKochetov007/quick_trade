@@ -26,7 +26,7 @@ setup(
         'ta==0.7.0',
         'scipy',
         'scikit-learn',
-        'tensorflow==2.4.0',
+        'tensorflow==2.4.1',
         'ftx',
     ],
     download_url='https://github.com/VladKochetov007/quick_trade/archive/4.1.tar.gz',
