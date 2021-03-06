@@ -16,6 +16,7 @@ Trading project:
 #   add ftx error ignore
 #   add stop loss adder
 #   add tradingview realtime signals
+#   CCXT!!!
 
 import itertools
 import random
@@ -33,6 +34,7 @@ import ta.trend
 import ta.volatility
 import ta.volume
 import talib
+from binance.exceptions import BinanceAPIException
 from plotly.graph_objs import Line
 from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
@@ -41,7 +43,6 @@ from scipy import signal
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.layers import Dropout, Dense, LSTM
 from tensorflow.keras.models import Sequential, load_model
-from binance.exceptions import BinanceAPIException
 
 
 class Trader(object):
@@ -1283,7 +1284,7 @@ winrate: {self.winrate}%"""
                          print_out: bool = True,
                          trading_on_client: bool = False,
                          bet_for_trading_on_client: float = np.inf,
-                         second_symbol_of_ticker: str = 'None',
+                         quote: str = 'None',
                          rounding_bet: int = 4,
                          coin_lotsize_division: bool = True,
                          ignore_exceptions: bool = True,
@@ -1303,7 +1304,7 @@ winrate: {self.winrate}%"""
         :param print_out: printing.
         :param trading_on_client: trading on client
         :param bet_for_trading_on_client: trading bet, standard: all deposit
-        :param second_symbol_of_ticker: USDUAH -> UAH
+        :param quote: USDUAH -> UAH
         :param rounding_bet: maximum accuracy for trading
         :param strategy_kwargs: named arguments to -strategy.
         :param strategy_args: arguments to -strategy.
@@ -1321,7 +1322,7 @@ winrate: {self.winrate}%"""
                     prediction = self.get_trading_predict(
                         trading_on_client=trading_on_client,
                         bet_for_trading_on_client=bet_for_trading_on_client,
-                        second_symbol_of_ticker=second_symbol_of_ticker,
+                        second_symbol_of_ticker=quote,
                         rounding_bet=rounding_bet,
                         coin_lotsize_division=coin_lotsize_division)
 

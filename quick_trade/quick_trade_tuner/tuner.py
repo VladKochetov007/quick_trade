@@ -4,8 +4,9 @@ from typing import Iterable, Dict, Any, List
 
 import numpy as np
 from quick_trade.brokers import TradingClient
-from . import core
 from quick_trade.utils import logger
+
+from . import core
 
 
 class QuickTradeTuner(object):

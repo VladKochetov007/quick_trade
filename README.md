@@ -94,6 +94,7 @@ winrate: 50.43478260869565%
 ![image](https://i.ibb.co/mFLDJsX/IMG-5613.png)
 
 # Help the project
+
 BTC: ```15TC5wjgxTj5btKr75DBswsdafUqXmkAjp```
 
 ETH ERC20: ```0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740```
@@ -101,6 +102,7 @@ ETH ERC20: ```0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740```
 USDT TRC20: ```TCb9nWdApXmrfQuPcChdP9FpBXjXuFDFNX```
 
 # License
+
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
 <img alt="Creative Commons License" 
 src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />

@@ -60,9 +60,9 @@ class BinanceTradingClient(Client, TradingClient):
         else:
             utils.logger.info(f'quantity: {quantity}, side: {side}')
         if side == 'Buy':
-            self.order = self.order_market_buy(symbol=ticker, quantity=quantity*credit_leverage)
+            self.order = self.order_market_buy(symbol=ticker, quantity=quantity * credit_leverage)
         elif side == 'Sell':
-            self.order = self.order_market_sell(symbol=ticker, quantity=quantity*credit_leverage)
+            self.order = self.order_market_sell(symbol=ticker, quantity=quantity * credit_leverage)
         self.order_id = self.order['orderId']
         self.quantity = quantity
         self.__side__ = side

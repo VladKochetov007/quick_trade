@@ -1,4 +1,3 @@
-cc-by-sa-4.0
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
 <img alt="Creative Commons License" style="border-width:0"
