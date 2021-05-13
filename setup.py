@@ -22,7 +22,7 @@ setup(
         'pykalman',
         'numpy',
         'pandas',
-        'python-binance==0.7.5',
+        'python-binance==1.0.9',
         'ta==0.7.0',
         'scipy',
         'scikit-learn',
