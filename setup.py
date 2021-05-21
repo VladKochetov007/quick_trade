@@ -27,7 +27,7 @@ setup(
         'scipy',
         'scikit-learn',
         'tensorflow==2.4.1',
-        'ftx',
+        'ccxt',
     ],
     download_url='https://github.com/VladKochetov007/quick_trade/archive/4.1.tar.gz',
     keywords=[
@@ -37,7 +37,8 @@ setup(
         'binance',
         'trading-bot',
         'trading',
-        'binance-trading'
+        'binance-trading',
+        'ccxt'
     ],
     license='cc-by-sa-4.0',
     classifiers=[

@@ -3,7 +3,7 @@ from collections import defaultdict
 from typing import Iterable, Dict, Any, List
 
 import numpy as np
-from quick_trade.brokers import TradingClient
+from quick_trade.brokers import BaseTradingClient
 from quick_trade.utils import logger
 
 from . import core
@@ -11,7 +11,7 @@ from . import core
 
 class QuickTradeTuner(object):
     def __init__(self,
-                 client: TradingClient,
+                 client: BaseTradingClient,
                  tickers: Iterable,
                  intervals: Iterable,
                  starts: Iterable,

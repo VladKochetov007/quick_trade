@@ -16,7 +16,6 @@ Trading project:
 #   add ftx error ignore
 #   add stop loss adder
 #   add tradingview realtime signals
-#   CCXT!!!
 
 import itertools
 import random
@@ -34,7 +33,6 @@ import ta.trend
 import ta.volatility
 import ta.volume
 import talib
-from binance.exceptions import BinanceAPIException
 from plotly.graph_objs import Line
 from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
@@ -86,9 +84,10 @@ class Trader(object):
     __last_take_profit: float
     model: Sequential
     returns_strategy: List[float]
+    sec_interval: int
 
     def __init__(self,
-                 ticker: str = 'AAPL',
+                 ticker: str = 'BTC/USDT',
                  df: pd.DataFrame = pd.DataFrame(),
                  interval: str = '1d',
                  rounding: int = 50,
@@ -100,42 +99,61 @@ class Trader(object):
         self.interval = interval
         if interval == '1m':
             self.profit_calculate_coef = 1 / (60 * 24 * 365)
+            self.sec_interval = 60
         elif interval == '2m':
             self.profit_calculate_coef = 1 / (30 * 24 * 365)
+            self.sec_interval = 120
         elif interval == '3m':
             self.profit_calculate_coef = 1 / (20 * 24 * 365)
+            self.sec_interval = 180
         elif interval == '5m':
             self.profit_calculate_coef = 1 / (12 * 24 * 365)
+            self.sec_interval = 300
         elif interval == '15m':
             self.profit_calculate_coef = 1 / (4 * 24 * 365)
+            self.sec_interval = 15 * 60
         elif interval == '30m':
             self.profit_calculate_coef = 1 / (2 * 24 * 365)
+            self.sec_interval = 60 * 30
         elif interval == '45m':
             self.profit_calculate_coef = 1 / (32 * 365)
+            self.sec_interval = 60 * 45
         elif interval == '1h':
             self.profit_calculate_coef = 1 / (24 * 365)
+            self.sec_interval = 60 * 60
         elif interval == '90m':
             self.profit_calculate_coef = 1 / (18 * 365)
+            self.sec_interval = 60 * 90
         elif interval == '2h':
             self.profit_calculate_coef = 1 / (12 * 365)
+            self.sec_interval = 60 * 60 * 2
         elif interval == '3h':
             self.profit_calculate_coef = 1 / (8 * 365)
+            self.sec_interval = 60 * 60 * 3
         elif interval == '4h':
             self.profit_calculate_coef = 1 / (6 * 365)
+            self.sec_interval = 60 * 60 * 4
         elif interval == '12h':
             self.profit_calculate_coef = 1 / (2 * 365)
+            self.sec_interval = 60 * 60 * 12
         elif interval == '1d':
             self.profit_calculate_coef = 1 / 365
+            self.sec_interval = 60 * 60 * 24
         elif interval == '3d':
             self.profit_calculate_coef = 1 / (365 / 3)
+            self.sec_interval = 86400 * 3
         elif interval == '1w':
             self.profit_calculate_coef = 1 / 52
+            self.sec_interval = 86400 * 7
         elif interval == '1M':
             self.profit_calculate_coef = 1 / 12
+            self.sec_interval = 86400 * 30
         elif interval == '3M':
             self.profit_calculate_coef = 1 / 4
+            self.sec_interval = 86400 * 90
         elif interval == '6M':
             self.profit_calculate_coef = 1 / 2
+            self.sec_interval = 86400 * 180
         else:
             raise ValueError(f'I N C O R R E C T   I N T E R V A L; {interval}')
         self._regression_inputs = utils.REGRESSION_INPUTS
@@ -1206,18 +1224,12 @@ winrate: {self.winrate}%"""
     def get_trading_predict(self,
                             trading_on_client: bool = False,
                             bet_for_trading_on_client: float = np.inf,
-                            second_symbol_of_ticker: str = 'None',
-                            rounding_bet: int = 4,
-                            coin_lotsize_division=True,
-                            *args,
-                            **kwargs
+                            coin_lotsize_division=True
                             ) -> Dict[str, typing.Union[str, float]]:
         """
         predict and trading.
 
         :param coin_lotsize_division: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
-        :param rounding_bet: maximum permissible accuracy with your api. Bigger than 0
-        :param second_symbol_of_ticker: BTCUSDT -> USDT, for calculate bet. As deposit
         :param trading_on_client: trading on real client
         :param bet_for_trading_on_client: standard: all deposit
         :return: dict with prediction
@@ -1249,7 +1261,7 @@ winrate: {self.winrate}%"""
                     self.client.exit_last_order()
 
                 else:
-                    _moneys_ = self.client.get_balance_ticker(second_symbol_of_ticker)
+                    _moneys_ = self.client.get_balance_ticker(self.ticker.split('/')[1])
                     ticker_price = self.client.get_ticker_price(self.ticker)
                     if coin_lotsize_division:
                         _moneys_ /= ticker_price
@@ -1263,10 +1275,7 @@ winrate: {self.winrate}%"""
 
                     self.client.order_create(predict,
                                              self.ticker,
-                                             bet,
-                                             credit_leverage=credit_leverage,
-                                             rounding_bet=rounding_bet,
-                                             _moneys_=_moneys_)
+                                             bet)
                     self.__exit_order__ = False
         return {
             'predict': predict,
@@ -1278,34 +1287,26 @@ winrate: {self.winrate}%"""
 
     def realtime_trading(self,
                          strategy,
-                         ticker: str = 'AAPL',
-                         get_data_kwargs: Dict[str, typing.Any] = {},
-                         sleeping_time: float = 60.0,
+                         ticker: str = 'BTC/USDT',
                          print_out: bool = True,
                          trading_on_client: bool = False,
                          bet_for_trading_on_client: float = np.inf,
-                         quote: str = 'None',
-                         rounding_bet: int = 4,
                          coin_lotsize_division: bool = True,
                          ignore_exceptions: bool = True,
                          print_exc: bool = True,
-                         wait_SL_TP_checking: float = 5,
+                         wait_sl_tp_checking: float = 5,
                          *strategy_args,
                          **strategy_kwargs):
         """
-        :param wait_SL_TP_checking: sleeping time after stop-loaa and take-profit checking (seconds)
-        :param print_exc: print binance exceptions in while loop
+        :param wait_sl_tp_checking: sleeping time after stop-loaa and take-profit checking (seconds)
+        :param print_exc: print  exceptions in while loop
         :param ignore_exceptions: ignore binance exceptions in while loop
         :param coin_lotsize_division: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
         :param ticker: ticker for trading.
         :param strategy: trading strategy.
-        :param get_data_kwargs: named arguments to self.client.get_data WITHOUT TICKER.
-        :param sleeping_time: sleeping time / timeframe in seconds.
         :param print_out: printing.
         :param trading_on_client: trading on client
         :param bet_for_trading_on_client: trading bet, standard: all deposit
-        :param quote: USDUAH -> UAH
-        :param rounding_bet: maximum accuracy for trading
         :param strategy_kwargs: named arguments to -strategy.
         :param strategy_args: arguments to -strategy.
         """
@@ -1316,14 +1317,12 @@ winrate: {self.winrate}%"""
             __now__ = time.time()
             while True:
                 try:
-                    self.df = self.client.get_data(self.ticker, **get_data_kwargs).reset_index(drop=True)
+                    self.df = self.client.get_data_historical(ticker=self.ticker, limit=1000, interval=self.interval)
                     strategy(*strategy_args, **strategy_kwargs)
 
                     prediction = self.get_trading_predict(
                         trading_on_client=trading_on_client,
                         bet_for_trading_on_client=bet_for_trading_on_client,
-                        second_symbol_of_ticker=quote,
-                        rounding_bet=rounding_bet,
                         coin_lotsize_division=coin_lotsize_division)
 
                     index = f'{self.ticker}, {time.ctime()}'
@@ -1348,19 +1347,19 @@ winrate: {self.winrate}%"""
                                 self.realtime_returns[index] = prediction
                                 if trading_on_client:
                                     self.client.exit_last_order()
-                        time.sleep(wait_SL_TP_checking)
-                        if not (time.time() < (__now__ + sleeping_time)):
+                        time.sleep(wait_sl_tp_checking)
+                        if not (time.time() < (__now__ + self.sec_interval)):
                             self._old_predict = utils.convert_signal_str(self.returns[-1])
-                            __now__ += sleeping_time
+                            __now__ += self.sec_interval
                             break
-                except BinanceAPIException as binance_exc:
+                except Exception as exc:
                     if ignore_exceptions:
                         if print_exc:
-                            print(binance_exc)
+                            print(exc)
                         utils.logger.error('error :(', exc_info=True)
                         continue
                     else:
-                        raise binance_exc
+                        raise exc
 
         except Exception as e:
             utils.logger.critical('error :(', exc_info=True)
