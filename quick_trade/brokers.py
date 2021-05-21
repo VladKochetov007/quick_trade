@@ -11,6 +11,7 @@ class TradingClient(object):
     quantity: float
     ticker: str
     order: Dict[str, typing.Any]
+
     def __init__(self, client: ccxt.Exchange):
         self.client = client
 
@@ -60,8 +61,8 @@ class TradingClient(object):
                             limit: int = 1000):
 
         frames = self.client.fetch_ohlcv(ticker,
-                                  interval,
-                                  limit=limit)
+                                         interval,
+                                         limit=limit)
         data = pd.DataFrame(frames,
                             columns=['time', 'Open', 'High', 'Low', 'Close', 'Volume'])
         return data.astype(float)
@@ -69,9 +70,11 @@ class TradingClient(object):
     def exit_last_order(self):
         if self.ordered:
             if self.__side__ == 'Sell':
-                self.new_order_buy(self.ticker, self.get_balance_ticker(self.ticker.split('/')[0]), logging=False) # buy for all balance
+                self.new_order_buy(self.ticker, self.get_balance_ticker(self.ticker.split('/')[0]),
+                                   logging=False)  # buy for all balance
             elif self.__side__ == 'Buy':
-                self.new_order_sell(self.ticker, self.get_balance_ticker(self.ticker.split('/')[1]), logging=False) # sell all
+                self.new_order_sell(self.ticker, self.get_balance_ticker(self.ticker.split('/')[1]),
+                                    logging=False)  # sell all
             self.__side__ = 'Exit'
             self.ordered = False
             utils.logger.info('client exit')
