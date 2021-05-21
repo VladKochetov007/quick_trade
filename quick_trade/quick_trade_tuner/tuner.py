@@ -3,7 +3,7 @@ from collections import defaultdict
 from typing import Iterable, Dict, Any, List
 
 import numpy as np
-from quick_trade.brokers import BaseTradingClient
+from quick_trade.brokers import TradingClient
 from quick_trade.utils import logger
 
 from . import core
@@ -11,7 +11,7 @@ from . import core
 
 class QuickTradeTuner(object):
     def __init__(self,
-                 client: BaseTradingClient,
+                 client: TradingClient,
                  tickers: Iterable,
                  intervals: Iterable,
                  starts: Iterable,
@@ -21,7 +21,7 @@ class QuickTradeTuner(object):
         :param client: trading client
         :param tickers: ticker
         :param intervals: list of intervals -> ['1m', '4h'...]
-        :param starts: starts for client.get_data_historical (['2 Dec 2020', '3 Sep 1970'])
+        :param starts: starts(period)(limit) for client.get_data_historical (['2 Dec 2020', '3 Sep 1970'])
         :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choice, Linspace, Arange as argument's value
         """
         strategies_kwargs = core.transform_all_tunable_values(strategies_kwargs)
@@ -46,7 +46,7 @@ class QuickTradeTuner(object):
 
             df = self.client.get_data_historical(ticker=ticker,
                                                  interval=interval,
-                                                 start=start)
+                                                 limit=start)
             for strategy, kwargs in self._strategies:
                 trader = your_trading_class(ticker=ticker, df=df, interval=interval)
                 trader._get_attr(strategy)(**kwargs)

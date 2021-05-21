@@ -10,7 +10,7 @@ setup(
     author='Vlad Kochetov',
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=setuptools.find_packages(),
-    version='4.1.1',
+    version='4.2',
     description='Trading system for stocks, forex and others',
     long_description=long_desc,
     long_description_content_type="text/markdown",
@@ -28,7 +28,7 @@ setup(
         'tensorflow==2.4.1',
         'ccxt',
     ],
-    download_url='https://github.com/VladKochetov007/quick_trade/archive/4.1.tar.gz',
+    download_url='https://github.com/VladKochetov007/quick_trade/archive/4.2.tar.gz',
     keywords=[
         'technical-analysis',
         'python3',
