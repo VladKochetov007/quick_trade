@@ -182,8 +182,8 @@ params = {
 tuner = QuickTradeTuner(
         TradingClient(ccxt.binance()),
         ['BTCUSDT', 'OMGUSDT', 'XRPUSDT'],
-        ['15m'],
-        ['1 Aug 2020'],
+        ['15m', '5m],
+        [1000, 700],
         params
     )
 
