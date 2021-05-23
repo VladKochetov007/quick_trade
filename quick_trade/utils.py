@@ -2,12 +2,11 @@ import datetime as dt
 import json
 import logging
 import os
-from typing import Any, List, Tuple, Union
+from typing import Any, List, Union
 
 import numpy as np
 import pandas as pd
 import requests
-from iexfinance.stocks import get_historical_intraday
 from ta.volatility import AverageTrueRange
 
 PREDICT_TYPE: type = int
@@ -43,7 +42,7 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
                           "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests --"
                           "IEX token"]
-__version__: str = "4.2"
+__version__: str = "4.2.2"
 
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
@@ -159,34 +158,6 @@ def set_(data: Any) -> SETED_TYPE_LIST:
     return ret
 
 
-def get_IEX_minutely(ticker: str, undo_days: int) -> pd.DataFrame:
-    tuples: List[Tuple[int]] = []
-    returns: pd.DataFrame
-    end: dt.datetime = dt.datetime.today()
-    date_list: List[dt.datetime] = [end - dt.timedelta(days=d) for d in range(undo_days)]
-    for i in range(len(date_list)):
-        ret = str(np.array(date_list[::-1])[i])[:10]
-        ret = tuple(map(int, ret.split('-')))
-        tuples.append(ret)
-
-    dataframes: List[pd.DataFrame] = []
-    df_: pd.DataFrame
-    dat: dt.datetime
-    for date_ in tuples:
-        dat = dt.datetime(*date_)
-        df_ = get_historical_intraday(ticker, date=dat, output_format='pandas')
-        dataframes.append(df_)
-    returns = pd.concat(dataframes, axis=0)
-    returns = pd.DataFrame({
-        'High': returns['high'].values,
-        'Low': returns['low'].values,
-        'Open': returns['open'].values,
-        'Close': returns['close'].values,
-        'Volume': returns['volume'].values
-    })
-    return returns.dropna()
-
-
 def anti_set_(seted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
     seted = np.nan_to_num(seted, nan=_nan_num)
     ret: List[Any] = [seted[0]]
@@ -221,10 +192,6 @@ def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: b
     if date_index:
         df.index = [dt.datetime.fromtimestamp(i / 1000) for i in df.close_time]
     return df
-
-
-def min_admit(r: int) -> float:
-    return round(float('0.' + '0' * (r - 1) + '1'), r)
 
 
 def convert_signal_str(predict: PREDICT_TYPE) -> str:

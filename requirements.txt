@@ -1,11 +1,7 @@
-iexfinance
 plotly
 pykalman
 numpy
 pandas
-python-binance==0.7.5
 ta==0.7.0
 scipy
-scikit-learn
-tensorflow==2.5.0
-ftx
+ccxt
