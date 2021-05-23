@@ -12,12 +12,9 @@ Trading project:
 
 # TODO:
 #   add inner class with non-trading utils
-#   debug neural networks
-#   add ftx error ignore
 #   add stop loss adder
 #   add tradingview realtime signals
 
-import itertools
 import random
 import time
 import typing
@@ -38,9 +35,6 @@ from plotly.subplots import make_subplots
 from pykalman import KalmanFilter
 from quick_trade import utils
 from scipy import signal
-from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.layers import Dropout, Dense, LSTM
-from tensorflow.keras.models import Sequential, load_model
 
 
 class Trader(object):
@@ -62,7 +56,6 @@ class Trader(object):
     stop_loss: float
     take_profit: float
     open_price: float
-    scaler: MinMaxScaler
     history: Dict[str, List[float]]
     training_set: Tuple[np.ndarray, np.ndarray]
     trades: int = 0
@@ -82,7 +75,6 @@ class Trader(object):
     client: brokers.TradingClient
     __last_stop_loss: float
     __last_take_profit: float
-    model: Sequential
     returns_strategy: List[float]
     sec_interval: int
 
@@ -473,176 +465,8 @@ class Trader(object):
         self.set_open_stop_and_take()
         return self.returns
 
-    def strategy_regression_model(self, plot: bool = True, *args, **kwargs):  # TODO: fix
-        self.returns = [utils.EXIT for i in range(self._regression_inputs - 1)]
-        data_to_pred: np.ndarray = np.array(
-            utils.get_window(np.array([self.df['Close'].values]).T, self._regression_inputs)
-        ).T
-
-        for e, data in enumerate(data_to_pred):
-            data_to_pred[e] = self.scaler.fit_transform(data)
-        data_to_pred = data_to_pred.T
-
-        predictions = itertools.chain.from_iterable(
-            self.model.predict(data_to_pred))
-        predictions = pd.Series(predictions)
-        frame = predictions
-        predictions = self.strategy_diff(predictions)
-        frame = self.scaler.inverse_transform(frame.values.T).T
-        self.returns = [*self.returns, *predictions]
-        nans = itertools.chain.from_iterable([(np.nan,) * self._regression_inputs])
-        filt = (*nans, *frame.T[0])
-        if plot:
-            self.fig.add_trace(
-                Line(
-                    name='predict',
-                    y=filt,
-                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.CYAN)),
-                row=1,
-                col=1)
-        self.set_open_stop_and_take()
-        return self.returns, filt
-
-    def get_network_regression(self,
-                               dataframes: typing.Iterable[pd.DataFrame],
-                               inputs: int = utils.REGRESSION_INPUTS,
-                               network_save_path: str = './model_regression.h5',
-                               **fit_kwargs) -> Sequential:  # TODO: fix
-        """based on
-        https://medium.com/@randerson112358/stock-price-prediction-using-python-machine-learning-e82a039ac2bb
-        """
-
-        self.model = Sequential()
-        self.model.add(
-            LSTM(units=50, return_sequences=True, input_shape=(inputs, 1)))
-        self.model.add(LSTM(units=50, return_sequences=False))
-        self.model.add(Dense(units=25))
-        self.model.add(Dense(units=1))
-        self.model.compile(optimizer='adam', loss='mean_squared_error')
-
-        self.scaler = MinMaxScaler(feature_range=(0, 1))
-
-        scaled_data: np.ndarray
-        for df in dataframes:
-            scaled_data = self.prepare_scaler(df)
-            train_data = scaled_data[0:len(scaled_data), :]
-            x_train = []
-            y_train = []
-            for i in range(inputs, len(train_data)):
-                x_train.append(train_data[i - inputs:i, 0])
-                y_train.append(train_data[i, 0])
-            x_train, y_train = np.array(x_train), np.array(y_train)
-            x_train = np.reshape(x_train,
-                                 (x_train.shape[0], x_train.shape[1], 1))
-            self.model.fit(x_train, y_train, **fit_kwargs)
-        self.model.save(network_save_path)
-        return self.model
-
-    def prepare_scaler(self,
-                       dataframe: pd.DataFrame,
-                       regression_net: bool = True) -> np.ndarray:  # TODO: fix
-        self.scaler = MinMaxScaler(feature_range=(0, 1))
-        data: pd.DataFrame
-        dataset: np.ndarray
-        if regression_net:
-            data = dataframe.filter(['Close'])
-            dataset = data.values
-        else:
-            dataset = dataframe.values
-        scaled_data: np.ndarray = self.scaler.fit_transform(dataset)
-        return scaled_data
-
-    def get_trained_network(self,
-                            dataframes: typing.Iterable[pd.DataFrame],
-                            filter_: str = 'kalman_filter',
-                            filter_kwargs: Dict[str, typing.Any] = {},
-                            optimizer: str = 'adam',
-                            loss: str = 'mse',
-                            metrics: typing.Iterable[str] = ['mse'],
-                            network_save_path: str = './model_predicting.h5',
-                            **fit_kwargs) -> Tuple[Sequential,
-                                                   Dict[str, List[float]],
-                                                   Tuple[np.ndarray, np.ndarray]]:  # TODO: fix
-        """
-        getting trained neural network to trading.
-        dataframes:  | typing.Iterable[pd.DataFrame] |   list of pandas dataframes with columns:
-            'High'
-            'Low'
-            'Open'
-            'Close'
-            'Volume'
-        optimizer:    |        str         |   optimizer for .compile of network.
-        filter_:      |        str         |    filter for training.
-        filter_kwargs:|       dict         |    named arguments for the filter.
-        loss:         |        str         |   loss for .compile of network.
-        metrics:      |typing.Iterable[str]|   metrics for .compile of network:
-            standard: ['acc']
-        fit_kwargs:   |  *named arguments* |   arguments to .fit of network.
-        returns:
-            (tensorflow model,
-            history of training,
-            (input training data, output train data))
-        """
-
-        list_input: List[pd.DataFrame] = []
-        list_output: List[int] = []
-        flag: pd.DataFrame = self.df
-
-        df: pd.DataFrame
-        filter_kwargs['plot'] = False
-        for df in dataframes:
-            self.df = df
-            all_ta = ta.add_all_ta_features(df, 'Open', 'High', 'Low', 'Close',
-                                            'Volume', True)
-            output1 = self.strategy_diff(
-                self._get_attr(filter_)(**filter_kwargs))
-
-            for output in output1:
-                list_output.append(output[0])
-            list_input.append(
-                pd.DataFrame(
-                    self.prepare_scaler(
-                        pd.DataFrame(all_ta), regression_net=False)))
-        self.df = flag
-        del flag
-        input_df: pd.DataFrame = pd.concat(list_input, axis=0).dropna(1)
-
-        input_train_array: np.ndarray = input_df.values
-        output_train_array: np.ndarray = np.array([list_output]).T
-
-        self.model = Sequential()
-        self.model.add(
-            Dense(20, input_dim=len(input_train_array[0]), activation='tanh'))
-        self.model.add(Dropout(0.3))
-        self.model.add(Dense(1, 'sigmoid'))
-        self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
-
-        self.history = self.model.fit(input_train_array, output_train_array, **fit_kwargs)
-        self.training_set = (input_train_array, output_train_array)
-        self.model.save(network_save_path)
-        return self.model, self.history, self.training_set
-
     def strategy_random_pred(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = [random.choice([utils.EXIT, utils.SELL, utils.BUY]) for i in range(len(self.df))]
-        self.set_open_stop_and_take()
-        return self.returns
-
-    def strategy_with_network(self,
-                              rounding: int = 0,
-                              _rounding_prediction_func=round,
-                              *args,
-                              **kwargs) -> utils.PREDICT_TYPE_LIST:  # TODO: fix
-        """
-        :param rounding: rounding degree for _rounding_prediction_func
-        :param _rounding_prediction_func: A function that will be used to round off the neural network result.
-        """
-        scaler: MinMaxScaler = MinMaxScaler(feature_range=(0, 1))
-        all_ta: np.ndarray = ta.add_all_ta_features(self.df, "Open", 'High', 'Low',
-                                                    'Close', "Volume", True).values
-        preds: np.ndarray = self.model.predict(scaler.fit_transform(all_ta))
-        for e, i in enumerate(preds):
-            preds[e] = _rounding_prediction_func(i[0], rounding)
-        self.returns = list(preds)
         self.set_open_stop_and_take()
         return self.returns
 
@@ -713,7 +537,7 @@ class Trader(object):
         :return: heikin ashi
         """
         if 'Close' not in df.columns:
-            df: pd.DataFrame = self.df
+            df: pd.DataFrame = self.df.copy()
         df['HA_Close'] = (df['Open'] + df['High'] + df['Low'] + df['Close']) / 4
         df['HA_Open'] = (df['Open'].shift(1) + df['Open'].shift(1)) / 2
         df.iloc[0, df.columns.get_loc("HA_Open")] = (df.iloc[0]['Open'] + df.iloc[0]['Close']) / 2
@@ -917,7 +741,7 @@ class Trader(object):
                 if bet > deposit:
                     bet = deposit
                 open_price = price
-                deposit -= bet * (commission / 100)
+                deposit -= bet * (commission / 100) * credit_lev
                 if bet > deposit:
                     bet = deposit
                 self.trades += 1
@@ -1376,9 +1200,6 @@ winrate: {self.winrate}%"""
     def log_returns(self, *args, **kwargs):
         self.fig.update_yaxes(row=3, col=1, type='log')
         utils.logger.info('trader log returns')
-
-    def load_model(self, path: str, *args, **kwargs):
-        self.model = load_model(path)
 
     def set_client(self, your_client: brokers.TradingClient, *args, **kwargs):
         """

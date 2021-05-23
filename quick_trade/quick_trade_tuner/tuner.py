@@ -22,7 +22,8 @@ class QuickTradeTuner(object):
         :param tickers: ticker
         :param intervals: list of intervals -> ['1m', '4h'...]
         :param starts: starts(period)(limit) for client.get_data_historical (['2 Dec 2020', '3 Sep 1970'])
-        :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choice, Linspace, Arange as argument's value
+        :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choice, Linspace, Arange as argument's value and recourse it
+
         """
         strategies_kwargs = core.transform_all_tunable_values(strategies_kwargs)
         strategies = list(strategies_kwargs.keys())
