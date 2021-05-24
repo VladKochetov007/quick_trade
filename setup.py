@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-import setuptools
 from distutils.core import setup
+
+import setuptools
 
 with open('./README.md') as file:
     long_desc = file.read()

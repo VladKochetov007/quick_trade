@@ -47,6 +47,7 @@ a.backtest()
 ```
 
 ## find the best strategy!
+
 ```
 import quick_trade.trading_sys as qtr
 import ta.trend
@@ -203,8 +204,6 @@ or
 ```
 $ pip3 install quick-trade
 ```
-
-
 
 ## output plotly chart:
 

@@ -12,7 +12,6 @@ Trading project:
 
 # TODO:
 #   add inner class with non-trading utils
-#   add stop loss adder
 #   add tradingview realtime signals
 
 import random
@@ -147,12 +146,12 @@ class Trader(object):
             self.profit_calculate_coef = 1 / 2
             self.sec_interval = 86400 * 180
         else:
-            raise ValueError(f'I N C O R R E C T   I N T E R V A L; {interval}')
+            raise ValueError(f'incorrect interval; {interval}')
         self._regression_inputs = utils.REGRESSION_INPUTS
         self.__exit_order__ = False
 
     def __repr__(self):
-        return 'trader'
+        return f'{self.ticker} {self.interval} trader'
 
     def _get_attr(self, attr: str):
         return getattr(self, attr)
@@ -250,6 +249,36 @@ class Trader(object):
 
         return {'stop': _stop_loss,
                 'take': take}
+
+    def sl_tp_adder(self, add_stop_loss: float = 0, add_take_profit: float = 0) -> Tuple[List[float], List[float]]:
+        """
+
+        :param add_stop_loss: add stop loss points
+        :param add_take_profit: add take profit points
+        :return: (stop losses, take profits)
+        """
+        stop_losses = []
+        take_profits = []
+        for stop_loss_price, take_profit_price, price, sig in zip(self.stop_losses,
+                                                                  self.take_profits,
+                                                                  self.df['Close'].values,
+                                                                  self.returns):
+            add_sl = (price / 10_000) * add_stop_loss
+            add_tp = (price / 10_000) * add_take_profit
+
+            if sig == utils.BUY:
+                stop_losses.append(stop_loss_price - add_sl)
+                take_profits.append(take_profit_price + add_tp)
+            elif sig == utils.SELL:
+                stop_losses.append(stop_loss_price + add_sl)
+                take_profits.append(take_profit_price - add_tp)
+            else:
+                stop_losses.append(stop_loss_price)
+                take_profits.append(take_profit_price)
+
+        self.stop_losses = stop_losses
+        self.take_profits = take_profits
+        return self.stop_losses, self.take_profits
 
     def strategy_diff(self, frame_to_diff: pd.Series, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         """
@@ -854,8 +883,8 @@ winrate: {self.winrate}%"""
                 Line(
                     y=self.deposit_history,
                     line=dict(color=utils.COLOR_DEPOSIT),
-                    name=f'D E P O S I T  (S T A R T: ${money_start})'), 2, 1)
-            self.fig.add_trace(Line(y=self.linear, name='L I N E A R'), 2, 1)
+                    name=f'deposit (start: ${money_start})'), 2, 1)
+            self.fig.add_trace(Line(y=self.linear, name='linear'), 2, 1)
             preds: Dict[str, List[typing.Union[int, float]]] = {'sellind': [],
                                                                 'exitind': [],
                                                                 'buyind': [],
@@ -904,8 +933,11 @@ winrate: {self.winrate}%"""
                    width: int = 1300,
                    template: str = 'plotly_dark',
                    row_heights: list = [10, 16, 7],
+                   quick_trade_logo: bool = True,
                    **subplot_kwargs):
         """
+
+        :param quick_trade_logo: use quick trade logo as background
         :param height: window height
         :param width: window width
         :param template: plotly template
@@ -1008,7 +1040,7 @@ winrate: {self.winrate}%"""
         elif mode == 'super':
             self.returns = self.__collide_super(first_returns, second_returns)
         else:
-            raise ValueError('I N C O R R E C T   M O D E')
+            raise ValueError('incorrect mode')
         return self.returns
 
     @staticmethod
@@ -1119,9 +1151,11 @@ winrate: {self.winrate}%"""
                          ignore_exceptions: bool = True,
                          print_exc: bool = True,
                          wait_sl_tp_checking: float = 5,
+                         limit: int=1000,
                          *strategy_args,
                          **strategy_kwargs):
         """
+        :param limit: client.get_data_historical's limit argument
         :param wait_sl_tp_checking: sleeping time after stop-loaa and take-profit checking (seconds)
         :param print_exc: print  exceptions in while loop
         :param ignore_exceptions: ignore binance exceptions in while loop
@@ -1137,57 +1171,52 @@ winrate: {self.winrate}%"""
 
         self.realtime_returns = {}
         self.ticker = ticker
-        try:
-            __now__ = time.time()
-            while True:
-                try:
-                    self.df = self.client.get_data_historical(ticker=self.ticker, limit=1000, interval=self.interval)
-                    strategy(*strategy_args, **strategy_kwargs)
+        __now__ = time.time()
+        while True:
+            try:
+                self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
+                strategy(*strategy_args, **strategy_kwargs)
 
-                    prediction = self.get_trading_predict(
-                        trading_on_client=trading_on_client,
-                        bet_for_trading_on_client=bet_for_trading_on_client,
-                        coin_lotsize_division=coin_lotsize_division)
+                prediction = self.get_trading_predict(
+                    trading_on_client=trading_on_client,
+                    bet_for_trading_on_client=bet_for_trading_on_client,
+                    coin_lotsize_division=coin_lotsize_division)
 
-                    index = f'{self.ticker}, {time.ctime()}'
-                    utils.logger.info(f"trading prediction at {index}: {prediction}")
-                    if print_out:
-                        print(index, prediction)
-                    self.realtime_returns[index] = prediction
-                    while True:
-                        if not self.__exit_order__:
-                            price = self.client.get_ticker_price(ticker)
-                            min_ = min(self.__last_stop_loss, self.__last_take_profit)
-                            max_ = max(self.__last_stop_loss, self.__last_take_profit)
-                            if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
-                                self.__exit_order__ = True
-                                utils.logger.info('exit lot')
-                                prediction['predict'] = 'Exit'
-                                prediction['currency close'] = price
-                                index = f'{self.ticker}, {time.ctime()}'
-                                utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
-                                if print_out:
-                                    print(f"trading prediction exit in sleeping at {index}: {prediction}")
-                                self.realtime_returns[index] = prediction
-                                if trading_on_client:
-                                    self.client.exit_last_order()
-                        time.sleep(wait_sl_tp_checking)
-                        if not (time.time() < (__now__ + self.sec_interval)):
-                            self._old_predict = utils.convert_signal_str(self.returns[-1])
-                            __now__ += self.sec_interval
-                            break
-                except Exception as exc:
-                    if ignore_exceptions:
-                        if print_exc:
-                            print(exc)
-                        utils.logger.error('error :(', exc_info=True)
-                        continue
-                    else:
-                        raise exc
-
-        except Exception as e:
-            utils.logger.critical('error :(', exc_info=True)
-            raise e
+                index = f'{self.ticker}, {time.ctime()}'
+                utils.logger.info(f"trading prediction at {index}: {prediction}")
+                if print_out:
+                    print(index, prediction)
+                self.realtime_returns[index] = prediction
+                while True:
+                    if not self.__exit_order__:
+                        price = self.client.get_ticker_price(ticker)
+                        min_ = min(self.__last_stop_loss, self.__last_take_profit)
+                        max_ = max(self.__last_stop_loss, self.__last_take_profit)
+                        if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
+                            self.__exit_order__ = True
+                            utils.logger.info('exit lot')
+                            prediction['predict'] = 'Exit'
+                            prediction['currency close'] = price
+                            index = f'{self.ticker}, {time.ctime()}'
+                            utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
+                            if print_out:
+                                print(f"trading prediction exit in sleeping at {index}: {prediction}")
+                            self.realtime_returns[index] = prediction
+                            if trading_on_client:
+                                self.client.exit_last_order()
+                    time.sleep(wait_sl_tp_checking)
+                    if not (time.time() < (__now__ + self.sec_interval)):
+                        self._old_predict = utils.convert_signal_str(self.returns[-1])
+                        __now__ += self.sec_interval
+                        break
+            except Exception as exc:
+                if ignore_exceptions:
+                    if print_exc:
+                        print(exc)
+                    utils.logger.error('error :(', exc_info=True)
+                    continue
+                else:
+                    raise exc
 
     def log_data(self, *args, **kwargs):
         self.fig.update_yaxes(row=1, col=1, type='log')
