@@ -734,11 +734,14 @@ class Trader(object):
         seted: List[typing.Any]
         diff: float
         lin_calc_df: pd.DataFrame
-        price: float
+        high: float
+        low: float
         credit_lev: float
 
         start_bet: float = bet
         data_column: pd.Series = self.df[column]
+        data_high: pd.Series = self.df['High']
+        data_low: pd.Series = self.df['Low']
         self.deposit_history = [deposit]
         seted_ = utils.set_(self.returns)
         self.trades = 0
@@ -755,12 +758,15 @@ class Trader(object):
                 stop_loss,
                 take_profit,
                 seted,
-                credit_lev) in enumerate(zip(self.returns[:-1],
-                                             self.stop_losses[:-1],
-                                             self.take_profits[:-1],
-                                             seted_[:-1],
-                                             self.credit_leverages[:-1]), 1):
-            price = data_column[e]
+                credit_lev,
+                high,
+                low) in enumerate(zip(self.returns[:-1],
+                                      self.stop_losses[:-1],
+                                      self.take_profits[:-1],
+                                      seted_[:-1],
+                                      self.credit_leverages[:-1],
+                                      data_high[:-1],
+                                      data_low[:-1]), 1):
 
             if seted is not np.nan:
                 if oldsig != utils.EXIT:
@@ -769,11 +775,12 @@ class Trader(object):
                     commission = start_commission
                 if bet > deposit:
                     bet = deposit
-                open_price = price
+                open_price = data_column[e]
                 deposit -= bet * (commission / 100) * credit_lev
                 if bet > deposit:
                     bet = deposit
-                self.trades += 1
+                if sig != utils.EXIT:
+                    self.trades += 1
                 if deposit > moneys_open_bet:
                     self.profits += 1
                 elif deposit < moneys_open_bet:
@@ -782,20 +789,20 @@ class Trader(object):
                 no_order = False
                 exit_take_stop = False
 
-            if min(stop_loss, take_profit) < price < max(stop_loss, take_profit):
+            if min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit):
                 diff = data_column[e] - data_column[e - 1]
             else:
                 exit_take_stop = True
-                if sig == utils.BUY and price >= take_profit:
+                if sig == utils.BUY and high >= take_profit:
                     diff = take_profit - data_column[e - 1]
 
-                elif sig == utils.BUY and price <= stop_loss:
+                elif sig == utils.BUY and low <= stop_loss:
                     diff = stop_loss - data_column[e - 1]
 
-                elif sig == utils.SELL and price >= stop_loss:
+                elif sig == utils.SELL and high >= stop_loss:
                     diff = stop_loss - data_column[e - 1]
 
-                elif sig == utils.SELL and price <= take_profit:
+                elif sig == utils.SELL and low <= take_profit:
                     diff = take_profit - data_column[e - 1]
 
                 else:
