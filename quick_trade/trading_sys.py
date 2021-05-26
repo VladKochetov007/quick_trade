@@ -13,11 +13,12 @@ Trading project:
 # TODO:
 #   add inner class with non-trading utils
 #   add tradingview realtime signals
+#   numpy
 
 import random
 import time
 import typing
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any
 
 import numpy as np
 import pandas as pd
@@ -74,18 +75,16 @@ class Trader(object):
     client: brokers.TradingClient
     __last_stop_loss: float
     __last_take_profit: float
-    returns_strategy: List[float]
+    returns_strategy_diff: List[float]
     sec_interval: int
 
     def __init__(self,
                  ticker: str = 'BTC/USDT',
                  df: pd.DataFrame = pd.DataFrame(),
                  interval: str = '1d',
-                 rounding: int = 50,
                  *args,
                  **kwargs):
-        df_ = round(df, rounding)
-        self.df = df_.reset_index(drop=True)
+        self.df = df.reset_index(drop=True)
         self.ticker = ticker
         self.interval = interval
         if interval == '1m':
@@ -731,7 +730,7 @@ class Trader(object):
         no_order: bool
         stop_loss: float
         take_profit: float
-        seted: List[typing.Any]
+        seted: List[Any]
         diff: float
         lin_calc_df: pd.DataFrame
         high: float
@@ -779,12 +778,6 @@ class Trader(object):
                 deposit -= bet * (commission / 100) * credit_lev
                 if bet > deposit:
                     bet = deposit
-                if sig != utils.EXIT:
-                    self.trades += 1
-                if deposit > moneys_open_bet:
-                    self.profits += 1
-                elif deposit < moneys_open_bet:
-                    self.losses += 1
                 moneys_open_bet = deposit
                 no_order = False
                 exit_take_stop = False
@@ -817,13 +810,23 @@ class Trader(object):
             no_order = exit_take_stop
             self.deposit_history.append(deposit)
             oldsig = sig
+            if seted is not np.nan:
+                if sig != utils.EXIT:
+                    self.trades += 1
+                    if deposit > moneys_open_bet:
+                        self.profits += 1
+                    elif deposit < moneys_open_bet:
+                        self.losses += 1
 
         self.linear = utils.get_linear(self.deposit_history)
         lin_calc_df = pd.DataFrame(self.linear)
         mean_diff = float(lin_calc_df.diff().mean())
         self.year_profit = mean_diff / self.profit_calculate_coef
         self.year_profit = (self.year_profit / money_start) * 100
-        self.winrate = (self.profits / self.trades) * 100
+        if self.trades != 0:
+            self.winrate = (self.profits / self.trades) * 100
+        else:
+            self.winrate = 0
         self.info = f"""losses: {self.losses}
 trades: {self.trades}
 profits: {self.profits}
@@ -832,10 +835,11 @@ winrate: {self.winrate}%"""
         utils.logger.info(f'trader info: {self.info}')
         if print_out:
             print(self.info)
-        self.returns_strategy = list(pd.Series(self.deposit_history).diff().values)
+        self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
+        self.returns_strategy_diff[0] = 0
         self.backtest_out_no_drop = pd.DataFrame(
             (self.deposit_history, self.stop_losses, self.take_profits, self.returns,
-             self.open_lot_prices, data_column, self.linear, self.returns_strategy),
+             self.open_lot_prices, data_column, self.linear, self.returns_strategy_diff),
             index=[
                 f'deposit ({column})', 'stop loss', 'take profit',
                 'predictions', 'open deal/lot', column,
@@ -898,7 +902,7 @@ winrate: {self.winrate}%"""
                                                                 'bprice': [],
                                                                 'sprice': [],
                                                                 'eprice': []}
-            for e, i in enumerate(utils.set_(self.returns)):
+            for e, i in enumerate(seted_, 0):
                 if i == utils.SELL:
                     preds['sellind'].append(e)
                     preds['sprice'].append(loc[e])
@@ -933,6 +937,90 @@ winrate: {self.winrate}%"""
             if show:
                 self.fig.show()
 
+        return self.backtest_out
+
+    def multi_backtest(self,
+                       tickers: List[str],
+                       strategy_name: str = 'strategy_macd',
+                       strategy_kwargs: Dict[str, Any] = {},
+                       deposit: float = 10_000.0,
+                       bet: float = np.inf,
+                       commission: float = 0.0,
+                       plot: bool = True,
+                       print_out: bool = True,
+                       column: str = 'Close',
+                       show: bool = True,
+                       limit: int = 1000) -> pd.DataFrame:
+        winrates: List[float] = []
+        percentage_profits: List[float] = []
+        losses: List[int] = []
+        trades: List[int] = []
+        profits: List[int] = []
+        depo: List[List[float]] = []
+
+        for ticker in tickers:
+            df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
+            new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
+            new_trader.set_client(your_client=self.client)
+            new_trader.set_pyplot()
+            new_trader._get_attr(strategy_name)(**strategy_kwargs)
+            new_trader.backtest(deposit=deposit/len(tickers),
+                                bet=bet,
+                                commission=commission,
+                                plot=False,
+                                print_out=False,
+                                column=column,
+                                show=False)
+            winrates.append(new_trader.winrate)
+            percentage_profits.append(new_trader.year_profit)
+            losses.append(new_trader.losses)
+            trades.append(new_trader.trades)
+            profits.append(new_trader.profits)
+            depo.append(new_trader.deposit_history)
+        self.losses = sum(losses)
+        self.trades = sum(profits)
+        self.profits = sum(profits)
+        self.year_profit = float(np.mean(percentage_profits))
+        self.winrate = float(np.mean(winrates))
+        self.deposit_history = list(sum(np.array(depo)))
+        self.linear = utils.get_linear(self.deposit_history)
+        self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
+        self.returns_strategy_diff[0] = 0
+        self.backtest_out_no_drop = pd.DataFrame(
+            (self.deposit_history, self.linear, self.returns_strategy_diff),
+            index=[
+                f'deposit ({column})',
+                f"linear deposit data ({column})",
+                "returns"
+            ]).T
+        self.backtest_out = self.backtest_out_no_drop.dropna()
+
+        self.info = f"""losses: {self.losses}
+trades: {self.trades}
+profits: {self.profits}
+mean year percentage profit: {self.year_profit}%
+winrate: {self.winrate}%"""
+        utils.logger.info(f'trader multi info: {self.info}')
+        if print_out:
+            print(self.info)
+        if plot:
+            self.fig.add_trace(
+                Line(
+                    y=self.deposit_history,
+                    line=dict(color=utils.COLOR_DEPOSIT),
+                    name=f'deposit (start: ${deposit})'), 2, 1)
+            self.fig.add_trace(Line(y=self.linear, name='linear'), 2, 1)
+            self.fig.add_trace(
+                Line(
+                    y=self.returns_strategy_diff,
+                    line=dict(color=utils.COLOR_DEPOSIT),
+                    name='returns'
+                ),
+                row=3,
+                col=1
+            )
+        if show:
+            self.fig.show()
         return self.backtest_out
 
     def set_pyplot(self,
@@ -1158,7 +1246,7 @@ winrate: {self.winrate}%"""
                          ignore_exceptions: bool = True,
                          print_exc: bool = True,
                          wait_sl_tp_checking: float = 5,
-                         limit: int=1000,
+                         limit: int = 1000,
                          *strategy_args,
                          **strategy_kwargs):
         """
@@ -1312,7 +1400,7 @@ winrate: {self.winrate}%"""
                  column: str,
                  n: int = 2,
                  *args,
-                 **kwargs) -> List[typing.Any]:
+                 **kwargs) -> List[Any]:
         return utils.get_window(self.df[column].values, n)
 
     def find_pip_bar(self,

@@ -31,11 +31,15 @@ class QuickTradeTuner(object):
         self._strategies = []
         self._frames_data: tuple = tuple(itertools.product(tickers, intervals, starts))
         self.client = client
+        self.tickers = tickers
         for strategy in strategies:
             for kwargs in strategies_kwargs[strategy]:
                 self._strategies.append([strategy, kwargs])
 
-    def tune(self, your_trading_class, backtest_kwargs=dict(plot=False, print_out=False)) -> dict:
+    def tune(self,
+             your_trading_class,
+             backtest_kwargs: Dict[str, Any] =dict(plot=False, print_out=False),
+             multi_test: bool = True) -> dict:
         def best():
             return defaultdict(best)
 
