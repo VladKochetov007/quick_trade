@@ -14,6 +14,7 @@ Trading project:
 #   add inner class with non-trading utils
 #   add tradingview realtime signals
 #   numpy
+#   all trading on client
 
 import random
 import time
@@ -753,6 +754,7 @@ class Trader(object):
 
         e: int
         sig: utils.PREDICT_TYPE
+        ignore_breakout: bool = False
         for e, (sig,
                 stop_loss,
                 take_profit,
@@ -765,7 +767,7 @@ class Trader(object):
                                       seted_[:-1],
                                       self.credit_leverages[:-1],
                                       data_high[:-1],
-                                      data_low[:-1]), 1):
+                                      data_low[:-1])):
 
             if seted is not np.nan:
                 if oldsig != utils.EXIT:
@@ -774,29 +776,30 @@ class Trader(object):
                     commission = start_commission
                 if bet > deposit:
                     bet = deposit
-                open_price = data_column[e]
+                open_price = data_column[e+1]
                 deposit -= bet * (commission / 100) * credit_lev
                 if bet > deposit:
                     bet = deposit
                 moneys_open_bet = deposit
                 no_order = False
                 exit_take_stop = False
+                ignore_breakout = True
 
-            if min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit):
-                diff = data_column[e] - data_column[e - 1]
+            if min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit) or ignore_breakout:
+                diff = data_column[e+1] - data_column[e]
             else:
                 exit_take_stop = True
                 if sig == utils.BUY and high >= take_profit:
-                    diff = take_profit - data_column[e - 1]
+                    diff = take_profit - data_column[e]
 
                 elif sig == utils.BUY and low <= stop_loss:
-                    diff = stop_loss - data_column[e - 1]
+                    diff = stop_loss - data_column[e]
 
                 elif sig == utils.SELL and high >= stop_loss:
-                    diff = stop_loss - data_column[e - 1]
+                    diff = stop_loss - data_column[e]
 
                 elif sig == utils.SELL and low <= take_profit:
-                    diff = take_profit - data_column[e - 1]
+                    diff = take_profit - data_column[e]
 
                 else:
                     diff = 0.0
@@ -817,6 +820,7 @@ class Trader(object):
                         self.profits += 1
                     elif deposit < moneys_open_bet:
                         self.losses += 1
+            ignore_breakout = False
 
         self.linear = utils.get_linear(self.deposit_history)
         lin_calc_df = pd.DataFrame(self.linear)

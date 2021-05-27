@@ -3,8 +3,9 @@ from collections import defaultdict
 from typing import Iterable, Dict, Any, List
 
 import numpy as np
-from quick_trade.brokers import TradingClient
 from quick_trade.utils import logger
+import pandas as pd
+from quick_trade.brokers import TradingClient
 
 from . import core
 
@@ -15,7 +16,8 @@ class QuickTradeTuner(object):
                  tickers: Iterable,
                  intervals: Iterable,
                  starts: Iterable,
-                 strategies_kwargs: Dict[str, List[Dict[str, Any]]] = None):
+                 strategies_kwargs: Dict[str, List[Dict[str, Any]]] = None,
+                 multi_backtest: bool = True):
         """
 
         :param client: trading client
@@ -29,17 +31,21 @@ class QuickTradeTuner(object):
         strategies = list(strategies_kwargs.keys())
         self.strategies_and_kwargs: List[str] = []
         self._strategies = []
+        self.tickers = tickers
+        self.multi_test: bool = multi_backtest
+        if multi_backtest:
+            tickers = [tickers]
         self._frames_data: tuple = tuple(itertools.product(tickers, intervals, starts))
         self.client = client
-        self.tickers = tickers
         for strategy in strategies:
             for kwargs in strategies_kwargs[strategy]:
                 self._strategies.append([strategy, kwargs])
 
-    def tune(self,
-             your_trading_class,
-             backtest_kwargs: Dict[str, Any] =dict(plot=False, print_out=False),
-             multi_test: bool = True) -> dict:
+    def tune(
+            self,
+            your_trading_class,
+            backtest_kwargs: Dict[str, Any] = dict(plot=False, print_out=False, show=False)
+            ) -> dict:
         def best():
             return defaultdict(best)
 
@@ -48,29 +54,40 @@ class QuickTradeTuner(object):
             ticker = data[0]
             interval = data[1]
             start = data[2]
-
-            df = self.client.get_data_historical(ticker=ticker,
-                                                 interval=interval,
-                                                 limit=start)
+            if not self.multi_test:
+                df = self.client.get_data_historical(ticker=ticker,
+                                                     interval=interval,
+                                                     limit=start)
+            else:
+                df = pd.DataFrame()
             for strategy, kwargs in self._strategies:
                 trader = your_trading_class(ticker=ticker, df=df, interval=interval)
-                trader._get_attr(strategy)(**kwargs)
-                trader.backtest(**backtest_kwargs)
+                trader.set_client(self.client)
+
+                if self.multi_test:
+                    trader.multi_backtest(tickers=ticker,
+                                          strategy_name=strategy,
+                                          strategy_kwargs=kwargs,
+                                          **backtest_kwargs)
+                else:
+                    trader._get_attr(strategy)(**kwargs)
+                    trader.backtest(**backtest_kwargs)
 
                 __ = str(kwargs).replace(": ", "=").replace("'", "").strip("{").strip("}")
                 strat_kw = f'{strategy}({__})'
                 self.strategies_and_kwargs.append(strat_kw)
-                self.result_tunes[ticker][interval][start][strat_kw]['winrate'] = trader.winrate
-                self.result_tunes[ticker][interval][start][strat_kw]['trades'] = trader.trades
-                self.result_tunes[ticker][interval][start][strat_kw]['losses'] = trader.losses
-                self.result_tunes[ticker][interval][start][strat_kw]['profits'] = trader.profits
-                self.result_tunes[ticker][interval][start][strat_kw]['percentage year profit'] = trader.year_profit
+                self.result_tunes['ALL'][interval][start][strat_kw]['winrate'] = trader.winrate
+                self.result_tunes['ALL'][interval][start][strat_kw]['trades'] = trader.trades
+                self.result_tunes['ALL'][interval][start][strat_kw]['losses'] = trader.losses
+                self.result_tunes['ALL'][interval][start][strat_kw]['profits'] = trader.profits
+                self.result_tunes['ALL'][interval][start][strat_kw]['percentage year profit'] = trader.year_profit
 
         for data in self._frames_data:
             ticker = data[0]
             interval = data[1]
             start = data[2]
             self.result_tunes = dict(self.result_tunes)
+            ticker = 'ALL'
             self.result_tunes[ticker] = dict(self.result_tunes[ticker])
             self.result_tunes[ticker][interval] = dict(self.result_tunes[ticker][interval])
             self.result_tunes[ticker][interval][start] = dict(self.result_tunes[ticker][interval][start])
