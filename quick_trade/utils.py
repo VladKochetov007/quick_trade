@@ -219,6 +219,7 @@ def get_linear(dataset) -> np.ndarray:
     """
     linear data. mean + (mean diff * n)
     """
+
     mean_diff: float
     data: pd.DataFrame = pd.DataFrame(dataset)
 

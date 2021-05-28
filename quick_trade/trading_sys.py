@@ -776,7 +776,7 @@ class Trader(object):
                     commission = start_commission
                 if bet > deposit:
                     bet = deposit
-                open_price = data_column[e+1]
+                open_price = data_column[e + 1]
                 deposit -= bet * (commission / 100) * credit_lev
                 if bet > deposit:
                     bet = deposit
@@ -786,7 +786,7 @@ class Trader(object):
                 ignore_breakout = True
 
             if min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit) or ignore_breakout:
-                diff = data_column[e+1] - data_column[e]
+                diff = data_column[e + 1] - data_column[e]
             else:
                 exit_take_stop = True
                 if sig == utils.BUY and high >= take_profit:
@@ -968,7 +968,7 @@ winrate: {self.winrate}%"""
             new_trader.set_client(your_client=self.client)
             new_trader.set_pyplot()
             new_trader._get_attr(strategy_name)(**strategy_kwargs)
-            new_trader.backtest(deposit=deposit/len(tickers),
+            new_trader.backtest(deposit=deposit / len(tickers),
                                 bet=bet,
                                 commission=commission,
                                 plot=False,

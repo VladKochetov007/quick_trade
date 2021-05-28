@@ -3,9 +3,9 @@ from collections import defaultdict
 from typing import Iterable, Dict, Any, List
 
 import numpy as np
-from quick_trade.utils import logger
 import pandas as pd
 from quick_trade.brokers import TradingClient
+from quick_trade.utils import logger
 
 from . import core
 
@@ -45,7 +45,7 @@ class QuickTradeTuner(object):
             self,
             your_trading_class,
             backtest_kwargs: Dict[str, Any] = dict(plot=False, print_out=False, show=False)
-            ) -> dict:
+    ) -> dict:
         def best():
             return defaultdict(best)
 
