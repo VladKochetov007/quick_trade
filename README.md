@@ -9,13 +9,12 @@ P.S.: documentation now in v3.0
 ```
 used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
- ├──tensorflow (https://github.com/tensorflow/tensorflow)
  ├──pykalman (https://github.com/pykalman/pykalman)
  ├──plotly (https://github.com/plotly/plotly.py)
  ├──scipy (https://github.com/scipy/scipy)
  ├──pandas (https://github.com/pandas-dev/pandas)
  ├──numpy (https://github.com/numpy/numpy)
- └──iexfinance (https://github.com/addisonlynch/iexfinance)
+ └──ccxt (https://github.com/ccxt/ccxt)
 ```
 
 Algo-trading system with python.
