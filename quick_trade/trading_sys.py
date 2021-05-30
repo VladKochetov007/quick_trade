@@ -19,7 +19,7 @@ Trading project:
 import random
 import time
 import typing
-from typing import Dict, List, Tuple, Any
+from typing import Dict, List, Tuple, Any, Iterable
 
 import numpy as np
 import pandas as pd
@@ -78,6 +78,8 @@ class Trader(object):
     __last_take_profit: float
     returns_strategy_diff: List[float]
     sec_interval: int
+    supports: Dict[int, float]
+    resistances: Dict[int, float]
 
     def __init__(self,
                  ticker: str = 'BTC/USDT',
@@ -286,6 +288,7 @@ class Trader(object):
         """
         self.returns = list(np.digitize(frame_to_diff.diff(), bins=[0]))
         self.set_open_stop_and_take()
+        self.set_credit_leverages()
         return self.returns
 
     def strategy_buy_hold(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
@@ -682,6 +685,19 @@ class Trader(object):
         self.set_open_stop_and_take()
         return self.returns
 
+    def crossover(self, fast: Iterable, slow: Iterable):
+        self.returns = []
+        for s, f in zip(slow, fast):
+            if s < f:
+                self.returns.append(utils.BUY)
+            elif s > f:
+                self.returns.append(utils.SELL)
+            else:
+                self.returns.append(utils.EXIT)
+        self.set_credit_leverages()
+        self.set_open_stop_and_take()
+        return self.returns
+
     def inverse_strategy(self, swap_tpop_take: bool = True, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         """
         makes signals inverse:
@@ -761,13 +777,17 @@ class Trader(object):
                 seted,
                 credit_lev,
                 high,
-                low) in enumerate(zip(self.returns[:-1],
+                low,
+                next_h,
+                next_l) in enumerate(zip(self.returns[:-1],
                                       self.stop_losses[:-1],
                                       self.take_profits[:-1],
                                       seted_[:-1],
                                       self.credit_leverages[:-1],
                                       data_high[:-1],
-                                      data_low[:-1])):
+                                      data_low[:-1],
+                                      data_high[1:],
+                                      data_low[1:])):
 
             if seted is not np.nan:
                 if oldsig != utils.EXIT:
@@ -785,7 +805,8 @@ class Trader(object):
                 exit_take_stop = False
                 ignore_breakout = True
 
-            if min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit) or ignore_breakout:
+            next_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
+            if (min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit) and next_breakout) or ignore_breakout:
                 diff = data_column[e + 1] - data_column[e]
             else:
                 exit_take_stop = True
@@ -1600,3 +1621,14 @@ winrate: {self.winrate}%"""
         patterns = map(utils.anti_set_, patterns)
         self.set_open_stop_and_take()
         return self.multi_strategy_collider(*patterns, mode='super')
+
+    def get_support_resistanse(self) -> Dict[str, Dict[int, float]]:
+        lows = self.df['Low'].values
+        highs = self.df['High'].values
+        for i in range(2, len(lows)-2):
+            if lows[i-2] >= lows[i-1] >= lows[i] <= lows[i+1] <= lows[i+2]:
+                self.supports[i] = lows[i]
+            if highs[i-2] <= highs[i-1] <= highs[i] >= highs[i+1] >= highs[i+2]:
+                self.resistances[i] = highs[i]
+        return {'resistance': self.resistances,
+                'supports': self.supports}

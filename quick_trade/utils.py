@@ -1,7 +1,6 @@
 import datetime as dt
 import json
 import logging
-import os
 from typing import Any, List, Union
 
 import numpy as np
@@ -23,10 +22,6 @@ BUY: PREDICT_TYPE = 1
 SELL: PREDICT_TYPE = 0
 EXIT: PREDICT_TYPE = 2
 
-IEX_TOKEN: str = 'Tpk_a4bc3e95d4c94810a3b2d4138dc81c5d'
-
-os.environ['IEX_API_VERSION'] = 'iexcloud-sandbox'
-os.environ['IEX_TOKEN'] = IEX_TOKEN
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "hpaulj -- Stack overflow",
@@ -42,7 +37,7 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
                           "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests --"
                           "IEX token"]
-__version__: str = "4.2.2"
+__version__: str = "4.3"
 
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
