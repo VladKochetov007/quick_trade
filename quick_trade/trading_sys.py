@@ -46,7 +46,7 @@ class Trader(object):
     interval: |     str      |  interval of df.
 
     """
-    profit_calculate_coef: float
+    _profit_calculate_coef: float
     returns: utils.PREDICT_TYPE_LIST = []
     df: pd.DataFrame
     ticker: str
@@ -54,30 +54,28 @@ class Trader(object):
     __exit_order__: bool = False
     _old_predict: str = 'Exit'
     _regression_inputs: int
-    stop_loss: float
-    take_profit: float
-    open_price: float
-    history: Dict[str, List[float]]
-    training_set: Tuple[np.ndarray, np.ndarray]
+    _stop_loss: float
+    _take_profit: float
+    _open_price: float
     trades: int = 0
     profits: int = 0
     losses: int = 0
-    stop_losses: List[float]
-    take_profits: List[float]
-    credit_leverages: List[float]
+    _stop_losses: List[float]
+    _take_profits: List[float]
+    _credit_leverages: List[float]
     deposit_history: List[float]
     year_profit: float
-    linear: np.ndarray
+    _linear: np.ndarray
     info: str
-    backtest_out_no_drop: pd.DataFrame
+    _backtest_out_no_drop: pd.DataFrame
     backtest_out: pd.DataFrame
-    open_lot_prices: List[float]
+    _open_lot_prices: List[float]
     realtime_returns: Dict[str, Dict[str, typing.Union[str, float]]]
     client: brokers.TradingClient
     __last_stop_loss: float
     __last_take_profit: float
     returns_strategy_diff: List[float]
-    sec_interval: int
+    _sec_interval: int
     supports: Dict[int, float]
     resistances: Dict[int, float]
 
@@ -91,62 +89,62 @@ class Trader(object):
         self.ticker = ticker
         self.interval = interval
         if interval == '1m':
-            self.profit_calculate_coef = 1 / (60 * 24 * 365)
-            self.sec_interval = 60
+            self._profit_calculate_coef = 1 / (60 * 24 * 365)
+            self._sec_interval = 60
         elif interval == '2m':
-            self.profit_calculate_coef = 1 / (30 * 24 * 365)
-            self.sec_interval = 120
+            self._profit_calculate_coef = 1 / (30 * 24 * 365)
+            self._sec_interval = 120
         elif interval == '3m':
-            self.profit_calculate_coef = 1 / (20 * 24 * 365)
-            self.sec_interval = 180
+            self._profit_calculate_coef = 1 / (20 * 24 * 365)
+            self._sec_interval = 180
         elif interval == '5m':
-            self.profit_calculate_coef = 1 / (12 * 24 * 365)
-            self.sec_interval = 300
+            self._profit_calculate_coef = 1 / (12 * 24 * 365)
+            self._sec_interval = 300
         elif interval == '15m':
-            self.profit_calculate_coef = 1 / (4 * 24 * 365)
-            self.sec_interval = 15 * 60
+            self._profit_calculate_coef = 1 / (4 * 24 * 365)
+            self._sec_interval = 15 * 60
         elif interval == '30m':
-            self.profit_calculate_coef = 1 / (2 * 24 * 365)
-            self.sec_interval = 60 * 30
+            self._profit_calculate_coef = 1 / (2 * 24 * 365)
+            self._sec_interval = 60 * 30
         elif interval == '45m':
-            self.profit_calculate_coef = 1 / (32 * 365)
-            self.sec_interval = 60 * 45
+            self._profit_calculate_coef = 1 / (32 * 365)
+            self._sec_interval = 60 * 45
         elif interval == '1h':
-            self.profit_calculate_coef = 1 / (24 * 365)
-            self.sec_interval = 60 * 60
+            self._profit_calculate_coef = 1 / (24 * 365)
+            self._sec_interval = 60 * 60
         elif interval == '90m':
-            self.profit_calculate_coef = 1 / (18 * 365)
-            self.sec_interval = 60 * 90
+            self._profit_calculate_coef = 1 / (18 * 365)
+            self._sec_interval = 60 * 90
         elif interval == '2h':
-            self.profit_calculate_coef = 1 / (12 * 365)
-            self.sec_interval = 60 * 60 * 2
+            self._profit_calculate_coef = 1 / (12 * 365)
+            self._sec_interval = 60 * 60 * 2
         elif interval == '3h':
-            self.profit_calculate_coef = 1 / (8 * 365)
-            self.sec_interval = 60 * 60 * 3
+            self._profit_calculate_coef = 1 / (8 * 365)
+            self._sec_interval = 60 * 60 * 3
         elif interval == '4h':
-            self.profit_calculate_coef = 1 / (6 * 365)
-            self.sec_interval = 60 * 60 * 4
+            self._profit_calculate_coef = 1 / (6 * 365)
+            self._sec_interval = 60 * 60 * 4
         elif interval == '12h':
-            self.profit_calculate_coef = 1 / (2 * 365)
-            self.sec_interval = 60 * 60 * 12
+            self._profit_calculate_coef = 1 / (2 * 365)
+            self._sec_interval = 60 * 60 * 12
         elif interval == '1d':
-            self.profit_calculate_coef = 1 / 365
-            self.sec_interval = 60 * 60 * 24
+            self._profit_calculate_coef = 1 / 365
+            self._sec_interval = 60 * 60 * 24
         elif interval == '3d':
-            self.profit_calculate_coef = 1 / (365 / 3)
-            self.sec_interval = 86400 * 3
+            self._profit_calculate_coef = 1 / (365 / 3)
+            self._sec_interval = 86400 * 3
         elif interval == '1w':
-            self.profit_calculate_coef = 1 / 52
-            self.sec_interval = 86400 * 7
+            self._profit_calculate_coef = 1 / 52
+            self._sec_interval = 86400 * 7
         elif interval == '1M':
-            self.profit_calculate_coef = 1 / 12
-            self.sec_interval = 86400 * 30
+            self._profit_calculate_coef = 1 / 12
+            self._sec_interval = 86400 * 30
         elif interval == '3M':
-            self.profit_calculate_coef = 1 / 4
-            self.sec_interval = 86400 * 90
+            self._profit_calculate_coef = 1 / 4
+            self._sec_interval = 86400 * 90
         elif interval == '6M':
-            self.profit_calculate_coef = 1 / 2
-            self.sec_interval = 86400 * 180
+            self._profit_calculate_coef = 1 / 2
+            self._sec_interval = 86400 * 180
         else:
             raise ValueError(f'incorrect interval; {interval}')
         self._regression_inputs = utils.REGRESSION_INPUTS
@@ -226,28 +224,28 @@ class Trader(object):
 
         _stop_loss: float
         take: float
-        if self.stop_loss is not np.inf:
-            _stop_loss = self.stop_loss / 10_000 * self.open_price
+        if self._stop_loss is not np.inf:
+            _stop_loss = self._stop_loss / 10_000 * self._open_price
         else:
             _stop_loss = np.inf
-        if self.take_profit is not np.inf:
-            take = self.take_profit / 10_000 * self.open_price
+        if self._take_profit is not np.inf:
+            take = self._take_profit / 10_000 * self._open_price
         else:
             take = np.inf
 
         if sig == utils.BUY:
-            _stop_loss = self.open_price - _stop_loss
-            take = self.open_price + take
+            _stop_loss = self._open_price - _stop_loss
+            take = self._open_price + take
         elif sig == utils.SELL:
-            take = self.open_price - take
-            _stop_loss = self.open_price + _stop_loss
+            take = self._open_price - take
+            _stop_loss = self._open_price + _stop_loss
         else:
-            if self.take_profit is not np.inf:
-                take = self.open_price
-            if self.stop_loss is not np.inf:
-                _stop_loss = self.open_price
+            if self._take_profit is not np.inf:
+                take = self._open_price
+            if self._stop_loss is not np.inf:
+                _stop_loss = self._open_price
         utils.logger.debug(
-            f'stop loss: {_stop_loss} ({self.stop_loss} pips), take profit: {take} ({self.take_profit} pips)')
+            f'stop loss: {_stop_loss} ({self._stop_loss} pips), take profit: {take} ({self._take_profit} pips)')
 
         return {'stop': _stop_loss,
                 'take': take}
@@ -261,8 +259,8 @@ class Trader(object):
         """
         stop_losses = []
         take_profits = []
-        for stop_loss_price, take_profit_price, price, sig in zip(self.stop_losses,
-                                                                  self.take_profits,
+        for stop_loss_price, take_profit_price, price, sig in zip(self._stop_losses,
+                                                                  self._take_profits,
                                                                   self.df['Close'].values,
                                                                   self.returns):
             add_sl = (price / 10_000) * add_stop_loss
@@ -278,9 +276,9 @@ class Trader(object):
                 stop_losses.append(stop_loss_price)
                 take_profits.append(take_profit_price)
 
-        self.stop_losses = stop_losses
-        self.take_profits = take_profits
-        return self.stop_losses, self.take_profits
+        self._stop_losses = stop_losses
+        self._take_profits = take_profits
+        return self._stop_losses, self._take_profits
 
     def strategy_diff(self, frame_to_diff: pd.Series, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         """
@@ -457,7 +455,7 @@ class Trader(object):
                                                              self.df['Close'], **sar_kwargs)
         sardown: np.ndarray = sar.psar_down().values
         sarup: np.ndarray = sar.psar_up().values
-        self.stop_losses = list(sar.psar().values)
+        self._stop_losses = list(sar.psar().values)
 
         if plot:
             for SAR_ in (sarup, sardown):
@@ -515,9 +513,9 @@ class Trader(object):
             self.fig.add_trace(Line(y=st.get_supertrend_lower(),
                                     name='supertrend lower',
                                     line=dict(width=utils.SUB_LINES_WIDTH, color=utils.GREEN)))
-        self.stop_losses = list(st.get_supertrend())
+        self._stop_losses = list(st.get_supertrend())
         self.returns = list(st.get_supertrend_strategy_returns())
-        self.stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
+        self._stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
         self.set_open_stop_and_take(set_stop=False)
         return self.returns
 
@@ -642,7 +640,7 @@ class Trader(object):
                 line_color=utils.ICHIMOKU_CLOUD_COLOR))
 
             self.returns = [utils.EXIT for i in range(chinkouspan)]
-            self.stop_losses = [np.inf] * chinkouspan
+            self._stop_losses = [np.inf] * chinkouspan
             for e, (close, tenkan, kijun, A, B) in enumerate(zip(
                     prices.values[chinkouspan:],
                     tenkan_sen[chinkouspan:],
@@ -677,9 +675,9 @@ class Trader(object):
                         trade = utils.EXIT
                 self.returns.append(trade)
                 if trade == utils.BUY:
-                    self.stop_losses.append(min_cloud - stop_loss_adder)
+                    self._stop_losses.append(min_cloud - stop_loss_adder)
                 else:
-                    self.stop_losses.append(max_cloud + stop_loss_adder)
+                    self._stop_losses.append(max_cloud + stop_loss_adder)
         self.set_open_stop_and_take(set_take=True,
                                     set_stop=False)
         self.set_open_stop_and_take()
@@ -718,7 +716,7 @@ class Trader(object):
             returns.append(flag)
         self.returns = returns
         if swap_tpop_take:
-            self.stop_losses, self.take_profits = self.take_profits, self.stop_losses
+            self._stop_losses, self._take_profits = self._take_profits, self._stop_losses
         return self.returns
 
     def backtest(self,
@@ -780,10 +778,10 @@ class Trader(object):
                 low,
                 next_h,
                 next_l) in enumerate(zip(self.returns[:-1],
-                                      self.stop_losses[:-1],
-                                      self.take_profits[:-1],
+                                         self._stop_losses[:-1],
+                                         self._take_profits[:-1],
                                       seted_[:-1],
-                                      self.credit_leverages[:-1],
+                                         self._credit_leverages[:-1],
                                       data_high[:-1],
                                       data_low[:-1],
                                       data_high[1:],
@@ -796,7 +794,7 @@ class Trader(object):
                     commission = start_commission
                 if bet > deposit:
                     bet = deposit
-                open_price = data_column[e + 1]
+                open_price = data_column[e]
                 deposit -= bet * (commission / 100) * credit_lev
                 if bet > deposit:
                     bet = deposit
@@ -843,40 +841,40 @@ class Trader(object):
                         self.losses += 1
             ignore_breakout = False
 
-        self.linear = utils.get_linear(self.deposit_history)
-        lin_calc_df = pd.DataFrame(self.linear)
+        self._linear = utils.get_linear(self.deposit_history)
+        lin_calc_df = pd.DataFrame(self._linear)
         mean_diff = float(lin_calc_df.diff().mean())
-        self.year_profit = mean_diff / self.profit_calculate_coef
+        self.year_profit = mean_diff / self._profit_calculate_coef
         self.year_profit = (self.year_profit / money_start) * 100
         if self.trades != 0:
             self.winrate = (self.profits / self.trades) * 100
         else:
             self.winrate = 0
-        self.info = f"""losses: {self.losses}
+        self._info = f"""losses: {self.losses}
 trades: {self.trades}
 profits: {self.profits}
 mean year percentage profit: {self.year_profit}%
 winrate: {self.winrate}%"""
-        utils.logger.info(f'trader info: {self.info}')
+        utils.logger.info(f'trader info: {self._info}')
         if print_out:
-            print(self.info)
+            print(self._info)
         self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
-        self.backtest_out_no_drop = pd.DataFrame(
-            (self.deposit_history, self.stop_losses, self.take_profits, self.returns,
-             self.open_lot_prices, data_column, self.linear, self.returns_strategy_diff),
+        self._backtest_out_no_drop = pd.DataFrame(
+            (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
+             self._open_lot_prices, data_column, self._linear, self.returns_strategy_diff),
             index=[
                 f'deposit ({column})', 'stop loss', 'take profit',
                 'predictions', 'open deal/lot', column,
                 f"linear deposit data ({column})",
                 "returns"
             ]).T
-        self.backtest_out = self.backtest_out_no_drop.dropna()
+        self.backtest_out = self._backtest_out_no_drop.dropna()
         if plot:
             loc: pd.Series = self.df[column]
             self.fig.add_trace(
                 Line(
-                    y=self.backtest_out_no_drop['returns'].values,
+                    y=self._backtest_out_no_drop['returns'].values,
                     line=dict(color=utils.COLOR_DEPOSIT),
                     name='returns'
                 ),
@@ -893,7 +891,7 @@ winrate: {self.winrate}%"""
                 name=f'{self.ticker} {self.interval}')
             self.fig.add_trace(
                 Line(
-                    y=self.take_profits,
+                    y=self._take_profits,
                     line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.GREEN),
                     opacity=utils.STOP_TAKE_OPN_ALPHA,
                     name='take profit'),
@@ -901,7 +899,7 @@ winrate: {self.winrate}%"""
                 col=1)
             self.fig.add_trace(
                 Line(
-                    y=self.stop_losses,
+                    y=self._stop_losses,
                     line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.RED),
                     opacity=utils.STOP_TAKE_OPN_ALPHA,
                     name='stop loss'),
@@ -909,7 +907,7 @@ winrate: {self.winrate}%"""
                 col=1)
             self.fig.add_trace(
                 Line(
-                    y=self.open_lot_prices,
+                    y=self._open_lot_prices,
                     line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.BLUE),
                     opacity=utils.STOP_TAKE_OPN_ALPHA,
                     name='open lot'),
@@ -920,7 +918,7 @@ winrate: {self.winrate}%"""
                     y=self.deposit_history,
                     line=dict(color=utils.COLOR_DEPOSIT),
                     name=f'deposit (start: ${money_start})'), 2, 1)
-            self.fig.add_trace(Line(y=self.linear, name='linear'), 2, 1)
+            self.fig.add_trace(Line(y=self._linear, name='linear'), 2, 1)
             preds: Dict[str, List[typing.Union[int, float]]] = {'sellind': [],
                                                                 'exitind': [],
                                                                 'buyind': [],
@@ -1008,33 +1006,33 @@ winrate: {self.winrate}%"""
         self.year_profit = float(np.mean(percentage_profits))
         self.winrate = float(np.mean(winrates))
         self.deposit_history = list(sum(np.array(depo)))
-        self.linear = utils.get_linear(self.deposit_history)
+        self._linear = utils.get_linear(self.deposit_history)
         self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
-        self.backtest_out_no_drop = pd.DataFrame(
-            (self.deposit_history, self.linear, self.returns_strategy_diff),
+        self._backtest_out_no_drop = pd.DataFrame(
+            (self.deposit_history, self._linear, self.returns_strategy_diff),
             index=[
                 f'deposit ({column})',
                 f"linear deposit data ({column})",
                 "returns"
             ]).T
-        self.backtest_out = self.backtest_out_no_drop.dropna()
+        self.backtest_out = self._backtest_out_no_drop.dropna()
 
-        self.info = f"""losses: {self.losses}
+        self._info = f"""losses: {self.losses}
 trades: {self.trades}
 profits: {self.profits}
 mean year percentage profit: {self.year_profit}%
 winrate: {self.winrate}%"""
-        utils.logger.info(f'trader multi info: {self.info}')
+        utils.logger.info(f'trader multi info: {self._info}')
         if print_out:
-            print(self.info)
+            print(self._info)
         if plot:
             self.fig.add_trace(
                 Line(
                     y=self.deposit_history,
                     line=dict(color=utils.COLOR_DEPOSIT),
                     name=f'deposit (start: ${deposit})'), 2, 1)
-            self.fig.add_trace(Line(y=self.linear, name='linear'), 2, 1)
+            self.fig.add_trace(Line(y=self._linear, name='linear'), 2, 1)
             self.fig.add_trace(
                 Line(
                     y=self.returns_strategy_diff,
@@ -1211,7 +1209,7 @@ winrate: {self.winrate}%"""
         :return: dict with prediction
         """
 
-        credit_leverage: float = self.credit_leverages[-1]
+        credit_leverage: float = self._credit_leverages[-1]
         _moneys_: float
         bet: float
         close: np.ndarray = self.df["Close"].values
@@ -1226,11 +1224,11 @@ winrate: {self.winrate}%"""
             self.__exit_order__ = False
 
         # trading
-        self.__last_stop_loss = self.stop_losses[-1]
-        self.__last_take_profit = self.take_profits[-1]
+        self.__last_stop_loss = self._stop_losses[-1]
+        self.__last_take_profit = self._take_profits[-1]
         if self._old_predict != predict:
             utils.logger.info(f'open lot {predict}')
-            self.open_price = close[-1]
+            self._open_price = close[-1]
             if trading_on_client:
 
                 if predict == 'Exit':
@@ -1255,7 +1253,7 @@ winrate: {self.winrate}%"""
                     self.__exit_order__ = False
         return {
             'predict': predict,
-            'open lot price': self.open_price,
+            'open lot price': self._open_price,
             'stop loss': self.__last_stop_loss,
             'take profit': self.__last_take_profit,
             'currency close': close[-1]
@@ -1325,9 +1323,9 @@ winrate: {self.winrate}%"""
                             if trading_on_client:
                                 self.client.exit_last_order()
                     time.sleep(wait_sl_tp_checking)
-                    if not (time.time() < (__now__ + self.sec_interval)):
+                    if not (time.time() < (__now__ + self._sec_interval)):
                         self._old_predict = utils.convert_signal_str(self.returns[-1])
-                        __now__ += self.sec_interval
+                        __now__ += self._sec_interval
                         break
             except Exception as exc:
                 if ignore_exceptions:
@@ -1383,15 +1381,15 @@ winrate: {self.winrate}%"""
         :param take_profit: take profit in points
         :param stop_loss: stop loss in points
         """
-        self.take_profit = take_profit
-        self.stop_loss = stop_loss
+        self._take_profit = take_profit
+        self._stop_loss = stop_loss
         take_flag: float = np.inf
         stop_flag: float = np.inf
-        self.open_lot_prices = []
+        self._open_lot_prices = []
         if set_stop:
-            self.stop_losses = []
+            self._stop_losses = []
         if set_take:
-            self.take_profits = []
+            self._take_profits = []
         closes: np.ndarray = self.df['Close'].values
         sig: utils.PREDICT_TYPE
         close: float
@@ -1399,18 +1397,18 @@ winrate: {self.winrate}%"""
         ts: Dict[str, float]
         for sig, close, seted in zip(self.returns, closes, utils.set_(self.returns)):
             if seted is not np.nan:
-                self.open_price = close
+                self._open_price = close
                 if set_take or set_stop:
                     ts = self.__get_stop_take(sig)
                 if set_take:
                     take_flag = ts['take']
                 if set_stop:
                     stop_flag = ts['stop']
-            self.open_lot_prices.append(self.open_price)
+            self._open_lot_prices.append(self._open_price)
             if set_take:
-                self.take_profits.append(take_flag)
+                self._take_profits.append(take_flag)
             if set_stop:
-                self.stop_losses.append(stop_flag)
+                self._stop_losses.append(stop_flag)
         utils.logger.debug(f'trader stop loss: {stop_loss}, trader take profit: {take_profit}')
 
     def set_credit_leverages(self, credit_lev: float = 1.0, *args, **kwargs):
@@ -1418,7 +1416,7 @@ winrate: {self.winrate}%"""
         Sets the leverage for bets.
         :param credit_lev: leverage in points
         """
-        self.credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
+        self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
         utils.logger.debug(f'trader credit leverage: {credit_lev}')
 
     def _window_(self,
@@ -1466,7 +1464,7 @@ winrate: {self.winrate}%"""
         flag: utils.PREDICT_TYPE = utils.EXIT
 
         flag_stop_loss: float = np.inf
-        self.stop_losses = [flag_stop_loss]
+        self._stop_losses = [flag_stop_loss]
         high: List[float]
         low: List[float]
         open_pr: List[float]
@@ -1486,7 +1484,7 @@ winrate: {self.winrate}%"""
                 flag_stop_loss = max(high[0], high[1])
 
             self.returns.append(flag)
-            self.stop_losses.append(flag_stop_loss)
+            self._stop_losses.append(flag_stop_loss)
         self.set_open_stop_and_take(set_take=False, set_stop=False)
         return self.returns
 
