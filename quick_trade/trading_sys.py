@@ -14,7 +14,8 @@ Trading project:
 #   add inner class with non-trading utils
 #   add tradingview realtime signals
 #   numpy
-#   all trading on client
+#   all trading on client param of trader
+#   scalper and dca bot
 
 import random
 import time
@@ -559,6 +560,7 @@ class Trader(object):
                     flag = utils.EXIT
             self.returns.append(flag)
         self.set_open_stop_and_take()
+        self.set_credit_leverages()
         return self.returns
 
     def get_heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()) -> pd.DataFrame:
