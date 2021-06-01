@@ -14,7 +14,6 @@ Trading project:
 #   add inner class with non-trading utils
 #   add tradingview realtime signals
 #   numpy
-#   all trading on client param of trader
 #   scalper and dca bot
 
 import random
@@ -81,16 +80,19 @@ class Trader(object):
     resistances: Dict[int, float]
     __last_credit_leverage: float
     __prev_credit_lev: float = 1
+    trading_on_client: bool
 
     def __init__(self,
                  ticker: str = 'BTC/USDT',
                  df: pd.DataFrame = pd.DataFrame(),
                  interval: str = '1d',
+                 trading_on_client: bool = False,
                  *args,
                  **kwargs):
         self.df = df.reset_index(drop=True)
         self.ticker = ticker
         self.interval = interval
+        self.trading_on_client = trading_on_client
         if interval == '1m':
             self._profit_calculate_coef = 1 / (60 * 24 * 365)
             self._sec_interval = 60
@@ -1197,10 +1199,11 @@ winrate: {self.winrate}%"""
         if len(strategies) >= 3:
             for ret in strategies[2:]:
                 self.strategy_collider(self.returns, ret, mode=mode)
+        self.set_open_stop_and_take()
+        self.set_credit_leverages()
         return self.returns
 
     def get_trading_predict(self,
-                            trading_on_client: bool = False,
                             bet_for_trading_on_client: float = np.inf,
                             coin_lotsize_division=True
                             ) -> Dict[str, typing.Union[str, float]]:
@@ -1208,7 +1211,6 @@ winrate: {self.winrate}%"""
         predict and trading.
 
         :param coin_lotsize_division: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
-        :param trading_on_client: trading on real client
         :param bet_for_trading_on_client: standard: all deposit
         :return: dict with prediction
         """
@@ -1234,7 +1236,7 @@ winrate: {self.winrate}%"""
         if self._prev_predict != predict or self.__prev_credit_lev != self.__last_credit_leverage:
             utils.logger.info(f'open lot {predict}')
             self._open_price = close[-1]
-            if trading_on_client:
+            if self.trading_on_client:
 
                 if predict == 'Exit':
                     self.client.exit_last_order()
@@ -1269,7 +1271,6 @@ winrate: {self.winrate}%"""
                          strategy,
                          ticker: str = 'BTC/USDT',
                          print_out: bool = True,
-                         trading_on_client: bool = False,
                          bet_for_trading_on_client: float = np.inf,
                          coin_lotsize_division: bool = True,
                          ignore_exceptions: bool = True,
@@ -1288,7 +1289,6 @@ winrate: {self.winrate}%"""
         :param ticker: ticker for trading.
         :param strategy: trading strategy.
         :param print_out: printing.
-        :param trading_on_client: trading on client
         :param bet_for_trading_on_client: trading bet, standard: all deposit
         :param strategy_kwargs: named arguments to -strategy.
         :param strategy_args: arguments to -strategy.
@@ -1303,7 +1303,6 @@ winrate: {self.winrate}%"""
                 strategy(*strategy_args, **strategy_kwargs)
 
                 prediction = self.get_trading_predict(
-                    trading_on_client=trading_on_client,
                     bet_for_trading_on_client=bet_for_trading_on_client,
                     coin_lotsize_division=coin_lotsize_division)
 
@@ -1327,7 +1326,7 @@ winrate: {self.winrate}%"""
                             if print_out:
                                 print(f"trading prediction exit in sleeping at {index}: {prediction}")
                             self.realtime_returns[index] = prediction
-                            if trading_on_client:
+                            if self.trading_on_client:
                                 self.client.exit_last_order()
                         elif strategy_in_sleep:
                             strategy(*strategy_args, **strategy_kwargs)
@@ -1627,7 +1626,6 @@ winrate: {self.winrate}%"""
         )
 
         patterns = map(utils.anti_set_, patterns)
-        self.set_open_stop_and_take()
         return self.multi_strategy_collider(*patterns, mode='super')
 
     def get_support_resistanse(self) -> Dict[str, Dict[int, float]]:
