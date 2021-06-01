@@ -17,7 +17,6 @@ RED: str = '#ff0000'
 GREEN: str = '#55ff00'
 BLUE: str = '#0015ff'
 CYAN: str = 'cyan'
-REGRESSION_INPUTS: int = 100
 BUY: PREDICT_TYPE = 1
 SELL: PREDICT_TYPE = 0
 EXIT: PREDICT_TYPE = 2
@@ -37,7 +36,7 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
                           "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests --"
                           "IEX token"]
-__version__: str = "4.3"
+__version__: str = "4.4"
 
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
@@ -198,7 +197,7 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
         return 'Exit'
 
 
-def ta_lib_to_returns(talib_returns: pd.Series, exit_=EXIT, *args, **kwargs) -> PREDICT_TYPE_LIST:
+def ta_lib_to_returns(talib_returns: pd.Series, exit_: Any = EXIT, *args, **kwargs) -> PREDICT_TYPE_LIST:
     return list(talib_returns.replace({-200: SELL,
                                        200: BUY,
                                        100: BUY,
