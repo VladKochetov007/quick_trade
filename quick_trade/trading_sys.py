@@ -53,7 +53,7 @@ class Trader(object):
     ticker: str
     interval: str
     __exit_order__: bool = False
-    _old_predict: str = 'Exit'
+    _prev_predict: str = 'Exit'
     _regression_inputs: int
     _stop_loss: float
     _take_profit: float
@@ -79,6 +79,8 @@ class Trader(object):
     _sec_interval: int
     supports: Dict[int, float]
     resistances: Dict[int, float]
+    __last_credit_leverage: float
+    __prev_credit_lev: float = 1
 
     def __init__(self,
                  ticker: str = 'BTC/USDT',
@@ -927,7 +929,7 @@ winrate: {self.winrate}%"""
                                                                 'bprice': [],
                                                                 'sprice': [],
                                                                 'eprice': []}
-            for e, i in enumerate(seted_, 0):
+            for e, i in enumerate(seted_):
                 if i == utils.SELL:
                     preds['sellind'].append(e)
                     preds['sprice'].append(loc[e])
@@ -1220,7 +1222,7 @@ winrate: {self.winrate}%"""
         # get prediction
         predict = self.returns[-1]
         predict = utils.convert_signal_str(predict)
-        if self.__exit_order__ and self._old_predict == predict:
+        if self.__exit_order__ and self._prev_predict == predict:
             predict = 'Exit'
         if predict != 'Exit':
             self.__exit_order__ = False
@@ -1228,7 +1230,8 @@ winrate: {self.winrate}%"""
         # trading
         self.__last_stop_loss = self._stop_losses[-1]
         self.__last_take_profit = self._take_profits[-1]
-        if self._old_predict != predict:
+        self.__last_credit_leverage = self._credit_leverages[-1]
+        if self._prev_predict != predict or self.__prev_credit_lev != self.__last_credit_leverage:
             utils.logger.info(f'open lot {predict}')
             self._open_price = close[-1]
             if trading_on_client:
@@ -1251,14 +1254,15 @@ winrate: {self.winrate}%"""
 
                     self.client.order_create(predict,
                                              self.ticker,
-                                             bet)
+                                             bet*credit_leverage)
                     self.__exit_order__ = False
         return {
             'predict': predict,
             'open lot price': self._open_price,
             'stop loss': self.__last_stop_loss,
             'take profit': self.__last_take_profit,
-            'currency close': close[-1]
+            'currency close': close[-1],
+            'credit leverage': self.__last_credit_leverage
         }
 
     def realtime_trading(self,
@@ -1272,11 +1276,12 @@ winrate: {self.winrate}%"""
                          print_exc: bool = True,
                          wait_sl_tp_checking: float = 5,
                          limit: int = 1000,
+                         strategy_in_sleep: bool = False,
                          *strategy_args,
                          **strategy_kwargs):
         """
         :param limit: client.get_data_historical's limit argument
-        :param wait_sl_tp_checking: sleeping time after stop-loaa and take-profit checking (seconds)
+        :param wait_sl_tp_checking: sleeping time after stop-loss and take-profit checking (seconds)
         :param print_exc: print  exceptions in while loop
         :param ignore_exceptions: ignore binance exceptions in while loop
         :param coin_lotsize_division: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
@@ -1324,9 +1329,11 @@ winrate: {self.winrate}%"""
                             self.realtime_returns[index] = prediction
                             if trading_on_client:
                                 self.client.exit_last_order()
+                        elif strategy_in_sleep:
+                            strategy(*strategy_args, **strategy_kwargs)
                     time.sleep(wait_sl_tp_checking)
                     if not (time.time() < (__now__ + self._sec_interval)):
-                        self._old_predict = utils.convert_signal_str(self.returns[-1])
+                        self._prev_predict = utils.convert_signal_str(self.returns[-1])
                         __now__ += self._sec_interval
                         break
             except Exception as exc:
@@ -1418,6 +1425,7 @@ winrate: {self.winrate}%"""
         Sets the leverage for bets.
         :param credit_lev: leverage in points
         """
+        self.__prev_credit_lev = credit_lev
         self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
         utils.logger.debug(f'trader credit leverage: {credit_lev}')
 
