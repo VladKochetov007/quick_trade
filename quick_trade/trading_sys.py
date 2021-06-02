@@ -16,7 +16,6 @@ Trading project:
 #   numpy
 #   scalper and dca bot
 
-import random
 import time
 import typing
 from typing import Dict, List, Tuple, Any, Iterable
@@ -152,7 +151,6 @@ class Trader(object):
             self._sec_interval = 86400 * 180
         else:
             raise ValueError(f'incorrect interval; {interval}')
-        self._regression_inputs = utils.REGRESSION_INPUTS
         self.__exit_order__ = False
 
     def __repr__(self):
@@ -204,19 +202,6 @@ class Trader(object):
                     y=filtered,
                     line=dict(width=utils.SUB_LINES_WIDTH)), 1, 1)
         return pd.Series(filtered)
-
-    def bull_power(self, periods: int) -> np.ndarray:
-        EMA = ta.trend.ema_indicator(self.df['Close'], periods)
-        return np.array(self.df['High']) - EMA
-
-    def tema(self, periods: int, *args, **kwargs) -> pd.Series:
-        """
-        :rtype: pd.Series
-        """
-        ema = ta.trend.ema_indicator(self.df['Close'], periods)
-        ema2 = ta.trend.ema_indicator(ema, periods)
-        ema3 = ta.trend.ema_indicator(ema2, periods)
-        return pd.Series(3 * ema.values - 3 * ema2.values + ema3.values)
 
     def __get_stop_take(self, sig: utils.PREDICT_TYPE) -> Dict[str, float]:
         """
@@ -296,6 +281,7 @@ class Trader(object):
 
     def strategy_buy_hold(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.BUY for _ in range(len(self.df))]
+        self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -328,6 +314,7 @@ class Trader(object):
             else:
                 self.returns.append(utils.EXIT)
         self.set_open_stop_and_take()
+        self.set_credit_leverages()
         return self.returns
 
     def strategy_3_sma(self,
@@ -360,6 +347,7 @@ class Trader(object):
             else:
                 self.returns.append(utils.EXIT)
 
+        self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -391,6 +379,7 @@ class Trader(object):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
+        self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -409,23 +398,7 @@ class Trader(object):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
-        self.set_open_stop_and_take()
-        return self.returns
-
-    def strategy_exp_diff(self,
-                          period: int = 70,
-                          plot: bool = True,
-                          *args,
-                          **kwargs) -> utils.PREDICT_TYPE_LIST:
-        exp: pd.Series = self.tema(period)
-        self.strategy_diff(exp)
-        if plot:
-            self.fig.add_trace(
-                Line(
-                    name=f'EMA{period}',
-                    y=exp.values.T[0],
-                    line=dict(width=utils.SUB_LINES_WIDTH)), 1, 1)
-
+        self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -451,6 +424,7 @@ class Trader(object):
                 flag = utils.EXIT
             self.returns.append(flag)
 
+        self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -478,7 +452,8 @@ class Trader(object):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
-        self.set_open_stop_and_take(set_stop=False)
+        self.set_credit_leverages()
+        self.set_open_stop_and_take()
         return self.returns
 
     def strategy_macd_histogram_diff(self,
@@ -497,11 +472,7 @@ class Trader(object):
                 self.returns.append(utils.BUY)
             else:
                 self.returns.append(utils.SELL)
-        self.set_open_stop_and_take()
-        return self.returns
-
-    def strategy_random_pred(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
-        self.returns = [random.choice([utils.EXIT, utils.SELL, utils.BUY]) for i in range(len(self.df))]
+        self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -522,6 +493,7 @@ class Trader(object):
         self.returns = list(st.get_supertrend_strategy_returns())
         self._stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
         self.set_open_stop_and_take(set_stop=False)
+        self.set_credit_leverages()
         return self.returns
 
     def strategy_bollinger(self,
@@ -686,7 +658,7 @@ class Trader(object):
                     self._stop_losses.append(max_cloud + stop_loss_adder)
         self.set_open_stop_and_take(set_take=True,
                                     set_stop=False)
-        self.set_open_stop_and_take()
+        self.set_credit_leverages()
         return self.returns
 
     def crossover(self, fast: Iterable, slow: Iterable):
@@ -1465,6 +1437,7 @@ winrate: {self.winrate}%"""
                 self.returns.append(flag)
             else:
                 self.returns.append(flag)
+        self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1494,7 +1467,7 @@ winrate: {self.winrate}%"""
 
             self.returns.append(flag)
             self._stop_losses.append(flag_stop_loss)
-        self.set_open_stop_and_take(set_take=False, set_stop=False)
+        self.set_credit_leverages()
         return self.returns
 
     def find_TBH_TBL(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
@@ -1515,6 +1488,7 @@ winrate: {self.winrate}%"""
             elif low[0] == low[1]:
                 flag = utils.SELL
             self.returns.append(flag)
+        self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1535,6 +1509,7 @@ winrate: {self.winrate}%"""
                      ) == high[1] and close[2] < close[1] and low[2] > low[0]:
                 flag = utils.SELL
             self.returns.append(flag)
+        self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1549,6 +1524,7 @@ winrate: {self.winrate}%"""
                 ret.append(True)
             else:
                 ret.append(False)
+        self.set_credit_leverages()
         self.set_open_stop_and_take()
         return ret
 

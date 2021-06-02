@@ -204,18 +204,32 @@ or
 $ pip3 install quick-trade
 ```
 
+## user's code example
+```
+import quick_trade.trading_sys as qtr
+import ccxt
+
+client = brokers.TradingClient(ccxt.binance())
+df = client.get_data_historical('BTC/USDT', '15m', 1000)
+trader = qtr.Trader('BTC/USDT', df=df, interval='15m')
+trader.set_client(client)
+trader.set_pyplot(height=731, width=1440, row_heights=[10, 5, 2])
+trader.strategy_2_sma(55, 21)
+trader.backtest(deposit=1000, commission=0.075, bet=qtr.utils.np.inf)
+```
+
 ## output plotly chart:
 
-![image](https://i.ibb.co/NyxbsV2/Unknown-2.png)
+![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/plot.png)
 
 ## output print
 
 ```
-losses: 226
-trades: 460
-profits: 232
-mean year percentage profit: 9075.656014641549%
-winrate: 50.43478260869565%
+losses: 7
+trades: 16
+profits: 9
+mean year percentage profit: 541.9299012354617%
+winrate: 56.25%
 ```
 
 ![image](https://i.ibb.co/mFLDJsX/IMG-5613.png)
