@@ -700,7 +700,7 @@ class Trader(object):
     def backtest(self,
                  deposit: float = 10_000.0,
                  bet: float = np.inf,
-                 commission_reuse: float = 0.0,
+                 commission: float = 0.0,
                  plot: bool = True,
                  print_out: bool = True,
                  column: str = 'Close',
@@ -742,7 +742,7 @@ class Trader(object):
         moneys_open_bet: float = deposit
         money_start: float = deposit
         oldsig = utils.EXIT
-        start_commission: float = commission_reuse
+        start_commission: float = commission
 
         e: int
         sig: utils.PREDICT_TYPE

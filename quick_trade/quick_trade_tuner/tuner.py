@@ -64,7 +64,7 @@ class QuickTradeTuner(object):
             else:
                 df = pd.DataFrame()
             for strategy, kwargs in self._strategies:
-                trader = your_trading_class(ticker=ticker, df=df, interval=interval)
+                trader = your_trading_class(ticker='ALL' if self.multi_test else ticker, df=df, interval=interval)
                 trader.set_client(self.client)
 
                 if self.multi_test:
@@ -79,24 +79,33 @@ class QuickTradeTuner(object):
                 __ = str(kwargs).replace(": ", "=").replace("'", "").strip("{").strip("}")
                 strat_kw = f'{strategy}({__})'
                 self.strategies_and_kwargs.append(strat_kw)
-                self.result_tunes['ALL'][interval][start][strat_kw]['winrate'] = trader.winrate
-                self.result_tunes['ALL'][interval][start][strat_kw]['trades'] = trader.trades
-                self.result_tunes['ALL'][interval][start][strat_kw]['losses'] = trader.losses
-                self.result_tunes['ALL'][interval][start][strat_kw]['profits'] = trader.profits
-                self.result_tunes['ALL'][interval][start][strat_kw]['percentage year profit'] = trader.year_profit
+                if self.multi_test:
+                    old_tick = ticker
+                    ticker = 'ALL'
+                self.result_tunes[ticker][interval][start][strat_kw]['winrate'] = trader.winrate
+                self.result_tunes[ticker][interval][start][strat_kw]['trades'] = trader.trades
+                self.result_tunes[ticker][interval][start][strat_kw]['losses'] = trader.losses
+                self.result_tunes[ticker][interval][start][strat_kw]['profits'] = trader.profits
+                self.result_tunes[ticker][interval][start][strat_kw]['percentage year profit'] = trader.year_profit
+                if self.multi_test:
+                    ticker = old_tick
 
         for data in self._frames_data:
             ticker = data[0]
             interval = data[1]
             start = data[2]
             self.result_tunes = dict(self.result_tunes)
-            ticker = 'ALL'
+            if self.multi_test:
+                old_tick = ticker
+                ticker = 'ALL'
             self.result_tunes[ticker] = dict(self.result_tunes[ticker])
             self.result_tunes[ticker][interval] = dict(self.result_tunes[ticker][interval])
             self.result_tunes[ticker][interval][start] = dict(self.result_tunes[ticker][interval][start])
             for strategy in self.strategies_and_kwargs:
                 self.result_tunes[ticker][interval][start][strategy] = dict(
                     self.result_tunes[ticker][interval][start][strategy])
+            if self.multi_test:
+                ticker = old_tick
 
         return self.result_tunes
 
