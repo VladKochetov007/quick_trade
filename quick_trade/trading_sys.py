@@ -700,7 +700,7 @@ class Trader(object):
     def backtest(self,
                  deposit: float = 10_000.0,
                  bet: float = np.inf,
-                 commission: float = 0.0,
+                 commission_reuse: float = 0.0,
                  plot: bool = True,
                  print_out: bool = True,
                  column: str = 'Close',
@@ -711,7 +711,7 @@ class Trader(object):
         testing the strategy.
         :param deposit: start deposit.
         :param bet: fixed bet to quick_trade. np.inf = all moneys.
-        :param commission: percentage commission (0 -- 100).
+        :param commission_reuse: percentage commission (0 -- 100).
         :param plot: plotting.
         :param print_out: printing.
         :param column: column of dataframe to backtest
@@ -742,7 +742,7 @@ class Trader(object):
         moneys_open_bet: float = deposit
         money_start: float = deposit
         oldsig = utils.EXIT
-        start_commission: float = commission
+        start_commission: float = commission_reuse
 
         e: int
         sig: utils.PREDICT_TYPE
@@ -767,15 +767,16 @@ class Trader(object):
 
             if seted is not np.nan:
                 if oldsig != utils.EXIT:
-                    commission = start_commission * 2
+                    commission_reuse = 2
                 else:
-                    commission = start_commission
+                    commission_reuse = 1
                 if bet > deposit:
                     bet = deposit
                 open_price = data_column[e]
-                deposit -= bet * (commission / 100) * credit_lev
-                if bet > deposit:
-                    bet = deposit
+                for i in range(commission_reuse):
+                    deposit -= bet * (start_commission / 100) * credit_lev
+                    if bet > deposit:
+                        bet = deposit
                 moneys_open_bet = deposit
                 no_order = False
                 exit_take_stop = False
@@ -967,7 +968,7 @@ winrate: {self.winrate}%"""
             new_trader._get_attr(strategy_name)(**strategy_kwargs)
             new_trader.backtest(deposit=deposit / len(tickers),
                                 bet=bet,
-                                commission=commission,
+                                commission_reuse=commission,
                                 plot=False,
                                 print_out=False,
                                 column=column,
