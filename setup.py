@@ -11,21 +11,21 @@ setup(
     author='Vlad Kochetov',
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=setuptools.find_packages(),
-    version='4.4',
+    version='4.5',
     description='Trading system for crypto, forex, stocks and others',
     long_description=long_desc,
     long_description_content_type="text/markdown",
     url='https://github.com/VladKochetov007/quick_trade',
     install_requires=[
-        'plotly==4.14.3'
-        'pykalman==0.9.5'
-        'numpy==1.20.3'
-        'pandas==1.2.4'
-        'ta==0.7.0'
-        'scipy==1.6.3'
+        'plotly==4.14.3',
+        'pykalman==0.9.5',
+        'numpy==1.20.3',
+        'pandas==1.2.4',
+        'ta==0.7.0',
+        'scipy==1.6.3',
         'ccxt==1.50.69'
     ],
-    download_url='https://github.com/VladKochetov007/quick_trade/archive/4.4.tar.gz',
+    download_url='https://github.com/VladKochetov007/quick_trade/archive/4.5.tar.gz',
     keywords=[
         'technical-analysis',
         'python3',
