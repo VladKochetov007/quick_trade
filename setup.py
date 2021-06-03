@@ -23,7 +23,7 @@ setup(
         'pandas==1.2.4',
         'ta==0.7.0',
         'scipy==1.6.3',
-        'ccxt==1.50.69'
+        'ccxt==1.50.76'
     ],
     download_url='https://github.com/VladKochetov007/quick_trade/archive/4.5.tar.gz',
     keywords=[
