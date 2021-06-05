@@ -11,7 +11,7 @@ setup(
     author='Vlad Kochetov',
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=setuptools.find_packages(),
-    version='4.6',
+    version='4.6.0',
     description='Trading system for crypto, forex, stocks and others',
     long_description=long_desc,
     long_description_content_type="text/markdown",
