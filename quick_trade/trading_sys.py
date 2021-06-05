@@ -704,14 +704,12 @@ class Trader(object):
                  plot: bool = True,
                  print_out: bool = True,
                  column: str = 'Close',
-                 show: bool = True,
-                 *args,
-                 **kwargs) -> pd.DataFrame:
+                 show: bool = True) -> pd.DataFrame:
         """
         testing the strategy.
         :param deposit: start deposit.
         :param bet: fixed bet to quick_trade. np.inf = all moneys.
-        :param commission_reuse: percentage commission (0 -- 100).
+        :param commission: percentage commission (0 -- 100).
         :param plot: plotting.
         :param print_out: printing.
         :param column: column of dataframe to backtest
@@ -814,6 +812,7 @@ class Trader(object):
             if seted is not np.nan:
                 if sig != utils.EXIT:
                     self.trades += 1
+                if oldsig != utils.EXIT:
                     if deposit > moneys_open_bet:
                         self.profits += 1
                     elif deposit < moneys_open_bet:
@@ -968,7 +967,7 @@ winrate: {self.winrate}%"""
             new_trader._get_attr(strategy_name)(**strategy_kwargs)
             new_trader.backtest(deposit=deposit / len(tickers),
                                 bet=bet,
-                                commission_reuse=commission,
+                                commission=commission,
                                 plot=False,
                                 print_out=False,
                                 column=column,
