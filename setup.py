@@ -11,7 +11,7 @@ setup(
     author='Vlad Kochetov',
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=setuptools.find_packages(),
-    version='4.5',
+    version='4.6',
     description='Trading system for crypto, forex, stocks and others',
     long_description=long_desc,
     long_description_content_type="text/markdown",
@@ -25,7 +25,7 @@ setup(
         'scipy==1.6.3',
         'ccxt==1.50.84'
     ],
-    download_url='https://github.com/VladKochetov007/quick_trade/archive/4.5.tar.gz',
+    download_url='https://github.com/VladKochetov007/quick_trade/archive/4.6.tar.gz',
     keywords=[
         'technical-analysis',
         'python3',
