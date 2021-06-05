@@ -18,11 +18,9 @@ setup(
     url='https://github.com/VladKochetov007/quick_trade',
     install_requires=[
         'plotly==4.14.3',
-        'pykalman==0.9.5',
         'numpy==1.20.3',
         'pandas==1.2.4',
         'ta==0.7.0',
-        'scipy==1.6.3',
         'ccxt==1.50.84'
     ],
     download_url='https://github.com/VladKochetov007/quick_trade/archive/4.6.0.tar.gz',

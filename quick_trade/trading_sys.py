@@ -33,9 +33,7 @@ import ta.volume
 import talib
 from plotly.graph_objs import Line
 from plotly.subplots import make_subplots
-from pykalman import KalmanFilter
 from quick_trade import utils
-from scipy import signal
 
 
 class Trader(object):
@@ -161,44 +159,6 @@ class Trader(object):
     @classmethod
     def _get_this_instance(cls, *args, **kwargs):
         return cls(*args, **kwargs)
-
-    def kalman_filter(self,
-                      df: pd.Series,
-                      iters: int = 5,
-                      plot: bool = True) -> pd.Series:
-        filtered: np.ndarray
-        k_filter: KalmanFilter = KalmanFilter()
-        df: pd.Series
-        i: int
-        filtered = k_filter.filter(np.array(df))[0]
-        for i in range(iters):
-            filtered = k_filter.smooth(filtered)[0]
-        if plot:
-            self.fig.add_trace(
-                Line(
-                    name='kalman filter',
-                    y=filtered.T[0],
-                    line=dict(width=utils.SUB_LINES_WIDTH)), 1, 1)
-        return pd.Series(filtered.T[0])
-
-    def scipy_filter(self,
-                     df: pd.Series,
-                     window_length: int = 101,
-                     polyorder: int = 3,
-                     plot: bool = True,
-                     **scipy_savgol_filter_kwargs) -> pd.Series:
-        filtered = signal.savgol_filter(
-            df,
-            window_length=window_length,
-            polyorder=polyorder,
-            **scipy_savgol_filter_kwargs)
-        if plot:
-            self.fig.add_trace(
-                Line(
-                    name='savgol filter',
-                    y=filtered,
-                    line=dict(width=utils.SUB_LINES_WIDTH)), 1, 1)
-        return pd.Series(filtered)
 
     def __get_stop_take(self, sig: utils.PREDICT_TYPE) -> Dict[str, float]:
         """
