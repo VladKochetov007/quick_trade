@@ -49,6 +49,7 @@ class QuickTradeTuner(object):
         backtest_kwargs['plot'] = False
         backtest_kwargs['show'] = False
         backtest_kwargs['print_out'] = False
+
         def best():
             return defaultdict(best)
 

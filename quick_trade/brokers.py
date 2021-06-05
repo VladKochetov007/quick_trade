@@ -41,7 +41,7 @@ class TradingClient(object):
                       logging=True):
         self.order_create('Buy',
                           ticker=ticker,
-                          quantity=quantity*credit_leverage)
+                          quantity=quantity * credit_leverage)
         if logging:
             utils.logger.info('client buy')
 
@@ -52,7 +52,7 @@ class TradingClient(object):
                        logging=True):
         self.order_create('Sell',
                           ticker=ticker,
-                          quantity=quantity*credit_leverage)
+                          quantity=quantity * credit_leverage)
         if logging:
             utils.logger.info('client sell')
 

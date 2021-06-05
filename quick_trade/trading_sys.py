@@ -701,12 +701,12 @@ class Trader(object):
                 next_l) in enumerate(zip(self.returns[:-1],
                                          self._stop_losses[:-1],
                                          self._take_profits[:-1],
-                                      seted_[:-1],
+                                         seted_[:-1],
                                          self._credit_leverages[:-1],
-                                      data_high[:-1],
-                                      data_low[:-1],
-                                      data_high[1:],
-                                      data_low[1:])):
+                                         data_high[:-1],
+                                         data_low[:-1],
+                                         data_high[1:],
+                                         data_low[1:])):
 
             if seted is not np.nan:
                 if oldsig != utils.EXIT:
@@ -726,7 +726,8 @@ class Trader(object):
                 ignore_breakout = True
 
             next_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
-            if (min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit) and next_breakout) or ignore_breakout:
+            if (min(stop_loss, take_profit) < low <= high < max(stop_loss,
+                                                                take_profit) and next_breakout) or ignore_breakout:
                 diff = data_column[e + 1] - data_column[e]
             else:
                 exit_take_stop = True
@@ -1171,7 +1172,7 @@ winrate: {self.winrate}%"""
 
                     self.client.order_create(predict,
                                              self.ticker,
-                                             bet*credit_leverage)
+                                             bet * credit_leverage)
                     self.__exit_order__ = False
         return {
             'predict': predict,
@@ -1545,10 +1546,10 @@ winrate: {self.winrate}%"""
     def get_support_resistanse(self) -> Dict[str, Dict[int, float]]:
         lows = self.df['Low'].values
         highs = self.df['High'].values
-        for i in range(2, len(lows)-2):
-            if lows[i-2] >= lows[i-1] >= lows[i] <= lows[i+1] <= lows[i+2]:
+        for i in range(2, len(lows) - 2):
+            if lows[i - 2] >= lows[i - 1] >= lows[i] <= lows[i + 1] <= lows[i + 2]:
                 self.supports[i] = lows[i]
-            if highs[i-2] <= highs[i-1] <= highs[i] >= highs[i+1] >= highs[i+2]:
+            if highs[i - 2] <= highs[i - 1] <= highs[i] >= highs[i + 1] >= highs[i + 2]:
                 self.resistances[i] = highs[i]
         return {'resistance': self.resistances,
                 'supports': self.supports}
