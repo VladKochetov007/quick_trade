@@ -192,15 +192,14 @@ print(tuner.sort_tunes()) # you can save it as json
 ```
 
 ## installing:
-
-```
+```commandline
 $ git clone https://github.com/VladKochetov007/quick_trade.git
 $ pip3 install -r quick_trade/requirements.txt
 ```
 
 or
 
-```
+```commandline
 $ pip3 install quick-trade
 ```
 
@@ -245,7 +244,7 @@ USDT TRC20: ```TCb9nWdApXmrfQuPcChdP9FpBXjXuFDFNX```
 
 ### My telegram
 ```
-@lovevafli
+@VladKochetov07
 ```
 
 ## Donations:
