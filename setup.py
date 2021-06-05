@@ -25,7 +25,7 @@ setup(
         'scipy==1.6.3',
         'ccxt==1.50.84'
     ],
-    download_url='https://github.com/VladKochetov007/quick_trade/archive/4.6.tar.gz',
+    download_url='https://github.com/VladKochetov007/quick_trade/archive/4.6.0.tar.gz',
     keywords=[
         'technical-analysis',
         'python3',
