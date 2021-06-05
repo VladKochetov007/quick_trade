@@ -35,7 +35,8 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/ and "
                           "https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
                           "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests --"
-                          "IEX token"]
+                          "IEX token",
+                          "Igor Kroitor -- donate 0.5 ETH (~1320$)"]
 __version__: str = "4.5"
 
 SCATTER_SIZE: float = 12.0

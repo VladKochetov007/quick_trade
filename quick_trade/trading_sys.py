@@ -2,6 +2,7 @@
 Trading project:
     - testing
     - trading
+    - quick_trade-tuner
 
 """
 
@@ -85,9 +86,7 @@ class Trader(object):
                  ticker: str = 'BTC/USDT',
                  df: pd.DataFrame = pd.DataFrame(),
                  interval: str = '1d',
-                 trading_on_client: bool = False,
-                 *args,
-                 **kwargs):
+                 trading_on_client: bool = False):
         self.df = df.reset_index(drop=True)
         self.ticker = ticker
         self.interval = interval
@@ -166,9 +165,7 @@ class Trader(object):
     def kalman_filter(self,
                       df: pd.Series,
                       iters: int = 5,
-                      plot: bool = True,
-                      *args,
-                      **kwargs) -> pd.Series:
+                      plot: bool = True) -> pd.Series:
         filtered: np.ndarray
         k_filter: KalmanFilter = KalmanFilter()
         df: pd.Series
@@ -270,7 +267,7 @@ class Trader(object):
         self._take_profits = take_profits
         return self._stop_losses, self._take_profits
 
-    def strategy_diff(self, frame_to_diff: pd.Series, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
+    def strategy_diff(self, frame_to_diff: pd.Series, *args) -> utils.PREDICT_TYPE_LIST:
         """
         frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
         """
@@ -279,7 +276,7 @@ class Trader(object):
         self.set_credit_leverages()
         return self.returns
 
-    def strategy_buy_hold(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
+    def strategy_buy_hold(self) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.BUY for _ in range(len(self.df))]
         self.set_credit_leverages()
         self.set_open_stop_and_take()
@@ -288,9 +285,7 @@ class Trader(object):
     def strategy_2_sma(self,
                        slow: int = 100,
                        fast: int = 30,
-                       plot: bool = True,
-                       *args,
-                       **kwargs) -> utils.PREDICT_TYPE_LIST:
+                       plot: bool = True) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         SMA1 = ta.trend.sma_indicator(self.df['Close'], fast)
         SMA2 = ta.trend.sma_indicator(self.df['Close'], slow)
@@ -321,9 +316,7 @@ class Trader(object):
                        slow: int = 100,
                        mid: int = 26,
                        fast: int = 13,
-                       plot: bool = True,
-                       *args,
-                       **kwargs) -> utils.PREDICT_TYPE_LIST:
+                       plot: bool = True) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         SMA1 = ta.trend.sma_indicator(self.df['Close'], fast)
         SMA2 = ta.trend.sma_indicator(self.df['Close'], mid)
@@ -355,9 +348,7 @@ class Trader(object):
                        slow: int = 46,
                        mid: int = 21,
                        fast: int = 3,
-                       plot: bool = True,
-                       *args,
-                       **kwargs) -> utils.PREDICT_TYPE_LIST:
+                       plot: bool = True) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         ema3 = ta.trend.ema_indicator(self.df['Close'], fast)
         ema21 = ta.trend.ema_indicator(self.df['Close'], mid)
@@ -385,9 +376,7 @@ class Trader(object):
 
     def strategy_macd(self,
                       slow: int = 100,
-                      fast: int = 30,
-                      *args,
-                      **kwargs) -> utils.PREDICT_TYPE_LIST:
+                      fast: int = 30) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         diff = ta.trend.macd_diff(self.df['Close'], slow, fast)
 
@@ -407,7 +396,6 @@ class Trader(object):
                      maximum: float = 80,
                      max_mid: float = 75,
                      min_mid: float = 35,
-                     *args,
                      **rsi_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         rsi = ta.momentum.rsi(close=self.df['Close'], **rsi_kwargs)
@@ -428,7 +416,7 @@ class Trader(object):
         self.set_open_stop_and_take()
         return self.returns
 
-    def strategy_parabolic_SAR(self, plot: bool = True, *args, **sar_kwargs) -> utils.PREDICT_TYPE_LIST:
+    def strategy_parabolic_SAR(self, plot: bool = True, **sar_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         sar: ta.trend.PSARIndicator = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
                                                              self.df['Close'], **sar_kwargs)
@@ -459,7 +447,6 @@ class Trader(object):
     def strategy_macd_histogram_diff(self,
                                      slow: int = 23,
                                      fast: int = 12,
-                                     *args,
                                      **macd_kwargs) -> utils.PREDICT_TYPE_LIST:
         _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
         signal_ = _MACD_.macd_signal()
@@ -566,9 +553,7 @@ class Trader(object):
                           senkouspan: int = 52,
                           chinkouspan: int = 26,
                           stop_loss_plus: float = 40.0,
-                          plot: bool = True,
-                          *args,
-                          **kwargs) -> utils.PREDICT_TYPE_LIST:
+                          plot: bool = True) -> utils.PREDICT_TYPE_LIST:
         cloud = ta.trend.IchimokuIndicator(self.df["High"],
                                            self.df["Low"],
                                            tenkansen,
@@ -674,7 +659,7 @@ class Trader(object):
         self.set_open_stop_and_take()
         return self.returns
 
-    def inverse_strategy(self, swap_tpop_take: bool = True, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
+    def inverse_strategy(self, swap_tpop_take: bool = True) -> utils.PREDICT_TYPE_LIST:
         """
         makes signals inverse:
         buy = sell.
@@ -1057,9 +1042,7 @@ winrate: {self.winrate}%"""
     def strategy_collider(self,
                           first_returns: utils.PREDICT_TYPE_LIST,
                           second_returns: utils.PREDICT_TYPE_LIST,
-                          mode: str = 'minimalist',
-                          *args,
-                          **kwargs) -> utils.PREDICT_TYPE_LIST:
+                          mode: str = 'minimalist') -> utils.PREDICT_TYPE_LIST:
         """
         :param second_returns: returns of strategy
         :param first_returns: returns of strategy
@@ -1253,6 +1236,7 @@ winrate: {self.winrate}%"""
                          *strategy_args,
                          **strategy_kwargs):
         """
+        :param strategy_in_sleep: reuse strategy in candle for new S/L, T/P or martingale
         :param limit: client.get_data_historical's limit argument
         :param wait_sl_tp_checking: sleeping time after stop-loss and take-profit checking (seconds)
         :param print_exc: print  exceptions in while loop
@@ -1301,7 +1285,7 @@ winrate: {self.winrate}%"""
                             if self.trading_on_client:
                                 self.client.exit_last_order()
                         elif strategy_in_sleep:
-                            strategy(*strategy_args, **strategy_kwargs)
+                            break
                     time.sleep(wait_sl_tp_checking)
                     if not (time.time() < (__now__ + self._sec_interval)):
                         self._prev_predict = utils.convert_signal_str(self.returns[-1])
@@ -1316,19 +1300,19 @@ winrate: {self.winrate}%"""
                 else:
                     raise exc
 
-    def log_data(self, *args, **kwargs):
+    def log_data(self):
         self.fig.update_yaxes(row=1, col=1, type='log')
         utils.logger.info('trader log data')
 
-    def log_deposit(self, *args, **kwargs):
+    def log_deposit(self):
         self.fig.update_yaxes(row=2, col=1, type='log')
         utils.logger.info('trader log deposit')
 
-    def log_returns(self, *args, **kwargs):
+    def log_returns(self):
         self.fig.update_yaxes(row=3, col=1, type='log')
         utils.logger.info('trader log returns')
 
-    def set_client(self, your_client: brokers.TradingClient, *args, **kwargs):
+    def set_client(self, your_client: brokers.TradingClient):
         """
         :param your_client: trading client
         """
@@ -1337,9 +1321,7 @@ winrate: {self.winrate}%"""
 
     def convert_signal(self,
                        old: utils.PREDICT_TYPE = utils.SELL,
-                       new: utils.PREDICT_TYPE = utils.EXIT,
-                       *args,
-                       **kwargs) -> utils.PREDICT_TYPE_LIST:
+                       new: utils.PREDICT_TYPE = utils.EXIT) -> utils.PREDICT_TYPE_LIST:
         pos: int
         val: utils.PREDICT_TYPE
         for pos, val in enumerate(self.returns):
@@ -1352,9 +1334,7 @@ winrate: {self.winrate}%"""
                                take_profit: float = np.inf,
                                stop_loss: float = np.inf,
                                set_stop: bool = True,
-                               set_take: bool = True,
-                               *args,
-                               **kwargs):
+                               set_take: bool = True):
         """
         :param set_take: create new take profits.
         :param set_stop: create new stop losses.
@@ -1391,7 +1371,7 @@ winrate: {self.winrate}%"""
                 self._stop_losses.append(stop_flag)
         utils.logger.debug(f'trader stop loss: {stop_loss}, trader take profit: {take_profit}')
 
-    def set_credit_leverages(self, credit_lev: float = 1.0, *args, **kwargs):
+    def set_credit_leverages(self, credit_lev: float = 1.0):
         """
         Sets the leverage for bets.
         :param credit_lev: leverage in points
@@ -1409,9 +1389,7 @@ winrate: {self.winrate}%"""
 
     def find_pip_bar(self,
                      min_diff_coef: float = 2.0,
-                     body_coef: float = 10.0,
-                     *args,
-                     **kwargs) -> utils.PREDICT_TYPE_LIST:
+                     body_coef: float = 10.0) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         flag = utils.EXIT
         e: int
@@ -1441,7 +1419,7 @@ winrate: {self.winrate}%"""
         self.set_open_stop_and_take()
         return self.returns
 
-    def find_DBLHC_DBHLC(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
+    def find_DBLHC_DBHLC(self) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.EXIT]
         flag: utils.PREDICT_TYPE = utils.EXIT
 
@@ -1470,7 +1448,7 @@ winrate: {self.winrate}%"""
         self.set_credit_leverages()
         return self.returns
 
-    def find_TBH_TBL(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
+    def find_TBH_TBL(self) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.EXIT]
         flag: utils.PREDICT_TYPE = utils.EXIT
         high: List[float]
@@ -1492,7 +1470,7 @@ winrate: {self.winrate}%"""
         self.set_open_stop_and_take()
         return self.returns
 
-    def find_PPR(self, *args, **kwargs) -> utils.PREDICT_TYPE_LIST:
+    def find_PPR(self) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.EXIT] * 2
         flag: utils.PREDICT_TYPE = utils.EXIT
         high: List[float]
@@ -1513,7 +1491,7 @@ winrate: {self.winrate}%"""
         self.set_open_stop_and_take()
         return self.returns
 
-    def is_doji(self, *args, **kwargs) -> List[bool]:
+    def is_doji(self) -> List[bool]:
         """
         :returns: list of booleans.
         """
@@ -1528,7 +1506,7 @@ winrate: {self.winrate}%"""
         self.set_open_stop_and_take()
         return ret
 
-    def find_all_talib_patterns(self, *args, **kwargs):
+    def find_all_talib_patterns(self):
         open_ = self.df['Open']
         high = self.df['High']
         low = self.df['Low']

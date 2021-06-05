@@ -21,7 +21,7 @@ Algo-trading system with python.
 
 ## customize your strategy!
 
-```
+```python
 import quick_trade.trading_sys as qtr
 from quick_trade import brokers
 import yfinance as yf
@@ -38,16 +38,16 @@ class My_trader(qtr.Trader):
         return ret
 
 
-a = My_trader('MSFT', df=yf.download('MSFT', start='2019-01-01'))
+a = My_trader('MSFT/USD', df=yf.download('MSFT', start='2019-01-01'))
 a.set_pyplot()
-a.set_client(brokers.TradingClient(ccxt.binance()))
+a.set_client(brokers.TradingClient(ccxt.ftx()))
 a.strategy_sell_and_hold()
 a.backtest()
 ```
 
 ## find the best strategy!
 
-```
+```python
 import quick_trade.trading_sys as qtr
 import ta.trend
 import ta.momentum
@@ -181,8 +181,8 @@ params = {
 
 tuner = QuickTradeTuner(
         TradingClient(ccxt.binance()),
-        ['BTCUSDT', 'OMGUSDT', 'XRPUSDT'],
-        ['15m', '5m],
+        ['BTC/USDT', 'OMG/USDT', 'XRP/USDT'],
+        ['15m', '5m'],
         [1000, 700],
         params
     )
@@ -204,10 +204,11 @@ or
 $ pip3 install quick-trade
 ```
 
-## user's code example
-```
+## user's code example (backtest)
+```python
 import quick_trade.trading_sys as qtr
 import ccxt
+from quick_trade import brokers
 
 client = brokers.TradingClient(ccxt.binance())
 df = client.get_data_historical('BTC/USDT', '15m', 1000)
@@ -215,7 +216,7 @@ trader = qtr.Trader('BTC/USDT', df=df, interval='15m')
 trader.set_client(client)
 trader.set_pyplot(height=731, width=1440, row_heights=[10, 5, 2])
 trader.strategy_2_sma(55, 21)
-trader.backtest(deposit=1000, commission=0.075, bet=qtr.utils.np.inf)
+trader.backtest(deposit=1000, commission=0.075, bet=qtr.utils.np.inf) # backtest on one pare
 ```
 
 ## output plotly chart:
@@ -246,6 +247,11 @@ USDT TRC20: ```TCb9nWdApXmrfQuPcChdP9FpBXjXuFDFNX```
 ```
 @lovevafli
 ```
+
+## Donations:
+
+[0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740](https://etherscan.io/address/0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740)
+
 
 # License
 
