@@ -163,7 +163,7 @@ class Trader(object):
     def __get_stop_take(self, sig: utils.PREDICT_TYPE) -> Dict[str, float]:
         """
         calculating stop loss and take profit.
-        sig:        |     int     |  signal to sell/buy/exit:
+        sig:        |     PREDICT_TYPE     |  signal to sell/buy/exit:
             EXIT -- exit.
             BUY -- buy.
             SELL -- sell.
@@ -208,7 +208,7 @@ class Trader(object):
         take_profits = []
         for stop_loss_price, take_profit_price, price, sig in zip(self._stop_losses,
                                                                   self._take_profits,
-                                                                  self.df['Close'].values,
+                                                                  self._open_lot_prices,
                                                                   self.returns):
             add_sl = (price / 10_000) * add_stop_loss
             add_tp = (price / 10_000) * add_take_profit
