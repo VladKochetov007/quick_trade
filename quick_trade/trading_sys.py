@@ -608,7 +608,7 @@ class Trader(object):
 
     def crossover(self, fast: Iterable, slow: Iterable):
         self.returns = []
-        for s, f in zip(slow, fast):
+        for s, f in zip(list(slow), list(fast)):
             if s < f:
                 self.returns.append(utils.BUY)
             elif s > f:
@@ -713,6 +713,7 @@ class Trader(object):
                     commission_reuse = 2
                 else:
                     commission_reuse = 1
+                bet = start_bet
                 if bet > deposit:
                     bet = deposit
                 open_price = data_column[e]
@@ -731,6 +732,8 @@ class Trader(object):
                 diff = data_column[e + 1] - data_column[e]
             else:
                 exit_take_stop = True
+                if next_breakout:
+                    e += 1
                 if sig == utils.BUY and high >= take_profit:
                     diff = take_profit - data_column[e]
 
@@ -745,6 +748,8 @@ class Trader(object):
 
                 else:
                     diff = 0.0
+                if next_breakout:
+                    e -= 1
 
             if sig == utils.SELL:
                 diff = -diff
