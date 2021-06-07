@@ -16,6 +16,7 @@ Trading project:
 #   add tradingview realtime signals
 #   numpy
 #   scalper and dca bot
+#   auto deploy + unit-tests
 
 import time
 import typing
