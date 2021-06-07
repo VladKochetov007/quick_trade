@@ -227,7 +227,7 @@ class Trader(object):
         self._take_profits = take_profits
         return self._stop_losses, self._take_profits
 
-    def strategy_diff(self, frame_to_diff: pd.Series, *args) -> utils.PREDICT_TYPE_LIST:
+    def strategy_diff(self, frame_to_diff: pd.Series) -> utils.PREDICT_TYPE_LIST:
         """
         frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
         """

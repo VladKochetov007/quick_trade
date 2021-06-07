@@ -39,4 +39,22 @@ as the initial price
 |sig|PREDICT_TYPE|signal buy/sell/exit|
 |returns|Dict|{'stop': S/L value, 'take': T/P value}|
 
+
 ### sl_tp_adder
+A method for adding a number of points to
+the current S/L and T/P values.
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| add_stop_loss | float | points for addition to sl |
+| add_take_profit | float | points for addition to tp |
+| returns | Tuple\[stop_losses, take_profits] | sl, tp |
+
+### strategy_diff
+The strategy issues its verdict based on the last change to the dataframe.
+If you give the entry the closing price of candles, then if the candle is green - LONG, if red - SHORT
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| frame_to_diff | pd.Series | series of dataframe |
+| returns | PREDICT_TYPE_LIST | returns |
