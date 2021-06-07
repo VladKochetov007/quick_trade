@@ -58,3 +58,41 @@ If you give the entry the closing price of candles, then if the candle is green 
 | :---: | :---: | :---: |
 | frame_to_diff | pd.Series | series of dataframe |
 | returns | PREDICT_TYPE_LIST | returns |
+
+### strategy_rsi
+When the RSI is greater than the ```maximum```, and the current value is less than the previous one, short. It's the same with long (but with ```minimum```).
+
+If the value has crossed the border with ```mid``` - exit
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| minimum | float | min level of RSI |
+| maximum | float | max level of RSI |
+| max_mid | float | max/mid level of RSI (exit from short) |
+| min_mid | float | min/mid level of RSI (exit from long) |
+| returns | PREDICT_TYPE_LIST | returns |
+
+example:
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/docs/rsi_strat_example.jpg?raw=true)
+
+### strategy_parabolic_SAR
+parabolic SAR strategy
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| plot | bool | plotting of SAR indicator |
+| **sar_kwargs | named arguments | named arguments for ```ta.trend.PSARIndicator``` |
+| returns | PREDICT_TYPE_LIST | returns |
+
+### strategy_macd_histogram_diff
+```strategy_diff``` with MACD's histogram data
+example:
+
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/docs/macd_diff_example.jpg?raw=true)
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| slow | int | slow MA of MACD |
+| fast | int | fast MA of MACD |
+| **macd_kwargs | named arguments | named arguments for ```ta.trend.MACD``` |
+| returns | PREDICT_TYPE_LIST | returns |
