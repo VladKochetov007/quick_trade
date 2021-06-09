@@ -17,6 +17,7 @@ Trading project:
 #   numpy
 #   scalper and dca bot
 #   auto deploy + unit-tests
+#   more images in docs
 
 import time
 import typing
@@ -575,8 +576,6 @@ class Trader(object):
                 max_cloud = max((A, B))
                 min_cloud = min((A, B))
 
-                stop_loss_adder = stop_loss_plus * (close / 10_000)
-
                 if not min_cloud < close < max_cloud:
                     if tenkan > kijun:
                         flag1 = utils.BUY
@@ -598,18 +597,16 @@ class Trader(object):
                     if (trade == utils.BUY and flag1 == utils.SELL) or (trade == utils.SELL and flag1 == utils.BUY):
                         trade = utils.EXIT
                 self.returns.append(trade)
-                if trade == utils.BUY:
-                    self._stop_losses.append(min_cloud - stop_loss_adder)
-                else:
-                    self._stop_losses.append(max_cloud + stop_loss_adder)
+
         self.set_open_stop_and_take(set_take=True,
                                     set_stop=False)
         self.set_credit_leverages()
+        self.sl_tp_adder(add_stop_loss=stop_loss_plus)
         return self.returns
 
     def crossover(self, fast: Iterable, slow: Iterable):
         self.returns = []
-        for s, f in zip(list(slow), list(fast)):
+        for s, f in zip(slow, fast):
             if s < f:
                 self.returns.append(utils.BUY)
             elif s > f:
@@ -727,14 +724,12 @@ class Trader(object):
                 exit_take_stop = False
                 ignore_breakout = True
 
-            next_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
+            next_not_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
             if (min(stop_loss, take_profit) < low <= high < max(stop_loss,
-                                                                take_profit) and next_breakout) or ignore_breakout:
+                                                                take_profit) and next_not_breakout) or ignore_breakout:
                 diff = data_column[e + 1] - data_column[e]
             else:
                 exit_take_stop = True
-                if next_breakout:
-                    e += 1
                 if sig == utils.BUY and high >= take_profit:
                     diff = take_profit - data_column[e]
 
@@ -749,8 +744,6 @@ class Trader(object):
 
                 else:
                     diff = 0.0
-                if next_breakout:
-                    e -= 1
 
             if sig == utils.SELL:
                 diff = -diff

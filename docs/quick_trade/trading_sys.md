@@ -52,7 +52,7 @@ the current S/L and T/P values.
 
 ### strategy_diff
 The strategy issues its verdict based on the last change to the dataframe.
-If you give the entry the closing price of candles, then if the candle is green - LONG, if red - SHORT
+If you give the entry the closing price of candles, then if the candle is green - long, if red - short
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -60,7 +60,8 @@ If you give the entry the closing price of candles, then if the candle is green 
 | returns | PREDICT_TYPE_LIST | returns |
 
 ### strategy_rsi
-When the RSI is greater than the ```maximum```, and the current value is less than the previous one, short. It's the same with long (but with ```minimum```).
+When the RSI is greater than the ```maximum```, and the current value 
+is less than the previous one, short. It's the same with long (but with ```minimum```).
 
 If the value has crossed the border with ```mid``` - exit
 
@@ -85,10 +86,7 @@ parabolic SAR strategy
 | returns | PREDICT_TYPE_LIST | returns |
 
 ### strategy_macd_histogram_diff
-```strategy_diff``` with MACD's histogram data
-example:
-
-![image](https://github.com/VladKochetov007/quick_trade/blob/master/docs/macd_diff_example.jpg?raw=true)
+```strategy_diff``` with MACD's histogram data.
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -96,3 +94,53 @@ example:
 | fast | int | fast MA of MACD |
 | **macd_kwargs | named arguments | named arguments for ```ta.trend.MACD``` |
 | returns | PREDICT_TYPE_LIST | returns |
+
+example:
+
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/docs/macd_diff_example.jpg?raw=true)
+
+### strategy_supertrend
+supertrend strategy. S/L - ST indicator
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| plot | bool | plotting of SAR indicator |
+| **st_args | arguments | arguments for ```SuperTrendIndicator``` |
+| **st_kwargs | named arguments | named arguments for ```SuperTrendIndicator``` |
+| returns | PREDICT_TYPE_LIST | returns |
+
+### strategy_bollinger
+Bollinger bands strategy (not breakout)
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| plot | bool | plotting of bollinger bands |
+| to_mid | bool | exit on mid line of ```ta.volatility.BollingerBands``` |
+| **bollinger_args | arguments | arguments for ```ta.volatility.BollingerBands``` |
+| **bollinger_kwargs | named arguments | named arguments for ```ta.volatility.BollingerBands``` |
+| returns | PREDICT_TYPE_LIST | returns |
+
+### get_heikin_ashi
+Heikin Ashi candles
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| df | pd.DataFrame | dataframe with Open, High, Low, Close data |
+| returns | pd.DataFrame | HA ohlc |
+
+### crossover
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| fast | Iterable | When the element of this parameter is less than the element of the ```slow``` parameter - short. When more - long. |
+| slow | Iterable | When the element of this parameter is greater than the element of the ```fast``` parameter - short. When less, it takes a long time. |
+| returns | PREDICT_TYPE_LIST | crossover  strategy |
+
+### inverse_strategy
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| fast | Iterable | When the element of this parameter is less than the element of the ```slow``` parameter - short. When more - long. |
+| slow | Iterable | When the element of this parameter is greater than the element of the ```fast``` parameter - short. When less, it takes a long time. |
+| returns | PREDICT_TYPE_LIST | crossover  strategy |
+
