@@ -21,7 +21,7 @@ setup(
         'numpy==1.20.3',
         'pandas==1.2.4',
         'ta==0.7.0',
-        'ccxt==1.51.9'
+        'ccxt==1.51.20'
     ],
     download_url='https://github.com/VladKochetov007/quick_trade/archive/4.6.5.tar.gz',
     keywords=[
