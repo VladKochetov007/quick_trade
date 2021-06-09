@@ -1,7 +1,9 @@
 # trading_sys:
+
 The main file of quick_trade.
 
 ## Trader
+
 A class in which you can trade and test strategies.
 
 | param | type | description |
@@ -10,8 +12,8 @@ A class in which you can trade and test strategies.
 |df|pd.DataFrame|dataframe with columns: Close, Open, High, Low, Volume|
 |interval|str| timeframe:1m 2m 3m 5m 15m 30m 45m 1h 90m 2h 3h 4h 12h 1d 3d 1w 1M 3M 6M|
 
-
 ### _get_attr
+
 getattr from self
 
 | param | type | description |
@@ -28,21 +30,18 @@ getattr from self
 |returns|Trader (or child class)|new trading object|
 
 ### __get_stop_take
-The method converts stop loss and take profit
-in points to stop loss and take profit in 
-specific prices using self._stop_loss and 
-self._take_profit as values and self._open_price 
-as the initial price
+
+The method converts stop loss and take profit in points to stop loss and take profit in specific prices using self._
+stop_loss and self._take_profit as values and self._open_price as the initial price
 
 | param | type | description |
 |:---:|:---:|:---:|
 |sig|PREDICT_TYPE|signal buy/sell/exit|
 |returns|Dict|{'stop': S/L value, 'take': T/P value}|
 
-
 ### sl_tp_adder
-A method for adding a number of points to
-the current S/L and T/P values.
+
+A method for adding a number of points to the current S/L and T/P values.
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -51,8 +50,9 @@ the current S/L and T/P values.
 | returns | Tuple\[stop_losses, take_profits] | sl, tp |
 
 ### strategy_diff
-The strategy issues its verdict based on the last change to the dataframe.
-If you give the entry the closing price of candles, then if the candle is green - long, if red - short
+
+The strategy issues its verdict based on the last change to the dataframe. If you give the entry the closing price of
+candles, then if the candle is green - long, if red - short
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -60,8 +60,9 @@ If you give the entry the closing price of candles, then if the candle is green 
 | returns | PREDICT_TYPE_LIST | returns |
 
 ### strategy_rsi
-When the RSI is greater than the ```maximum```, and the current value 
-is less than the previous one, short. It's the same with long (but with ```minimum```).
+
+When the RSI is greater than the ```maximum```, and the current value is less than the previous one, short. It's the
+same with long (but with ```minimum```).
 
 If the value has crossed the border with ```mid``` - exit
 
@@ -77,6 +78,7 @@ example:
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/docs/rsi_strat_example.jpg?raw=true)
 
 ### strategy_parabolic_SAR
+
 parabolic SAR strategy
 
 | param  | type | description |
@@ -86,6 +88,7 @@ parabolic SAR strategy
 | returns | PREDICT_TYPE_LIST | returns |
 
 ### strategy_macd_histogram_diff
+
 ```strategy_diff``` with MACD's histogram data.
 
 | param  | type | description |
@@ -100,6 +103,7 @@ example:
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/docs/macd_diff_example.jpg?raw=true)
 
 ### strategy_supertrend
+
 supertrend strategy. S/L - ST indicator
 
 | param  | type | description |
@@ -110,6 +114,7 @@ supertrend strategy. S/L - ST indicator
 | returns | PREDICT_TYPE_LIST | returns |
 
 ### strategy_bollinger
+
 Bollinger bands strategy (not breakout)
 
 | param  | type | description |
@@ -121,6 +126,7 @@ Bollinger bands strategy (not breakout)
 | returns | PREDICT_TYPE_LIST | returns |
 
 ### get_heikin_ashi
+
 Heikin Ashi candles
 
 | param  | type | description |

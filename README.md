@@ -25,6 +25,7 @@ from quick_trade import brokers
 import yfinance as yf
 import ccxt
 
+
 class My_trader(qtr.Trader):
     def strategy_sell_and_hold(self):
         ret = []
@@ -54,6 +55,8 @@ import ta.others
 import ta.volatility
 import ccxt
 from quick_trade.quick_trade_tuner.tuner import *
+
+
 class Test(qtr.Trader):
     def strategy_bollinger_break(self, **kwargs):
         self.strategy_bollinger(plot=True, **kwargs)
@@ -96,7 +99,7 @@ class Test(qtr.Trader):
         self.returns = []
         ema = ta.trend.ema_indicator(values, 200)
         for close, ma in zip(values.values, ema):
-            if close>ma:
+            if close > ma:
                 self.returns.append(qtr.utils.BUY)
             else:
                 self.returns.append(qtr.utils.SELL)
@@ -113,6 +116,7 @@ class Test(qtr.Trader):
         self.set_open_stop_and_take()
         self.set_credit_leverages(1)
         return self.returns
+
 
 params = {
     'strategy_supertrend1':
@@ -178,18 +182,19 @@ params = {
 }
 
 tuner = QuickTradeTuner(
-        TradingClient(ccxt.binance()),
-        ['BTC/USDT', 'OMG/USDT', 'XRP/USDT'],
-        ['15m', '5m'],
-        [1000, 700],
-        params
-    )
+    TradingClient(ccxt.binance()),
+    ['BTC/USDT', 'OMG/USDT', 'XRP/USDT'],
+    ['15m', '5m'],
+    [1000, 700],
+    params
+)
 
 tuner.tune(Test)
-print(tuner.sort_tunes()) # you can save it as json
+print(tuner.sort_tunes())  # you can save it as json
 ```
 
 ## installing:
+
 ```commandline
 $ git clone https://github.com/VladKochetov007/quick_trade.git
 $ pip3 install -r quick_trade/requirements.txt
@@ -202,6 +207,7 @@ $ pip3 install quick-trade
 ```
 
 ## user's code example (backtest)
+
 ```python
 import quick_trade.trading_sys as qtr
 import ccxt
@@ -213,7 +219,7 @@ trader = qtr.Trader('BTC/USDT', df=df, interval='15m')
 trader.set_client(client)
 trader.set_pyplot(height=731, width=1440, row_heights=[10, 5, 2])
 trader.strategy_2_sma(55, 21)
-trader.backtest(deposit=1000, commission=0.075, bet=qtr.utils.np.inf) # backtest on one pare
+trader.backtest(deposit=1000, commission=0.075, bet=qtr.utils.np.inf)  # backtest on one pare
 ```
 
 ## output plotly chart:
@@ -241,6 +247,7 @@ ETH ERC20: ```0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740```
 USDT TRC20: ```TCb9nWdApXmrfQuPcChdP9FpBXjXuFDFNX```
 
 ### My telegram
+
 ```
 @VladKochetov07
 ```
@@ -249,7 +256,10 @@ USDT TRC20: ```TCb9nWdApXmrfQuPcChdP9FpBXjXuFDFNX```
 
 [0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740](https://etherscan.io/address/0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740)
 
-
 # License
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">quick_trade</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/VladKochetov007" property="cc:attributionName" rel="cc:attributionURL">Vladyslav Kochetov</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
+quick_trade</span>
+by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/VladKochetov007" property="cc:attributionName" rel="cc:attributionURL">
+Vladyslav Kochetov</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+Creative Commons Attribution-ShareAlike 4.0 International License</a>.
