@@ -1,7 +1,7 @@
 import datetime as dt
 import json
 import logging
-from typing import Any, List, Union
+from typing import Any, List, Union, Tuple, Iterable
 
 import numpy as np
 import pandas as pd
@@ -167,7 +167,7 @@ def anti_set_(seted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
     return ret
 
 
-def get_window(values, window_length: int) -> List[Any]:
+def get_window(values, window_length: int) -> List[Iterable[Any]]:
     ret: List[Any] = []
     for e, i in enumerate(values[:len(values) - window_length + 1]):
         ret.append(values[e:e + window_length])
@@ -231,3 +231,67 @@ def get_linear(dataset) -> np.ndarray:
         return_list.append(start + mean_diff * i)
     logger.debug(f'in linear: self.mean_diff={mean_diff}')
     return np.array(return_list)
+
+def get_coef_sec(timeframe: str = '1d') -> Tuple[float, int]:
+    profit_calculate_coef: float
+    sec_interval: int
+    if timeframe == '1m':
+        profit_calculate_coef = (60 * 24 * 365)
+        sec_interval = 60
+    elif timeframe == '2m':
+        profit_calculate_coef = (30 * 24 * 365)
+        sec_interval = 120
+    elif timeframe == '3m':
+        profit_calculate_coef = (20 * 24 * 365)
+        sec_interval = 180
+    elif timeframe == '5m':
+        profit_calculate_coef = (12 * 24 * 365)
+        sec_interval = 300
+    elif timeframe == '15m':
+        profit_calculate_coef = (4 * 24 * 365)
+        sec_interval = 15 * 60
+    elif timeframe == '30m':
+        profit_calculate_coef = (2 * 24 * 365)
+        sec_interval = 60 * 30
+    elif timeframe == '45m':
+        profit_calculate_coef = (32 * 365)
+        sec_interval = 60 * 45
+    elif timeframe == '1h':
+        profit_calculate_coef = (24 * 365)
+        sec_interval = 60 * 60
+    elif timeframe == '90m':
+        profit_calculate_coef = (18 * 365)
+        sec_interval = 60 * 90
+    elif timeframe == '2h':
+        profit_calculate_coef = (12 * 365)
+        sec_interval = 60 * 60 * 2
+    elif timeframe == '3h':
+        profit_calculate_coef = (8 * 365)
+        sec_interval = 60 * 60 * 3
+    elif timeframe == '4h':
+        profit_calculate_coef = (6 * 365)
+        sec_interval = 60 * 60 * 4
+    elif timeframe == '12h':
+        profit_calculate_coef = (2 * 365)
+        sec_interval = 60 * 60 * 12
+    elif timeframe == '1d':
+        profit_calculate_coef = 365
+        sec_interval = 60 * 60 * 24
+    elif timeframe == '3d':
+        profit_calculate_coef = (365 / 3)
+        sec_interval = 86400 * 3
+    elif timeframe == '1w':
+        profit_calculate_coef = 52
+        sec_interval = 86400 * 7
+    elif timeframe == '1M':
+        profit_calculate_coef = 12
+        sec_interval = 86400 * 30
+    elif timeframe == '3M':
+        profit_calculate_coef = 4
+        sec_interval = 86400 * 90
+    elif timeframe == '6M':
+        profit_calculate_coef = 2
+        sec_interval = 86400 * 180
+    else:
+        raise ValueError(f'incorrect interval; {timeframe}')
+    return profit_calculate_coef, sec_interval

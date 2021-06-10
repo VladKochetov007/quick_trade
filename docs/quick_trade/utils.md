@@ -78,9 +78,9 @@ of 1.
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| values | List | data for getting "windows" |
+| values | Iterable | data for getting "windows" |
 | window_length | int | length of "windows" |
-| returns | list of lists | list of "windows" |
+| returns | List\[Iterable\[Any]] | list of "windows" |
 
 ## convert_signal_str
 
@@ -162,3 +162,11 @@ pseudo-linear numpy array
 | :---: | :---: | :---: |
 | dataset | Iterable | data for linear transformation |
 | returns | np.ndarray | linear data |
+
+## get_coef_sec
+Function for converting timeframe to profit ratio and sleep time for `realtime_trading`
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| dataset | str | timeframe |
+| returns | Tuple\[float, int] | profit coef and seconds to wait |

@@ -1,11 +1,3 @@
-"""
-Trading project:
-    - testing
-    - trading
-    - quick_trade-tuner
-
-"""
-
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
@@ -91,65 +83,7 @@ class Trader(object):
         self.ticker = ticker
         self.interval = interval
         self.trading_on_client = trading_on_client
-        if interval == '1m':
-            self._profit_calculate_coef = 1 / (60 * 24 * 365)
-            self._sec_interval = 60
-        elif interval == '2m':
-            self._profit_calculate_coef = 1 / (30 * 24 * 365)
-            self._sec_interval = 120
-        elif interval == '3m':
-            self._profit_calculate_coef = 1 / (20 * 24 * 365)
-            self._sec_interval = 180
-        elif interval == '5m':
-            self._profit_calculate_coef = 1 / (12 * 24 * 365)
-            self._sec_interval = 300
-        elif interval == '15m':
-            self._profit_calculate_coef = 1 / (4 * 24 * 365)
-            self._sec_interval = 15 * 60
-        elif interval == '30m':
-            self._profit_calculate_coef = 1 / (2 * 24 * 365)
-            self._sec_interval = 60 * 30
-        elif interval == '45m':
-            self._profit_calculate_coef = 1 / (32 * 365)
-            self._sec_interval = 60 * 45
-        elif interval == '1h':
-            self._profit_calculate_coef = 1 / (24 * 365)
-            self._sec_interval = 60 * 60
-        elif interval == '90m':
-            self._profit_calculate_coef = 1 / (18 * 365)
-            self._sec_interval = 60 * 90
-        elif interval == '2h':
-            self._profit_calculate_coef = 1 / (12 * 365)
-            self._sec_interval = 60 * 60 * 2
-        elif interval == '3h':
-            self._profit_calculate_coef = 1 / (8 * 365)
-            self._sec_interval = 60 * 60 * 3
-        elif interval == '4h':
-            self._profit_calculate_coef = 1 / (6 * 365)
-            self._sec_interval = 60 * 60 * 4
-        elif interval == '12h':
-            self._profit_calculate_coef = 1 / (2 * 365)
-            self._sec_interval = 60 * 60 * 12
-        elif interval == '1d':
-            self._profit_calculate_coef = 1 / 365
-            self._sec_interval = 60 * 60 * 24
-        elif interval == '3d':
-            self._profit_calculate_coef = 1 / (365 / 3)
-            self._sec_interval = 86400 * 3
-        elif interval == '1w':
-            self._profit_calculate_coef = 1 / 52
-            self._sec_interval = 86400 * 7
-        elif interval == '1M':
-            self._profit_calculate_coef = 1 / 12
-            self._sec_interval = 86400 * 30
-        elif interval == '3M':
-            self._profit_calculate_coef = 1 / 4
-            self._sec_interval = 86400 * 90
-        elif interval == '6M':
-            self._profit_calculate_coef = 1 / 2
-            self._sec_interval = 86400 * 180
-        else:
-            raise ValueError(f'incorrect interval; {interval}')
+        self._profit_calculate_coef, self._sec_interval = utils.get_coef_sec(interval)
         self.__exit_order__ = False
 
     def __repr__(self):

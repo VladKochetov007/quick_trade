@@ -150,3 +150,6 @@ Heikin Ashi candles
 | slow | Iterable | When the element of this parameter is greater than the element of the ```fast``` parameter - short. When less, it takes a long time. |
 | returns | PREDICT_TYPE_LIST | crossover  strategy |
 
+### backtest
+A method with the functionality of testing a strategy on historical data. For it to work, you need to use a strategy 
+that will assign values to `self.returns`,` self._stop_losses`, `self._take_profits` and `self._credit_leverages`.
