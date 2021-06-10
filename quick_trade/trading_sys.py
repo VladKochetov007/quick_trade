@@ -701,7 +701,7 @@ class Trader(object):
         self._linear = utils.get_linear(self.deposit_history)
         lin_calc_df = pd.DataFrame(self._linear)
         mean_diff = float(lin_calc_df.diff().mean())
-        self.year_profit = mean_diff / self._profit_calculate_coef
+        self.year_profit = mean_diff * self._profit_calculate_coef
         self.year_profit = (self.year_profit / money_start) * 100
         if self.trades != 0:
             self.winrate = (self.profits / self.trades) * 100
