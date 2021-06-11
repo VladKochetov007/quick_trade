@@ -15,6 +15,7 @@
                     LANGUAGE: "python3"
                     # Write make command to generate html e.g.- "make html"
                     MAKE_COMMAND: |
+                      echo 'test'
                       npm i docsify-cli -g
                       docsify init docs
                       docsify serve docs
