@@ -25,9 +25,10 @@ import ta.trend
 import ta.volatility
 import ta.volume
 import talib
-from plotly.graph_objs import Line
 from plotly.subplots import make_subplots
 from quick_trade import utils
+
+Line = dict
 
 
 class Trader(object):

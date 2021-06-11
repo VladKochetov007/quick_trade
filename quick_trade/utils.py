@@ -49,8 +49,6 @@ TEXT_COLOR: str = 'white'
 SUB_LINES_WIDTH: float = 3.0
 STOP_TAKE_OPN_ALPHA: float = 0.8
 COLOR_DEPOSIT: str = 'white'
-DEPO_COLOR_UP: str = 'green'
-DEPO_COLOR_DOWN: str = 'red'
 
 logger = logging.getLogger()
 logger.setLevel(30)
@@ -152,7 +150,6 @@ def set_(data: Any) -> SETED_TYPE_LIST:
             ret[e + 1] = np.nan
     return ret
 
-
 def anti_set_(seted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
     seted = np.nan_to_num(seted, nan=_nan_num)
     ret: List[Any] = [seted[0]]
@@ -166,13 +163,11 @@ def anti_set_(seted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
             flag = i
     return ret
 
-
 def get_window(values, window_length: int) -> List[Iterable[Any]]:
     ret: List[Any] = []
     for e, i in enumerate(values[:len(values) - window_length + 1]):
         ret.append(values[e:e + window_length])
     return ret
-
 
 def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: bool = False, limit=500):
     url: str = f"https://api.binance.com/api/v1/klines?symbol={ticker}&interval={interval}&limit={limit}"
@@ -188,7 +183,6 @@ def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: b
         df.index = [dt.datetime.fromtimestamp(i / 1000) for i in df.close_time]
     return df
 
-
 def convert_signal_str(predict: PREDICT_TYPE) -> str:
     if predict == BUY:
         return 'Buy'
@@ -197,7 +191,6 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
     elif predict == EXIT:
         return 'Exit'
 
-
 def ta_lib_to_returns(talib_returns: pd.Series, exit_: Any = EXIT, *args, **kwargs) -> PREDICT_TYPE_LIST:
     return list(talib_returns.replace({-200: SELL,
                                        200: BUY,
@@ -205,10 +198,8 @@ def ta_lib_to_returns(talib_returns: pd.Series, exit_: Any = EXIT, *args, **kwar
                                        -100: SELL,
                                        0: exit_}).values)
 
-
 def ta_lib_collider_all(data: pd.Series, *args, **kwargs) -> PREDICT_TYPE_LIST:
     return ta_lib_to_returns(data, exit_=np.nan)
-
 
 def get_linear(dataset) -> np.ndarray:
     """
