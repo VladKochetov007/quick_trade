@@ -38,8 +38,8 @@ jobs:
           LANGUAGE: "python3"
           # Write make command to generate html e.g.- "make html"
           MAKE_COMMAND: |
-            echo 'test'
             npm i docsify-cli -g
+            cd quick_trade
             docsify init docs
             docsify serve docs
           # Write the branch name for storing github pages source
