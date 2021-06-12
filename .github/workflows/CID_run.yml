@@ -1,17 +1,16 @@
 name: CI
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
-  build:
+  deps:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8']
+        python-version: [ '3.8' ]
 
     steps:
       - uses: actions/checkout@v2
-
       - name: loading dependencies
         run: |
           pip install --upgrade pip

@@ -37,7 +37,7 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests --"
                           "IEX token",
                           "Igor Kroitor -- donate 0.5 ETH (~1320$)"]
-__version__: str = "4.6.5"
+__version__: str = "4.6.6"
 
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
@@ -49,8 +49,6 @@ TEXT_COLOR: str = 'white'
 SUB_LINES_WIDTH: float = 3.0
 STOP_TAKE_OPN_ALPHA: float = 0.8
 COLOR_DEPOSIT: str = 'white'
-DEPO_COLOR_UP: str = 'green'
-DEPO_COLOR_DOWN: str = 'red'
 
 logger = logging.getLogger()
 logger.setLevel(30)
@@ -231,6 +229,7 @@ def get_linear(dataset) -> np.ndarray:
         return_list.append(start + mean_diff * i)
     logger.debug(f'in linear: self.mean_diff={mean_diff}')
     return np.array(return_list)
+
 
 def get_coef_sec(timeframe: str = '1d') -> Tuple[float, int]:
     profit_calculate_coef: float
