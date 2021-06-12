@@ -1072,12 +1072,7 @@ winrate: {self.winrate}%"""
         cond: bool
 
         # get prediction
-        predict = self.returns[-1]
-        predict = utils.convert_signal_str(predict)
-        if self.__exit_order__ and self._prev_predict == predict:
-            predict = 'Exit'
-        if predict != 'Exit':
-            self.__exit_order__ = False
+        predict = utils.convert_signal_str(self.returns[-1])
 
         # trading
         self.__last_stop_loss = self._stop_losses[-1]
@@ -1085,7 +1080,6 @@ winrate: {self.winrate}%"""
         self.__last_credit_leverage = self._credit_leverages[-1]
         if self._prev_predict != predict or self.__prev_credit_lev != self.__last_credit_leverage:
             utils.logger.info(f'open lot {predict}')
-            self._open_price = close[-1]
             if self.trading_on_client:
 
                 if predict == 'Exit':
@@ -1094,20 +1088,20 @@ winrate: {self.winrate}%"""
                 else:
                     _moneys_ = self.client.get_balance_ticker(self.ticker.split('/')[1])
                     ticker_price = self.client.get_ticker_price(self.ticker)
-                    if coin_lotsize_division:
-                        _moneys_ /= ticker_price
                     if bet_for_trading_on_client is not np.inf:
-                        bet = bet_for_trading_on_client / ticker_price
+                        bet = bet_for_trading_on_client
                     else:
                         bet = _moneys_
                     if bet > _moneys_:
                         bet = _moneys_
+                    if coin_lotsize_division:
+                        bet /= ticker_price
                     self.client.exit_last_order()
 
                     self.client.order_create(predict,
                                              self.ticker,
                                              bet * credit_leverage)
-                    self.__exit_order__ = False
+            self.__exit_order__ = False
         utils.logger.debug("returning prediction")
         return {
             'predict': predict,
@@ -1174,8 +1168,6 @@ winrate: {self.winrate}%"""
                         if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
                             self.__exit_order__ = True
                             utils.logger.info('exit lot')
-                            prediction['predict'] = 'Exit'
-                            prediction['currency close'] = price
                             index = f'{self.ticker}, {time.ctime()}'
                             utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
                             if print_out:
