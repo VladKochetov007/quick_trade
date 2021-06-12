@@ -37,7 +37,7 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests --"
                           "IEX token",
                           "Igor Kroitor -- donate 0.5 ETH (~1320$)"]
-__version__: str = "4.6.5"
+__version__: str = "4.6.6"
 
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
@@ -150,6 +150,7 @@ def set_(data: Any) -> SETED_TYPE_LIST:
             ret[e + 1] = np.nan
     return ret
 
+
 def anti_set_(seted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
     seted = np.nan_to_num(seted, nan=_nan_num)
     ret: List[Any] = [seted[0]]
@@ -163,11 +164,13 @@ def anti_set_(seted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
             flag = i
     return ret
 
+
 def get_window(values, window_length: int) -> List[Iterable[Any]]:
     ret: List[Any] = []
     for e, i in enumerate(values[:len(values) - window_length + 1]):
         ret.append(values[e:e + window_length])
     return ret
+
 
 def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: bool = False, limit=500):
     url: str = f"https://api.binance.com/api/v1/klines?symbol={ticker}&interval={interval}&limit={limit}"
@@ -183,6 +186,7 @@ def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: b
         df.index = [dt.datetime.fromtimestamp(i / 1000) for i in df.close_time]
     return df
 
+
 def convert_signal_str(predict: PREDICT_TYPE) -> str:
     if predict == BUY:
         return 'Buy'
@@ -191,6 +195,7 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
     elif predict == EXIT:
         return 'Exit'
 
+
 def ta_lib_to_returns(talib_returns: pd.Series, exit_: Any = EXIT, *args, **kwargs) -> PREDICT_TYPE_LIST:
     return list(talib_returns.replace({-200: SELL,
                                        200: BUY,
@@ -198,8 +203,10 @@ def ta_lib_to_returns(talib_returns: pd.Series, exit_: Any = EXIT, *args, **kwar
                                        -100: SELL,
                                        0: exit_}).values)
 
+
 def ta_lib_collider_all(data: pd.Series, *args, **kwargs) -> PREDICT_TYPE_LIST:
     return ta_lib_to_returns(data, exit_=np.nan)
+
 
 def get_linear(dataset) -> np.ndarray:
     """
@@ -222,6 +229,7 @@ def get_linear(dataset) -> np.ndarray:
         return_list.append(start + mean_diff * i)
     logger.debug(f'in linear: self.mean_diff={mean_diff}')
     return np.array(return_list)
+
 
 def get_coef_sec(timeframe: str = '1d') -> Tuple[float, int]:
     profit_calculate_coef: float

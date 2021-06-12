@@ -164,6 +164,7 @@ pseudo-linear numpy array
 | returns | np.ndarray | linear data |
 
 ## get_coef_sec
+
 Function for converting timeframe to profit ratio and sleep time for `realtime_trading`
 
 | param  | type | description |

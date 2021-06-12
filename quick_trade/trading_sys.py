@@ -1108,6 +1108,7 @@ winrate: {self.winrate}%"""
                                              self.ticker,
                                              bet * credit_leverage)
                     self.__exit_order__ = False
+        utils.logger.debug("returning prediction")
         return {
             'predict': predict,
             'open lot price': self._open_price,
@@ -1131,7 +1132,7 @@ winrate: {self.winrate}%"""
                          *strategy_args,
                          **strategy_kwargs):
         """
-        :param strategy_in_sleep: reuse strategy in candle for new S/L, T/P or martingale
+        :param strategy_in_sleep: reuse strategy in one candle for new S/L, T/P or martingale
         :param limit: client.get_data_historical's limit argument
         :param wait_sl_tp_checking: sleeping time after stop-loss and take-profit checking (seconds)
         :param print_exc: print  exceptions in while loop
@@ -1151,7 +1152,10 @@ winrate: {self.winrate}%"""
         while True:
             try:
                 self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
+                utils.logger.debug("new dataframe loaded")
+
                 strategy(*strategy_args, **strategy_kwargs)
+                utils.logger.debug("strategy used")
 
                 prediction = self.get_trading_predict(
                     bet_for_trading_on_client=bet_for_trading_on_client,
@@ -1182,6 +1186,7 @@ winrate: {self.winrate}%"""
                         elif strategy_in_sleep:
                             break
                     time.sleep(wait_sl_tp_checking)
+                    utils.logger.debug(f"sleep {wait_sl_tp_checking} seconds")
                     if not (time.time() < (__now__ + self._sec_interval)):
                         self._prev_predict = utils.convert_signal_str(self.returns[-1])
                         __now__ += self._sec_interval

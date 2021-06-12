@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
+from quick_trade.utils import __version__
 
 import setuptools
 
@@ -11,7 +12,7 @@ setup(
     author='Vlad Kochetov',
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=setuptools.find_packages(),
-    version='4.6.5',
+    version=__version__,
     description='Trading system for crypto, forex, stocks and others',
     long_description=long_desc,
     long_description_content_type="text/markdown",
@@ -23,7 +24,7 @@ setup(
         'ta==0.7.0',
         'ccxt==1.51.25'
     ],
-    download_url='https://github.com/VladKochetov007/quick_trade/archive/4.6.5.tar.gz',
+    download_url=f'https://github.com/VladKochetov007/quick_trade/archive/{__version__}.tar.gz',
     keywords=[
         'technical-analysis',
         'python3',
