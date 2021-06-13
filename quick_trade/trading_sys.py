@@ -837,7 +837,8 @@ winrate: {self.winrate}%"""
         losses: List[int] = []
         trades: List[int] = []
         profits: List[int] = []
-        depo: List[List[float]] = []
+        depo: List[np.ndarray[float]] = []
+        lens_dep: List[int] = []
 
         for ticker in tickers:
             df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
@@ -857,13 +858,14 @@ winrate: {self.winrate}%"""
             losses.append(new_trader.losses)
             trades.append(new_trader.trades)
             profits.append(new_trader.profits)
-            depo.append(new_trader.deposit_history)
+            depo.append(np.array(new_trader.deposit_history))
+            lens_dep.append(len(new_trader.deposit_history))
         self.losses = sum(losses)
         self.trades = sum(profits)
         self.profits = sum(profits)
         self.year_profit = float(np.mean(percentage_profits))
         self.winrate = float(np.mean(winrates))
-        self.deposit_history = list(sum(np.array(depo)))
+        self.deposit_history = list(sum(np.array(list(map(lambda x: x[-min(lens_dep):], depo)))))
         self._linear = utils.get_linear(self.deposit_history)
         self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
