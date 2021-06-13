@@ -865,7 +865,11 @@ winrate: {self.winrate}%"""
         self.profits = sum(profits)
         self.year_profit = float(np.mean(percentage_profits))
         self.winrate = float(np.mean(winrates))
-        self.deposit_history = list(sum(np.array(list(map(lambda x: x[-min(lens_dep):], depo)))))
+
+        for enum, elem in enumerate(depo):
+            depo[enum] = np.array(elem[-min(lens_dep):]) / (elem[-min(lens_dep)]/(deposit/len(tickers)))
+        self.deposit_history = list(sum(depo))
+
         self._linear = utils.get_linear(self.deposit_history)
         self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
