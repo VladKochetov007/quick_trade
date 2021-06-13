@@ -26,7 +26,7 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "hpaulj -- Stack overflow",
                           "furas -- Stack overflow",
                           "Devin Jeanpierre (edit: wjandrea) -- Stack overflow",
-                          "Войтенко Николай Поликарпович (Vojtenko Nikolaj Polikarpovich) -- helped me test the "
+                          "Войтенко Николай Поликарпович (Vojtenko Nikolay Polikarpovich) -- helped me test the "
                           "system of interaction with the binance crypto exchange with 50 dollars.",
 
                           "https://fxgears.com/index.php?threads/how-to-acquire-free-historical-tick-and-bar-data-for"

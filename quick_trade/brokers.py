@@ -1,6 +1,3 @@
-import typing
-from typing import Dict
-
 import ccxt
 import pandas as pd
 from quick_trade import utils
@@ -9,9 +6,7 @@ from quick_trade import utils
 class TradingClient(object):
     ordered: bool = False
     __side__: str
-    quantity: float
     ticker: str
-    order: Dict[str, typing.Any]
     cls_open_orders: int = 0
 
     def __init__(self, client: ccxt.Exchange):
@@ -23,10 +18,9 @@ class TradingClient(object):
                      quantity: float = 0.0):
         utils.logger.info(f'quantity: {quantity}, side: {side}')
         if side == 'Buy':
-            self.order = self.client.create_market_buy_order(symbol=ticker, amount=quantity)
+            self.client.create_market_buy_order(symbol=ticker, amount=quantity)
         elif side == 'Sell':
-            self.order = self.client.create_market_sell_order(symbol=ticker, amount=quantity)
-        self.quantity = quantity
+            self.client.create_market_sell_order(symbol=ticker, amount=quantity)
         self.__side__ = side
         self.ticker = ticker
         self.ordered = True

@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
-from quick_trade.utils import __version__
+from quick_trade.utils import __version__, __author__
 
 import setuptools
 
 with open('./README.md') as file:
     long_desc = file.read()
+with open('./requirements.txt', 'r') as file:
+    install_requires = file.read().split('\n')
 
 setup(
     name='quick_trade',
-    author='Vlad Kochetov',
+    author=__author__,
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=setuptools.find_packages(),
     version=__version__,
@@ -17,13 +19,7 @@ setup(
     long_description=long_desc,
     long_description_content_type="text/markdown",
     url='https://github.com/VladKochetov007/quick_trade',
-    install_requires=[
-        'plotly==4.14.3',
-        'numpy==1.20.3',
-        'pandas==1.2.4',
-        'ta==0.7.0',
-        'ccxt==1.51.25'
-    ],
+    install_requires=install_requires,
     download_url=f'https://github.com/VladKochetov007/quick_trade/archive/{__version__}.tar.gz',
     keywords=[
         'technical-analysis',

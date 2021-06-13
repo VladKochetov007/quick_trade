@@ -1067,11 +1067,9 @@ winrate: {self.winrate}%"""
         :return: dict with prediction
         """
 
-        credit_leverage: float = self._credit_leverages[-1]
         _moneys_: float
         bet: float
         close: np.ndarray = self.df["Close"].values
-        cond: bool
 
         # get prediction
         predict = utils.convert_signal_str(self.returns[-1])
@@ -1082,6 +1080,7 @@ winrate: {self.winrate}%"""
         self.__last_credit_leverage = self._credit_leverages[-1]
         if self._prev_predict != predict or self.__prev_credit_lev != self.__last_credit_leverage:
             utils.logger.info(f'open lot {predict}')
+            self.__exit_order__ = False
             if self.trading_on_client:
 
                 if predict == 'Exit':
@@ -1103,8 +1102,7 @@ winrate: {self.winrate}%"""
 
                     self.client.order_create(predict,
                                              self.ticker,
-                                             bet * credit_leverage)
-            self.__exit_order__ = False
+                                             bet * self.__last_credit_leverage)
         utils.logger.debug("returning prediction")
         return {
             'predict': predict,
