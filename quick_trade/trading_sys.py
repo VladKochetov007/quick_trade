@@ -867,7 +867,7 @@ winrate: {self.winrate}%"""
         self.winrate = float(np.mean(winrates))
 
         for enum, elem in enumerate(depo):
-            depo[enum] = np.array(elem[-min(lens_dep):]) / (elem[-min(lens_dep)]/(deposit/len(tickers)))
+            depo[enum] = np.array(elem[-min(lens_dep):]) / (elem[-min(lens_dep)] / (deposit / len(tickers)))
         self.deposit_history = list(sum(depo))
 
         self._linear = utils.get_linear(self.deposit_history)
