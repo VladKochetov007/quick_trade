@@ -12,6 +12,7 @@ class TradingClient(object):
     quantity: float
     ticker: str
     order: Dict[str, typing.Any]
+    cls_open_orders: int = 0
 
     def __init__(self, client: ccxt.Exchange):
         self.client = client
@@ -29,6 +30,7 @@ class TradingClient(object):
         self.__side__ = side
         self.ticker = ticker
         self.ordered = True
+        self._add_order_count()
 
     def get_ticker_price(self,
                          ticker: str) -> float:
@@ -79,6 +81,15 @@ class TradingClient(object):
             self.__side__ = 'Exit'
             self.ordered = False
             utils.logger.info('client exit')
+            self._sub_order_count()
 
     def get_balance_ticker(self, ticker: str) -> float:
         return self.client.fetch_free_balance()[ticker]
+
+    @classmethod
+    def _add_order_count(cls):
+        cls.cls_open_orders += 1
+
+    @classmethod
+    def _sub_order_count(cls):
+        cls.cls_open_orders -= 1

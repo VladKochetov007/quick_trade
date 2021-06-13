@@ -1086,6 +1086,7 @@ winrate: {self.winrate}%"""
 
                 if predict == 'Exit':
                     self.client.exit_last_order()
+                    self.__exit_order__ = True
 
                 else:
                     _moneys_ = self.client.get_balance_ticker(self.ticker.split('/')[1])
@@ -1164,6 +1165,9 @@ winrate: {self.winrate}%"""
                 self.realtime_returns[index] = prediction
                 while True:
                     if not self.__exit_order__:
+                        time.sleep(wait_sl_tp_checking)
+                        utils.logger.debug(f"sleep {wait_sl_tp_checking} seconds")
+
                         price = self.client.get_ticker_price(ticker)
                         min_ = min(self.__last_stop_loss, self.__last_take_profit)
                         max_ = max(self.__last_stop_loss, self.__last_take_profit)
@@ -1179,8 +1183,6 @@ winrate: {self.winrate}%"""
                                 self.client.exit_last_order()
                         elif strategy_in_sleep:
                             break
-                    time.sleep(wait_sl_tp_checking)
-                    utils.logger.debug(f"sleep {wait_sl_tp_checking} seconds")
                     if not (time.time() < (__now__ + self._sec_interval)):
                         self._prev_predict = utils.convert_signal_str(self.returns[-1])
                         __now__ += self._sec_interval
