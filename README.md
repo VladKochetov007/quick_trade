@@ -1,8 +1,9 @@
 # quick_trade
 
-VIEW DOCUMENTATION: https://vladkochetov007.github.io/quick_trade.github.io
+View documentation: 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧 in process
 
-P.S.: documentation now in v3.0
+old documentation (V3 doc):https://vladkochetov007.github.io/quick_trade.github.io
+
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/logo_with_slogan.PNG?raw=true)
 
