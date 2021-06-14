@@ -242,7 +242,9 @@ winrate: 56.25%
 
 BTC: ```15TC5wjgxTj5btKr75DBswsdafUqXmkAjp```
 
-ETH ERC20: ```0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740```
+ETH ERC20:  ```0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740```
+
+USDT ERC20: ```0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740```
 
 USDT TRC20: ```TCb9nWdApXmrfQuPcChdP9FpBXjXuFDFNX```
 

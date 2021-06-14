@@ -9,7 +9,7 @@
 #   numpy
 #   scalper and dca bot
 #   auto deploy + unit-tests
-#   more images in docs
+#   more  docs
 
 import time
 import typing
