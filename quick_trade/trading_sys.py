@@ -821,7 +821,7 @@ winrate: {self.winrate}%"""
         return self.backtest_out
 
     def multi_backtest(self,
-                       tickers: Iterable[str],
+                       tickers: typing.Union[typing.Sized, typing.Iterable[str]],
                        strategy_name: str = 'strategy_macd',
                        strategy_kwargs: Dict[str, Any] = {},
                        deposit: float = 10_000.0,
