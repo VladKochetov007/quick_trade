@@ -2,7 +2,7 @@
 
 # About
 
-This package is needed to optimize and facilitate trading with python. the module provides a convenient interface for
+This package needed to optimize and facilitate trading with python. The module provides a convenient interface for
 trading.
 
 ## donate
