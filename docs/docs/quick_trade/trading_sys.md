@@ -155,3 +155,16 @@ Heikin Ashi candles
 
 A method with the functionality of testing a strategy on historical data. For it to work, you need to use a strategy
 that will assign values to `self.returns`,` self._stop_losses`, `self._take_profits` and `self._credit_leverages`.
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| deposit | float | Initial deposit for testing the strategy that you used before the test |
+| bet | float | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value ```np.inf``` |
+| commission | float | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
+| plot | bool | Plotting data about candles, deposits and trades on the chart. |
+| print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
+| column | str |  |
+| show | bool |  |
+| returns | pd.DataFrame |  |
+
+?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the desired trade, deal is immediately reduced to the level of the deposit.
