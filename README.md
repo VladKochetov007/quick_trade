@@ -159,7 +159,7 @@ mean year percentage profit: 541.9299012354617%
 winrate: 56.25%
 ```
 
-# Run strategy
+## Run strategy
 
 Use strategy on real moneys. YES, IT'S FULLY AUTOMATED!
 
