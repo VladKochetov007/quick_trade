@@ -237,7 +237,7 @@ mean year percentage profit: 541.9299012354617%
 winrate: 56.25%
 ```
 
-![image](https://i.ibb.co/mFLDJsX/IMG-5613.png)
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/system_ing.png?raw=true)
 
 # Help the project
 
