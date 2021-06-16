@@ -1185,7 +1185,7 @@ winrate: {self.winrate}%"""
                                 self.client.exit_last_order()
                         elif strategy_in_sleep:
                             break
-                    if not (time.time() < (__now__ + self._sec_interval)):
+                    if  time.time() >= (__now__ + self._sec_interval):
                         self._prev_predict = utils.convert_signal_str(self.returns[-1])
                         __now__ += self._sec_interval
                         break
