@@ -49,31 +49,11 @@ a.backtest()
 
 ```python
 import quick_trade.trading_sys as qtr
-import ta.trend
-import ta.momentum
-import ta.volume
-import ta.others
-import ta.volatility
 import ccxt
 from quick_trade.quick_trade_tuner.tuner import *
 
 
 class Test(qtr.Trader):
-    def strategy_bollinger_break(self, **kwargs):
-        self.strategy_bollinger(plot=True, **kwargs)
-        self.inverse_strategy(swap_tpop_take=False)
-        self.set_open_stop_and_take()
-        self.set_credit_leverages()
-        self.convert_signal()
-        return self.returns
-
-    def bb(self, **kwargs):
-        self.strategy_bollinger(plot=False, **kwargs)
-        self.set_open_stop_and_take()
-        self.set_credit_leverages()
-        self.convert_signal()
-        return self.returns
-
     def strategy_supertrend1(self, plot: bool = False, *st_args, **st_kwargs):
         self.strategy_supertrend(plot=plot, *st_args, **st_kwargs)
         self.set_credit_leverages()
@@ -93,29 +73,6 @@ class Test(qtr.Trader):
         self.strategy_parabolic_SAR(plot=False, **kwargs)
         self.set_credit_leverages()
         self.convert_signal()
-        return self.returns
-
-    def strategy_200ema(self):
-        values = self.df['Close']
-        self.returns = []
-        ema = ta.trend.ema_indicator(values, 200)
-        for close, ma in zip(values.values, ema):
-            if close > ma:
-                self.returns.append(qtr.utils.BUY)
-            else:
-                self.returns.append(qtr.utils.SELL)
-        return self.returns
-
-    def strategy_rsi(self, len=7, **kwargs):
-        rsi = ta.momentum.rsi(self.df['Close'], len)
-        self.returns = []
-        for rsi_ in rsi:
-            if rsi_ > 50:
-                self.returns.append(qtr.utils.BUY)
-            elif rsi_ < 50:
-                self.returns.append(qtr.utils.SELL)
-        self.set_open_stop_and_take()
-        self.set_credit_leverages(1)
         return self.returns
 
 
@@ -152,7 +109,7 @@ tuner = QuickTradeTuner(
     TradingClient(ccxt.binance()),
     ['BTC/USDT', 'OMG/USDT', 'XRP/USDT'],
     ['15m', '5m'],
-    [1000, 700],
+    [1000, 700, 800, 500],
     params
 )
 
