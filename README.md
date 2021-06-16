@@ -168,7 +168,6 @@ import datetime
 from quick_trade.trading_sys import Trader
 from quick_trade.brokers import TradingClient
 import ccxt
-import copy
 
 ticker = 'MATIC/USDT'
 
@@ -199,7 +198,7 @@ trader = MyTrade(ticker=ticker,
                  df=client.get_data_historical(ticker, limit=10),
                  trading_on_client=True)
 trader.set_pyplot()
-trader.set_client(copy.copy(client))
+trader.set_client(client)
 while True:
     if datetime.datetime.utcnow() >= start_time:
         break
