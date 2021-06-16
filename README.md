@@ -126,20 +126,6 @@ params = {
                 'multiplier': Linspace(0.5, 22, 5)
             }
         ],
-    'strategy_bollinger_break':
-        [
-            {
-                'to_mid': Choise([False, True]),
-                'window': Arange(10, 350, 30)
-            }
-        ],
-    'bb':
-        [
-            {
-                'to_mid': Choise([False, True]),
-                'window': Arange(10, 350, 30)
-            }
-        ],
     'macd':
         [
             {
@@ -157,26 +143,6 @@ params = {
             {
                 'step': 0.02,
                 'max_step': 0.2
-            },
-            {
-                'step': 0.03,
-                'max_step': 0.3
-            },
-            {
-                'step': 0.04,
-                'max_step': 0.4
-            },
-            {
-                'step': 0.05,
-                'max_step': 0.5
-            },
-            {
-                'step': 0.08,
-                'max_step': 0.8
-            },
-            {
-                'step': 0.12,
-                'max_step': 1.2
             }
         ]
 
