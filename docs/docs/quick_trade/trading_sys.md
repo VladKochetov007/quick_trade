@@ -75,8 +75,8 @@ If the value has crossed the border with ```mid``` - exit
 | returns | PREDICT_TYPE_LIST | returns |
 
 example:
-![image](../../img/rsi_strat_example.jpg)
-![image](../../img/rsi_2.jpg)
+![image](../../../../quick_trade/img/rsi_strat_example.jpg)
+![image](../../../../quick_trade/img/rsi_2.jpg)
 
 ### strategy_parabolic_SAR
 
@@ -101,7 +101,7 @@ parabolic SAR strategy
 
 example:
 
-![image](../../img/macd_diff_example.jpg)
+![image](../../../../quick_trade/img/macd_diff_example.jpg)
 
 ### strategy_supertrend
 

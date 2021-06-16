@@ -1,4 +1,4 @@
-![image](https://github.com/VladKochetov007/quick_trade/blob/master/logo_with_slogan.PNG?raw=true)
+![image](../img/logo_with_slogan.PNG?raw=true)
 
 # About
 
