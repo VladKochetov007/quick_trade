@@ -163,8 +163,8 @@ that will assign values to `self.returns`,` self._stop_losses`, `self._take_prof
 | commission | float | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
 | plot | bool | Plotting data about candles, deposits and trades on the chart. |
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
-| column | str |  |
-| show | bool |  |
+| column | str | The parameter shows which series of the dataframe should be used to test the strategy. |
+| show | bool | Show testing schedule. Includes candles, deposit, ```.diff()``` of deposit and other.|
 | returns | pd.DataFrame |  |
 
 ?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the desired trade, deal is immediately reduced to the level of the deposit.

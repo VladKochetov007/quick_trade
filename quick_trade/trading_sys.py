@@ -1061,7 +1061,7 @@ winrate: {self.winrate}%"""
 
     def get_trading_predict(self,
                             bet_for_trading_on_client: float = np.inf,
-                            coin_lotsize_division=True
+                            coin_lotsize_division: bool = True
                             ) -> Dict[str, typing.Union[str, float]]:
         """
         predict and trading.
@@ -1190,6 +1190,7 @@ winrate: {self.winrate}%"""
                         __now__ += self._sec_interval
                         break
             except Exception as exc:
+                self.client.exit_last_order()
                 if ignore_exceptions:
                     if print_exc:
                         print(exc)
