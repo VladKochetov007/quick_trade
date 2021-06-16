@@ -4,7 +4,6 @@ View documentation: 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧 i
 
 old documentation (V3 doc):https://vladkochetov007.github.io/quick_trade.github.io
 
-
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/logo_with_slogan.PNG?raw=true)
 
 ```
@@ -18,7 +17,7 @@ used:
 
 Algo-trading system with python.
 
-## customize your strategy!
+## Customize your strategy!
 
 ```python
 import quick_trade.trading_sys as qtr
@@ -45,7 +44,7 @@ a.strategy_sell_and_hold()
 a.backtest()
 ```
 
-## find the best strategy!
+## Find the best strategy!
 
 ```python
 import quick_trade.trading_sys as qtr
@@ -117,7 +116,7 @@ tuner.tune(Test)
 print(tuner.sort_tunes())  # you can save it as json
 ```
 
-## installing:
+## Installing:
 
 ```commandline
 $ git clone https://github.com/VladKochetov007/quick_trade.git
@@ -130,7 +129,7 @@ or
 $ pip3 install quick-trade
 ```
 
-## user's code example (backtest)
+## User's code example (backtest)
 
 ```python
 import quick_trade.trading_sys as qtr
@@ -146,11 +145,11 @@ trader.strategy_2_sma(55, 21)
 trader.backtest(deposit=1000, commission=0.075, bet=qtr.utils.np.inf)  # backtest on one pare
 ```
 
-## output plotly chart:
+## Output plotly chart:
 
 ![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/plot.png)
 
-## output print
+## Output print
 
 ```
 losses: 7
@@ -159,6 +158,62 @@ profits: 9
 mean year percentage profit: 541.9299012354617%
 winrate: 56.25%
 ```
+
+# Run strategy
+
+Use strategy on real moneys. YES, IT'S FULLY AUTOMATED!
+
+```python
+import datetime
+from quick_trade.trading_sys import Trader
+from quick_trade.brokers import TradingClient
+import ccxt
+import copy
+
+ticker = 'MATIC/USDT'
+
+start_time = datetime.datetime(2021,  # year
+                               6,  # month
+                               16,  # day
+
+                               15,  # hour
+                               59,  # minute
+                               55)  # second (Leave a few seconds to download data from the exchange and strategy.)
+
+
+class MyTrade(Trader):
+    def strategy(self):
+        self.strategy_supertrend(multiplier=2, length=1, plot=False)
+        self.convert_signal()
+        self.set_credit_leverages(1)
+        self.sl_tp_adder(10)
+        return self.returns
+
+
+keys = {'apiKey': 'your binance api key',
+        'secret': 'your binance secret key'}
+client = TradingClient(ccxt.binance(config=keys))
+
+trader = MyTrade(ticker=ticker,
+                 interval='5m',
+                 df=client.get_data_historical(ticker, limit=10),
+                 trading_on_client=True)
+trader.set_pyplot()
+trader.set_client(copy.copy(client))
+while True:
+    if datetime.datetime.utcnow() >= start_time:
+        break
+trader.realtime_trading(
+    strategy=trader.strategy,
+    ticker=ticker,
+    coin_lotsize_division=True,
+    limit=2,
+    ignore_exceptions=False,
+    wait_sl_tp_checking=5
+)
+
+```
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/realtime_example.png?raw=true)
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/system_img.png?raw=true)
 

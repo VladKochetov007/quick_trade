@@ -167,4 +167,5 @@ that will assign values to `self.returns`,` self._stop_losses`, `self._take_prof
 | show | bool | Show testing schedule. Includes candles, deposit, ```.diff()``` of deposit and other.|
 | returns | pd.DataFrame |  |
 
-?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the desired trade, deal is immediately reduced to the level of the deposit.
+?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the
+desired trade, deal is immediately reduced to the level of the deposit.
