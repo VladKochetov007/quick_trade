@@ -4,12 +4,11 @@
 
 
 # TODO:
-#   add inner class with non-trading utils
 #   add tradingview realtime signals
 #   numpy
 #   scalper and dca bot
-#   auto deploy + unit-tests
-#   more  docs
+#   unit-tests
+#   more docs and examples
 
 import time
 import typing
