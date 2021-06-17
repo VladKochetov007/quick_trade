@@ -164,6 +164,14 @@ Heikin Ashi candles
 | slow | Iterable | When the element of this parameter is greater than the element of the `fast` parameter - short. When less, it takes a long time. |
 | returns | PREDICT_TYPE_LIST | crossover  strategy |
 
+```python
+from ta.trend import sma_indicator
+
+slow = sma_indicator(trader.df['Close'], 50)
+fast = sma_indicator(trader.df['Close'], 20)
+trader.crossover(fast=fast, slow=slow)
+```
+
 ### inverse_strategy
 
 | param  | type | description |
