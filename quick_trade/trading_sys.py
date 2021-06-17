@@ -27,7 +27,7 @@ import talib
 from plotly.subplots import make_subplots
 from quick_trade import utils
 
-Line = dict
+Line = dict  # To avoid the deprecation warning
 
 
 class Trader(object):
@@ -836,7 +836,7 @@ winrate: {self.winrate}%"""
         losses: List[int] = []
         trades: List[int] = []
         profits: List[int] = []
-        depo: List[np.ndarray[float]] = []
+        depo: List[np.ndarray] = []
         lens_dep: List[int] = []
 
         for ticker in tickers:
@@ -987,7 +987,7 @@ winrate: {self.winrate}%"""
 
                     ...
 
-                    first_returns = [1,1,0,0,2,0,2,2,0,0,1]
+                    first_returns =  [1,1,0,0,2,0,2,2,0,0,1]
 
                     second_returns = [1,2,2,2,2,2,0,0,0,0,1]
 
@@ -996,7 +996,7 @@ winrate: {self.winrate}%"""
                 mode = 'super':
                     ...
 
-                    first_returns = [1,1,1,2,2,2,0,0,1]
+                    first_returns =  [1,1,1,2,2,2,0,0,1]
 
                     second_returns = [1,0,0,0,1,1,1,0,0]
 
@@ -1013,16 +1013,16 @@ winrate: {self.winrate}%"""
                 else:
                     self.returns.append(utils.EXIT)
         elif mode == 'maximalist':
-            self.returns = self.__maximalist(first_returns, second_returns)
+            self.returns = self._maximalist(first_returns, second_returns)
         elif mode == 'super':
-            self.returns = self.__collide_super(first_returns, second_returns)
+            self.returns = self._collide_super(first_returns, second_returns)
         else:
             raise ValueError('incorrect mode')
         return self.returns
 
     @staticmethod
-    def __maximalist(returns1: utils.PREDICT_TYPE_LIST,
-                     returns2: utils.PREDICT_TYPE_LIST) -> utils.PREDICT_TYPE_LIST:
+    def _maximalist(returns1: utils.PREDICT_TYPE_LIST,
+                    returns2: utils.PREDICT_TYPE_LIST) -> utils.PREDICT_TYPE_LIST:
         return_list: utils.PREDICT_TYPE_LIST = []
         flag = utils.EXIT
         for a, b in zip(returns1, returns2):
@@ -1034,7 +1034,7 @@ winrate: {self.winrate}%"""
         return return_list
 
     @staticmethod
-    def __collide_super(l1, l2) -> utils.PREDICT_TYPE_LIST:
+    def _collide_super(l1, l2) -> utils.PREDICT_TYPE_LIST:
         return_list: utils.PREDICT_TYPE_LIST = []
         for first, sec in zip(utils.set_(l1), utils.set_(l2)):
             if first is not np.nan and sec is not np.nan and first is not sec:
@@ -1045,7 +1045,7 @@ winrate: {self.winrate}%"""
                 return_list.append(sec)
             else:
                 return_list.append(first)
-        return utils.anti_set_(return_list)
+        return list(map(lambda x: utils.PREDICT_TYPE(x), utils.anti_set_(return_list)))
 
     def multi_strategy_collider(self, *strategies, mode: str = 'minimalist') -> utils.PREDICT_TYPE_LIST:
         self.strategy_collider(strategies[0], strategies[1], mode=mode)
@@ -1183,7 +1183,7 @@ winrate: {self.winrate}%"""
                                 self.client.exit_last_order()
                         elif strategy_in_sleep:
                             break
-                    if  time.time() >= (open_time + self._sec_interval):
+                    if time.time() >= (open_time + self._sec_interval):
                         self._prev_predict = utils.convert_signal_str(self.returns[-1])
                         open_time += self._sec_interval
                         break
@@ -1479,7 +1479,7 @@ winrate: {self.winrate}%"""
         patterns = map(utils.anti_set_, patterns)
         return self.multi_strategy_collider(*patterns, mode='super')
 
-    def get_support_resistanse(self) -> Dict[str, Dict[int, float]]:
+    def get_support_resistance(self) -> Dict[str, Dict[int, float]]:
         lows = self.df['Low'].values
         highs = self.df['High'].values
         for i in range(2, len(lows) - 2):

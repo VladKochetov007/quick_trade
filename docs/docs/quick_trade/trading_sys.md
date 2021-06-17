@@ -61,10 +61,10 @@ candles, then if the candle is green - long, if red - short
 
 ### strategy_rsi
 
-When the RSI is greater than the ```maximum```, and the current value is less than the previous one, short. It's the
-same with long (but with ```minimum```).
+When the RSI is greater than the `maximum`, and the current value is less than the previous one, short. It's the
+same with long (but with `minimum`).
 
-If the value has crossed the border with ```mid``` - exit
+If the value has crossed the border with mid` - exit
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -85,18 +85,18 @@ parabolic SAR strategy
 | param  | type | description |
 | :---: | :---: | :---: |
 | plot | bool | plotting of SAR indicator |
-| **sar_kwargs | named arguments | named arguments for ```ta.trend.PSARIndicator``` |
+| **sar_kwargs | named arguments | named arguments for `ta.trend.PSARIndicator` |
 | returns | PREDICT_TYPE_LIST | returns |
 
 ### strategy_macd_histogram_diff
 
-```strategy_diff``` with MACD's histogram data.
+`strategy_diff` with MACD's histogram data.
 
 | param  | type | description |
 | :---: | :---: | :---: |
 | slow | int | slow MA of MACD |
 | fast | int | fast MA of MACD |
-| **macd_kwargs | named arguments | named arguments for ```ta.trend.MACD``` |
+| **macd_kwargs | named arguments | named arguments for `ta.trend.MACD` |
 | returns | PREDICT_TYPE_LIST | returns |
 
 example:
@@ -110,8 +110,8 @@ supertrend strategy. S/L - ST indicator
 | param  | type | description |
 | :---: | :---: | :---: |
 | plot | bool | plotting of SAR indicator |
-| **st_args | arguments | arguments for ```SuperTrendIndicator``` |
-| **st_kwargs | named arguments | named arguments for ```SuperTrendIndicator``` |
+| **st_args | arguments | arguments for `SuperTrendIndicator` |
+| **st_kwargs | named arguments | named arguments for `SuperTrendIndicator` |
 | returns | PREDICT_TYPE_LIST | returns |
 
 ### strategy_bollinger
@@ -121,9 +121,9 @@ Bollinger bands strategy (not breakout)
 | param  | type | description |
 | :---: | :---: | :---: |
 | plot | bool | plotting of bollinger bands |
-| to_mid | bool | exit on mid line of ```ta.volatility.BollingerBands``` |
-| **bollinger_args | arguments | arguments for ```ta.volatility.BollingerBands``` |
-| **bollinger_kwargs | named arguments | named arguments for ```ta.volatility.BollingerBands``` |
+| to_mid | bool | exit on mid line of `ta.volatility.BollingerBands` |
+| **bollinger_args | arguments | arguments for `ta.volatility.BollingerBands` |
+| **bollinger_kwargs | named arguments | named arguments for `ta.volatility.BollingerBands` |
 | returns | PREDICT_TYPE_LIST | returns |
 
 ### get_heikin_ashi
@@ -139,16 +139,16 @@ Heikin Ashi candles
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| fast | Iterable | When the element of this parameter is less than the element of the ```slow``` parameter - short. When more - long. |
-| slow | Iterable | When the element of this parameter is greater than the element of the ```fast``` parameter - short. When less, it takes a long time. |
+| fast | Iterable | When the element of this parameter is less than the element of the `slow` parameter - short. When more - long. |
+| slow | Iterable | When the element of this parameter is greater than the element of the `fast` parameter - short. When less, it takes a long time. |
 | returns | PREDICT_TYPE_LIST | crossover  strategy |
 
 ### inverse_strategy
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| fast | Iterable | When the element of this parameter is less than the element of the ```slow``` parameter - short. When more - long. |
-| slow | Iterable | When the element of this parameter is greater than the element of the ```fast``` parameter - short. When less, it takes a long time. |
+| fast | Iterable | When the element of this parameter is less than the element of the `slow` parameter - short. When more - long. |
+| slow | Iterable | When the element of this parameter is greater than the element of the `fast` parameter - short. When less, it takes a long time. |
 | returns | PREDICT_TYPE_LIST | crossover  strategy |
 
 ### backtest
@@ -159,13 +159,13 @@ that will assign values to `self.returns`,` self._stop_losses`, `self._take_prof
 | param  | type | description |
 | :---: | :---: | :---: |
 | deposit | float | Initial deposit for testing the strategy that you used before the test |
-| bet | float | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value ```np.inf``` |
+| bet | float | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value `np.inf` |
 | commission | float | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
 | plot | bool | Plotting data about candles, deposits and trades on the chart. |
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
 | column | str | The parameter shows which series of the dataframe should be used to test the strategy. |
-| show | bool | Show testing schedule. Includes candles, deposit, ```.diff()``` of deposit and other.|
-| returns | pd.DataFrame | Dataframe with information about the deposit, strategy signals, ```.diff()``` of deposit, stop loss, take profit, opening prices, pseudo-line deposit,  and dataframe series. |
+| show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
+| returns | pd.DataFrame | Dataframe with information about the deposit, strategy signals, `.diff()` of deposit, stop loss, take profit, opening prices, pseudo-line deposit,  and dataframe series. |
 
 ?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the
 desired trade, deal is immediately reduced to the level of the deposit.
@@ -177,16 +177,16 @@ A method for testing a strategy on several symbols.
 | param  | type | description |
 | :---: | :---: | :---: |
 | tickers | Sized and Iterable \[str] | Strategy testing symbols. |
-| strategy_name | str | strategy name for ```Trader._get_attr``` |
-| strategy_kwargs | Dict\[str, Any] | named arguments for ```Trader._get_attr(strategy_name)``` |
+| strategy_name | str | strategy name for `Trader._get_attr` |
+| strategy_kwargs | Dict\[str, Any] | named arguments for `Trader._get_attr(strategy_name)` |
 | deposit | float | Initial deposit for testing the strategy that you used before the test |
-| bet | float | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value ```np.inf``` |
+| bet | float | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value `np.inf` |
 | commission | float | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
 | plot | bool | Plotting data about candles, deposits and trades on the chart. |
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
 | column | str | The parameter shows which series of the dataframe should be used to test the strategy. |
-| show | bool | Show testing schedule. Includes candles, deposit, ```.diff()``` of deposit and other.|
-| returns | pd.DataFrame | Dataframe with information about the deposit, pseudo-line deposit and ```.diff()``` of deposit. |
+| show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
+| returns | pd.DataFrame | Dataframe with information about the deposit, pseudo-line deposit and `.diff()` of deposit. |
 
 !> Each pair is tested separately and then the results are summarized. Because of this, the strategies do not use the total deposit in such a test.
 
@@ -199,4 +199,25 @@ The method sets the plotly figure for graphs
 | width | int | Plotly plot width |
 | template | str | template from https://plotly.com/python/templates/ |
 | row_heights | list | The ratio of the heights of the symbol data, deposit and the deposit change. |
-| subplot_kwargs | named arguments | named arguments for [```plotly.subplots.make_subplots```](https://github.com/plotly/plotly.py/blob/master/packages/python/plotly/plotly/subplots.py#L45) |
+| subplot_kwargs | named arguments | named arguments for [`plotly.subplots.make_subplots`](https://github.com/plotly/plotly.py/blob/master/packages/python/plotly/plotly/subplots.py#L45) |
+
+### strategy_collider
+
+This method allows you to combine two strategies into one; it takes the lists of strategy predictions, and the combining mode as input values.
+
+- Available modes:
+    - `minimalist`: If both predictions are short, then the result of the collider will be short. If both are long, 
+      then long. If the predictions do not match - exit
+      
+    - `maximalist`: If both predictions are short, then the result of the collider will be short. If both are long, 
+      then long. If the predictions do not match - result of the last merge.
+      
+    - `super`: If an element of one of the predictions has changed, but the other not, the result is equal to the 
+      one that has changed. If they changed at the same time - exit.
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| first_returns | PREDICT_TYPE_LIST |  result of using the strategy |
+| second_returns | PREDICT_TYPE_LIST |  result of using the strategy |
+| mode | str | Colliding strategy mode |
+| returns | PREDICT_TYPE_LIST | result of combining strategies |
