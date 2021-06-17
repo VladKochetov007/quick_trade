@@ -70,7 +70,7 @@ class TradingClient(object):
                 self.new_order_buy(self.ticker, self.get_balance_ticker(self.ticker.split('/')[0]),
                                    logging=False)  # buy for all balance
             elif self.__side__ == 'Buy':
-                self.new_order_sell(self.ticker, self.get_balance_ticker(self.ticker.split('/')[1]),
+                self.new_order_sell(self.ticker, self.get_balance_ticker(self.ticker.split('/')[0]),
                                     logging=False)  # sell all
             self.__side__ = 'Exit'
             self.ordered = False

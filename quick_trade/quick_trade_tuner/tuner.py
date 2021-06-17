@@ -69,6 +69,7 @@ class QuickTradeTuner(object):
                 trader.set_client(self.client)
 
                 if self.multi_test:
+                    backtest_kwargs['limit'] = start
                     trader.multi_backtest(tickers=ticker,
                                           strategy_name=strategy,
                                           strategy_kwargs=kwargs,

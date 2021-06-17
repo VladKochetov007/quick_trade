@@ -12,6 +12,20 @@ A class in which you can trade and test strategies.
 |df|pd.DataFrame|dataframe with columns: Close, Open, High, Low, Volume|
 |interval|str| timeframe:1m 2m 3m 5m 15m 30m 45m 1h 90m 2h 3h 4h 12h 1d 3d 1w 1M 3M 6M|
 
+```python
+from quick_trade.trading_sys import Trader
+from quick_trade.brokers import TradingClient
+import ccxt
+
+
+client = TradingClient(ccxt.binance())
+trader = Trader('BTC/USDT', 
+                client.get_data_historical('BTC/USDT',
+                                           '2h'),
+                '2h')
+
+```
+
 ### _get_attr
 
 getattr from self
@@ -48,6 +62,11 @@ A method for adding a number of points to the current S/L and T/P values.
 | add_stop_loss | float | points for addition to sl |
 | add_take_profit | float | points for addition to tp |
 | returns | Tuple\[stop_losses, take_profits] | sl, tp |
+
+```python
+trader.strategy_parabolic_SAR()
+trader.sl_tp_adder(add_stop_loss=50)  # The stop loss moved 50 pips away from the opening price.
+```
 
 ### strategy_diff
 
@@ -113,6 +132,8 @@ supertrend strategy. S/L - ST indicator
 | **st_args | arguments | arguments for `SuperTrendIndicator` |
 | **st_kwargs | named arguments | named arguments for `SuperTrendIndicator` |
 | returns | PREDICT_TYPE_LIST | returns |
+
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/supertrend.png?raw=true)
 
 ### strategy_bollinger
 

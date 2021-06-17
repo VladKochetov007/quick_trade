@@ -78,7 +78,7 @@ class Trader(object):
                  ticker: str = 'BTC/USDT',
                  df: pd.DataFrame = pd.DataFrame(),
                  interval: str = '1d',
-                 trading_on_client: bool = False):
+                 trading_on_client: bool = True):
         self.df = df.reset_index(drop=True)
         self.ticker = ticker
         self.interval = interval
@@ -337,7 +337,7 @@ class Trader(object):
             else:
                 self.returns.append(utils.EXIT)
         self.set_credit_leverages()
-        self.set_open_stop_and_take()
+        self.set_open_stop_and_take(set_stop=False)
         return self.returns
 
     def strategy_macd_histogram_diff(self,
