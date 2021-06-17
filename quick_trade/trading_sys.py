@@ -915,11 +915,9 @@ winrate: {self.winrate}%"""
                    width: int = 1300,
                    template: str = 'plotly_dark',
                    row_heights: list = [10, 16, 7],
-                   quick_trade_logo: bool = True,
                    **subplot_kwargs):
         """
 
-        :param quick_trade_logo: use quick trade logo as background
         :param height: window height
         :param width: window width
         :param template: plotly template
@@ -1147,7 +1145,7 @@ winrate: {self.winrate}%"""
 
         self.realtime_returns = {}
         self.ticker = ticker
-        __now__ = time.time()
+        open_time = time.time()
         while True:
             try:
                 self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
@@ -1167,7 +1165,8 @@ winrate: {self.winrate}%"""
                 self.realtime_returns[index] = prediction
                 while True:
                     if not self.__exit_order__:
-                        time.sleep(wait_sl_tp_checking)
+                        if (open_time + self._sec_interval) - time.time() < wait_sl_tp_checking:
+                            time.sleep(wait_sl_tp_checking)
                         utils.logger.debug(f"sleep {wait_sl_tp_checking} seconds")
 
                         price = self.client.get_ticker_price(ticker)
@@ -1185,9 +1184,9 @@ winrate: {self.winrate}%"""
                                 self.client.exit_last_order()
                         elif strategy_in_sleep:
                             break
-                    if  time.time() >= (__now__ + self._sec_interval):
+                    if  time.time() >= (open_time + self._sec_interval):
                         self._prev_predict = utils.convert_signal_str(self.returns[-1])
-                        __now__ += self._sec_interval
+                        open_time += self._sec_interval
                         break
             except Exception as exc:
                 self.client.exit_last_order()

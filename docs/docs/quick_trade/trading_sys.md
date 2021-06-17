@@ -165,7 +165,38 @@ that will assign values to `self.returns`,` self._stop_losses`, `self._take_prof
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
 | column | str | The parameter shows which series of the dataframe should be used to test the strategy. |
 | show | bool | Show testing schedule. Includes candles, deposit, ```.diff()``` of deposit and other.|
-| returns | pd.DataFrame |  |
+| returns | pd.DataFrame | Dataframe with information about the deposit, strategy signals, ```.diff()``` of deposit, stop loss, take profit, opening prices, pseudo-line deposit,  and dataframe series. |
 
 ?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the
 desired trade, deal is immediately reduced to the level of the deposit.
+
+### multi_backtest
+
+A method for testing a strategy on several symbols.
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| tickers | Sized and Iterable \[str] | Strategy testing symbols. |
+| strategy_name | str | strategy name for ```Trader._get_attr``` |
+| strategy_kwargs | Dict\[str, Any] | named arguments for ```Trader._get_attr(strategy_name)``` |
+| deposit | float | Initial deposit for testing the strategy that you used before the test |
+| bet | float | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value ```np.inf``` |
+| commission | float | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
+| plot | bool | Plotting data about candles, deposits and trades on the chart. |
+| print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
+| column | str | The parameter shows which series of the dataframe should be used to test the strategy. |
+| show | bool | Show testing schedule. Includes candles, deposit, ```.diff()``` of deposit and other.|
+| returns | pd.DataFrame | Dataframe with information about the deposit, pseudo-line deposit and ```.diff()``` of deposit. |
+
+!> Each pair is tested separately and then the results are summarized. Because of this, the strategies do not use the total deposit in such a test.
+
+### set_pyplot
+The method sets the plotly figure for graphs
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| height | int | Plotly plot height |
+| width | int | Plotly plot width |
+| template | str | template from https://plotly.com/python/templates/ |
+| row_heights | list | The ratio of the heights of the symbol data, deposit and the deposit change. |
+| subplot_kwargs | named arguments | named arguments for ```plotly.subplots.make_subplots``` |
