@@ -17,6 +17,7 @@ class TradingClient(object):
         self.client = client
         self._update_balances()
 
+    @utils.wait_success
     def order_create(self,
                      side: str,
                      ticker: str = 'None',
@@ -43,23 +44,24 @@ class TradingClient(object):
                       quantity: float = 0.0,
                       credit_leverage: float = 1.0,
                       logging=True):
+        if logging:
+            utils.logger.info('client buy')
         self.order_create('Buy',
                           ticker=ticker,
                           quantity=quantity * credit_leverage)
-        if logging:
-            utils.logger.info('client buy')
 
     def new_order_sell(self,
                        ticker: str = None,
                        quantity: float = 0.0,
                        credit_leverage: float = 1.0,
                        logging=True):
+        if logging:
+            utils.logger.info('client sell')
         self.order_create('Sell',
                           ticker=ticker,
                           quantity=quantity * credit_leverage)
-        if logging:
-            utils.logger.info('client sell')
 
+    @utils.wait_success
     def get_data_historical(self,
                             ticker: str = None,
                             interval: str = '1m',
@@ -74,6 +76,7 @@ class TradingClient(object):
 
     def exit_last_order(self):
         if self.ordered:
+            utils.logger.info('client exit')
             base_balance = self.get_balance_ticker(self.base)
             bet = base_balance - self.start_balance[self.base]
             if self.__side__ == 'Sell':
@@ -86,19 +89,22 @@ class TradingClient(object):
                                     logging=False)
             self.__side__ = 'Exit'
             self.ordered = False
-            utils.logger.info('client exit')
             self._sub_order_count()
 
+    @utils.wait_success
     def get_balance_ticker(self, ticker: str) -> float:
         return self.client.fetch_free_balance()[ticker]
 
     @classmethod
     def _add_order_count(cls):
         cls.cls_open_orders += 1
+        utils.logger.info('new order')
 
     @classmethod
     def _sub_order_count(cls):
         cls.cls_open_orders -= 1
+        utils.logger.info('order closed')
 
+    @utils.wait_success
     def _update_balances(self):
-        self.start_balance =self.client.fetch_free_balance()
+        self.start_balance = self.client.fetch_free_balance()

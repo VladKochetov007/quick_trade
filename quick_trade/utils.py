@@ -1,7 +1,9 @@
 import datetime as dt
 import json
 import logging
+import time
 from typing import Any, List, Union, Tuple, Iterable
+from functools import wraps
 
 import numpy as np
 import pandas as pd
@@ -49,6 +51,9 @@ TEXT_COLOR: str = 'white'
 SUB_LINES_WIDTH: float = 3.0
 STOP_TAKE_OPN_ALPHA: float = 0.8
 COLOR_DEPOSIT: str = 'white'
+WAIT_SUCCESS_SLEEP = 15
+WAIT_SUCCESS_PRINT = True
+USE_WAIT_SUCCESS = True
 
 logger = logging.getLogger()
 logger.setLevel(30)
@@ -294,3 +299,25 @@ def get_coef_sec(timeframe: str = '1d') -> Tuple[float, int]:
     else:
         raise ValueError(f'incorrect interval; {timeframe}')
     return profit_calculate_coef, sec_interval
+
+
+def wait_success(func):
+    @wraps(func)
+    def checker(*args, **kwargs):
+        if USE_WAIT_SUCCESS:
+            while True:
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    if not isinstance(e, KeyboardInterrupt):
+                        if WAIT_SUCCESS_PRINT:
+                            print(f'An error occurred: {e}')
+                        logger.info(f'An error occurred: {e}', exc_info=True)
+                        time.sleep(WAIT_SUCCESS_SLEEP)
+                        continue
+                    else:
+                        raise e
+        else:
+            return func(*args, **kwargs)
+
+    return checker
