@@ -37,7 +37,7 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests --"
                           "IEX token",
                           "Igor Kroitor -- donate 0.5 ETH (~1320$)"]
-__version__: str = "4.6.8"
+__version__: str = "4.7.0"
 
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
