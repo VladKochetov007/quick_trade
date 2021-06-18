@@ -9,14 +9,14 @@
 #   scalper and dca bot
 #   unit-tests
 #   more docs and examples
-
+import datetime
 import time
 import typing
 from typing import Dict, List, Tuple, Any, Iterable
 
 import numpy as np
 import pandas as pd
-import quick_trade.brokers as brokers
+from quick_trade import brokers
 import ta
 import ta.momentum
 import ta.others
@@ -1196,6 +1196,11 @@ winrate: {self.winrate}%"""
                     continue
                 else:
                     raise exc
+
+    def multi_realtime_trading(self,
+                               tickers: List[str],
+                               deposit_part: float,
+                               start_time: datetime.datetime):
 
     def log_data(self):
         self.fig.update_yaxes(row=1, col=1, type='log')
