@@ -15,12 +15,13 @@ class TradingClient(object):
 
     def __init__(self, client: ccxt.Exchange):
         self.client = client
-        self.start_balance = client.fetch_free_balance()
+        self._update_balances()
 
     def order_create(self,
                      side: str,
                      ticker: str = 'None',
                      quantity: float = 0.0):
+        self._update_balances()
         utils.logger.info(f'quantity: {quantity}, side: {side}')
         if side == 'Buy':
             self.client.create_market_buy_order(symbol=ticker, amount=quantity)
@@ -98,3 +99,6 @@ class TradingClient(object):
     @classmethod
     def _sub_order_count(cls):
         cls.cls_open_orders -= 1
+
+    def _update_balances(self):
+        self.start_balance =self.client.fetch_free_balance()
