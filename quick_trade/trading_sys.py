@@ -9,14 +9,15 @@
 #   scalper and dca bot
 #   unit-tests
 #   more docs and examples
-
+import datetime
 import time
-import typing
-from typing import Dict, List, Tuple, Any, Iterable
+from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
+from copy import copy
+from threading import Thread
 
 import numpy as np
 import pandas as pd
-import quick_trade.brokers as brokers
+from quick_trade import brokers
 import ta
 import ta.momentum
 import ta.others
@@ -62,7 +63,7 @@ class Trader(object):
     _backtest_out_no_drop: pd.DataFrame
     backtest_out: pd.DataFrame
     _open_lot_prices: List[float]
-    realtime_returns: Dict[str, Dict[str, typing.Union[str, float]]]
+    realtime_returns: Dict[str, Dict[str, Union[str, float]]]
     client: brokers.TradingClient
     __last_stop_loss: float
     __last_take_profit: float
@@ -722,7 +723,7 @@ winrate: {self.winrate}%"""
              self._open_lot_prices, data_column, self._linear, self.returns_strategy_diff),
             index=[
                 f'deposit ({column})', 'stop loss', 'take profit',
-                'predictions', 'open deal/lot', column,
+                'predictions', 'open trade', column,
                 f"linear deposit data ({column})",
                 "returns"
             ]).T
@@ -767,7 +768,7 @@ winrate: {self.winrate}%"""
                     y=self._open_lot_prices,
                     line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.BLUE),
                     opacity=utils.STOP_TAKE_OPN_ALPHA,
-                    name='open lot'),
+                    name='open trade'),
                 row=1,
                 col=1)
             self.fig.add_trace(
@@ -776,12 +777,12 @@ winrate: {self.winrate}%"""
                     line=dict(color=utils.COLOR_DEPOSIT),
                     name=f'deposit (start: ${money_start})'), 2, 1)
             self.fig.add_trace(Line(y=self._linear, name='linear'), 2, 1)
-            preds: Dict[str, List[typing.Union[int, float]]] = {'sellind': [],
-                                                                'exitind': [],
-                                                                'buyind': [],
-                                                                'bprice': [],
-                                                                'sprice': [],
-                                                                'eprice': []}
+            preds: Dict[str, List[Union[int, float]]] = {'sellind': [],
+                                                         'exitind': [],
+                                                         'buyind': [],
+                                                         'bprice': [],
+                                                         'sprice': [],
+                                                         'eprice': []}
             for e, i in enumerate(seted_):
                 if i == utils.SELL:
                     preds['sellind'].append(e)
@@ -820,7 +821,7 @@ winrate: {self.winrate}%"""
         return self.backtest_out
 
     def multi_backtest(self,
-                       tickers: typing.Union[typing.Sized, typing.Iterable[str]],
+                       tickers: Union[Sized, Iterable[str]],
                        strategy_name: str = 'strategy_macd',
                        strategy_kwargs: Dict[str, Any] = {},
                        deposit: float = 10_000.0,
@@ -1059,7 +1060,7 @@ winrate: {self.winrate}%"""
     def get_trading_predict(self,
                             bet_for_trading_on_client: float = np.inf,
                             coin_lotsize_division: bool = True
-                            ) -> Dict[str, typing.Union[str, float]]:
+                            ) -> Dict[str, Union[str, float]]:
         """
         predict and trading.
 
@@ -1080,7 +1081,7 @@ winrate: {self.winrate}%"""
         self.__last_take_profit = self._take_profits[-1]
         self.__last_credit_leverage = self._credit_leverages[-1]
         if self._prev_predict != predict or self.__prev_credit_lev != self.__last_credit_leverage:
-            utils.logger.info(f'open lot {predict}')
+            utils.logger.info(f'open trade {predict}')
             self.__exit_order__ = False
             if self.trading_on_client:
 
@@ -1107,7 +1108,7 @@ winrate: {self.winrate}%"""
         utils.logger.debug("returning prediction")
         return {
             'predict': predict,
-            'open lot price': self._open_price,
+            'open trade price': self._open_price,
             'stop loss': self.__last_stop_loss,
             'take profit': self.__last_take_profit,
             'currency close': close[-1],
@@ -1120,7 +1121,7 @@ winrate: {self.winrate}%"""
                          print_out: bool = True,
                          bet_for_trading_on_client: float = np.inf,
                          coin_lotsize_division: bool = True,
-                         ignore_exceptions: bool = True,
+                         ignore_exceptions: bool = False,
                          print_exc: bool = True,
                          wait_sl_tp_checking: float = 5,
                          limit: int = 1000,
@@ -1173,7 +1174,7 @@ winrate: {self.winrate}%"""
                         max_ = max(self.__last_stop_loss, self.__last_take_profit)
                         if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
                             self.__exit_order__ = True
-                            utils.logger.debug('exit lot')
+                            utils.logger.info('exit trade')
                             index = f'{self.ticker}, {time.ctime()}'
                             utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
                             if print_out:
@@ -1196,6 +1197,63 @@ winrate: {self.winrate}%"""
                     continue
                 else:
                     raise exc
+
+    def multi_realtime_trading(self,
+                               tickers: List[str],
+                               start_time: datetime.datetime,  # LOCAL TIME
+                               strategy,
+                               print_out: bool = True,
+                               bet_for_trading_on_client: float = np.inf,  # for 1 trade
+                               coin_lotsize_division: bool = True,
+                               ignore_exceptions: bool = False,
+                               print_exc: bool = True,
+                               wait_sl_tp_checking: float = 5,
+                               limit: int = 1000,
+                               strategy_in_sleep: bool = False,
+                               deposit_part: float = 1.0,  # for all trades
+                               *strategy_args,
+                               **strategy_kwargs
+                               ):
+        can_orders: int = len(tickers)
+        bet_for_trading_on_client_copy: float = bet_for_trading_on_client
+
+        class MultiRealTimeTrader(self.__class__):
+            def get_trading_predict(self,
+                                    bet_for_trading_on_client: float = np.inf,
+                                    coin_lotsize_division: bool = True
+                                    ) -> Dict[str, Union[str, float]]:
+                balance = self.client.get_balance_ticker(self.ticker.split('/')[1])
+                bet = (balance * 10) / (can_orders / deposit_part - brokers.TradingClient.cls_open_orders)
+                bet /= 10  # decimal analog
+                if bet > bet_for_trading_on_client_copy:
+                    bet = bet_for_trading_on_client_copy
+                return super().get_trading_predict(bet_for_trading_on_client=bet,
+                                                   coin_lotsize_division=coin_lotsize_division)
+
+        def start_trading(pare):
+            trader = MultiRealTimeTrader(ticker=pare,
+                                         interval=self.interval,
+                                         trading_on_client=self.trading_on_client)
+            trader.set_pyplot()
+            trader.set_client(copy(self.client))
+            while True:
+                if datetime.datetime.now() >= start_time:
+                    break
+            trader.realtime_trading(strategy=strategy,
+                                    ticker=pare,
+                                    print_out=print_out,
+                                    coin_lotsize_division=coin_lotsize_division,
+                                    ignore_exceptions=ignore_exceptions,
+                                    print_exc=print_exc,
+                                    wait_sl_tp_checking=wait_sl_tp_checking,
+                                    limit=limit,
+                                    strategy_in_sleep=strategy_in_sleep,
+                                    strategy_args=strategy_args,
+                                    **strategy_kwargs)
+
+        for ticker in tickers:
+            thread = Thread(target=start_trading, args=(ticker,))
+            thread.start()
 
     def log_data(self):
         self.fig.update_yaxes(row=1, col=1, type='log')

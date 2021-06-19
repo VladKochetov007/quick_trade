@@ -58,7 +58,7 @@ WAIT_SUCCESS_PRINT = True
 USE_WAIT_SUCCESS = True
 
 logger = logging.getLogger()
-logger.setLevel(0)
+logger.setLevel(30)
 logging.basicConfig(level=20, filename='trading.log', format='%(name)s::%(asctime)s::[%(levelname)s] %(message)s')
 
 
