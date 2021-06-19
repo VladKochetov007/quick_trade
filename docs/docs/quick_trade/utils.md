@@ -171,3 +171,9 @@ Function for converting timeframe to profit ratio and sleep time for `realtime_t
 | :---: | :---: | :---: |
 | dataset | str | timeframe |
 | returns | Tuple\[float, int] | profit coef and seconds to wait |
+
+## wait_success
+Decorator. If a traceback was received during the execution of the function, then the action is repeated after `WAIT_SUCCESS_SLEEP` seconds.
+
+The main purpose is to avoid ConnectionError when trading in real time.
+[see this page](https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error)

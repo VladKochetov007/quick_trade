@@ -1,3 +1,5 @@
+import logging
+
 import ccxt
 import pandas as pd
 from quick_trade import utils
@@ -100,4 +102,7 @@ class TradingClient(object):
 
     @utils.wait_success
     def _update_balances(self):
-        self.start_balance = self.client.fetch_free_balance()
+        if len(self.client.apiKey):
+            self.start_balance = self.client.fetch_free_balance()
+        else:
+            utils.logger.warning('The client does not have an API key')

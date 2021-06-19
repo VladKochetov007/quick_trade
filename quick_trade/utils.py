@@ -38,7 +38,9 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
                           "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests --"
                           "IEX token",
-                          "Igor Kroitor -- donate 0.5 ETH (~1320$)"]
+                          "Igor Kroitor -- donate 0.5 ETH (~1320$)",
+                          "Igor Kroitor -- Helped to solve the problem with exception ConnectionError(10054).",
+                          "https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error"]
 __version__: str = "4.7.1"
 
 SCATTER_SIZE: float = 12.0
@@ -56,8 +58,8 @@ WAIT_SUCCESS_PRINT = True
 USE_WAIT_SUCCESS = True
 
 logger = logging.getLogger()
-logger.setLevel(30)
-logging.basicConfig(level=20, filename='trading.log', format='%(levelname)s::%(name)s::%(asctime)s::    %(message)s')
+logger.setLevel(0)
+logging.basicConfig(level=20, filename='trading.log', format='%(name)s::%(asctime)s::[%(levelname)s] %(message)s')
 
 
 class SuperTrendIndicator(object):
@@ -232,7 +234,7 @@ def get_linear(dataset) -> np.ndarray:
     i: int
     for i in range(length):
         return_list.append(start + mean_diff * i)
-    logger.debug(f'in linear: self.mean_diff={mean_diff}')
+    logger.debug(f'in linear: mean_diff={mean_diff}')
     return np.array(return_list)
 
 
