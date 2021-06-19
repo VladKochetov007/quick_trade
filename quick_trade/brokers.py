@@ -23,7 +23,7 @@ class TradingClient(object):
                      ticker: str = 'None',
                      quantity: float = 0.0):
         self._update_balances()
-        utils.logger.info(f'quantity: {quantity}, side: {side}')
+        utils.logger.info(f'quantity: {quantity}, side: {side}, ticker: {ticker}')
         if side == 'Buy':
             self.client.create_market_buy_order(symbol=ticker, amount=quantity)
         elif side == 'Sell':
@@ -35,6 +35,7 @@ class TradingClient(object):
         self.ordered = True
         self._add_order_count()
 
+    @utils.wait_success
     def get_ticker_price(self,
                          ticker: str) -> float:
         return float(self.client.fetch_ticker(symbol=ticker)['close'])
@@ -42,10 +43,7 @@ class TradingClient(object):
     def new_order_buy(self,
                       ticker: str = None,
                       quantity: float = 0.0,
-                      credit_leverage: float = 1.0,
-                      logging=True):
-        if logging:
-            utils.logger.info('client buy')
+                      credit_leverage: float = 1.0):
         self.order_create('Buy',
                           ticker=ticker,
                           quantity=quantity * credit_leverage)
@@ -53,10 +51,7 @@ class TradingClient(object):
     def new_order_sell(self,
                        ticker: str = None,
                        quantity: float = 0.0,
-                       credit_leverage: float = 1.0,
-                       logging=True):
-        if logging:
-            utils.logger.info('client sell')
+                       credit_leverage: float = 1.0):
         self.order_create('Sell',
                           ticker=ticker,
                           quantity=quantity * credit_leverage)
@@ -76,17 +71,15 @@ class TradingClient(object):
 
     def exit_last_order(self):
         if self.ordered:
-            utils.logger.info('client exit')
+            utils.logger.debug('client exit')
             base_balance = self.get_balance_ticker(self.base)
             bet = base_balance - self.start_balance[self.base]
             if self.__side__ == 'Sell':
                 self.new_order_buy(self.ticker,
-                                   bet,
-                                   logging=False)
+                                   bet)
             elif self.__side__ == 'Buy':
                 self.new_order_sell(self.ticker,
-                                    bet,
-                                    logging=False)
+                                    bet)
             self.__side__ = 'Exit'
             self.ordered = False
             self._sub_order_count()
@@ -98,12 +91,12 @@ class TradingClient(object):
     @classmethod
     def _add_order_count(cls):
         cls.cls_open_orders += 1
-        utils.logger.info('new order')
+        utils.logger.debug('new order')
 
     @classmethod
     def _sub_order_count(cls):
         cls.cls_open_orders -= 1
-        utils.logger.info('order closed')
+        utils.logger.debug('order closed')
 
     @utils.wait_success
     def _update_balances(self):

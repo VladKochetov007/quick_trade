@@ -1173,7 +1173,7 @@ winrate: {self.winrate}%"""
                         max_ = max(self.__last_stop_loss, self.__last_take_profit)
                         if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
                             self.__exit_order__ = True
-                            utils.logger.info('exit lot')
+                            utils.logger.debug('exit lot')
                             index = f'{self.ticker}, {time.ctime()}'
                             utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
                             if print_out:
@@ -1188,26 +1188,26 @@ winrate: {self.winrate}%"""
                         open_time += self._sec_interval
                         break
             except Exception as exc:
+                utils.logger.error(f'An error occurred: {exc}', exc_info=True)
                 self.client.exit_last_order()
                 if ignore_exceptions:
                     if print_exc:
                         print(exc)
-                    utils.logger.error('error :(', exc_info=True)
                     continue
                 else:
                     raise exc
 
     def log_data(self):
         self.fig.update_yaxes(row=1, col=1, type='log')
-        utils.logger.info('trader log data')
+        utils.logger.debug('trader log data')
 
     def log_deposit(self):
         self.fig.update_yaxes(row=2, col=1, type='log')
-        utils.logger.info('trader log deposit')
+        utils.logger.debug('trader log deposit')
 
     def log_returns(self):
         self.fig.update_yaxes(row=3, col=1, type='log')
-        utils.logger.info('trader log returns')
+        utils.logger.debug('trader log returns')
 
     def set_client(self, your_client: brokers.TradingClient):
         """
@@ -1224,7 +1224,7 @@ winrate: {self.winrate}%"""
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
-        utils.logger.debug(f'trader signals converted: {old} >> {new}')
+        utils.logger.info(f'trader signals converted: {old} >> {new}')
         return self.returns
 
     def set_open_stop_and_take(self,
@@ -1266,7 +1266,7 @@ winrate: {self.winrate}%"""
                 self._take_profits.append(take_flag)
             if set_stop:
                 self._stop_losses.append(stop_flag)
-        utils.logger.debug(f'trader stop loss: {stop_loss}, trader take profit: {take_profit}')
+        utils.logger.info(f'trader stop loss: {stop_loss}, trader take profit: {take_profit}')
 
     def set_credit_leverages(self, credit_lev: float = 1.0):
         """
@@ -1275,7 +1275,7 @@ winrate: {self.winrate}%"""
         """
         self.__prev_credit_lev = credit_lev
         self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
-        utils.logger.debug(f'trader credit leverage: {credit_lev}')
+        utils.logger.info(f'trader credit leverage: {credit_lev}')
 
     def _window_(self,
                  column: str,
