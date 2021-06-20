@@ -190,7 +190,7 @@ class MyTrade(Trader):
 
 
 keys = {'apiKey': 'your binance api key',
-        'secret': 'your binance secret key'}
+        'secret': 'your binance secret key'}  # or any other exchange
 client = TradingClient(ccxt.binance(config=keys))
 
 trader = MyTrade(ticker=ticker,

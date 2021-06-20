@@ -1201,7 +1201,7 @@ winrate: {self.winrate}%"""
     def multi_realtime_trading(self,
                                tickers: List[str],
                                start_time: datetime.datetime,  # LOCAL TIME
-                               strategy,
+                               strategy_name: str,
                                print_out: bool = True,
                                bet_for_trading_on_client: float = np.inf,  # for 1 trade
                                coin_lotsize_division: bool = True,
@@ -1211,9 +1211,7 @@ winrate: {self.winrate}%"""
                                limit: int = 1000,
                                strategy_in_sleep: bool = False,
                                deposit_part: float = 1.0,  # for all trades
-                               *strategy_args,
-                               **strategy_kwargs
-                               ):
+                               **strategy_kwargs):
         can_orders: int = len(tickers)
         bet_for_trading_on_client_copy: float = bet_for_trading_on_client
 
@@ -1236,10 +1234,11 @@ winrate: {self.winrate}%"""
                                          trading_on_client=self.trading_on_client)
             trader.set_pyplot()
             trader.set_client(copy(self.client))
+
             while True:
                 if datetime.datetime.now() >= start_time:
                     break
-            trader.realtime_trading(strategy=strategy,
+            trader.realtime_trading(strategy=trader._get_attr(strategy_name),
                                     ticker=pare,
                                     print_out=print_out,
                                     coin_lotsize_division=coin_lotsize_division,
@@ -1248,7 +1247,6 @@ winrate: {self.winrate}%"""
                                     wait_sl_tp_checking=wait_sl_tp_checking,
                                     limit=limit,
                                     strategy_in_sleep=strategy_in_sleep,
-                                    strategy_args=strategy_args,
                                     **strategy_kwargs)
 
         for ticker in tickers:
@@ -1401,6 +1399,7 @@ winrate: {self.winrate}%"""
             self.returns.append(flag)
             self._stop_losses.append(flag_stop_loss)
         self.set_credit_leverages()
+        self.set_open_stop_and_take(set_stop=False)
         return self.returns
 
     def find_TBH_TBL(self) -> utils.PREDICT_TYPE_LIST:
@@ -1445,21 +1444,6 @@ winrate: {self.winrate}%"""
         self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
-
-    def is_doji(self) -> List[bool]:
-        """
-        :returns: list of booleans.
-        """
-        ret: List[bool] = []
-        for close, open_ in zip(self.df['Close'].values,
-                                self.df['Open'].values):
-            if close == open_:
-                ret.append(True)
-            else:
-                ret.append(False)
-        self.set_credit_leverages()
-        self.set_open_stop_and_take()
-        return ret
 
     def find_all_talib_patterns(self):
         open_ = self.df['Open']

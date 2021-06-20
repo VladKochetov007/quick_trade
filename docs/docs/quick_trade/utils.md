@@ -182,7 +182,8 @@ pseudo-linear numpy array
 
 ## get_coef_sec
 
-Function for converting timeframe to profit ratio and sleep time for [`realtime_trading`](trading_sys.md#realtime_trading)
+Function for converting timeframe to profit ratio and sleep time
+for [`realtime_trading`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=realtime_trading)
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -201,7 +202,9 @@ Out[16]: (105120, 300)
 ```
 
 ## wait_success
-Decorator. If a traceback was received during the execution of the function, then the action is repeated after `utils.WAIT_SUCCESS_SLEEP` seconds.
+
+Decorator. If a traceback was received during the execution of the function, then the action is repeated
+after `utils.WAIT_SUCCESS_SLEEP` seconds.
 
 The main purpose is to avoid ConnectionError when trading in real time.
 [see this page](https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error)

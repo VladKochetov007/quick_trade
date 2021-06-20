@@ -17,9 +17,8 @@ from quick_trade.trading_sys import Trader
 from quick_trade.brokers import TradingClient
 import ccxt
 
-
 client = TradingClient(ccxt.binance())
-trader = Trader('BTC/USDT', 
+trader = Trader('BTC/USDT',
                 client.get_data_historical('BTC/USDT', '2h'),
                 '2h')
 
@@ -229,20 +228,20 @@ total deposit in such a test.
 ```python
 import numpy as np
 
-
 trader.set_client(client)
 trader.multi_backtest(['BTC/USDT',
                        'ETH/USDT',
-                       'LTC/USDT'], 
-                      strategy_name='strategy_supertrend', 
-                      strategy_kwargs=dict(multiplier=2, length=1), 
-                      deposit=1700, 
-                      commission=0.075, 
-                      bet=np.inf, 
+                       'LTC/USDT'],
+                      strategy_name='strategy_supertrend',
+                      strategy_kwargs=dict(multiplier=2, length=1),
+                      deposit=1700,
+                      commission=0.075,
+                      bet=np.inf,
                       limit=1000)
 ```
 
 output:
+
 ```
 losses: 90
 trades: 88
@@ -294,19 +293,52 @@ trader.strategy_collider(trader.strategy_2_sma(50, 20),
 ```
 
 ### multi_strategy_collider
+
 `strategy_collider` for multiple strategies
 
-?> First, the first two strategies are combined, and then the result of the previous join is combined with subsequent strategies.
+?> First, the first two strategies are combined, and then the result of the previous join is combined with subsequent
+strategies.
 
 ```python
 trader.strategy_collider(trader.strategy_2_sma(50, 20),
                          trader.strategy_2_sma(20, 10),
                          trader.strategy_parabolic_SAR(),
                          trader.strategy_macd()
-                         mode='maximalist')
+mode = 'maximalist')
 ```
 
 ### get_trading_predict
+
 This method is needed to get the result of the strategy and open an order on the exchange.
 
 ### realtime_trading
+
+### multi_realtime_trading
+
+### log_data
+
+### log_deposit
+
+### log_returns
+
+### set_client
+
+### convert_signal
+
+### set_open_stop_and_take
+
+### set_credit_leverages
+
+### \_window_
+
+### find_pip_bar
+
+### find_DBLHC_DBHLC
+
+### find_TBH_TBL
+
+### find_PPR
+
+### find_all_talib_patterns
+
+### get_support_resistance

@@ -1,4 +1,4 @@
-- [quick_trade](README.md)
+- [quick_trade](docs/quick_trade/README.md)
 
     - [trading_sys](docs/quick_trade/trading_sys.md)
     - [utils](docs/quick_trade/utils.md)
