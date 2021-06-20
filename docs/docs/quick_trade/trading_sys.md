@@ -9,7 +9,7 @@ A class in which you can trade and test strategies.
 | param | type | description |
 |:---:|:---:|:---:|
 |ticker|str|symbol for CCXT (with "/")|
-|df|`pd.DataFram`e|dataframe with columns: Close, Open, High, Low, Volume|
+|df|`pd.DataFrame`|dataframe with columns: Close, Open, High, Low, Volume|
 |interval|str| timeframe:1m 2m 3m 5m 15m 30m 45m 1h 90m 2h 3h 4h 12h 1d 3d 1w 1M 3M 6M|
 
 ```python
@@ -305,3 +305,6 @@ trader.strategy_collider(trader.strategy_2_sma(50, 20),
                          trader.strategy_macd()
                          mode='maximalist')
 ```
+
+### get_trading_predict
+This method is needed to get the result of the strategy and open an order on the exchange.

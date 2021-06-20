@@ -11,13 +11,12 @@
 #   more docs and examples
 import datetime
 import time
-from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
 from copy import copy
 from threading import Thread
+from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
 
 import numpy as np
 import pandas as pd
-from quick_trade import brokers
 import ta
 import ta.momentum
 import ta.others
@@ -26,6 +25,7 @@ import ta.volatility
 import ta.volume
 import talib
 from plotly.subplots import make_subplots
+from quick_trade import brokers
 from quick_trade import utils
 
 Line = dict  # To avoid the deprecation warning

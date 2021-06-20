@@ -1,13 +1,10 @@
-import datetime as dt
-import json
 import logging
 import time
-from typing import Any, List, Union, Tuple, Iterable
 from functools import wraps
+from typing import Any, List, Union, Tuple, Iterable
 
 import numpy as np
 import pandas as pd
-import requests
 from ta.volatility import AverageTrueRange
 
 PREDICT_TYPE: type = int
@@ -160,14 +157,14 @@ def set_(data: Any) -> SETED_TYPE_LIST:
 
 def anti_set_(seted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
     seted = np.nan_to_num(seted, nan=_nan_num)
-    ret: List[Any] = [seted[0]]
+    ret: List[Any] = [PREDICT_TYPE(seted[0])]
     flag = seted[0]
     e: int
     for i in seted[1:]:
         if i == _nan_num:
-            ret.append(flag)
+            ret.append(PREDICT_TYPE(flag))
         else:
-            ret.append(i)
+            ret.append(PREDICT_TYPE(i))
             flag = i
     return ret
 
@@ -177,21 +174,6 @@ def get_window(values, window_length: int) -> List[Iterable[Any]]:
     for e, i in enumerate(values[:len(values) - window_length + 1]):
         ret.append(values[e:e + window_length])
     return ret
-
-
-def get_binance_data(ticker: str = "BNBBTC", interval: str = "1m", date_index: bool = False, limit=500):
-    url: str = f"https://api.binance.com/api/v1/klines?symbol={ticker}&interval={interval}&limit={limit}"
-    data: List[List[Any]] = json.loads(requests.get(url).text)
-    df: pd.DataFrame = pd.DataFrame(data)
-    df.columns = ["open_time",
-                  "Open", "High", "Low", 'Close', 'Volume',
-                  'close_time', 'qav', 'num_trades',
-                  'taker_base_vol', 'taker_quote_vol', 'ignore']
-    for column in ["Open", "High", "Low", 'Close', 'Volume']:
-        df[column] = df[column].astype(float)
-    if date_index:
-        df.index = [dt.datetime.fromtimestamp(i / 1000) for i in df.close_time]
-    return df
 
 
 def convert_signal_str(predict: PREDICT_TYPE) -> str:

@@ -1,7 +1,8 @@
+from typing import Dict
+
 import ccxt
 import pandas as pd
 from quick_trade import utils
-from typing import Dict
 
 
 class TradingClient(object):
@@ -103,4 +104,4 @@ class TradingClient(object):
         if len(self.client.apiKey):
             self.start_balance = self.client.fetch_free_balance()
         else:
-            utils.logger.warning('The client does not have an API key')
+            utils.logger.warning('Client doesn\'t have an API key')

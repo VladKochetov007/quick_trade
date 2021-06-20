@@ -71,6 +71,11 @@ Reverse from `set_`
 | _nan_num | The value to replace the `np.nan`| Without this, the replacement may be incorrect. |
 | returns   | list | list without `np.nan` |
 
+```commandline
+In[8]: anti_set_([1, np.nan, np.nan, 0, np.nan, np.nan, np.nan, 1, 2, np.nan])
+Out[8]: [1, 1, 1, 0, 0, 0, 0, 1, 2, 2]
+```
+
 ## get_window
 
 A function for getting a list of lists, each of which has n elements. These lists will be "data windows" with an offset
@@ -82,6 +87,19 @@ of 1.
 | window_length | int | length of "windows" |
 | returns | List\[Iterable\[Any]] | list of "windows" |
 
+```commandline
+In[10]: get_window([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], window_length=3)
+Out[10]: 
+[[1, 2, 3],
+ [2, 3, 4],
+ [3, 4, 5],
+ [4, 5, 6],
+ [5, 6, 7],
+ [6, 7, 8],
+ [7, 8, 9],
+ [8, 9, 10]]
+```
+
 ## convert_signal_str
 
 Convert signals in signal format to string.
@@ -91,17 +109,16 @@ Convert signals in signal format to string.
 | predict | `utils.PREDICT_TYPE` | predict |
 | returns | str | string predict |
 
-## get_binance_data
+```commandline
+In[11]: convert_signal_str(BUY)
+Out[11]: 'Buy'
 
-Function for getting the last Binance candles
+In[12]: convert_signal_str(SELL)
+Out[12]: 'Sell'
 
-| param  | type | description |
-| :---: | :---: | :---: |
-| ticker | str | symbol |
-| interval | str | interval |
-| date_index | bool | dataframe index as date |
-|limit|int|candles limit|
-| returns | `pd.DataFrame` | dataframe with data |
+In[13]: convert_signal_str(EXIT)
+Out[13]: 'Exit'
+```
 
 ## ta_lib_to_returns
 
