@@ -189,6 +189,17 @@ Function for converting timeframe to profit ratio and sleep time for `realtime_t
 | dataset | str | timeframe |
 | returns | Tuple\[float, int] | profit coef and seconds to wait |
 
+```commandline
+In[14]: get_coef_sec('1d')
+Out[14]: (365, 86400)
+
+In[15]: get_coef_sec('1m')
+Out[15]: (525600, 60)
+
+In[16]: get_coef_sec('5m')
+Out[16]: (105120, 300)
+```
+
 ## wait_success
 Decorator. If a traceback was received during the execution of the function, then the action is repeated after `utils.WAIT_SUCCESS_SLEEP` seconds.
 
