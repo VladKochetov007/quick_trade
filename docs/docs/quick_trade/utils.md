@@ -67,7 +67,7 @@ Reverse from [`set_`](#set_)
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| seted | List | returns of `set_` |
+| seted | List | returns of [`set_`](#set_) |
 | _nan_num | The value to replace the `np.nan`| Without this, the replacement may be incorrect. |
 | returns   | list | list without `np.nan` |
 
@@ -132,7 +132,7 @@ replaces ta-lib values with quick-trade predictions
 
 ## ta_lib_collider_all
 
-ta_lib_to_returns, but `exit_=np.nan`
+[`ta_lib_to_returns`](#ta_lib_to_returns), but `exit_=np.nan`
 
 ## SuperTrendIndicator
 
@@ -164,7 +164,7 @@ get `pd.Series` with supertrend predictions
 
 ### get_all_ST
 
-get all supertrend data:
+get all supertrend data as `pd.DataFrame`:
 
     - Supertrend
     - strategy predictions
@@ -182,7 +182,7 @@ pseudo-linear numpy array
 
 ## get_coef_sec
 
-Function for converting timeframe to profit ratio and sleep time for `realtime_trading`
+Function for converting timeframe to profit ratio and sleep time for [`realtime_trading`](trading_sys.md#realtime_trading)
 
 | param  | type | description |
 | :---: | :---: | :---: |
