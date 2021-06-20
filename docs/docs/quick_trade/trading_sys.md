@@ -44,12 +44,12 @@ getattr from self
 
 ### __get_stop_take
 
-The method converts stop loss and take profit in points to stop loss and take profit in specific prices using self._
-stop_loss and self._take_profit as values and self._open_price as the initial price
+The method converts stop loss and take profit in points to stop loss and take profit in specific prices using `self._
+stop_loss` and `self._take_profit` as values and `self._open_price` as the initial price
 
 | param | type | description |
 |:---:|:---:|:---:|
-|sig|PREDICT_TYPE|signal buy/sell/exit|
+|sig|`utils.PREDICT_TYPE`|signal buy/sell/exit|
 |returns|Dict|{'stop': S/L value, 'take': T/P value}|
 
 ### sl_tp_adder
@@ -75,7 +75,7 @@ candles, then if the candle is green - long, if red - short
 | param  | type | description |
 | :---: | :---: | :---: |
 | frame_to_diff | pd.Series | series of dataframe |
-| returns | PREDICT_TYPE_LIST | returns |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
 
 ### strategy_rsi
 
@@ -104,7 +104,7 @@ parabolic SAR strategy
 | :---: | :---: | :---: |
 | plot | bool | plotting of SAR indicator |
 | **sar_kwargs | named arguments | named arguments for `ta.trend.PSARIndicator` |
-| returns | PREDICT_TYPE_LIST | returns |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
 
 ### strategy_macd_histogram_diff
 
@@ -115,7 +115,7 @@ parabolic SAR strategy
 | slow | int | slow MA of MACD |
 | fast | int | fast MA of MACD |
 | **macd_kwargs | named arguments | named arguments for `ta.trend.MACD` |
-| returns | PREDICT_TYPE_LIST | returns |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
 
 example:
 
@@ -128,9 +128,9 @@ supertrend strategy. S/L - ST indicator
 | param  | type | description |
 | :---: | :---: | :---: |
 | plot | bool | plotting of SAR indicator |
-| **st_args | arguments | arguments for `SuperTrendIndicator` |
-| **st_kwargs | named arguments | named arguments for `SuperTrendIndicator` |
-| returns | PREDICT_TYPE_LIST | returns |
+| **st_args | arguments | arguments for `utils.SuperTrendIndicator` |
+| **st_kwargs | named arguments | named arguments for `utils.SuperTrendIndicator` |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/supertrend.png?raw=true)
 
@@ -144,7 +144,7 @@ Bollinger bands strategy (not breakout)
 | to_mid | bool | exit on mid line of `ta.volatility.BollingerBands` |
 | **bollinger_args | arguments | arguments for `ta.volatility.BollingerBands` |
 | **bollinger_kwargs | named arguments | named arguments for `ta.volatility.BollingerBands` |
-| returns | PREDICT_TYPE_LIST | returns |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
 
 ### get_heikin_ashi
 
@@ -161,7 +161,7 @@ Heikin Ashi candles
 | :---: | :---: | :---: |
 | fast | Iterable | When the element of this parameter is less than the element of the `slow` parameter - short. When more - long. |
 | slow | Iterable | When the element of this parameter is greater than the element of the `fast` parameter - short. When less, it takes a long time. |
-| returns | PREDICT_TYPE_LIST | crossover  strategy |
+| returns | `utils.PREDICT_TYPE_LIST` | crossover  strategy |
 
 ```python
 from ta.trend import sma_indicator
@@ -177,7 +177,7 @@ trader.crossover(fast=fast, slow=slow)  # crossover strategy
 | :---: | :---: | :---: |
 | fast | Iterable | When the element of this parameter is less than the element of the `slow` parameter - short. When more - long. |
 | slow | Iterable | When the element of this parameter is greater than the element of the `fast` parameter - short. When less, it takes a long time. |
-| returns | PREDICT_TYPE_LIST | crossover  strategy |
+| returns | `utils.PREDICT_TYPE_LIST` | crossover  strategy |
 
 ### backtest
 
@@ -282,13 +282,26 @@ mode as input values.
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| first_returns | PREDICT_TYPE_LIST |  result of using the strategy |
-| second_returns | PREDICT_TYPE_LIST |  result of using the strategy |
+| first_returns | `utils.PREDICT_TYPE_LIST` |  result of using the strategy |
+| second_returns | `utils.PREDICT_TYPE_LIST` |  result of using the strategy |
 | mode | str | Colliding strategy mode |
-| returns | PREDICT_TYPE_LIST | result of combining strategies |
+| returns | `utils.PREDICT_TYPE_LIST` | result of combining strategies |
 
 ```python
 trader.strategy_collider(trader.strategy_2_sma(50, 20),
                          trader.strategy_2_sma(20, 10),
                          'minimalist')  # crossover of 3 sma
+```
+
+### multi_strategy_collider
+`strategy_collider` for multiple strategies
+
+?> First, the first two strategies are combined, and then the result of the previous join is combined with subsequent strategies.
+
+```python
+trader.strategy_collider(trader.strategy_2_sma(50, 20),
+                         trader.strategy_2_sma(20, 10),
+                         trader.strategy_parabolic_SAR(),
+                         trader.strategy_macd()
+                         mode='maximalist')
 ```

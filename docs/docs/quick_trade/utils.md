@@ -7,7 +7,7 @@ This function performs an operation on the data
 | param  | type | description |
 | :---: | :---: | :---: |
 | data    | List | Data for processing |
-| returns   | utils.SETED_TYPE_LIST | data in which repeating elements are replaced np.nan |
+| returns   | `utils.SETED_TYPE_LIST` | data in which repeating elements are replaced `np.nan` |
 
 if the element is equal to the previous one, then it becomes np.nan.
 
@@ -63,13 +63,13 @@ if the element is equal to the previous one, then it becomes np.nan.
 
 ## anti_set_
 
-Reverse from set_
+Reverse from `set_`
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| seted | List | returns of set_ |
-| _nan_num | The value to replace the np.nan| Without this, the replacement may be incorrect. |
-| returns   | list | list without np.nan |
+| seted | List | returns of `set_` |
+| _nan_num | The value to replace the `np.nan`| Without this, the replacement may be incorrect. |
+| returns   | list | list without `np.nan` |
 
 ## get_window
 
@@ -88,7 +88,7 @@ Convert signals in signal format to string.
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| predict | utils.PREDICT_TYPE | predict |
+| predict | `utils.PREDICT_TYPE` | predict |
 | returns | str | string predict |
 
 ## get_binance_data
@@ -101,7 +101,7 @@ Function for getting the last Binance candles
 | interval | str | interval |
 | date_index | bool | dataframe index as date |
 |limit|int|candles limit|
-| returns | pd.DataFrame | dataframe with data |
+| returns | `pd.DataFrame` | dataframe with data |
 
 ## ta_lib_to_returns
 
@@ -109,7 +109,7 @@ replaces ta-lib values with quick-trade predictions
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| talib_returns | pd.Series | ta-lib returns series |
+| talib_returns | `pd.Series` | ta-lib returns series |
 | exit_ | str | value for talib 0 value (exit predict) |
 | returns | list | ta-lib pattern strategy predicts |
 
@@ -123,9 +123,9 @@ supertrend indicator class
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| close | pd.Series | close data|
-| high | pd.Series | high data|
-| low |pd.Series| low daa|
+| close | `pd.Series` | close data|
+| high | `pd.Series` | high data|
+| low |`pd.Series`| low daa|
 | multiplier |float| ATR multiplier |
 | length |int| ATR length (period) |
 
@@ -161,7 +161,7 @@ pseudo-linear numpy array
 | param  | type | description |
 | :---: | :---: | :---: |
 | dataset | Iterable | data for linear transformation |
-| returns | np.ndarray | linear data |
+| returns | `np.ndarray` | linear data |
 
 ## get_coef_sec
 
@@ -173,7 +173,7 @@ Function for converting timeframe to profit ratio and sleep time for `realtime_t
 | returns | Tuple\[float, int] | profit coef and seconds to wait |
 
 ## wait_success
-Decorator. If a traceback was received during the execution of the function, then the action is repeated after `WAIT_SUCCESS_SLEEP` seconds.
+Decorator. If a traceback was received during the execution of the function, then the action is repeated after `utils.WAIT_SUCCESS_SLEEP` seconds.
 
 The main purpose is to avoid ConnectionError when trading in real time.
 [see this page](https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error)
