@@ -308,3 +308,5 @@ trader.strategy_collider(trader.strategy_2_sma(50, 20),
 
 ### get_trading_predict
 This method is needed to get the result of the strategy and open an order on the exchange.
+
+### realtime_trading
