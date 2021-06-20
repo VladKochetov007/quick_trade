@@ -63,7 +63,7 @@ if the element is equal to the previous one, then it becomes np.nan.
 
 ## anti_set_
 
-Reverse from `set_`
+Reverse from [`set_`](#set_)
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -132,7 +132,7 @@ replaces ta-lib values with quick-trade predictions
 
 ## ta_lib_collider_all
 
-ta_lib_to_returns, but exit_=np.nan
+ta_lib_to_returns, but `exit_=np.nan`
 
 ## SuperTrendIndicator
 
@@ -148,19 +148,19 @@ supertrend indicator class
 
 ### get_supertrend
 
-get pd.Series with supertrend indicator's data
+get `pd.Series` with supertrend indicator's data
 
 ### get_supertrend_upper
 
-get pd.Series with supertrend upper indicator's data
+get `pd.Series` with supertrend upper indicator's data
 
 ### get_supertrend_lower
 
-get pd.Series with supertrend lower indicator's data
+get `pd.Series` with supertrend lower indicator's data
 
 ### get_supertrend_strategy_returns
 
-get pd.Series with supertrend predictions
+get `pd.Series` with supertrend predictions
 
 ### get_all_ST
 
