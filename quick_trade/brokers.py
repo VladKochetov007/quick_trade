@@ -1,5 +1,3 @@
-import logging
-
 import ccxt
 import pandas as pd
 from quick_trade import utils

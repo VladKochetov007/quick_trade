@@ -20,8 +20,7 @@ import ccxt
 
 client = TradingClient(ccxt.binance())
 trader = Trader('BTC/USDT', 
-                client.get_data_historical('BTC/USDT',
-                                           '2h'),
+                client.get_data_historical('BTC/USDT', '2h'),
                 '2h')
 
 ```
@@ -169,7 +168,7 @@ from ta.trend import sma_indicator
 
 slow = sma_indicator(trader.df['Close'], 50)
 fast = sma_indicator(trader.df['Close'], 20)
-trader.crossover(fast=fast, slow=slow)
+trader.crossover(fast=fast, slow=slow)  # crossover strategy
 ```
 
 ### inverse_strategy
@@ -199,6 +198,13 @@ that will assign values to `self.returns`,` self._stop_losses`, `self._take_prof
 ?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the
 desired trade, deal is immediately reduced to the level of the deposit.
 
+```python
+trader.set_pyplot()
+trader.backtest(deposit=1000)
+```
+
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/plot.png?raw=true)
+
 ### multi_backtest
 
 A method for testing a strategy on several symbols.
@@ -219,6 +225,33 @@ A method for testing a strategy on several symbols.
 
 !> Each pair is tested separately and then the results are summarized. Because of this, the strategies do not use the
 total deposit in such a test.
+
+```python
+import numpy as np
+
+
+trader.set_client(client)
+trader.multi_backtest(['BTC/USDT',
+                       'ETH/USDT',
+                       'LTC/USDT'], 
+                      strategy_name='strategy_supertrend', 
+                      strategy_kwargs=dict(multiplier=2, length=1), 
+                      deposit=1700, 
+                      commission=0.075, 
+                      bet=np.inf, 
+                      limit=1000)
+```
+
+output:
+```
+losses: 90
+trades: 88
+profits: 88
+mean year percentage profit: 436.3006580276444%
+winrate: 49.9921984709003%
+```
+
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/multi_backtest.png?raw=true)
 
 ### set_pyplot
 
@@ -253,3 +286,9 @@ mode as input values.
 | second_returns | PREDICT_TYPE_LIST |  result of using the strategy |
 | mode | str | Colliding strategy mode |
 | returns | PREDICT_TYPE_LIST | result of combining strategies |
+
+```python
+trader.strategy_collider(trader.strategy_2_sma(50, 20),
+                         trader.strategy_2_sma(20, 10),
+                         'minimalist')  # crossover of 3 sma
+```
