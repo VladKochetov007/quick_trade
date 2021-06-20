@@ -9,7 +9,7 @@ A class in which you can trade and test strategies.
 | param | type | description |
 |:---:|:---:|:---:|
 |ticker|str|symbol for CCXT (with "/")|
-|df|pd.DataFrame|dataframe with columns: Close, Open, High, Low, Volume|
+|df|`pd.DataFram`e|dataframe with columns: Close, Open, High, Low, Volume|
 |interval|str| timeframe:1m 2m 3m 5m 15m 30m 45m 1h 90m 2h 3h 4h 12h 1d 3d 1w 1M 3M 6M|
 
 ```python
@@ -90,7 +90,7 @@ If the value has crossed the border with mid` - exit
 | maximum | float | max level of RSI |
 | max_mid | float | max/mid level of RSI (exit from short) |
 | min_mid | float | min/mid level of RSI (exit from long) |
-| returns | PREDICT_TYPE_LIST | returns |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
 
 example:
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/rsi_strat_example.jpg?raw=true)
@@ -152,8 +152,8 @@ Heikin Ashi candles
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| df | pd.DataFrame | dataframe with Open, High, Low, Close data |
-| returns | pd.DataFrame | HA ohlc |
+| df | `pd.DataFrame` | dataframe with Open, High, Low, Close data |
+| returns | `pd.DataFrame` | HA ohlc |
 
 ### crossover
 
@@ -193,7 +193,7 @@ that will assign values to `self.returns`,` self._stop_losses`, `self._take_prof
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
 | column | str | The parameter shows which series of the dataframe should be used to test the strategy. |
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
-| returns | pd.DataFrame | Dataframe with information about the deposit, strategy signals, `.diff()` of deposit, stop loss, take profit, opening prices, pseudo-line deposit, and dataframe series. |
+| returns | `pd.DataFrame` | Dataframe with information about the deposit, strategy signals, `.diff()` of deposit, stop loss, take profit, opening prices, pseudo-line deposit, and dataframe series. |
 
 ?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the
 desired trade, deal is immediately reduced to the level of the deposit.
@@ -221,7 +221,7 @@ A method for testing a strategy on several symbols.
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
 | column | str | The parameter shows which series of the dataframe should be used to test the strategy. |
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
-| returns | pd.DataFrame | Dataframe with information about the deposit, pseudo-line deposit and `.diff()` of deposit. |
+| returns | `pd.DataFrame` | Dataframe with information about the deposit, pseudo-line deposit and `.diff()` of deposit. |
 
 !> Each pair is tested separately and then the results are summarized. Because of this, the strategies do not use the
 total deposit in such a test.
