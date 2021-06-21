@@ -9,3 +9,4 @@ quick_trade.egg-info
 *.pyi
 /quick_trade/quick_trade_tuner/__pycache__
 .DS_Store
+*.dat

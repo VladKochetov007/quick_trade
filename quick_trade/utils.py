@@ -1,16 +1,16 @@
-import logging
-import time
 from functools import wraps
+from logging import basicConfig, getLogger
+from time import sleep
 from typing import Any, List, Union, Tuple, Iterable
 
 import numpy as np
-import pandas as pd
+from pandas import DataFrame, Series
 from ta.volatility import AverageTrueRange
 
 PREDICT_TYPE: type = int
 PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
-SETED_TYPE: type = Union[PREDICT_TYPE, float]
-SETED_TYPE_LIST: type = List[SETED_TYPE]
+CONVERTED_TYPE: type = Union[PREDICT_TYPE, float]
+CONVERTED_TYPE_LIST: type = List[CONVERTED_TYPE]
 
 RED: str = '#ff0000'
 GREEN: str = '#55ff00'
@@ -54,9 +54,9 @@ WAIT_SUCCESS_SLEEP = 15
 WAIT_SUCCESS_PRINT = True
 USE_WAIT_SUCCESS = True
 
-logger = logging.getLogger()
-logger.setLevel(30)
-logging.basicConfig(level=20, filename='trading.log', format='%(name)s::%(asctime)s::[%(levelname)s] %(message)s')
+logger = getLogger()
+logger.setLevel(0)
+basicConfig(level=20, filename='trading.log', format='%(name)s::%(asctime)s::[%(levelname)s] %(message)s')
 
 
 class SuperTrendIndicator(object):
@@ -64,14 +64,14 @@ class SuperTrendIndicator(object):
 
     Supertrend (ST)
     """
-    close: pd.Series
-    high: pd.Series
-    low: pd.Series
+    close: Series
+    high: Series
+    low: Series
 
     def __init__(self,
-                 close: pd.Series,
-                 high: pd.Series,
-                 low: pd.Series,
+                 close: Series,
+                 high: Series,
+                 low: Series,
                  multiplier: float = 3.0,
                  length: int = 10):
         self.close = close
@@ -81,26 +81,26 @@ class SuperTrendIndicator(object):
         self.length = length
         self._all = self._get_all_ST()
 
-    def get_supertrend(self) -> pd.Series:
+    def get_supertrend(self) -> Series:
         return self._all['ST']
 
-    def get_supertrend_upper(self) -> pd.Series:
+    def get_supertrend_upper(self) -> Series:
         return self._all['ST_upper']
 
-    def get_supertrend_lower(self) -> pd.Series:
+    def get_supertrend_lower(self) -> Series:
         return self._all['ST_lower']
 
-    def get_supertrend_strategy_returns(self) -> pd.Series:
+    def get_supertrend_strategy_returns(self) -> Series:
         """
 
         :return: pd.Series with 1 or -1 (buy, sell)
         """
         return self._all['ST_strategy']
 
-    def get_all_ST(self) -> pd.DataFrame:
+    def get_all_ST(self) -> DataFrame:
         return self._all
 
-    def _get_all_ST(self) -> pd.DataFrame:
+    def _get_all_ST(self) -> DataFrame:
         """
 
         ST Indicator, trading predictions, ST high/low
@@ -133,7 +133,7 @@ class SuperTrendIndicator(object):
                 trend[i] = short[i] = upperband.iloc[i]
 
         # Prepare DataFrame to return
-        df = pd.DataFrame(
+        df = DataFrame(
             {
                 f"ST": trend,
                 f"ST_strategy": dir_,
@@ -146,7 +146,7 @@ class SuperTrendIndicator(object):
         return df
 
 
-def set_(data: Any) -> SETED_TYPE_LIST:
+def convert(data: Any) -> CONVERTED_TYPE_LIST:
     ret: List[Any] = list(data.copy())
     e: int
     for e, i in enumerate(data[1:]):
@@ -155,16 +155,16 @@ def set_(data: Any) -> SETED_TYPE_LIST:
     return ret
 
 
-def anti_set_(seted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
-    seted = np.nan_to_num(seted, nan=_nan_num)
-    ret: List[Any] = [PREDICT_TYPE(seted[0])]
-    flag = seted[0]
+def anti_convert(converted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
+    converted = np.nan_to_num(converted, nan=_nan_num)
+    ret: List[Any] = [converted[0]]
+    flag = converted[0]
     e: int
-    for i in seted[1:]:
+    for i in converted[1:]:
         if i == _nan_num:
-            ret.append(PREDICT_TYPE(flag))
+            ret.append(flag)
         else:
-            ret.append(PREDICT_TYPE(i))
+            ret.append(i)
             flag = i
     return ret
 
@@ -185,7 +185,7 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
         return 'Exit'
 
 
-def ta_lib_to_returns(talib_returns: pd.Series, exit_: Any = EXIT, *args, **kwargs) -> PREDICT_TYPE_LIST:
+def ta_lib_to_returns(talib_returns: Series, exit_: Any = EXIT, *args, **kwargs) -> PREDICT_TYPE_LIST:
     return list(talib_returns.replace({-200: SELL,
                                        200: BUY,
                                        100: BUY,
@@ -193,7 +193,7 @@ def ta_lib_to_returns(talib_returns: pd.Series, exit_: Any = EXIT, *args, **kwar
                                        0: exit_}).values)
 
 
-def ta_lib_collider_all(data: pd.Series, *args, **kwargs) -> PREDICT_TYPE_LIST:
+def ta_lib_collider_all(data: Series, *args, **kwargs) -> PREDICT_TYPE_LIST:
     return ta_lib_to_returns(data, exit_=np.nan)
 
 
@@ -203,7 +203,7 @@ def get_linear(dataset) -> np.ndarray:
     """
 
     mean_diff: float
-    data: pd.DataFrame = pd.DataFrame(dataset)
+    data: DataFrame = DataFrame(dataset)
 
     mean: float = float(data.mean())
     mean_diff = float(data.diff().mean())
@@ -296,8 +296,8 @@ def wait_success(func):
                     if not isinstance(e, KeyboardInterrupt):
                         if WAIT_SUCCESS_PRINT:
                             print(f'An error occurred: {e}')
-                        logger.info(f'An error occurred: {e}', exc_info=True)
-                        time.sleep(WAIT_SUCCESS_SLEEP)
+                        logger.error(f'An error occurred: {e}', exc_info=True)
+                        sleep(WAIT_SUCCESS_SLEEP)
                         continue
                     else:
                         raise e

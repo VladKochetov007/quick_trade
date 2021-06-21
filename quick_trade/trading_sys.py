@@ -9,14 +9,14 @@
 #   scalper and dca bot
 #   unit-tests
 #   more docs and examples
-import datetime
-import time
+#   make normal logs
+
 from copy import copy
+from datetime import datetime
 from threading import Thread
+from time import ctime, time, sleep
 from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
 
-import numpy as np
-import pandas as pd
 import ta
 import ta.momentum
 import ta.others
@@ -24,6 +24,8 @@ import ta.trend
 import ta.volatility
 import ta.volume
 import talib
+from numpy import ndarray, array, inf, digitize, nan_to_num, nan, mean
+from pandas import DataFrame, Series
 from plotly.subplots import make_subplots
 from quick_trade import brokers
 from quick_trade import utils
@@ -41,12 +43,11 @@ class Trader(object):
     """
     _profit_calculate_coef: float
     returns: utils.PREDICT_TYPE_LIST = []
-    df: pd.DataFrame
+    df: DataFrame
     ticker: str
     interval: str
     __exit_order__: bool = False
     _prev_predict: str = 'Exit'
-    _regression_inputs: int
     _stop_loss: float
     _take_profit: float
     _open_price: float
@@ -57,12 +58,12 @@ class Trader(object):
     _take_profits: List[float]
     _credit_leverages: List[float]
     deposit_history: List[float]
-    year_profit: float
-    _linear: np.ndarray
-    info: str
-    _backtest_out_no_drop: pd.DataFrame
-    backtest_out: pd.DataFrame
     _open_lot_prices: List[float]
+    year_profit: float
+    _linear: ndarray
+    info: str
+    _backtest_out_no_drop: DataFrame
+    backtest_out: DataFrame
     realtime_returns: Dict[str, Dict[str, Union[str, float]]]
     client: brokers.TradingClient
     __last_stop_loss: float
@@ -77,7 +78,7 @@ class Trader(object):
 
     def __init__(self,
                  ticker: str = 'BTC/USDT',
-                 df: pd.DataFrame = pd.DataFrame(),
+                 df: DataFrame = DataFrame(),
                  interval: str = '1d',
                  trading_on_client: bool = True):
         self.df = df.reset_index(drop=True)
@@ -108,14 +109,14 @@ class Trader(object):
 
         _stop_loss: float
         take: float
-        if self._stop_loss is not np.inf:
+        if self._stop_loss is not inf:
             _stop_loss = self._stop_loss / 10_000 * self._open_price
         else:
-            _stop_loss = np.inf
-        if self._take_profit is not np.inf:
+            _stop_loss = inf
+        if self._take_profit is not inf:
             take = self._take_profit / 10_000 * self._open_price
         else:
-            take = np.inf
+            take = inf
 
         if sig == utils.BUY:
             _stop_loss = self._open_price - _stop_loss
@@ -124,9 +125,9 @@ class Trader(object):
             take = self._open_price - take
             _stop_loss = self._open_price + _stop_loss
         else:
-            if self._take_profit is not np.inf:
+            if self._take_profit is not inf:
                 take = self._open_price
-            if self._stop_loss is not np.inf:
+            if self._stop_loss is not inf:
                 _stop_loss = self._open_price
         utils.logger.debug(
             f'stop loss: {_stop_loss} ({self._stop_loss} pips), take profit: {take} ({self._take_profit} pips)')
@@ -164,11 +165,11 @@ class Trader(object):
         self._take_profits = take_profits
         return self._stop_losses, self._take_profits
 
-    def strategy_diff(self, frame_to_diff: pd.Series) -> utils.PREDICT_TYPE_LIST:
+    def strategy_diff(self, frame_to_diff: Series) -> utils.PREDICT_TYPE_LIST:
         """
-        frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
+        frame_to_diff:  |   Series  |  example:  Trader.df['Close']
         """
-        self.returns = list(np.digitize(frame_to_diff.diff(), bins=[0]))
+        self.returns = list(digitize(frame_to_diff.diff(), bins=[0]))
         self.set_open_stop_and_take()
         self.set_credit_leverages()
         return self.returns
@@ -317,8 +318,8 @@ class Trader(object):
         self.returns = []
         sar: ta.trend.PSARIndicator = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
                                                              self.df['Close'], **sar_kwargs)
-        sardown: np.ndarray = sar.psar_down().values
-        sarup: np.ndarray = sar.psar_up().values
+        sardown: ndarray = sar.psar_down().values
+        sarup: ndarray = sar.psar_up().values
         self._stop_losses = list(sar.psar().values)
 
         if plot:
@@ -329,8 +330,8 @@ class Trader(object):
                     1, 1)
         for price, up, down in zip(
                 list(self.df['Close'].values), list(sarup), list(sardown)):
-            numup = np.nan_to_num(up, nan=-9999.0)
-            numdown = np.nan_to_num(down, nan=-9999.0)
+            numup = nan_to_num(up, nan=-9999.0)
+            numdown = nan_to_num(down, nan=-9999.0)
             if numup != -9999:
                 self.returns.append(utils.BUY)
             elif numdown != -9999:
@@ -348,7 +349,7 @@ class Trader(object):
         _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
         signal_ = _MACD_.macd_signal()
         macd_ = _MACD_.macd()
-        histogram: pd.DataFrame = pd.DataFrame(macd_.values - signal_.values)
+        histogram: DataFrame = DataFrame(macd_.values - signal_.values)
         for element in histogram.diff().values:
             if element == 0:
                 self.returns.append(utils.EXIT)
@@ -375,7 +376,7 @@ class Trader(object):
                                     line=dict(width=utils.SUB_LINES_WIDTH, color=utils.GREEN)))
         self._stop_losses = list(st.get_supertrend())
         self.returns = list(st.get_supertrend_strategy_returns())
-        self._stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
+        self._stop_losses[0] = inf if self.returns[0] == utils.SELL else -inf
         self.set_open_stop_and_take(set_stop=False)
         self.set_credit_leverages()
         return self.returns
@@ -392,12 +393,12 @@ class Trader(object):
                                                                                *bollinger_args,
                                                                                **bollinger_kwargs)
 
-        mid_: pd.Series = bollinger.bollinger_mavg()
-        upper: pd.Series = bollinger.bollinger_hband()
-        lower: pd.Series = bollinger.bollinger_lband()
+        mid_: Series = bollinger.bollinger_mavg()
+        upper: Series = bollinger.bollinger_hband()
+        lower: Series = bollinger.bollinger_lband()
         if plot:
             name: str
-            TR: pd.Series
+            TR: Series
             for TR, name in zip([upper, mid_, lower], ['upper band', 'mid band', 'lower band']):
                 self.fig.add_trace(Line(y=TR, name=name, line=dict(width=utils.SUB_LINES_WIDTH)), col=1, row=1)
         close: float
@@ -423,13 +424,13 @@ class Trader(object):
         self.set_credit_leverages()
         return self.returns
 
-    def get_heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()) -> pd.DataFrame:
+    def get_heikin_ashi(self, df: DataFrame = DataFrame()) -> DataFrame:
         """
         :param df: dataframe, standard: self.df
         :return: heikin ashi
         """
         if 'Close' not in df.columns:
-            df: pd.DataFrame = self.df.copy()
+            df: DataFrame = self.df.copy()
         df['HA_Close'] = (df['Open'] + df['High'] + df['Low'] + df['Close']) / 4
         df['HA_Open'] = (df['Open'].shift(1) + df['Open'].shift(1)) / 2
         df.iloc[0, df.columns.get_loc("HA_Open")] = (df.iloc[0]['Open'] + df.iloc[0]['Close']) / 2
@@ -457,18 +458,18 @@ class Trader(object):
                                            kijunsen,
                                            senkouspan,
                                            visual=True)
-        tenkan_sen: np.ndarray = cloud.ichimoku_conversion_line().values
-        kinjun_sen: np.ndarray = cloud.ichimoku_base_line().values
-        senkou_span_a: np.ndarray = cloud.ichimoku_a().values
-        senkou_span_b: np.ndarray = cloud.ichimoku_b().values
-        prices: pd.Series = self.df['Close']
-        chenkou_span: np.ndarray = prices.shift(-chinkouspan).values
+        tenkan_sen: ndarray = cloud.ichimoku_conversion_line().values
+        kinjun_sen: ndarray = cloud.ichimoku_base_line().values
+        senkou_span_a: ndarray = cloud.ichimoku_a().values
+        senkou_span_b: ndarray = cloud.ichimoku_b().values
+        prices: Series = self.df['Close']
+        chenkou_span: ndarray = prices.shift(-chinkouspan).values
         flag1: utils.PREDICT_TYPE = utils.EXIT
         flag2: utils.PREDICT_TYPE = utils.EXIT
         flag3: utils.PREDICT_TYPE = utils.EXIT
         trade: utils.PREDICT_TYPE = utils.EXIT
         name: str
-        data: np.ndarray
+        data: ndarray
         e: int
         close: float
         tenkan: float
@@ -500,7 +501,7 @@ class Trader(object):
                 line_color=utils.ICHIMOKU_CLOUD_COLOR))
 
             self.returns = [utils.EXIT for i in range(chinkouspan)]
-            self._stop_losses = [np.inf] * chinkouspan
+            self._stop_losses = [inf] * chinkouspan
             for e, (close, tenkan, kijun, A, B) in enumerate(zip(
                     prices.values[chinkouspan:],
                     tenkan_sen[chinkouspan:],
@@ -577,41 +578,41 @@ class Trader(object):
 
     def backtest(self,
                  deposit: float = 10_000.0,
-                 bet: float = np.inf,
+                 bet: float = inf,
                  commission: float = 0.0,
                  plot: bool = True,
                  print_out: bool = True,
                  column: str = 'Close',
-                 show: bool = True) -> pd.DataFrame:
+                 show: bool = True) -> DataFrame:
         """
         testing the strategy.
         :param deposit: start deposit.
-        :param bet: fixed bet to quick_trade. np.inf = all moneys.
+        :param bet: fixed bet to quick_trade. inf = all moneys.
         :param commission: percentage commission (0 -- 100).
         :param plot: plotting.
         :param print_out: printing.
         :param column: column of dataframe to backtest
         :param show: show the graph
-        returns: pd.DataFrame with data of test
+        returns: DataFrame with data of test
         """
 
         exit_take_stop: bool
         no_order: bool
         stop_loss: float
         take_profit: float
-        seted: List[Any]
+        converted_element: utils.CONVERTED_TYPE_LIST
         diff: float
-        lin_calc_df: pd.DataFrame
+        lin_calc_df: DataFrame
         high: float
         low: float
         credit_lev: float
 
         start_bet: float = bet
-        data_column: pd.Series = self.df[column]
-        data_high: pd.Series = self.df['High']
-        data_low: pd.Series = self.df['Low']
+        data_column: Series = self.df[column]
+        data_high: Series = self.df['High']
+        data_low: Series = self.df['Low']
         self.deposit_history = [deposit]
-        seted_ = utils.set_(self.returns)
+        converted = utils.convert(self.returns)
         self.trades = 0
         self.profits = 0
         self.losses = 0
@@ -626,7 +627,7 @@ class Trader(object):
         for e, (sig,
                 stop_loss,
                 take_profit,
-                seted,
+                converted_element,
                 credit_lev,
                 high,
                 low,
@@ -634,14 +635,14 @@ class Trader(object):
                 next_l) in enumerate(zip(self.returns[:-1],
                                          self._stop_losses[:-1],
                                          self._take_profits[:-1],
-                                         seted_[:-1],
+                                         converted[:-1],
                                          self._credit_leverages[:-1],
                                          data_high[:-1],
                                          data_low[:-1],
                                          data_high[1:],
                                          data_low[1:])):
 
-            if seted is not np.nan:
+            if converted_element is not nan:
                 if oldsig != utils.EXIT:
                     commission_reuse = 2
                 else:
@@ -689,7 +690,7 @@ class Trader(object):
             no_order = exit_take_stop
             self.deposit_history.append(deposit)
             oldsig = sig
-            if seted is not np.nan:
+            if converted_element is not nan:
                 if sig != utils.EXIT:
                     self.trades += 1
                 if oldsig != utils.EXIT:
@@ -700,7 +701,7 @@ class Trader(object):
             ignore_breakout = False
 
         self._linear = utils.get_linear(self.deposit_history)
-        lin_calc_df = pd.DataFrame(self._linear)
+        lin_calc_df = DataFrame(self._linear)
         mean_diff = float(lin_calc_df.diff().mean())
         self.year_profit = mean_diff * self._profit_calculate_coef
         self.year_profit = (self.year_profit / money_start) * 100
@@ -713,12 +714,12 @@ trades: {self.trades}
 profits: {self.profits}
 mean year percentage profit: {self.year_profit}%
 winrate: {self.winrate}%"""
-        utils.logger.info(f'trader info: {self._info}')
+        utils.logger.info(f'{self} info: {self._info}')
         if print_out:
             print(self._info)
-        self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
+        self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
-        self._backtest_out_no_drop = pd.DataFrame(
+        self._backtest_out_no_drop = DataFrame(
             (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
              self._open_lot_prices, data_column, self._linear, self.returns_strategy_diff),
             index=[
@@ -729,7 +730,7 @@ winrate: {self.winrate}%"""
             ]).T
         self.backtest_out = self._backtest_out_no_drop.dropna()
         if plot:
-            loc: pd.Series = self.df[column]
+            loc: Series = self.df[column]
             self.fig.add_trace(
                 Line(
                     y=self._backtest_out_no_drop['returns'].values,
@@ -783,7 +784,7 @@ winrate: {self.winrate}%"""
                                                          'bprice': [],
                                                          'sprice': [],
                                                          'eprice': []}
-            for e, i in enumerate(seted_):
+            for e, i in enumerate(converted):
                 if i == utils.SELL:
                     preds['sellind'].append(e)
                     preds['sprice'].append(loc[e])
@@ -825,19 +826,19 @@ winrate: {self.winrate}%"""
                        strategy_name: str = 'strategy_macd',
                        strategy_kwargs: Dict[str, Any] = {},
                        deposit: float = 10_000.0,
-                       bet: float = np.inf,
+                       bet: float = inf,
                        commission: float = 0.0,
                        plot: bool = True,
                        print_out: bool = True,
                        column: str = 'Close',
                        show: bool = True,
-                       limit: int = 1000) -> pd.DataFrame:
+                       limit: int = 1000) -> DataFrame:
         winrates: List[float] = []
         percentage_profits: List[float] = []
         losses: List[int] = []
         trades: List[int] = []
         profits: List[int] = []
-        depo: List[np.ndarray] = []
+        depo: List[ndarray] = []
         lens_dep: List[int] = []
 
         for ticker in tickers:
@@ -858,22 +859,22 @@ winrate: {self.winrate}%"""
             losses.append(new_trader.losses)
             trades.append(new_trader.trades)
             profits.append(new_trader.profits)
-            depo.append(np.array(new_trader.deposit_history))
+            depo.append(array(new_trader.deposit_history))
             lens_dep.append(len(new_trader.deposit_history))
         self.losses = sum(losses)
         self.trades = sum(profits)
         self.profits = sum(profits)
-        self.year_profit = float(np.mean(percentage_profits))
-        self.winrate = float(np.mean(winrates))
+        self.year_profit = float(mean(percentage_profits))
+        self.winrate = float(mean(winrates))
 
         for enum, elem in enumerate(depo):
-            depo[enum] = np.array(elem[-min(lens_dep):]) / (elem[-min(lens_dep)] / (deposit / len(tickers)))
+            depo[enum] = array(elem[-min(lens_dep):]) / (elem[-min(lens_dep)] / (deposit / len(tickers)))
         self.deposit_history = list(sum(depo))
 
         self._linear = utils.get_linear(self.deposit_history)
-        self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
+        self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
-        self._backtest_out_no_drop = pd.DataFrame(
+        self._backtest_out_no_drop = DataFrame(
             (self.deposit_history, self._linear, self.returns_strategy_diff),
             index=[
                 f'deposit ({column})',
@@ -887,7 +888,7 @@ trades: {self.trades}
 profits: {self.profits}
 mean year percentage profit: {self.year_profit}%
 winrate: {self.winrate}%"""
-        utils.logger.info(f'trader multi info: {self._info}')
+        utils.logger.info(f'{self} multi info: {self._info}')
         if print_out:
             print(self._info)
         if plot:
@@ -1037,16 +1038,16 @@ winrate: {self.winrate}%"""
     @staticmethod
     def _collide_super(l1, l2) -> utils.PREDICT_TYPE_LIST:
         return_list: utils.PREDICT_TYPE_LIST = []
-        for first, sec in zip(utils.set_(l1), utils.set_(l2)):
-            if first is not np.nan and sec is not np.nan and first is not sec:
+        for first, sec in zip(utils.convert(l1), utils.convert(l2)):
+            if first is not nan and sec is not nan and first is not sec:
                 return_list.append(utils.EXIT)
             elif first is sec:
                 return_list.append(first)
-            elif first is np.nan:
+            elif first is nan:
                 return_list.append(sec)
             else:
                 return_list.append(first)
-        return list(map(lambda x: utils.PREDICT_TYPE(x), utils.anti_set_(return_list)))
+        return list(map(lambda x: utils.PREDICT_TYPE(x), utils.anti_convert(return_list)))
 
     def multi_strategy_collider(self, *strategies, mode: str = 'minimalist') -> utils.PREDICT_TYPE_LIST:
         self.strategy_collider(strategies[0], strategies[1], mode=mode)
@@ -1058,7 +1059,7 @@ winrate: {self.winrate}%"""
         return self.returns
 
     def get_trading_predict(self,
-                            bet_for_trading_on_client: float = np.inf,
+                            bet_for_trading_on_client: float = inf,
                             coin_lotsize_division: bool = True
                             ) -> Dict[str, Union[str, float]]:
         """
@@ -1071,7 +1072,7 @@ winrate: {self.winrate}%"""
 
         _moneys_: float
         bet: float
-        close: np.ndarray = self.df["Close"].values
+        close: ndarray = self.df["Close"].values
 
         # get prediction
         predict = utils.convert_signal_str(self.returns[-1])
@@ -1092,7 +1093,7 @@ winrate: {self.winrate}%"""
                 else:
                     _moneys_ = self.client.get_balance_ticker(self.ticker.split('/')[1])
                     ticker_price = self.client.get_ticker_price(self.ticker)
-                    if bet_for_trading_on_client is not np.inf:
+                    if bet_for_trading_on_client is not inf:
                         bet = bet_for_trading_on_client
                     else:
                         bet = _moneys_
@@ -1119,7 +1120,7 @@ winrate: {self.winrate}%"""
                          strategy,
                          ticker: str = 'BTC/USDT',
                          print_out: bool = True,
-                         bet_for_trading_on_client: float = np.inf,
+                         bet_for_trading_on_client: float = inf,
                          coin_lotsize_division: bool = True,
                          ignore_exceptions: bool = False,
                          print_exc: bool = True,
@@ -1145,7 +1146,7 @@ winrate: {self.winrate}%"""
 
         self.realtime_returns = {}
         self.ticker = ticker
-        open_time = time.time()
+        open_time = time()
         while True:
             try:
                 self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
@@ -1158,15 +1159,15 @@ winrate: {self.winrate}%"""
                     bet_for_trading_on_client=bet_for_trading_on_client,
                     coin_lotsize_division=coin_lotsize_division)
 
-                index = f'{self.ticker}, {time.ctime()}'
+                index = f'{self.ticker}, {ctime()}'
                 utils.logger.info(f"trading prediction at {index}: {prediction}")
                 if print_out:
                     print(index, prediction)
                 self.realtime_returns[index] = prediction
                 while True:
                     if not self.__exit_order__:
-                        if (open_time + self._sec_interval) - time.time() < wait_sl_tp_checking:
-                            time.sleep(wait_sl_tp_checking)
+                        if (open_time + self._sec_interval) - time() < wait_sl_tp_checking:
+                            sleep(wait_sl_tp_checking)
                         utils.logger.debug(f"sleep {wait_sl_tp_checking} seconds")
 
                         price = self.client.get_ticker_price(ticker)
@@ -1175,7 +1176,7 @@ winrate: {self.winrate}%"""
                         if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
                             self.__exit_order__ = True
                             utils.logger.info('exit trade')
-                            index = f'{self.ticker}, {time.ctime()}'
+                            index = f'{self.ticker}, {ctime()}'
                             utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
                             if print_out:
                                 print(f"trading prediction exit in sleeping at {index}: {prediction}")
@@ -1184,7 +1185,7 @@ winrate: {self.winrate}%"""
                                 self.client.exit_last_order()
                         elif strategy_in_sleep:
                             break
-                    if time.time() >= (open_time + self._sec_interval):
+                    if time() >= (open_time + self._sec_interval):
                         self._prev_predict = utils.convert_signal_str(self.returns[-1])
                         open_time += self._sec_interval
                         break
@@ -1200,10 +1201,10 @@ winrate: {self.winrate}%"""
 
     def multi_realtime_trading(self,
                                tickers: List[str],
-                               start_time: datetime.datetime,  # LOCAL TIME
+                               start_time: datetime,  # LOCAL TIME
                                strategy_name: str,
                                print_out: bool = True,
-                               bet_for_trading_on_client: float = np.inf,  # for 1 trade
+                               bet_for_trading_on_client: float = inf,  # for 1 trade
                                coin_lotsize_division: bool = True,
                                ignore_exceptions: bool = False,
                                print_exc: bool = True,
@@ -1217,7 +1218,7 @@ winrate: {self.winrate}%"""
 
         class MultiRealTimeTrader(self.__class__):
             def get_trading_predict(self,
-                                    bet_for_trading_on_client: float = np.inf,
+                                    bet_for_trading_on_client: float = inf,
                                     coin_lotsize_division: bool = True
                                     ) -> Dict[str, Union[str, float]]:
                 balance = self.client.get_balance_ticker(self.ticker.split('/')[1])
@@ -1236,7 +1237,7 @@ winrate: {self.winrate}%"""
             trader.set_client(copy(self.client))
 
             while True:
-                if datetime.datetime.now() >= start_time:
+                if datetime.now() >= start_time:
                     break
             trader.realtime_trading(strategy=trader._get_attr(strategy_name),
                                     ticker=pare,
@@ -1255,22 +1256,22 @@ winrate: {self.winrate}%"""
 
     def log_data(self):
         self.fig.update_yaxes(row=1, col=1, type='log')
-        utils.logger.debug('trader log data')
+        utils.logger.debug(f'{self} log data')
 
     def log_deposit(self):
         self.fig.update_yaxes(row=2, col=1, type='log')
-        utils.logger.debug('trader log deposit')
+        utils.logger.debug(f'{self} log deposit')
 
     def log_returns(self):
         self.fig.update_yaxes(row=3, col=1, type='log')
-        utils.logger.debug('trader log returns')
+        utils.logger.debug(f'{self} log returns')
 
     def set_client(self, your_client: brokers.TradingClient):
         """
         :param your_client: trading client
         """
         self.client = your_client
-        utils.logger.info('trader set client')
+        utils.logger.debug(f'{self} set client')
 
     def convert_signal(self,
                        old: utils.PREDICT_TYPE = utils.SELL,
@@ -1280,12 +1281,12 @@ winrate: {self.winrate}%"""
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
-        utils.logger.info(f'trader signals converted: {old} >> {new}')
+        utils.logger.debug(f'{self} signals converted: {old} >> {new}')
         return self.returns
 
     def set_open_stop_and_take(self,
-                               take_profit: float = np.inf,
-                               stop_loss: float = np.inf,
+                               take_profit: float = inf,
+                               stop_loss: float = inf,
                                set_stop: bool = True,
                                set_take: bool = True):
         """
@@ -1296,20 +1297,20 @@ winrate: {self.winrate}%"""
         """
         self._take_profit = take_profit
         self._stop_loss = stop_loss
-        take_flag: float = np.inf
-        stop_flag: float = np.inf
+        take_flag: float = inf
+        stop_flag: float = inf
         self._open_lot_prices = []
         if set_stop:
             self._stop_losses = []
         if set_take:
             self._take_profits = []
-        closes: np.ndarray = self.df['Close'].values
+        closes: ndarray = self.df['Close'].values
         sig: utils.PREDICT_TYPE
         close: float
-        seted: utils.SETED_TYPE
+        converted: utils.CONVERTED_TYPE
         ts: Dict[str, float]
-        for sig, close, seted in zip(self.returns, closes, utils.set_(self.returns)):
-            if seted is not np.nan:
+        for sig, close, converted in zip(self.returns, closes, utils.convert(self.returns)):
+            if converted is not nan:
                 self._open_price = close
                 if set_take or set_stop:
                     ts = self.__get_stop_take(sig)
@@ -1322,7 +1323,7 @@ winrate: {self.winrate}%"""
                 self._take_profits.append(take_flag)
             if set_stop:
                 self._stop_losses.append(stop_flag)
-        utils.logger.info(f'trader stop loss: {stop_loss}, trader take profit: {take_profit}')
+        utils.logger.info(f'{self} stop loss: {stop_loss}, {self} take profit: {take_profit}')
 
     def set_credit_leverages(self, credit_lev: float = 1.0):
         """
@@ -1331,7 +1332,7 @@ winrate: {self.winrate}%"""
         """
         self.__prev_credit_lev = credit_lev
         self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
-        utils.logger.info(f'trader credit leverage: {credit_lev}')
+        utils.logger.info(f'{self} credit leverage: {credit_lev}')
 
     def _window_(self,
                  column: str,
@@ -1376,7 +1377,7 @@ winrate: {self.winrate}%"""
         self.returns = [utils.EXIT]
         flag: utils.PREDICT_TYPE = utils.EXIT
 
-        flag_stop_loss: float = np.inf
+        flag_stop_loss: float = inf
         self._stop_losses = [flag_stop_loss]
         high: List[float]
         low: List[float]
@@ -1518,7 +1519,7 @@ winrate: {self.winrate}%"""
             ]
         )
 
-        patterns = map(utils.anti_set_, patterns)
+        patterns = map(utils.anti_convert, patterns)
         return self.multi_strategy_collider(*patterns, mode='super')
 
     def get_support_resistance(self) -> Dict[str, Dict[int, float]]:

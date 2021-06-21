@@ -1,12 +1,11 @@
 import itertools
+import json
 from collections import defaultdict
 from typing import Iterable, Dict, Any, List
-import json
 
 import numpy as np
 import pandas as pd
 from quick_trade.brokers import TradingClient
-from quick_trade.utils import logger
 
 from . import core
 
