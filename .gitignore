@@ -4,9 +4,10 @@ MANIFEST
 build
 dist
 .pypirc
+*/.pyc
+.pyc
 quick_trade.egg-info
 *.json
-*.pyi
 /quick_trade/quick_trade_tuner/__pycache__
 .DS_Store
 *.dat
