@@ -13,14 +13,5 @@ jobs:
       - uses: actions/checkout@v2
       - name: loading dependencies
         run: |
-          pip install --upgrade pip
-          wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
-          tar -xvf ta-lib-0.4.0-src.tar.gz
-          cd ta-lib
-          ./configure --prefix=/usr
-          make
-          sudo make install
-          sudo apt upgrade
-          pip install ta-lib
-          cd ..
+          pip3 install --upgrade pip
           pip3 install -r requirements.txt
