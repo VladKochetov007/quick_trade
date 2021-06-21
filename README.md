@@ -4,7 +4,7 @@ View documentation: 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧 i
 
 old documentation (V3 doc): https://vladkochetov007.github.io/quick_trade.github.io
 
-![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/logo_with_slogan_v2.PNG?raw=true)
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/logo_with_slogan_v2_fixed.PNG?raw=true)
 
 ```
 used:
