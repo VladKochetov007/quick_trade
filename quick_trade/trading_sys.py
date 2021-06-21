@@ -23,7 +23,6 @@ import ta.others
 import ta.trend
 import ta.volatility
 import ta.volume
-import talib
 from numpy import ndarray, array, inf, digitize, nan_to_num, nan, mean
 from pandas import DataFrame, Series
 from plotly.subplots import make_subplots
@@ -1445,82 +1444,6 @@ winrate: {self.winrate}%"""
         self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
-
-    def find_all_talib_patterns(self):
-        open_ = self.df['Open']
-        high = self.df['High']
-        low = self.df['Low']
-        close = self.df['Close']
-
-        patterns = map(
-            utils.ta_lib_collider_all,
-            [
-                talib.CDL2CROWS(open_, high, low, close),
-                talib.CDL3BLACKCROWS(open_, high, low, close),
-                talib.CDL3INSIDE(open_, high, low, close),
-                talib.CDL3LINESTRIKE(open_, high, low, close),
-                talib.CDL3OUTSIDE(open_, high, low, close),
-                talib.CDL3STARSINSOUTH(open_, high, low, close),
-                talib.CDL3WHITESOLDIERS(open_, high, low, close),
-                talib.CDLABANDONEDBABY(open_, high, low, close),
-                talib.CDLADVANCEBLOCK(open_, high, low, close),
-                talib.CDLBELTHOLD(open_, high, low, close),
-                talib.CDLBREAKAWAY(open_, high, low, close),
-                talib.CDLCLOSINGMARUBOZU(open_, high, low, close),
-                talib.CDLCONCEALBABYSWALL(open_, high, low, close),
-                talib.CDLCOUNTERATTACK(open_, high, low, close),
-                talib.CDLDARKCLOUDCOVER(open_, high, low, close),
-                talib.CDLDOJI(open_, high, low, close),
-                talib.CDLDOJISTAR(open_, high, low, close),
-                talib.CDLDRAGONFLYDOJI(open_, high, low, close),
-                talib.CDLENGULFING(open_, high, low, close),
-                talib.CDLEVENINGDOJISTAR(open_, high, low, close),
-                talib.CDLEVENINGSTAR(open_, high, low, close),
-                talib.CDLGAPSIDESIDEWHITE(open_, high, low, close),
-                talib.CDLGRAVESTONEDOJI(open_, high, low, close),
-                talib.CDLHAMMER(open_, high, low, close),
-                talib.CDLHANGINGMAN(open_, high, low, close),
-                talib.CDLHARAMI(open_, high, low, close),
-                talib.CDLHARAMICROSS(open_, high, low, close),
-                talib.CDLHIGHWAVE(open_, high, low, close),
-                talib.CDLHIKKAKE(open_, high, low, close),
-                talib.CDLHIKKAKEMOD(open_, high, low, close),
-                talib.CDLHOMINGPIGEON(open_, high, low, close),
-                talib.CDLIDENTICAL3CROWS(open_, high, low, close),
-                talib.CDLINNECK(open_, high, low, close),
-                talib.CDLINVERTEDHAMMER(open_, high, low, close),
-                talib.CDLKICKING(open_, high, low, close),
-                talib.CDLKICKINGBYLENGTH(open_, high, low, close),
-                talib.CDLLADDERBOTTOM(open_, high, low, close),
-                talib.CDLLONGLEGGEDDOJI(open_, high, low, close),
-                talib.CDLLONGLINE(open_, high, low, close),
-                talib.CDLMARUBOZU(open_, high, low, close),
-                talib.CDLMATCHINGLOW(open_, high, low, close),
-                talib.CDLMATHOLD(open_, high, low, close),
-                talib.CDLMORNINGDOJISTAR(open_, high, low, close),
-                talib.CDLMORNINGSTAR(open_, high, low, close),
-                talib.CDLONNECK(open_, high, low, close),
-                talib.CDLPIERCING(open_, high, low, close),
-                talib.CDLRICKSHAWMAN(open_, high, low, close),
-                talib.CDLRISEFALL3METHODS(open_, high, low, close),
-                talib.CDLSEPARATINGLINES(open_, high, low, close),
-                talib.CDLSHOOTINGSTAR(open_, high, low, close),
-                talib.CDLSHORTLINE(open_, high, low, close),
-                talib.CDLSPINNINGTOP(open_, high, low, close),
-                talib.CDLSTALLEDPATTERN(open_, high, low, close),
-                talib.CDLSTICKSANDWICH(open_, high, low, close),
-                talib.CDLTAKURI(open_, high, low, close),
-                talib.CDLTASUKIGAP(open_, high, low, close),
-                talib.CDLTHRUSTING(open_, high, low, close),
-                talib.CDLTRISTAR(open_, high, low, close),
-                talib.CDLUNIQUE3RIVER(open_, high, low, close),
-                talib.CDLUPSIDEGAP2CROWS(open_, high, low, close),
-                talib.CDLXSIDEGAP3METHODS(open_, high, low, close)
-            ]
-        )
-
-        patterns = map(utils.anti_convert, patterns)
-        return self.multi_strategy_collider(*patterns, mode='super')
 
     def get_support_resistance(self) -> Dict[str, Dict[int, float]]:
         lows = self.df['Low'].values
