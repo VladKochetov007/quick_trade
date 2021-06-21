@@ -15,7 +15,7 @@ setup(
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=setuptools.find_packages(),
     version=__version__,
-    description='Trading system for crypto, forex, stocks and others',
+    description='Library for easy management and customization of algorithmic trading.',
     long_description=long_desc,
     long_description_content_type="text/markdown",
     url='https://github.com/VladKochetov007/quick_trade',
