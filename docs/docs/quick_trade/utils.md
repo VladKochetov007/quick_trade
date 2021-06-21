@@ -1,13 +1,13 @@
 # utils:
 
-## set_
+## convert
 
 This function performs an operation on the data
 
 | param  | type | description |
 | :---: | :---: | :---: |
 | data    | List | Data for processing |
-| returns   | `utils.SETED_TYPE_LIST` | data in which repeating elements are replaced `np.nan` |
+| returns   | `utils.CONVERTED_TYPE_LIST` | data in which repeating elements are replaced `np.nan` |
 
 if the element is equal to the previous one, then it becomes np.nan.
 
@@ -61,18 +61,18 @@ if the element is equal to the previous one, then it becomes np.nan.
 0]      nan]
 ```
 
-## anti_set_
+## anti_convert
 
-Reverse from [`set_`](#set_)
+Reverse from [`convert`](#convert)
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| seted | List | returns of [`set_`](#set_) |
+| converted | List | returns of [`converted`](#convert) |
 | _nan_num | The value to replace the `np.nan`| Without this, the replacement may be incorrect. |
 | returns   | list | list without `np.nan` |
 
 ```commandline
-In[8]: anti_set_([1, np.nan, np.nan, 0, np.nan, np.nan, np.nan, 1, 2, np.nan])
+In[8]: anti_convert([1, np.nan, np.nan, 0, np.nan, np.nan, np.nan, 1, 2, np.nan])
 Out[8]: [1, 1, 1, 0, 0, 0, 0, 1, 2, 2]
 ```
 
