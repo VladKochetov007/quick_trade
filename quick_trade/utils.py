@@ -184,19 +184,6 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
     elif predict == EXIT:
         return 'Exit'
 
-
-def ta_lib_to_returns(talib_returns: Series, exit_: Any = EXIT, *args, **kwargs) -> PREDICT_TYPE_LIST:
-    return list(talib_returns.replace({-200: SELL,
-                                       200: BUY,
-                                       100: BUY,
-                                       -100: SELL,
-                                       0: exit_}).values)
-
-
-def ta_lib_collider_all(data: Series, *args, **kwargs) -> PREDICT_TYPE_LIST:
-    return ta_lib_to_returns(data, exit_=np.nan)
-
-
 def get_linear(dataset) -> np.ndarray:
     """
     linear data. mean + (mean diff * n)

@@ -127,8 +127,8 @@ supertrend strategy. S/L - ST indicator
 | param  | type | description |
 | :---: | :---: | :---: |
 | plot | bool | plotting of SAR indicator |
-| **st_args | arguments | arguments for `utils.SuperTrendIndicator` |
-| **st_kwargs | named arguments | named arguments for `utils.SuperTrendIndicator` |
+| **st_args | arguments | arguments for [`utils.SuperTrendIndicator`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=supertrendindicator) |
+| **st_kwargs | named arguments | named arguments for [`utils.SuperTrendIndicator`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=supertrendindicator) |
 | returns | `utils.PREDICT_TYPE_LIST` | returns |
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/supertrend.png?raw=true)
@@ -211,8 +211,8 @@ A method for testing a strategy on several symbols.
 | param  | type | description |
 | :---: | :---: | :---: |
 | tickers | Sized and Iterable \[str] | Strategy testing symbols. |
-| strategy_name | str | strategy name for `Trader._get_attr` |
-| strategy_kwargs | Dict\[str, Any] | named arguments for `Trader._get_attr(strategy_name)` |
+| strategy_name | str | strategy name for [`Trader._get_attr`](#_get_attr) |
+| strategy_kwargs | Dict\[str, Any] | named arguments for [`Trader._get_attr(strategy_name)`](#_get_attr) |
 | deposit | float | Initial deposit for testing the strategy that you used before the test |
 | bet | float | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value `np.inf` |
 | commission | float | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |

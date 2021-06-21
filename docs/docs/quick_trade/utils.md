@@ -120,20 +120,6 @@ In[13]: convert_signal_str(EXIT)
 Out[13]: 'Exit'
 ```
 
-## ta_lib_to_returns
-
-replaces ta-lib values with quick-trade predictions
-
-| param  | type | description |
-| :---: | :---: | :---: |
-| talib_returns | `pd.Series` | ta-lib returns series |
-| exit_ | str | value for talib 0 value (exit predict) |
-| returns | list | ta-lib pattern strategy predicts |
-
-## ta_lib_collider_all
-
-[`ta_lib_to_returns`](#ta_lib_to_returns), but `exit_=np.nan`
-
 ## SuperTrendIndicator
 
 supertrend indicator class
