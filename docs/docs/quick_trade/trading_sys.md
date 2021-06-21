@@ -339,6 +339,4 @@ This method is needed to get the result of the strategy and open an order on the
 
 ### find_PPR
 
-### find_all_talib_patterns
-
 ### get_support_resistance

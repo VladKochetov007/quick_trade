@@ -6,6 +6,7 @@ dist
 .pypirc
 */.pyc
 .pyc
+quick_trade/__init__.pyc
 quick_trade.egg-info
 *.json
 /quick_trade/quick_trade_tuner/__pycache__
