@@ -599,7 +599,7 @@ class Trader(object):
         no_order: bool
         stop_loss: float
         take_profit: float
-        seted: List[Any]
+        converted_element: utils.CONVERTED_TYPE
         diff: float
         lin_calc_df: pd.DataFrame
         high: float
@@ -611,7 +611,7 @@ class Trader(object):
         data_high: pd.Series = self.df['High']
         data_low: pd.Series = self.df['Low']
         self.deposit_history = [deposit]
-        seted_ = utils.convert(self.returns)
+        converted = utils.convert(self.returns)
         self.trades = 0
         self.profits = 0
         self.losses = 0
@@ -626,7 +626,7 @@ class Trader(object):
         for e, (sig,
                 stop_loss,
                 take_profit,
-                seted,
+                converted_element,
                 credit_lev,
                 high,
                 low,
@@ -634,14 +634,14 @@ class Trader(object):
                 next_l) in enumerate(zip(self.returns[:-1],
                                          self._stop_losses[:-1],
                                          self._take_profits[:-1],
-                                         seted_[:-1],
+                                         converted[:-1],
                                          self._credit_leverages[:-1],
                                          data_high[:-1],
                                          data_low[:-1],
                                          data_high[1:],
                                          data_low[1:])):
 
-            if seted is not np.nan:
+            if converted_element is not np.nan:
                 if oldsig != utils.EXIT:
                     commission_reuse = 2
                 else:
@@ -689,7 +689,7 @@ class Trader(object):
             no_order = exit_take_stop
             self.deposit_history.append(deposit)
             oldsig = sig
-            if seted is not np.nan:
+            if converted_element is not np.nan:
                 if sig != utils.EXIT:
                     self.trades += 1
                 if oldsig != utils.EXIT:
@@ -783,7 +783,7 @@ winrate: {self.winrate}%"""
                                                          'bprice': [],
                                                          'sprice': [],
                                                          'eprice': []}
-            for e, i in enumerate(seted_):
+            for e, i in enumerate(converted):
                 if i == utils.SELL:
                     preds['sellind'].append(e)
                     preds['sprice'].append(loc[e])
@@ -1167,7 +1167,7 @@ winrate: {self.winrate}%"""
                     if not self.__exit_order__:
                         if (open_time + self._sec_interval) - time() < wait_sl_tp_checking:
                             sleep(wait_sl_tp_checking)
-                        utils.logger.debug(f"sleep {wait_sl_tp_checking} seconds")
+                        utils.logger.info(f"sleep {wait_sl_tp_checking} seconds")
 
                         price = self.client.get_ticker_price(ticker)
                         min_ = min(self.__last_stop_loss, self.__last_take_profit)
@@ -1270,7 +1270,7 @@ winrate: {self.winrate}%"""
         :param your_client: trading client
         """
         self.client = your_client
-        utils.logger.info('trader set client')
+        utils.logger.debug('trader set client')
 
     def convert_signal(self,
                        old: utils.PREDICT_TYPE = utils.SELL,
@@ -1280,7 +1280,7 @@ winrate: {self.winrate}%"""
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
-        utils.logger.info(f'trader signals converted: {old} >> {new}')
+        utils.logger.debug(f'trader signals converted: {old} >> {new}')
         return self.returns
 
     def set_open_stop_and_take(self,
@@ -1322,7 +1322,7 @@ winrate: {self.winrate}%"""
                 self._take_profits.append(take_flag)
             if set_stop:
                 self._stop_losses.append(stop_flag)
-        utils.logger.info(f'trader stop loss: {stop_loss}, trader take profit: {take_profit}')
+        utils.logger.debug(f'trader stop loss: {stop_loss}, trader take profit: {take_profit}')
 
     def set_credit_leverages(self, credit_lev: float = 1.0):
         """
