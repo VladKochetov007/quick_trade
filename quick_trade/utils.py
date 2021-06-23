@@ -56,7 +56,11 @@ USE_WAIT_SUCCESS = True
 
 logger = getLogger()
 logger.setLevel(0)
-basicConfig(level=20, filename='trading.log', format='%(name)s::%(asctime)s::[%(levelname)s] %(message)s')
+basicConfig(filename='trading.log',
+            format='%(asctime)s [%(levelname)s] %(message)s'
+                   f'[QUICK_TRADE VERSION: {__version__}] [FUNCTION: %(funcName)s] [MODULE "%(module)s", '
+                   'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
+                   '[FILEPATH: %(pathname)s]')
 
 
 class SuperTrendIndicator(object):
