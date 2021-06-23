@@ -583,7 +583,6 @@ class Trader(object):
                  commission: float = 0.0,
                  plot: bool = True,
                  print_out: bool = True,
-                 column: str = 'Close',
                  show: bool = True) -> pd.DataFrame:
         """
         testing the strategy.
@@ -592,7 +591,6 @@ class Trader(object):
         :param commission: percentage commission (0 -- 100).
         :param plot: plotting.
         :param print_out: printing.
-        :param column: column of dataframe to backtest
         :param show: show the graph
         returns: pd.DataFrame with data of test
         """
@@ -609,18 +607,17 @@ class Trader(object):
         credit_lev: float
 
         start_bet: float = bet
-        data_column: pd.Series = self.df[column]
+        data_column: pd.Series = self.df['Close']
         data_high: pd.Series = self.df['High']
         data_low: pd.Series = self.df['Low']
         self.deposit_history = [deposit]
-        converted = utils.convert(self.returns)
+        converted: utils.CONVERTED_TYPE_LIST = utils.convert(self.returns)
         self.trades = 0
         self.profits = 0
         self.losses = 0
         moneys_open_bet: float = deposit
         money_start: float = deposit
         oldsig = utils.EXIT
-        start_commission: float = commission
 
         e: int
         sig: utils.PREDICT_TYPE
@@ -653,7 +650,7 @@ class Trader(object):
                     bet = deposit
                 open_price = data_column[e]
                 for i in range(commission_reuse):
-                    deposit -= bet * (start_commission / 100) * credit_lev
+                    deposit -= bet * (commission / 100) * credit_lev
                     if bet > deposit:
                         bet = deposit
                 moneys_open_bet = deposit
@@ -724,14 +721,14 @@ winrate: {self.winrate}%"""
             (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
              self._open_lot_prices, data_column, self._linear, self.returns_strategy_diff),
             index=[
-                f'deposit ({column})', 'stop loss', 'take profit',
-                'predictions', 'open trade', column,
-                f"linear deposit data ({column})",
+                f'deposit', 'stop loss', 'take profit',
+                'predictions', 'open trade', 'Close',
+                f"linear deposit data",
                 "returns"
             ]).T
         self.backtest_out = self._backtest_out_no_drop.dropna()
         if plot:
-            loc: pd.Series = self.df[column]
+            loc: pd.Series = self.df['Close']
             self.fig.add_trace(
                 Line(
                     y=self._backtest_out_no_drop['returns'].values,
@@ -831,7 +828,6 @@ winrate: {self.winrate}%"""
                        commission: float = 0.0,
                        plot: bool = True,
                        print_out: bool = True,
-                       column: str = 'Close',
                        show: bool = True,
                        limit: int = 1000) -> pd.DataFrame:
         winrates: List[float] = []
@@ -853,7 +849,6 @@ winrate: {self.winrate}%"""
                                 commission=commission,
                                 plot=False,
                                 print_out=False,
-                                column=column,
                                 show=False)
             winrates.append(new_trader.winrate)
             percentage_profits.append(new_trader.year_profit)

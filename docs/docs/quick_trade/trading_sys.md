@@ -190,7 +190,6 @@ that will assign values to `self.returns`,` self._stop_losses`, `self._take_prof
 | commission | float | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
 | plot | bool | Plotting data about candles, deposits and trades on the chart. |
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
-| column | str | The parameter shows which series of the dataframe should be used to test the strategy. |
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
 | returns | `pd.DataFrame` | Dataframe with information about the deposit, strategy signals, `.diff()` of deposit, stop loss, take profit, opening prices, pseudo-line deposit, and dataframe series. |
 
@@ -218,7 +217,6 @@ A method for testing a strategy on several symbols.
 | commission | float | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
 | plot | bool | Plotting data about candles, deposits and trades on the chart. |
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
-| column | str | The parameter shows which series of the dataframe should be used to test the strategy. |
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
 | returns | `pd.DataFrame` | Dataframe with information about the deposit, pseudo-line deposit and `.diff()` of deposit. |
 
