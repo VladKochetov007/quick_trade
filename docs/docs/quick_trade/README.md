@@ -14,7 +14,8 @@ To create a strategy, you will need to generate values for:
 If your strategy does not provide for the use of anything from this list, quick_trade provides methods for setting 
 default values (as if the trader and tester would not use them).
 
-If your strategy does not generate stop loss or take profit, there is the [`Trader.set_open_stop_and_take`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=set_open_stop_and_take) method.
+If your strategy does not generate stop loss or take profit, there is the 
+[`Trader.set_open_stop_and_take`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=set_open_stop_and_take) method.
 It automatically generates trade entry prices and, if necessary, stop-losses and take-profits.
 
 If you need to generate stop-loss and take-profit:
@@ -33,7 +34,8 @@ If you want to set take-profit or stop-loss, you can specify the `take_profit` a
 ?> tip: pips (aka point) = 1/10_000 of price
 
 If you want to enter a trade not for the entire deposit, but for a part or more (leverage), you can use the 
-[`set_credit_leverages`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=set_credit_leverages) method. It places the same `self._credit_leverages` for all candles.
+[`set_credit_leverages`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=set_credit_leverages) 
+method. It places the same `self._credit_leverages` for all candles.
 
 ```python
 self.set_credit_leverages(credit_lev=0.25)  # 1/4 of deposit for trade
@@ -93,10 +95,14 @@ class MyTrader(qtr.Trader):
 
 ## How can I test it?
 
+There are two methods for testing in quick_trade:
+- [`backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=backtest)
+- [`multi_backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_backtest)
+
+[`backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=backtest) - 
+
 ## What if I combine the two strategies?
 
-## More strategies?
-
-## I made a strategy. How can I test it?
+### More strategies?
 
 ## My strategy is good! How can I start it?

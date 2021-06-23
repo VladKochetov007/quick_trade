@@ -10,6 +10,8 @@
 #   unit-tests
 #   more docs and examples
 #   make normal logs
+#   decimal
+#   3.9
 
 from copy import copy
 from datetime import datetime

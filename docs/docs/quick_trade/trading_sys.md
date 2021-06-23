@@ -294,7 +294,7 @@ trader.strategy_collider(trader.strategy_2_sma(50, 20),
 
 ### multi_strategy_collider
 
-`strategy_collider` for multiple strategies
+[`strategy_collider`](#strategy_collider) for multiple strategies
 
 ?> First, the first two strategies are combined, and then the result of the previous join is combined with subsequent
 strategies.
