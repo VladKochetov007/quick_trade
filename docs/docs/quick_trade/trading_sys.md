@@ -191,13 +191,16 @@ that will assign values to `self.returns`,` self._stop_losses`, `self._take_prof
 | plot | bool | Plotting data about candles, deposits and trades on the chart. |
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
-| returns | `pd.DataFrame` | Dataframe with information about the deposit, strategy signals, `.diff()` of deposit, stop loss, take profit, opening prices, pseudo-line deposit, and dataframe series. |
+| returns | `pd.DataFrame` | Dataframe with information about the deposit, strategy signals, `.diff()` of deposit, stop loss, take profit, opening prices, average growth of deposit, and dataframe series. |
 
 ?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the
 desired trade, deal is immediately reduced to the level of the deposit.
 
 ```python
 trader.set_pyplot()
+
+# At this point, you need to use the strategy
+
 trader.backtest(deposit=1000)
 ```
 
@@ -218,7 +221,7 @@ A method for testing a strategy on several symbols.
 | plot | bool | Plotting data about candles, deposits and trades on the chart. |
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
-| returns | `pd.DataFrame` | Dataframe with information about the deposit, pseudo-line deposit and `.diff()` of deposit. |
+| returns | `pd.DataFrame` | Dataframe with information about the deposit, average growth of deposit and `.diff()` of deposit. |
 
 !> Each pair is tested separately and then the results are summarized. Because of this, the strategies do not use the
 total deposit in such a test.
@@ -267,14 +270,13 @@ The method sets the plotly figure for graphs
 This method allows you to combine two strategies into one; it takes the lists of strategy predictions, and the combining
 mode as input values.
 
-- Available modes:
-    - `minimalist`: If both predictions are short, then the result of the collider will be short. If both are long, then
+Available modes:
+  
+- `minimalist`: If both predictions are short, then the result of the collider will be short. If both are long, then
       long. If the predictions do not match - exit
-
-    - `maximalist`: If both predictions are short, then the result of the collider will be short. If both are long, then
+- `maximalist`: If both predictions are short, then the result of the collider will be short. If both are long, then
       long. If the predictions do not match - result of the last merge.
-
-    - `super`: If an element of one of the predictions has changed, but the other not, the result is equal to the one
+- `super`: If an element of one of the predictions has changed, but the other not, the result is equal to the one
       that has changed. If they changed at the same time - exit.
 
 | param  | type | description |

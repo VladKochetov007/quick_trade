@@ -1,7 +1,7 @@
 from functools import wraps
 from logging import basicConfig, getLogger
 from time import sleep
-from typing import Any, List, Union, Tuple, Iterable
+from typing import Any, List, Union, Tuple, Sequence, Sized
 
 import numpy as np
 from pandas import DataFrame, Series
@@ -38,7 +38,7 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "Igor Kroitor -- donate 0.5 ETH (~1320$)",
                           "Igor Kroitor -- Helped to solve the problem with exception ConnectionError(10054).",
                           "https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error"]
-__version__: str = "4.7.3"
+__version__: str = "5.0.0"
 
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
@@ -146,7 +146,7 @@ class SuperTrendIndicator(object):
         return df
 
 
-def convert(data: Any) -> CONVERTED_TYPE_LIST:
+def convert(data: PREDICT_TYPE_LIST) -> CONVERTED_TYPE_LIST:
     ret: List[Any] = list(data.copy())
     e: int
     for e, i in enumerate(data[1:]):
@@ -155,7 +155,7 @@ def convert(data: Any) -> CONVERTED_TYPE_LIST:
     return ret
 
 
-def anti_convert(converted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
+def anti_convert(converted: CONVERTED_TYPE_LIST, _nan_num: float = 18699.9) -> PREDICT_TYPE_LIST:
     converted = np.nan_to_num(converted, nan=_nan_num)
     ret: List[Any] = [converted[0]]
     flag = converted[0]
@@ -169,7 +169,7 @@ def anti_convert(converted: List[Any], _nan_num: float = 18699.9) -> List[Any]:
     return ret
 
 
-def get_window(values, window_length: int) -> List[Iterable[Any]]:
+def get_window(values: Union[Sequence, Sized], window_length: int) -> List[Any]:
     ret: List[Any] = []
     for e, i in enumerate(values[:len(values) - window_length + 1]):
         ret.append(values[e:e + window_length])
@@ -184,26 +184,13 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
     elif predict == EXIT:
         return 'Exit'
 
-def get_linear(dataset) -> np.ndarray:
-    """
-    linear data. mean + (mean diff * n)
-    """
-
-    mean_diff: float
-    data: DataFrame = DataFrame(dataset)
-
-    mean: float = float(data.mean())
-    mean_diff = float(data.diff().mean())
-    start: float = mean - (mean_diff * (len(data) / 2))
-    end: float = start + (mean - start) * 2
-
-    length: int = len(data)
+def get_exponential_growth(dataset: Sequence[float]) -> np.ndarray:
     return_list: List[float] = []
-    mean_diff = (end - start) / length
-    i: int
-    for i in range(length):
-        return_list.append(start + mean_diff * i)
-    logger.debug(f'in linear: mean_diff={mean_diff}')
+    coef = profit_factor(dataset)
+    curr = dataset[0]
+    for i in range(len(dataset)):
+        return_list.append(curr)
+        curr *= coef
     return np.array(return_list)
 
 
@@ -292,3 +279,9 @@ def wait_success(func):
             return func(*args, **kwargs)
 
     return checker
+
+def root(x: float, pwr: float = 2) -> float:
+    return x ** (1/pwr)
+
+def profit_factor(deposit_list: Sequence) -> float:
+    return root(deposit_list[-1]/deposit_list[0], len(deposit_list)-1)

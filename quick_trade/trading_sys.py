@@ -60,7 +60,7 @@ class Trader(object):
     _credit_leverages: List[float]
     deposit_history: List[float]
     year_profit: float
-    _linear: np.ndarray
+    average_growth: np.ndarray
     info: str
     _backtest_out_no_drop: pd.DataFrame
     backtest_out: pd.DataFrame
@@ -698,11 +698,11 @@ class Trader(object):
                         self.losses += 1
             ignore_breakout = False
 
-        self._linear = utils.get_linear(self.deposit_history)
-        lin_calc_df = pd.DataFrame(self._linear)
-        mean_diff = float(lin_calc_df.diff().mean())
-        self.year_profit = mean_diff * self._profit_calculate_coef
-        self.year_profit = (self.year_profit / money_start) * 100
+        self.average_growth = utils.get_exponential_growth(self.deposit_history)
+        self.year_profit = utils.profit_factor(self.deposit_history) ** (self._profit_calculate_coef - 1)
+        #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
+        self.year_profit -= 1  # The initial deposit does not count as profit
+        self.year_profit *= 100  # Percentage
         if self.trades != 0:
             self.winrate = (self.profits / self.trades) * 100
         else:
@@ -719,11 +719,11 @@ winrate: {self.winrate}%"""
         self.returns_strategy_diff[0] = 0
         self._backtest_out_no_drop = pd.DataFrame(
             (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
-             self._open_lot_prices, data_column, self._linear, self.returns_strategy_diff),
+             self._open_lot_prices, data_column, self.average_growth, self.returns_strategy_diff),
             index=[
                 f'deposit', 'stop loss', 'take profit',
                 'predictions', 'open trade', 'Close',
-                f"linear deposit data",
+                f"average growth deposit data",
                 "returns"
             ]).T
         self.backtest_out = self._backtest_out_no_drop.dropna()
@@ -774,8 +774,8 @@ winrate: {self.winrate}%"""
                 Line(
                     y=self.deposit_history,
                     line=dict(color=utils.COLOR_DEPOSIT),
-                    name=f'deposit (start: ${money_start})'), 2, 1)
-            self.fig.add_trace(Line(y=self._linear, name='linear'), 2, 1)
+                    name=f'deposit (start: {money_start})'), 2, 1)
+            self.fig.add_trace(Line(y=self.average_growth, name='average growth'), 2, 1)
             preds: Dict[str, List[Union[int, float]]] = {'sellind': [],
                                                          'exitind': [],
                                                          'buyind': [],
@@ -867,14 +867,14 @@ winrate: {self.winrate}%"""
             depo[enum] = np.array(elem[-min(lens_dep):]) / (elem[-min(lens_dep)] / (deposit / len(tickers)))
         self.deposit_history = list(sum(depo))
 
-        self._linear = utils.get_linear(self.deposit_history)
+        self.average_growth = utils.get_exponential_growth(self.deposit_history)
         self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
         self._backtest_out_no_drop = pd.DataFrame(
-            (self.deposit_history, self._linear, self.returns_strategy_diff),
+            (self.deposit_history, self.average_growth, self.returns_strategy_diff),
             index=[
-                f'deposit ({column})',
-                f"linear deposit data ({column})",
+                f'deposit',
+                f"average growth deposit data",
                 "returns"
             ]).T
         self.backtest_out = self._backtest_out_no_drop.dropna()
@@ -892,8 +892,8 @@ winrate: {self.winrate}%"""
                 Line(
                     y=self.deposit_history,
                     line=dict(color=utils.COLOR_DEPOSIT),
-                    name=f'deposit (start: ${deposit})'), 2, 1)
-            self.fig.add_trace(Line(y=self._linear, name='linear'), 2, 1)
+                    name=f'deposit (start: {deposit})'), 2, 1)
+            self.fig.add_trace(Line(y=self.average_growth, name='average growth'), 2, 1)
             self.fig.add_trace(
                 Line(
                     y=self.returns_strategy_diff,

@@ -6,7 +6,7 @@ This function performs an operation on the data
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| data    | List | Data for processing |
+| data    | `utils.PREDICT_TYPE_LIST` | Data for processing |
 | returns   | `utils.CONVERTED_TYPE_LIST` | data in which repeating elements are replaced `np.nan` |
 
 if the element is equal to the previous one, then it becomes np.nan.
@@ -67,9 +67,9 @@ Reverse from [`convert`](#convert)
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| converted | List | returns of [`converted`](#convert) |
+| converted | `utils.CONVERTED_TYPE_LIST` | returns of [`converted`](#convert) |
 | _nan_num | The value to replace the `np.nan`| Without this, the replacement may be incorrect. |
-| returns   | list | list without `np.nan` |
+| returns   | `utils.PREDICT_TYPE_LIST` | list without `np.nan` |
 
 ```commandline
 In[8]: anti_convert([1, np.nan, np.nan, 0, np.nan, np.nan, np.nan, 1, 2, np.nan])
@@ -83,7 +83,7 @@ of 1.
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| values | Iterable | data for getting "windows" |
+| values | Union\[Sequence, Sized] | data for getting "windows" |
 | window_length | int | length of "windows" |
 | returns | List\[Iterable\[Any]] | list of "windows" |
 
@@ -157,14 +157,14 @@ get all supertrend data as `pd.DataFrame`:
     - lower
     - upper
 
-## get_linear
+## get_exponential_growth
 
-pseudo-linear numpy array
+Function for calculating [Compound interest](https://investmentu.com/simple-interest-vs-compound-interest/)
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| dataset | Iterable | data for linear transformation |
-| returns | `np.ndarray` | linear data |
+| dataset | Sequence\[float] | data for transformation |
+| returns | `np.ndarray` | exp growth data |
 
 ## get_coef_sec
 
@@ -194,3 +194,20 @@ after `utils.WAIT_SUCCESS_SLEEP` seconds.
 
 The main purpose is to avoid ConnectionError when trading in real time.
 [see this page](https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error)
+
+## root 
+Math root
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| x | float | The number from which you want to calculate the root. |
+| pwr | float | power of root |
+| returns | float | root at base `y` |
+
+## profit_factor
+Function for calculating the coefficient of exponential growth of a deposit when testing a strategy.
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| deposit_list | float | Deposit history |
+| returns | float | Growth rate with every step |
