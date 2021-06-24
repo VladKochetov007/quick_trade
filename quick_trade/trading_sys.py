@@ -1163,7 +1163,7 @@ winrate: {self.winrate}%"""
                 while True:
                     if not self.__exit_order__:
                         if (open_time + self._sec_interval) - time() > wait_sl_tp_checking:
-                            utils.logger.info("sleep %f seconds", wait_sl_tp_checking)
+                            utils.logger.debug("sleep %f seconds", wait_sl_tp_checking)
                             sleep(wait_sl_tp_checking)
 
                         price = self.client.get_ticker_price(ticker)
@@ -1327,7 +1327,7 @@ winrate: {self.winrate}%"""
         """
         self.__prev_credit_lev = credit_lev
         self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
-        utils.logger.info('trader credit leverage: %f', credit_lev)
+        utils.logger.debug('trader credit leverage: %f', credit_lev)
 
     def _window_(self,
                  column: str,

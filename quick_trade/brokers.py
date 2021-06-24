@@ -72,7 +72,7 @@ class TradingClient(object):
 
     def exit_last_order(self):
         if self.ordered:
-            utils.logger.debug('client exit')
+            utils.logger.info('client exit')
             base_balance = self.get_balance_ticker(self.base)
             bet = base_balance - self.start_balance[self.base]
             if self.__side__ == 'Sell':
@@ -92,12 +92,12 @@ class TradingClient(object):
     @classmethod
     def _add_order_count(cls):
         cls.cls_open_orders += 1
-        utils.logger.debug('new order')
+        utils.logger.info('new order')
 
     @classmethod
     def _sub_order_count(cls):
         cls.cls_open_orders -= 1
-        utils.logger.debug('order closed')
+        utils.logger.info('order closed')
 
     @utils.wait_success
     def _update_balances(self):
