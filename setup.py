@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from distutils.core import setup
-
 import setuptools
+from distutils.core import setup
 from quick_trade.utils import __version__, __author__
 
 with open('./README.md') as file:
