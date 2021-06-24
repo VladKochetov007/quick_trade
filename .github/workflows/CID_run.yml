@@ -1,6 +1,6 @@
 name: CI
 
-on: [ push, pull_request ]
+on: [ push ]
 
 jobs:
   deps:
@@ -13,5 +13,5 @@ jobs:
       - uses: actions/checkout@v2
       - name: loading dependencies
         run: |
-          pip install --upgrade pip
+          pip3 install --upgrade pip
           pip3 install -r requirements.txt
