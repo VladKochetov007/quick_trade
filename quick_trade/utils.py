@@ -60,7 +60,7 @@ getLogger('urllib3').setLevel(30)
 logger.setLevel(10)
 basicConfig(level=0,
             filename='trading.log',
-            format='%(asctime)s [%(levelname)s] %(message)s'
+            format='%(asctime)s [%(levelname)s] ::: %(message)s ::: '
                    f'[QUICK_TRADE VERSION: {__version__}] [FUNCTION: %(funcName)s] [FILE "%(module)s", '
                    'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
                    '[FILEPATH: %(pathname)s]')
@@ -68,9 +68,9 @@ basicConfig(level=0,
 
 class SuperTrendIndicator(object):
     """
-
     Supertrend (ST)
     """
+
     close: Series
     high: Series
     low: Series
