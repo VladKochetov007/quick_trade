@@ -173,11 +173,11 @@ ticker = 'MATIC/USDT'
 
 start_time = datetime.datetime(2021,  # year
                                6,  # month
-                               16,  # day
+                               24,  # day
 
-                               15,  # hour
-                               59,  # minute
-                               55)  # second (Leave a few seconds to download data from the exchange and strategy.)
+                               5,  # hour
+                               16,  # minute
+                               57)  # second (Leave a few seconds to download data from the exchange and strategy.)
 
 
 class MyTrade(Trader):
@@ -194,19 +194,21 @@ keys = {'apiKey': 'your binance api key',
 client = TradingClient(ccxt.binance(config=keys))
 
 trader = MyTrade(ticker=ticker,
-                 interval='5m',
+                 interval='1m',
                  df=client.get_data_historical(ticker, limit=10),
                  trading_on_client=True)
 trader.set_pyplot()
 trader.set_client(client)
+
 while True:
-    if datetime.datetime.utcnow() >= start_time:
+    if datetime.datetime.now() >= start_time:
         break
+
 trader.realtime_trading(
     strategy=trader.strategy,
     ticker=ticker,
     coin_lotsize_division=True,
-    limit=2,
+    limit=100,
     ignore_exceptions=False,
     wait_sl_tp_checking=5
 )

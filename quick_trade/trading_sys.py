@@ -1161,7 +1161,7 @@ winrate: {self.winrate}%"""
                     if not self.__exit_order__:
                         if (open_time + self._sec_interval) - time() < wait_sl_tp_checking:
                             sleep(wait_sl_tp_checking)
-                        utils.logger.info(f"sleep {wait_sl_tp_checking} seconds")
+                        utils.logger.debug(f"sleep {wait_sl_tp_checking} seconds")
 
                         price = self.client.get_ticker_price(ticker)
                         min_ = min(self.__last_stop_loss, self.__last_take_profit)

@@ -54,11 +54,14 @@ WAIT_SUCCESS_SLEEP = 15
 WAIT_SUCCESS_PRINT = True
 USE_WAIT_SUCCESS = True
 
-logger = getLogger()
-logger.setLevel(0)
-basicConfig(filename='trading.log',
+logger = getLogger(__name__)
+getLogger('ccxt').setLevel(30)
+getLogger('urllib3').setLevel(30)
+logger.setLevel(10)
+basicConfig(level=0,
+            filename='trading.log',
             format='%(asctime)s [%(levelname)s] %(message)s'
-                   f'[QUICK_TRADE VERSION: {__version__}] [FUNCTION: %(funcName)s] [MODULE "%(module)s", '
+                   f'[QUICK_TRADE VERSION: {__version__}] [FUNCTION: %(funcName)s] [FILE "%(module)s", '
                    'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
                    '[FILEPATH: %(pathname)s]')
 
@@ -273,7 +276,7 @@ def wait_success(func):
                 except Exception as e:
                     if not isinstance(e, KeyboardInterrupt):
                         if WAIT_SUCCESS_PRINT:
-                            print(f'An error occurred: {e}')
+                            print(f'An error occurred: {e}, repeat request')
                         logger.error(f'An error occurred: {e}', exc_info=True)
                         sleep(WAIT_SUCCESS_SLEEP)
                         continue
