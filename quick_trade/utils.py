@@ -3,10 +3,39 @@ from logging import basicConfig, getLogger
 from time import sleep
 from typing import Any, List, Union, Tuple, Sequence, Sized
 
-import numpy as np
-from pandas import DataFrame, Series
-from ta.volatility import AverageTrueRange
+__version__: str = "5.0.3"
+try:
 
+    import numpy as np
+    from pandas import DataFrame, Series
+    from ta.volatility import AverageTrueRange
+
+    logger = getLogger(__name__)
+    getLogger('ccxt').setLevel(30)
+    getLogger('urllib3').setLevel(30)
+    logger.setLevel(10)
+    basicConfig(level=0,
+                filename='trading.log',
+                format='%(asctime)s [%(levelname)s]        %(message)s        '
+                       f'[QUICK_TRADE VERSION: {__version__}] [FUNCTION: %(funcName)s] [FILE "%(module)s", '
+                       'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
+                       '[FILEPATH: %(pathname)s]')
+except:
+    pass  # pip install error
+
+SCATTER_SIZE: float = 12.0
+SCATTER_ALPHA: float = 1.0
+TAKE_STOP_OPN_WIDTH: float = 1.0
+ICHIMOKU_LINES_WIDTH: float = 2.0
+ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
+ICHIMOKU_CLOUD_ALPHA: float = 0.4
+TEXT_COLOR: str = 'white'
+SUB_LINES_WIDTH: float = 3.0
+STOP_TAKE_OPN_ALPHA: float = 0.8
+COLOR_DEPOSIT: str = 'white'
+WAIT_SUCCESS_SLEEP: float = 15.0
+WAIT_SUCCESS_PRINT: bool = True
+USE_WAIT_SUCCESS: bool = True
 PREDICT_TYPE: type = int
 PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
 CONVERTED_TYPE: type = Union[PREDICT_TYPE, float]
@@ -38,32 +67,6 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "Igor Kroitor -- donate 0.5 ETH (~1320$)",
                           "Igor Kroitor -- Helped to solve the problem with exception ConnectionError(10054).",
                           "https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error"]
-__version__: str = "5.0.2"
-
-SCATTER_SIZE: float = 12.0
-SCATTER_ALPHA: float = 1.0
-TAKE_STOP_OPN_WIDTH: float = 1.0
-ICHIMOKU_LINES_WIDTH: float = 2.0
-ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
-ICHIMOKU_CLOUD_ALPHA: float = 0.4
-TEXT_COLOR: str = 'white'
-SUB_LINES_WIDTH: float = 3.0
-STOP_TAKE_OPN_ALPHA: float = 0.8
-COLOR_DEPOSIT: str = 'white'
-WAIT_SUCCESS_SLEEP = 15
-WAIT_SUCCESS_PRINT = True
-USE_WAIT_SUCCESS = True
-
-logger = getLogger(__name__)
-getLogger('ccxt').setLevel(30)
-getLogger('urllib3').setLevel(30)
-logger.setLevel(10)
-basicConfig(level=0,
-            filename='trading.log',
-            format='%(asctime)s [%(levelname)s]        %(message)s        '
-                   f'[QUICK_TRADE VERSION: {__version__}] [FUNCTION: %(funcName)s] [FILE "%(module)s", '
-                   'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
-                   '[FILEPATH: %(pathname)s]')
 
 
 class SuperTrendIndicator(object):
