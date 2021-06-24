@@ -3,9 +3,9 @@ from logging import basicConfig, getLogger
 from time import sleep
 from typing import Any, List, Union, Tuple, Sequence, Sized
 
-__version__: str = "5.0.3"
+__version__: str = "5.0.4"
+__author__: str = 'Vlad Kochetov'
 try:
-
     import numpy as np
     from pandas import DataFrame, Series
     from ta.volatility import AverageTrueRange
@@ -20,7 +20,7 @@ try:
                        f'[QUICK_TRADE VERSION: {__version__}] [FUNCTION: %(funcName)s] [FILE "%(module)s", '
                        'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
                        '[FILEPATH: %(pathname)s]')
-except:
+except ModuleNotFoundError:
     pass  # pip install error
 
 SCATTER_SIZE: float = 12.0
@@ -49,7 +49,6 @@ BUY: PREDICT_TYPE = 1
 SELL: PREDICT_TYPE = 0
 EXIT: PREDICT_TYPE = 2
 
-__author__: str = 'Vlad Kochetov'
 __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "hpaulj -- Stack overflow",
                           "furas -- Stack overflow",
