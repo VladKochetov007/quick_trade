@@ -61,7 +61,7 @@ class Trader(object):
     deposit_history: List[float]
     year_profit: float
     average_growth: np.ndarray
-    info: str
+    _info: str
     _backtest_out_no_drop: pd.DataFrame
     backtest_out: pd.DataFrame
     _open_lot_prices: List[float]
@@ -87,6 +87,7 @@ class Trader(object):
         self.trading_on_client = trading_on_client
         self._profit_calculate_coef, self._sec_interval = utils.get_coef_sec(interval)
         self.__exit_order__ = False
+        utils.logger.info('new trader: %s', self)
 
     def __repr__(self):
         return f'{self.ticker} {self.interval} trader'
@@ -130,7 +131,7 @@ class Trader(object):
             if self._stop_loss is not np.inf:
                 _stop_loss = self._open_price
         utils.logger.debug(
-            f'stop loss: {_stop_loss} ({self._stop_loss} pips), take profit: {take} ({self._take_profit} pips)')
+            'stop loss: %f (%f pips), take profit: %f (%f pips)', _stop_loss, self._stop_loss, take, self._take_profit)
 
         return {'stop': _stop_loss,
                 'take': take}
@@ -142,6 +143,7 @@ class Trader(object):
         :param add_take_profit: add take profit points
         :return: (stop losses, take profits)
         """
+        utils.logger.debug('add stop-loss: %f pips, take-profit: %s pips', add_stop_loss, add_take_profit)
         stop_losses = []
         take_profits = []
         for stop_loss_price, take_profit_price, price, sig in zip(self._stop_losses,
@@ -711,7 +713,7 @@ trades: {self.trades}
 profits: {self.profits}
 mean year percentage profit: {self.year_profit}%
 winrate: {self.winrate}%"""
-        utils.logger.info(f'trader info: {self._info}')
+        utils.logger.info('trader info: %s', self._info)
         if print_out:
             print(self._info)
         self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
@@ -883,7 +885,7 @@ trades: {self.trades}
 profits: {self.profits}
 mean year percentage profit: {self.year_profit}%
 winrate: {self.winrate}%"""
-        utils.logger.info(f'trader multi info: {self._info}')
+        utils.logger.info('trader multi info: %s', self._info)
         if print_out:
             print(self._info)
         if plot:
@@ -933,6 +935,7 @@ winrate: {self.winrate}%"""
             title_text='R E T U R N S', row=3, col=1, color=utils.TEXT_COLOR)
         self.fig.update_yaxes(
             title_text='D A T A', row=1, col=1, color=utils.TEXT_COLOR)
+        utils.logger.info('new %s graph', self)
 
     def strategy_collider(self,
                           first_returns: utils.PREDICT_TYPE_LIST,
@@ -1014,7 +1017,7 @@ winrate: {self.winrate}%"""
         elif mode == 'super':
             self.returns = self._collide_super(first_returns, second_returns)
         else:
-            raise ValueError('incorrect mode')
+            raise ValueError(f'incorrect mode: {mode}')
         return self.returns
 
     @staticmethod
@@ -1077,7 +1080,7 @@ winrate: {self.winrate}%"""
         self.__last_take_profit = self._take_profits[-1]
         self.__last_credit_leverage = self._credit_leverages[-1]
         if self._prev_predict != predict or self.__prev_credit_lev != self.__last_credit_leverage:
-            utils.logger.info(f'open trade {predict}')
+            utils.logger.info('open trade %s', predict)
             self.__exit_order__ = False
             if self.trading_on_client:
 
@@ -1154,14 +1157,14 @@ winrate: {self.winrate}%"""
                     coin_lotsize_division=coin_lotsize_division)
 
                 index = f'{self.ticker}, {ctime()}'
-                utils.logger.info(f"trading prediction at {index}: {prediction}")
+                utils.logger.info("trading prediction at %s: %s", index, prediction)
                 if print_out:
                     print(index, prediction)
                 while True:
                     if not self.__exit_order__:
-                        if (open_time + self._sec_interval) - time() < wait_sl_tp_checking:
+                        if (open_time + self._sec_interval) - time() > wait_sl_tp_checking:
+                            utils.logger.info("sleep %f seconds", wait_sl_tp_checking)
                             sleep(wait_sl_tp_checking)
-                        utils.logger.debug(f"sleep {wait_sl_tp_checking} seconds")
 
                         price = self.client.get_ticker_price(ticker)
                         min_ = min(self.__last_stop_loss, self.__last_take_profit)
@@ -1170,9 +1173,9 @@ winrate: {self.winrate}%"""
                             self.__exit_order__ = True
                             utils.logger.info('exit trade')
                             index = f'{self.ticker}, {ctime()}'
-                            utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
+                            utils.logger.info("trading prediction exit in sleeping at %s: %s", index, prediction)
                             if print_out:
-                                print(f"trading prediction exit in sleeping at {index}: {prediction}")
+                                print("trading prediction exit in sleeping at %s: %s", index, prediction)
                             if self.trading_on_client:
                                 self.client.exit_last_order()
                         elif strategy_in_sleep:
@@ -1182,7 +1185,7 @@ winrate: {self.winrate}%"""
                         open_time += self._sec_interval
                         break
             except Exception as exc:
-                utils.logger.error(f'An error occurred: {exc}', exc_info=True)
+                utils.logger.error(f'An error occurred: {exc}', exc_info=True)  # how to concatenate with error?
                 self.client.exit_last_order()
                 if ignore_exceptions:
                     if print_exc:
@@ -1273,7 +1276,7 @@ winrate: {self.winrate}%"""
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
-        utils.logger.debug(f'trader signals converted: {old} >> {new}')
+        utils.logger.debug("trader signals converted: %s >> %s", old, new)
         return self.returns
 
     def set_open_stop_and_take(self,
@@ -1315,7 +1318,7 @@ winrate: {self.winrate}%"""
                 self._take_profits.append(take_flag)
             if set_stop:
                 self._stop_losses.append(stop_flag)
-        utils.logger.debug(f'trader stop loss: {stop_loss}, trader take profit: {take_profit}')
+        utils.logger.debug('trader stop loss: %f pips, trader take profit: %f pips', stop_loss, take_profit)
 
     def set_credit_leverages(self, credit_lev: float = 1.0):
         """
@@ -1324,7 +1327,7 @@ winrate: {self.winrate}%"""
         """
         self.__prev_credit_lev = credit_lev
         self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
-        utils.logger.info(f'trader credit leverage: {credit_lev}')
+        utils.logger.info('trader credit leverage: %f', credit_lev)
 
     def _window_(self,
                  column: str,

@@ -38,7 +38,7 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "Igor Kroitor -- donate 0.5 ETH (~1320$)",
                           "Igor Kroitor -- Helped to solve the problem with exception ConnectionError(10054).",
                           "https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error"]
-__version__: str = "5.0.1"
+__version__: str = "5.0.2"
 
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
@@ -60,7 +60,7 @@ getLogger('urllib3').setLevel(30)
 logger.setLevel(10)
 basicConfig(level=0,
             filename='trading.log',
-            format='%(asctime)s [%(levelname)s] ::: %(message)s ::: '
+            format='%(asctime)s [%(levelname)s]        %(message)s        '
                    f'[QUICK_TRADE VERSION: {__version__}] [FUNCTION: %(funcName)s] [FILE "%(module)s", '
                    'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
                    '[FILEPATH: %(pathname)s]')
