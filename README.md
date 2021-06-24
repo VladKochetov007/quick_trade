@@ -142,7 +142,7 @@ trader = qtr.Trader('BTC/USDT', df=df, interval='15m')
 trader.set_client(client)
 trader.set_pyplot(height=731, width=1440, row_heights=[10, 5, 2])
 trader.strategy_2_sma(55, 21)
-trader.backtest(deposit=1000, commission=0.075, bet=qtr.utils.np.inf)  # backtest on one pare
+trader.backtest(deposit=1000, commission=0.075, bet=qtr.utils.np.inf)  # backtest on one pair
 ```
 
 ## Output plotly chart:
@@ -161,7 +161,7 @@ winrate: 56.25%
 
 ## Run strategy
 
-Use strategy on real moneys. YES, IT'S FULLY AUTOMATED!
+Use the strategy on real moneys. YES, IT'S FULLY AUTOMATED!
 
 ```python
 import datetime
@@ -172,10 +172,10 @@ import ccxt
 ticker = 'MATIC/USDT'
 
 start_time = datetime.datetime(2021,  # year
-                               6,  # month
+                               6,   # month
                                24,  # day
 
-                               5,  # hour
+                               5,   # hour
                                16,  # minute
                                57)  # second (Leave a few seconds to download data from the exchange and strategy.)
 
