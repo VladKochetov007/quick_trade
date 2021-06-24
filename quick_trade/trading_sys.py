@@ -65,7 +65,6 @@ class Trader(object):
     _backtest_out_no_drop: pd.DataFrame
     backtest_out: pd.DataFrame
     _open_lot_prices: List[float]
-    realtime_returns: Dict[str, Dict[str, Union[str, float]]]
     client: brokers.TradingClient
     __last_stop_loss: float
     __last_take_profit: float
@@ -1140,7 +1139,6 @@ winrate: {self.winrate}%"""
         :param strategy_args: arguments to -strategy.
         """
 
-        self.realtime_returns = {}
         self.ticker = ticker
         open_time = time()
         while True:
@@ -1159,7 +1157,6 @@ winrate: {self.winrate}%"""
                 utils.logger.info(f"trading prediction at {index}: {prediction}")
                 if print_out:
                     print(index, prediction)
-                self.realtime_returns[index] = prediction
                 while True:
                     if not self.__exit_order__:
                         if (open_time + self._sec_interval) - time() < wait_sl_tp_checking:
@@ -1176,7 +1173,6 @@ winrate: {self.winrate}%"""
                             utils.logger.info(f"trading prediction exit in sleeping at {index}: {prediction}")
                             if print_out:
                                 print(f"trading prediction exit in sleeping at {index}: {prediction}")
-                            self.realtime_returns[index] = prediction
                             if self.trading_on_client:
                                 self.client.exit_last_order()
                         elif strategy_in_sleep:
