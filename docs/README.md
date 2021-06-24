@@ -1,12 +1,5 @@
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/logo_with_slogan_v2_fixed.PNG?raw=true)
 
-# About
-
-This package needed to optimize and facilitate trading with python. The module provides a convenient interface for
-trading.
-
-!> All orders amounts must be quoted in ***quote*** currency.
-
 ## donate
 
 BTC: ```15TC5wjgxTj5btKr75DBswsdafUqXmkAjp```
@@ -19,6 +12,7 @@ USDT TRC20: ```TCb9nWdApXmrfQuPcChdP9FpBXjXuFDFNX```
 
 ### My telegram
 
+###### Don't hesitate to write
 ```
 @VladKochetov07
 ```

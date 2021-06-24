@@ -7,5 +7,4 @@
         - [core](docs/quick_trade/quick_trade_tuner/core.md)
         - [tuner](docs/quick_trade/quick_trade_tuner/tuner.md)
 
-- [About](docs/about.md)
 - [Install](docs/install.md)
