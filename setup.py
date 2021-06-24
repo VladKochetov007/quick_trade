@@ -18,7 +18,10 @@ setup(
     description='Library for easy management and customization of algorithmic trading.',
     long_description=long_desc,
     long_description_content_type="text/markdown",
-    url='https://github.com/VladKochetov007/quick_trade',
+    project_urls={
+        'Documentation': 'https://vladkochetov007.github.io/quick_trade/#/',
+        'Source': 'https://github.com/VladKochetov007/quick_trade',
+    },
     install_requires=install_requires,
     download_url=f'https://github.com/VladKochetov007/quick_trade/archive/{__version__}.tar.gz',
     keywords=[
