@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import setuptools
 from distutils.core import setup
-from quick_trade.utils import __version__, __author__
+from _lowlev_config import __version__, __author__
 
 with open('./README.md') as file:
     long_desc = file.read()
