@@ -19,6 +19,7 @@ from threading import Thread
 from time import ctime, sleep, time
 from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
 from re import fullmatch
+from warnings import warn
 
 import numpy as np
 import pandas as pd
@@ -37,7 +38,7 @@ Line = dict  # To avoid the deprecation warning
 
 class Trader(object):
     """
-    algo-trading system.
+    algo-trading main class.
     ticker:   |     str      |  ticker/symbol of chart
     df:       |   dataframe  |  data of chart
     interval: |     str      |  interval of df.
@@ -77,6 +78,7 @@ class Trader(object):
     __prev_credit_lev: float = 1
     trading_on_client: bool
 
+    @utils.assert_logger
     def __init__(self,
                  ticker: str = 'BTC/USDT',
                  df: pd.DataFrame = pd.DataFrame(),
@@ -144,6 +146,7 @@ class Trader(object):
         return {'stop': _stop_loss,
                 'take': take}
 
+    @utils.assert_logger
     def sl_tp_adder(self, add_stop_loss: float = 0.0, add_take_profit: float = 0.0) -> Tuple[List[float], List[float]]:
         """
 
@@ -553,6 +556,7 @@ class Trader(object):
         self.sl_tp_adder(add_stop_loss=stop_loss_plus)
         return self.returns
 
+    @utils.assert_logger
     def crossover(self, fast: Iterable, slow: Iterable):
         assert isinstance(fast, Iterable) and isinstance(slow, Iterable), \
             'The arguments to this function must be iterable.'
@@ -569,6 +573,7 @@ class Trader(object):
         self.set_open_stop_and_take()
         return self.returns
 
+    @utils.assert_logger
     def inverse_strategy(self, swap_stop_take: bool = True) -> utils.PREDICT_TYPE_LIST:
         """
         makes signals inverse:
@@ -576,6 +581,11 @@ class Trader(object):
         sell = buy.
         exit = exit.
         """
+        assert isinstance(swap_stop_take, (bool, int, float)), 'swap_stop_take can only be boolean or int(float)'
+        if not isinstance(swap_stop_take, bool):
+            msg = 'swap_stop_take is not a standard type'
+            warn(msg)
+            utils.logger.info(msg)
 
         returns = []
         flag: utils.PREDICT_TYPE = utils.EXIT
@@ -592,6 +602,7 @@ class Trader(object):
             self._stop_losses, self._take_profits = self._take_profits, self._stop_losses
         return self.returns
 
+    @utils.assert_logger
     def backtest(self,
                  deposit: float = 10_000.0,
                  bet: float = np.inf,
@@ -609,6 +620,12 @@ class Trader(object):
         :param show: show the graph
         returns: pd.DataFrame with data of test
         """
+        assert isinstance(deposit, (float, int)), 'deposit must be of type int or float'
+        assert isinstance(bet, (float, int)), 'bet must be of type int or float'
+        assert isinstance(commission, (float, int)), 'commission must be of type int or float'
+        assert isinstance(plot, bool), 'plot must be of type bool'
+        assert isinstance(print_out, bool), 'print_out must be of type bool'
+        assert isinstance(show, bool), 'show must be of type bool'
 
         exit_take_stop: bool
         no_order: bool
@@ -834,17 +851,25 @@ winrate: {self.winrate}%"""
 
         return self.backtest_out
 
+    @utils.assert_logger
     def multi_backtest(self,
                        tickers: Union[Sized, Iterable[str]],
                        strategy_name: str = 'strategy_macd',
                        strategy_kwargs: Dict[str, Any] = {},
+                       limit: int = 1000,
                        deposit: float = 10_000.0,
                        bet: float = np.inf,
                        commission: float = 0.0,
                        plot: bool = True,
                        print_out: bool = True,
-                       show: bool = True,
-                       limit: int = 1000) -> pd.DataFrame:
+                       show: bool = True) -> pd.DataFrame:
+        assert isinstance(tickers, Iterable), 'tickers must be of type Iterable[str]'
+        for el in tickers:
+            assert isinstance(el, str), 'tickers must be of type Iterable[str]'
+        assert isinstance(strategy_name, str), 'strategy_name must be of type str'
+        assert strategy_name in self.__dir__(), 'There is no such strategy'
+        assert isinstance(strategy_kwargs, dict)
+
         winrates: List[float] = []
         percentage_profits: List[float] = []
         losses: List[int] = []

@@ -273,3 +273,13 @@ def root(x: float, pwr: float = 2) -> float:
 
 def profit_factor(deposit_list: Sequence) -> float:
     return root(deposit_list[-1]/deposit_list[0], len(deposit_list)-1)
+
+def assert_logger(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except AssertionError as AE:
+            logger.critical(AE)
+            raise AE
+    return wrapper
