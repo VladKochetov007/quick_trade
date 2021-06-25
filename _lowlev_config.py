@@ -1,5 +1,6 @@
 from typing import List
 
+
 __version__: str = "5.0.5"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
@@ -19,4 +20,3 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "Igor Kroitor -- donate 0.5 ETH (~1320$)",
                           "Igor Kroitor -- Helped to solve the problem with exception ConnectionError(10054).",
                           "https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error"]
-

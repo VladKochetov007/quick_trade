@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
-import setuptools
+from setuptools import find_packages
 from distutils.core import setup
 from _lowlev_config import __version__, __author__
 
 with open('./README.md') as file:
     long_desc = file.read()
+
 with open('./requirements.txt', 'r') as file:
-    install_requires = file.read().split('\n')
+    install_requires = file.read().strip().split('\n')
 
 setup(
     name='quick_trade',
     author=__author__,
     author_email='vladyslavdrrragonkoch@gmail.com',
-    packages=setuptools.find_packages(),
+    packages=find_packages(),
     version=__version__,
     description='Library for easy management and customization of algorithmic trading.',
     long_description=long_desc,

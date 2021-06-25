@@ -174,9 +174,15 @@ trader.crossover(fast=fast, slow=slow)  # crossover strategy
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| fast | Iterable | When the element of this parameter is less than the element of the `slow` parameter - short. When more - long. |
-| slow | Iterable | When the element of this parameter is greater than the element of the `fast` parameter - short. When less, it takes a long time. |
-| returns | `utils.PREDICT_TYPE_LIST` | crossover  strategy |
+| swap_stop_take | bool | Change stop-loss and take-profit values among themselves. If values for SL/TP have not been generated yet - False.|
+| returns | `utils.PREDICT_TYPE_LIST` | Result of a strategy reversal |
+
+!> SL / TP values are not recalculated; instead, the object fields are swapped.
+
+```python
+trader.some_user_strategy()
+trader.inverse_strategy()
+```
 
 ### backtest
 

@@ -9,15 +9,16 @@
 #   scalper and dca bot
 #   unit-tests
 #   more docs and examples
-#   make normal logs
 #   decimal
 #   3.9
+#   subplot plot directory
 
 from copy import copy
 from datetime import datetime
 from threading import Thread
 from time import ctime, sleep, time
 from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
+from re import fullmatch
 
 import numpy as np
 import pandas as pd
@@ -81,6 +82,13 @@ class Trader(object):
                  df: pd.DataFrame = pd.DataFrame(),
                  interval: str = '1d',
                  trading_on_client: bool = True):
+        ticker = ticker.upper()
+        assert isinstance(ticker, str), 'Deposit can only be a number.'
+        assert fullmatch(r'[A-Z]+/[A-Z]+', ticker), 'Ticker must match the pattern <[A-Z]+/[A-Z]+>'
+        assert isinstance(df, pd.DataFrame), 'Dataframe can only be of type pd.DataFrame.'
+        assert isinstance(interval, str), 'interval can only be of the string type.'
+        assert isinstance(trading_on_client, bool), 'trading_on_client can only be True or False.'
+
         self.df = df.reset_index(drop=True)
         self.ticker = ticker
         self.interval = interval
@@ -136,13 +144,16 @@ class Trader(object):
         return {'stop': _stop_loss,
                 'take': take}
 
-    def sl_tp_adder(self, add_stop_loss: float = 0, add_take_profit: float = 0) -> Tuple[List[float], List[float]]:
+    def sl_tp_adder(self, add_stop_loss: float = 0.0, add_take_profit: float = 0.0) -> Tuple[List[float], List[float]]:
         """
 
         :param add_stop_loss: add stop loss points
         :param add_take_profit: add take profit points
         :return: (stop losses, take profits)
         """
+        assert isinstance(add_stop_loss, (int, float)) and isinstance(add_take_profit, (int, float)), \
+            'Arguments to this function can only be float or int.'
+
         utils.logger.debug('add stop-loss: %f pips, take-profit: %s pips', add_stop_loss, add_take_profit)
         stop_losses = []
         take_profits = []
@@ -543,6 +554,9 @@ class Trader(object):
         return self.returns
 
     def crossover(self, fast: Iterable, slow: Iterable):
+        assert isinstance(fast, Iterable) and isinstance(slow, Iterable), \
+            'The arguments to this function must be iterable.'
+
         self.returns = []
         for s, f in zip(slow, fast):
             if s < f:
@@ -555,7 +569,7 @@ class Trader(object):
         self.set_open_stop_and_take()
         return self.returns
 
-    def inverse_strategy(self, swap_tpop_take: bool = True) -> utils.PREDICT_TYPE_LIST:
+    def inverse_strategy(self, swap_stop_take: bool = True) -> utils.PREDICT_TYPE_LIST:
         """
         makes signals inverse:
         buy = sell.
@@ -574,7 +588,7 @@ class Trader(object):
                 flag = utils.EXIT
             returns.append(flag)
         self.returns = returns
-        if swap_tpop_take:
+        if swap_stop_take:
             self._stop_losses, self._take_profits = self._take_profits, self._stop_losses
         return self.returns
 
