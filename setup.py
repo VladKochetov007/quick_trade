@@ -8,12 +8,14 @@ with open('./README.md') as file:
 with open('./requirements.txt', 'r') as file:
     install_requires = file.read().strip().split('\n')
 
+__version__ = "5.1.2"
+
 setup(
     name='quick_trade',
     author="Vlad Kochetov",
     author_email='vladyslavdrrragonkoch@gmail.com',
     packages=find_packages(),
-    version="5.1.1",
+    version=__version__,
     description='Library for easy management and customization of algorithmic trading.',
     long_description=long_desc,
     long_description_content_type="text/markdown",

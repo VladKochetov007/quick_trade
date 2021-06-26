@@ -952,7 +952,7 @@ winrate: {self.winrate}%"""
                    height: Union[int, float] = 900,
                    width: Union[int, float] = 1300,
                    template: str = 'plotly_dark',
-                   row_heights: List[int, float] = [10, 16, 7],
+                   row_heights: List[Union[int, float]] = [10, 16, 7],
                    **subplot_kwargs):
         """
 
