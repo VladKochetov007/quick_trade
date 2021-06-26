@@ -19,4 +19,6 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "IEX token",
                           "Igor Kroitor -- donate 0.5 ETH (~1320$)",
                           "Igor Kroitor -- Helped to solve the problem with exception ConnectionError(10054).",
-                          "https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error"]
+                          "https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error",
+                          "Pavel Fedotov (https://github.com/Pfed-prog) -- pull request https://github.com/"
+                          "VladKochetov007/quick_trade/pull/60"]
