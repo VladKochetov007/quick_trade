@@ -3,7 +3,7 @@ from logging import basicConfig, getLogger
 from time import sleep
 from typing import Any, List, Union, Tuple, Sequence, Sized
 
-from _lowlev_config import __version__
+from lowlev_config import __version__
 import numpy as np
 from pandas import DataFrame, Series
 from ta.volatility import AverageTrueRange
