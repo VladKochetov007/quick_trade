@@ -15,10 +15,10 @@
 
 from copy import copy
 from datetime import datetime
+from re import fullmatch
 from threading import Thread
 from time import ctime, sleep, time
 from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
-from re import fullmatch
 from warnings import warn
 
 import numpy as np
@@ -147,7 +147,8 @@ class Trader(object):
                 'take': take}
 
     @utils.assert_logger
-    def sl_tp_adder(self, add_stop_loss: Union[float, int] = 0.0, add_take_profit: Union[float, int] = 0.0) -> Tuple[List[float], List[float]]:
+    def sl_tp_adder(self, add_stop_loss: Union[float, int] = 0.0, add_take_profit: Union[float, int] = 0.0) -> Tuple[
+        List[float], List[float]]:
         """
 
         :param add_stop_loss: add stop loss points
@@ -1216,6 +1217,7 @@ winrate: {self.winrate}%"""
                         price = self.client.get_ticker_price(ticker)
                         min_ = min(self.__last_stop_loss, self.__last_take_profit)
                         max_ = max(self.__last_stop_loss, self.__last_take_profit)
+                        utils.logger.debug('checking SL/TP')
                         if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
                             self.__exit_order__ = True
                             utils.logger.info('exit trade')

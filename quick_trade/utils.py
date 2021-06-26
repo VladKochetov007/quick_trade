@@ -37,7 +37,6 @@ BUY: PREDICT_TYPE = 1
 SELL: PREDICT_TYPE = 0
 EXIT: PREDICT_TYPE = 2
 
-
 __version__: str = "5.1.2"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
@@ -59,7 +58,6 @@ __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error",
                           "Pavel Fedotov (https://github.com/Pfed-prog) -- pull request https://github.com/"
                           "VladKochetov007/quick_trade/pull/60"]
-
 
 logger = getLogger(__name__)
 getLogger('ccxt').setLevel(30)
@@ -199,6 +197,7 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
     elif predict == EXIT:
         return 'Exit'
 
+
 def get_exponential_growth(dataset: Sequence[float]) -> np.ndarray:
     return_list: List[float] = []
     coef = profit_factor(dataset)
@@ -295,11 +294,14 @@ def wait_success(func):
 
     return checker
 
+
 def root(x: float, pwr: float = 2) -> float:
-    return x ** (1/pwr)
+    return x ** (1 / pwr)
+
 
 def profit_factor(deposit_list: Sequence) -> float:
-    return root(deposit_list[-1]/deposit_list[0], len(deposit_list)-1)
+    return root(deposit_list[-1] / deposit_list[0], len(deposit_list) - 1)
+
 
 def assert_logger(func):
     @wraps(func)
@@ -309,4 +311,5 @@ def assert_logger(func):
         except AssertionError as AE:
             logger.critical(AE)
             raise AE
+
     return wrapper

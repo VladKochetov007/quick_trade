@@ -5,9 +5,6 @@ from distutils.core import setup
 with open('./README.md') as file:
     long_desc = file.read()
 
-with open('./requirements.txt', 'r') as file:
-    install_requires = file.read().strip().split('\n')
-
 __version__ = "5.1.2"
 
 setup(
@@ -23,7 +20,13 @@ setup(
         'Documentation': 'https://vladkochetov007.github.io/quick_trade/#/',
         'Source': 'https://github.com/VladKochetov007/quick_trade',
     },
-    install_requires=install_requires,
+    install_requires=[
+        'plotly==5.0.0',
+        'numpy==1.21.0',
+        'pandas==1.2.5',
+        'ta==0.7.0',
+        'ccxt==1.51.98'
+    ],
     download_url=f'https://github.com/VladKochetov007/quick_trade/archive/{__version__}.tar.gz',
     keywords=[
         'technical-analysis',
