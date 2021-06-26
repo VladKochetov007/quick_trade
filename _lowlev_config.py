@@ -1,7 +1,7 @@
 from typing import List
 
 
-__version__: str = "5.0.5"
+__version__: str = "5.1.0"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "hpaulj -- Stack overflow",

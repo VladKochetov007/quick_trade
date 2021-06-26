@@ -25,6 +25,10 @@ PREDICT_TYPE: type = int
 PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
 CONVERTED_TYPE: type = Union[PREDICT_TYPE, float]
 CONVERTED_TYPE_LIST: type = List[CONVERTED_TYPE]
+TIME_TITLE = 'T I M E'
+MONEYS_TITLE = 'M O N E Y S'
+RETURNS_TITLE = 'R E T U R N S'
+DATA_TITLE = 'D A T A'
 
 RED: str = '#ff0000'
 GREEN: str = '#55ff00'
@@ -183,7 +187,7 @@ def get_exponential_growth(dataset: Sequence[float]) -> np.ndarray:
 
 
 def get_coef_sec(timeframe: str = '1d') -> Tuple[float, int]:
-    profit_calculate_coef: float
+    profit_calculate_coef: Union[float, int]
     sec_interval: int
     if timeframe == '1m':
         profit_calculate_coef = (60 * 24 * 365)

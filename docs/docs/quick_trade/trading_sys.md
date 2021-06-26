@@ -57,8 +57,8 @@ A method for adding a number of points to the current S/L and T/P values.
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| add_stop_loss | float | points for addition to sl |
-| add_take_profit | float | points for addition to tp |
+| add_stop_loss | Union\[float, int] | points for addition to sl |
+| add_take_profit | Union\[float, int] | points for addition to tp |
 | returns | Tuple\[stop_losses, take_profits] | sl, tp |
 
 ```python
@@ -85,10 +85,10 @@ If the value has crossed the border with mid` - exit
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| minimum | float | min level of RSI |
-| maximum | float | max level of RSI |
-| max_mid | float | max/mid level of RSI (exit from short) |
-| min_mid | float | min/mid level of RSI (exit from long) |
+| minimum | Union\[float, int] | min level of RSI |
+| maximum | Union\[float, int] | max level of RSI |
+| max_mid | Union\[float, int] | max/mid level of RSI (exit from short) |
+| min_mid | Union\[float, int] | min/mid level of RSI (exit from long) |
 | returns | `utils.PREDICT_TYPE_LIST` | returns |
 
 example:
@@ -191,9 +191,9 @@ that will assign values to `self.returns`,` self._stop_losses`, `self._take_prof
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| deposit | float | Initial deposit for testing the strategy that you used before the test |
-| bet | float | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value `np.inf` |
-| commission | float | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
+| deposit | Union\[float, int] | Initial deposit for testing the strategy that you used before the test |
+| bet | Union\[float, int] | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value `np.inf` |
+| commission | Union\[float, int] | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
 | plot | bool | Plotting data about candles, deposits and trades on the chart. |
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
@@ -265,8 +265,8 @@ The method sets the plotly figure for graphs
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| height | int | Plotly plot height |
-| width | int | Plotly plot width |
+| height | Union\[int, float] | Plotly plot height |
+| width | Union\[int, float] | Plotly plot width |
 | template | str | template from https://plotly.com/python/templates/ |
 | row_heights | list | The ratio of the heights of the symbol data, deposit and the deposit change. |
 | subplot_kwargs | named arguments | named arguments for [`plotly.subplots.make_subplots`](https://github.com/plotly/plotly.py/blob/master/packages/python/plotly/plotly/subplots.py#L45) |

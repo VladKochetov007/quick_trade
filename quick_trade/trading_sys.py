@@ -44,23 +44,23 @@ class Trader(object):
     interval: |     str      |  interval of df.
 
     """
-    _profit_calculate_coef: float
+    _profit_calculate_coef: Union[float, int]
     returns: utils.PREDICT_TYPE_LIST = []
     df: pd.DataFrame
     ticker: str
     interval: str
     __exit_order__: bool = False
     _prev_predict: str = 'Exit'
-    _stop_loss: float
-    _take_profit: float
+    _stop_loss: Union[float, int]
+    _take_profit: Union[float, int]
     _open_price: float
     trades: int = 0
     profits: int = 0
     losses: int = 0
     _stop_losses: List[float]
     _take_profits: List[float]
-    _credit_leverages: List[float]
-    deposit_history: List[float]
+    _credit_leverages: List[Union[float, int]]
+    deposit_history: List[Union[float, int]]
     year_profit: float
     average_growth: np.ndarray
     _info: str
@@ -74,8 +74,8 @@ class Trader(object):
     _sec_interval: int
     supports: Dict[int, float]
     resistances: Dict[int, float]
-    __last_credit_leverage: float
-    __prev_credit_lev: float = 1
+    __last_credit_leverage: Union[float, int]
+    __prev_credit_lev: Union[float, int] = 1
     trading_on_client: bool
 
     @utils.assert_logger
@@ -147,7 +147,7 @@ class Trader(object):
                 'take': take}
 
     @utils.assert_logger
-    def sl_tp_adder(self, add_stop_loss: float = 0.0, add_take_profit: float = 0.0) -> Tuple[List[float], List[float]]:
+    def sl_tp_adder(self, add_stop_loss: Union[float, int] = 0.0, add_take_profit: Union[float, int] = 0.0) -> Tuple[List[float], List[float]]:
         """
 
         :param add_stop_loss: add stop loss points
@@ -306,10 +306,10 @@ class Trader(object):
         return self.returns
 
     def strategy_rsi(self,
-                     minimum: float = 20,
-                     maximum: float = 80,
-                     max_mid: float = 75,
-                     min_mid: float = 35,
+                     minimum: Union[float, int] = 20,
+                     maximum: Union[float, int] = 80,
+                     max_mid: Union[float, int] = 75,
+                     min_mid: Union[float, int] = 35,
                      **rsi_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         rsi = ta.momentum.rsi(close=self.df['Close'], **rsi_kwargs)
@@ -466,7 +466,7 @@ class Trader(object):
                           kijunsen: int = 26,
                           senkouspan: int = 52,
                           chinkouspan: int = 26,
-                          stop_loss_plus: float = 40.0,
+                          stop_loss_plus: Union[float, int] = 40.0,  # sl_tp_adder
                           plot: bool = True) -> utils.PREDICT_TYPE_LIST:
         cloud = ta.trend.IchimokuIndicator(self.df["High"],
                                            self.df["Low"],
@@ -604,9 +604,9 @@ class Trader(object):
 
     @utils.assert_logger
     def backtest(self,
-                 deposit: float = 10_000.0,
-                 bet: float = np.inf,
-                 commission: float = 0.0,
+                 deposit: Union[float, int] = 10_000.0,
+                 bet: Union[float, int] = np.inf,
+                 commission: Union[float, int] = 0.0,
                  plot: bool = True,
                  print_out: bool = True,
                  show: bool = True) -> pd.DataFrame:
@@ -636,9 +636,9 @@ class Trader(object):
         lin_calc_df: pd.DataFrame
         high: float
         low: float
-        credit_lev: float
+        credit_lev: Union[float, int]
 
-        start_bet: float = bet
+        start_bet: Union[float, int] = bet
         data_column: pd.Series = self.df['Close']
         data_high: pd.Series = self.df['High']
         data_low: pd.Series = self.df['Low']
@@ -647,8 +647,8 @@ class Trader(object):
         self.trades = 0
         self.profits = 0
         self.losses = 0
-        moneys_open_bet: float = deposit
-        money_start: float = deposit
+        moneys_open_bet: Union[float, int] = deposit
+        money_start: Union[float, int] = deposit
         oldsig = utils.EXIT
 
         e: int
@@ -857,9 +857,9 @@ winrate: {self.winrate}%"""
                        strategy_name: str = 'strategy_macd',
                        strategy_kwargs: Dict[str, Any] = {},
                        limit: int = 1000,
-                       deposit: float = 10_000.0,
-                       bet: float = np.inf,
-                       commission: float = 0.0,
+                       deposit: Union[float, int] = 10_000.0,
+                       bet: Union[float, int] = np.inf,
+                       commission: Union[float, int] = 0.0,
                        plot: bool = True,
                        print_out: bool = True,
                        show: bool = True) -> pd.DataFrame:
@@ -947,11 +947,12 @@ winrate: {self.winrate}%"""
             self.fig.show()
         return self.backtest_out
 
+    @utils.assert_logger
     def set_pyplot(self,
-                   height: int = 900,
-                   width: int = 1300,
+                   height: Union[int, float] = 900,
+                   width: Union[int, float] = 1300,
                    template: str = 'plotly_dark',
-                   row_heights: list = [10, 16, 7],
+                   row_heights: List[int, float] = [10, 16, 7],
                    **subplot_kwargs):
         """
 
@@ -960,6 +961,13 @@ winrate: {self.winrate}%"""
         :param template: plotly template
         :param row_heights: standard
         """
+        assert isinstance(height, (int, float)), 'height must be of type int or float'
+        assert isinstance(width, (int, float)), 'width must be of type int or float'
+        assert isinstance(template, str), 'template must be of type str'
+        assert isinstance(row_heights, list), 'row_heights must be of type List[int, float]'
+        for el in row_heights:
+            assert isinstance(el, (int, float))
+
         self.fig = make_subplots(3, 1, row_heights=row_heights, **subplot_kwargs)
         self.fig.update_layout(
             height=height,
@@ -967,13 +975,13 @@ winrate: {self.winrate}%"""
             template=template,
             xaxis_rangeslider_visible=False)
         self.fig.update_xaxes(
-            title_text='T I M E', row=3, col=1, color=utils.TEXT_COLOR)
+            title_text=utils.TIME_TITLE, row=3, col=1, color=utils.TEXT_COLOR)
         self.fig.update_yaxes(
-            title_text='M O N E Y S', row=2, col=1, color=utils.TEXT_COLOR)
+            title_text=utils.MONEYS_TITLE, row=2, col=1, color=utils.TEXT_COLOR)
         self.fig.update_yaxes(
-            title_text='R E T U R N S', row=3, col=1, color=utils.TEXT_COLOR)
+            title_text=utils.RETURNS_TITLE, row=3, col=1, color=utils.TEXT_COLOR)
         self.fig.update_yaxes(
-            title_text='D A T A', row=1, col=1, color=utils.TEXT_COLOR)
+            title_text=utils.DATA_TITLE, row=1, col=1, color=utils.TEXT_COLOR)
         utils.logger.info('new %s graph', self)
 
     def strategy_collider(self,
@@ -1096,7 +1104,7 @@ winrate: {self.winrate}%"""
         return self.returns
 
     def get_trading_predict(self,
-                            bet_for_trading_on_client: float = np.inf,
+                            bet_for_trading_on_client: Union[float, int] = np.inf,
                             coin_lotsize_division: bool = True
                             ) -> Dict[str, Union[str, float]]:
         """
@@ -1108,7 +1116,7 @@ winrate: {self.winrate}%"""
         """
 
         _moneys_: float
-        bet: float
+        bet: Union[float, int]
         close: np.ndarray = self.df["Close"].values
 
         # get prediction
@@ -1157,11 +1165,11 @@ winrate: {self.winrate}%"""
                          strategy,
                          ticker: str = 'BTC/USDT',
                          print_out: bool = True,
-                         bet_for_trading_on_client: float = np.inf,
+                         bet_for_trading_on_client: Union[float, int] = np.inf,
                          coin_lotsize_division: bool = True,
                          ignore_exceptions: bool = False,
                          print_exc: bool = True,
-                         wait_sl_tp_checking: float = 5,
+                         wait_sl_tp_checking: Union[float, int] = 5,
                          limit: int = 1000,
                          strategy_in_sleep: bool = False,
                          *strategy_args,
@@ -1238,21 +1246,21 @@ winrate: {self.winrate}%"""
                                start_time: datetime,  # LOCAL TIME
                                strategy_name: str,
                                print_out: bool = True,
-                               bet_for_trading_on_client: float = np.inf,  # for 1 trade
+                               bet_for_trading_on_client: Union[float, int] = np.inf,  # for 1 trade
                                coin_lotsize_division: bool = True,
                                ignore_exceptions: bool = False,
                                print_exc: bool = True,
-                               wait_sl_tp_checking: float = 5,
+                               wait_sl_tp_checking: Union[float, int] = 5,
                                limit: int = 1000,
                                strategy_in_sleep: bool = False,
-                               deposit_part: float = 1.0,  # for all trades
+                               deposit_part: Union[float, int] = 1.0,  # for all trades
                                **strategy_kwargs):
         can_orders: int = len(tickers)
-        bet_for_trading_on_client_copy: float = bet_for_trading_on_client
+        bet_for_trading_on_client_copy: Union[float, int] = bet_for_trading_on_client
 
         class MultiRealTimeTrader(self.__class__):
             def get_trading_predict(self,
-                                    bet_for_trading_on_client: float = np.inf,
+                                    bet_for_trading_on_client: Union[float, int] = np.inf,
                                     coin_lotsize_division: bool = True
                                     ) -> Dict[str, Union[str, float]]:
                 balance = self.client.get_balance_ticker(self.ticker.split('/')[1])
@@ -1319,8 +1327,8 @@ winrate: {self.winrate}%"""
         return self.returns
 
     def set_open_stop_and_take(self,
-                               take_profit: float = np.inf,
-                               stop_loss: float = np.inf,
+                               take_profit: Union[float, int] = np.inf,
+                               stop_loss: Union[float, int] = np.inf,
                                set_stop: bool = True,
                                set_take: bool = True):
         """
@@ -1359,7 +1367,7 @@ winrate: {self.winrate}%"""
                 self._stop_losses.append(stop_flag)
         utils.logger.debug('trader stop loss: %f pips, trader take profit: %f pips', stop_loss, take_profit)
 
-    def set_credit_leverages(self, credit_lev: float = 1.0):
+    def set_credit_leverages(self, credit_lev: Union[float, int] = 1.0):
         """
         Sets the leverage for bets.
         :param credit_lev: leverage in points
