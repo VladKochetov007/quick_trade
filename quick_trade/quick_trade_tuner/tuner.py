@@ -50,10 +50,10 @@ class QuickTradeTuner(object):
         backtest_kwargs['show'] = False
         backtest_kwargs['print_out'] = False
 
-        def best():
-            return defaultdict(best)
+        def get_dict():
+            return defaultdict(get_dict)
 
-        self.result_tunes = best()
+        self.result_tunes = get_dict()
         for data in self._frames_data:
             ticker = data[0]
             interval = data[1]
@@ -65,7 +65,7 @@ class QuickTradeTuner(object):
             else:
                 df = pd.DataFrame()
             for strategy, kwargs in self._strategies:
-                trader = your_trading_class(ticker='ALL' if self.multi_test else ticker, df=df, interval=interval)
+                trader = your_trading_class(ticker='ALL/ALL' if self.multi_test else ticker, df=df, interval=interval)
                 trader.set_client(self.client)
 
                 if self.multi_test:

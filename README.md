@@ -50,6 +50,7 @@ a.backtest()
 import quick_trade.trading_sys as qtr
 import ccxt
 from quick_trade.quick_trade_tuner import *
+from quick_trade.brokers import TradingClient
 
 
 class Test(qtr.Trader):
@@ -113,7 +114,8 @@ tuner = QuickTradeTuner(
 )
 
 tuner.tune(Test)
-print(tuner.sort_tunes())  # you can save it as json
+print(tuner.sort_tunes())
+tuner.save_tunes('quick-trade-tunes.json')  # save tunes as JSON
 ```
 
 ## Installing:
