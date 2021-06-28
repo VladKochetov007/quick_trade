@@ -1065,8 +1065,10 @@ winrate: {self.winrate}%"""
 
         :return: combining of 2 strategies
         """
-        assert isinstance(first_returns, utils.PREDICT_TYPE_LIST), 'first_returns can only be of type <utils.PREDICT_TYPE_LIST>'
-        assert isinstance(second_returns, utils.PREDICT_TYPE_LIST), 'second_returns can only be of type <utils.PREDICT_TYPE_LIST>'
+        assert isinstance(first_returns, utils.PREDICT_TYPE_LIST), \
+            'first_returns can only be of type <utils.PREDICT_TYPE_LIST>'
+        assert isinstance(second_returns, utils.PREDICT_TYPE_LIST), \
+            'second_returns can only be of type <utils.PREDICT_TYPE_LIST>'
 
         if mode == 'minimalist':
             self.returns = []
@@ -1206,10 +1208,13 @@ winrate: {self.winrate}%"""
         """
         assert fullmatch(utils.TICKER_PATTERN, ticker), f'Ticker must match the pattern <{utils.TICKER_PATTERN}>'
         assert isinstance(print_out, bool), 'print_out must be of type <bool>'
-        assert isinstance(bet_for_trading_on_client, (float, int)), 'bet_for_trading_on_client must be of type <float> or <int>'
+        assert isinstance(bet_for_trading_on_client,
+                          (float, int)), 'bet_for_trading_on_client must be of type <float> or <int>'
         assert isinstance(ignore_exceptions, bool), 'ignore_exceptions must be of type <bool>'
         assert isinstance(print_exc, bool), 'print_exc must be of type <bool>'
         assert isinstance(wait_sl_tp_checking, (float, int)), 'wait_sl_tp_checking must be of type <float> or <int>'
+        assert wait_sl_tp_checking < self._sec_interval, \
+            'wait_sl_tp_checking cannot be greater than or equal to the timeframe'
         assert isinstance(limit, int), 'limit must be of type <int>'
         assert isinstance(strategy_in_sleep, bool), 'strategy_in_sleep must be of type <bool>'
         assert isinstance(coin_lotsize_division, bool), 'coin_lotsize_division must be of type <bool>'
@@ -1291,7 +1296,8 @@ winrate: {self.winrate}%"""
         assert isinstance(ignore_exceptions, bool), 'ignore_exceptions must be of type <bool>'
         assert isinstance(print_exc, bool), 'print_exc must be of type <bool>'
         assert isinstance(wait_sl_tp_checking, (float, int)), 'wait_sl_tp_checking must be of type <float> or <int>'
-        assert wait_sl_tp_checking < self._sec_interval, 'wait_sl_tp_checking cannot be greater than or equal to the timeframe'
+        assert wait_sl_tp_checking < self._sec_interval, \
+            'wait_sl_tp_checking cannot be greater than or equal to the timeframe'
         assert isinstance(limit, int), 'limit must be of type <int>'
         assert isinstance(strategy_in_sleep, bool), 'strategy_in_sleep must be of type <bool>'
         assert isinstance(start_time, datetime), 'start_time must be of type <datetime.datetime>'
