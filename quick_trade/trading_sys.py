@@ -27,7 +27,6 @@ import ta.trend
 import ta.volatility
 import ta.volume
 from plotly.subplots import make_subplots
-#from quick_trade import brokers
 from quick_trade.brokers import TradingClient
 from quick_trade import utils
 
