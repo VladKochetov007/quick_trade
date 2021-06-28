@@ -83,7 +83,7 @@ class Trader(object):
                  trading_on_client: bool = True):
         ticker = ticker.upper()
         assert isinstance(ticker, str), 'The ticker can only be of type <str>.'
-        assert fullmatch(r'[A-Z]+/[A-Z]+', ticker), 'Ticker must match the pattern <[A-Z]+/[A-Z]+>'
+        assert fullmatch(utils.TICKER_PATTERN, ticker), f'Ticker must match the pattern <{utils.TICKER_PATTERN}>'
         assert isinstance(df, pd.DataFrame), 'Dataframe can only be of type <pd.DataFrame>.'
         assert isinstance(interval, str), 'interval can only be of the <str> type.'
         assert isinstance(trading_on_client, bool), 'trading_on_client can only be True or False (<bool>).'
@@ -624,6 +624,7 @@ class Trader(object):
         assert isinstance(plot, bool), 'plot must be of type <bool>'
         assert isinstance(print_out, bool), 'print_out must be of type <bool>'
         assert isinstance(show, bool), 'show must be of type <bool>'
+        assert commission < 100, 'commission cannot be 100% or more'
 
         exit_take_stop: bool
         no_order: bool
@@ -864,9 +865,15 @@ winrate: {self.winrate}%"""
         assert isinstance(tickers, Iterable), 'tickers must be of type <Iterable[str]>'
         for el in tickers:
             assert isinstance(el, str), 'tickers must be of type <Iterable[str]>'
+            assert fullmatch(utils.TICKER_PATTERN, el), f'Ticker must match the pattern <{utils.TICKER_PATTERN}>'
         assert isinstance(strategy_name, str), 'strategy_name must be of type <str>'
         assert strategy_name in self.__dir__(), 'There is no such strategy'
         assert isinstance(strategy_kwargs, dict)
+        assert isinstance(limit, int), 'limit must be of type <int>'
+        assert isinstance(deposit, (float, int)), 'deposit must be of type <int> or <float>'
+        assert isinstance(bet, (float, int)), 'bet must be of type <int> or <float>'
+        assert isinstance(commission, (float, int)), 'commission must be of type <int> or <float>'
+        assert commission < 100, 'commission cannot be 100% or more'
 
         winrates: List[float] = []
         percentage_profits: List[float] = []
@@ -1082,7 +1089,7 @@ winrate: {self.winrate}%"""
         return return_list
 
     @staticmethod
-    def _collide_super(l1, l2) -> utils.PREDICT_TYPE_LIST:
+    def _collide_super(l1: utils.PREDICT_TYPE_LIST, l2: utils.PREDICT_TYPE_LIST) -> utils.PREDICT_TYPE_LIST:
         return_list: utils.PREDICT_TYPE_LIST = []
         for first, sec in zip(utils.convert(l1), utils.convert(l2)):
             if first is not np.nan and sec is not np.nan and first is not sec:
@@ -1189,6 +1196,8 @@ winrate: {self.winrate}%"""
         :param strategy_kwargs: named arguments to -strategy.
         :param strategy_args: arguments to -strategy.
         """
+        assert fullmatch(utils.TICKER_PATTERN, ticker), f'Ticker must match the pattern <{utils.TICKER_PATTERN}>'
+        assert isinstance(print_out, (bool, int, float)) # TODO
 
         self.ticker = ticker
         open_time = time()

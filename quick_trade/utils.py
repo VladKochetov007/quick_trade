@@ -28,6 +28,7 @@ TIME_TITLE = 'T I M E'
 MONEYS_TITLE = 'M O N E Y S'
 RETURNS_TITLE = 'R E T U R N S'
 DATA_TITLE = 'D A T A'
+TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
 
 RED: str = '#ff0000'
 GREEN: str = '#55ff00'
