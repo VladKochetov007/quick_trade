@@ -619,12 +619,14 @@ class Trader(object):
         returns: pd.DataFrame with data of test
         """
         assert isinstance(deposit, (float, int)), 'deposit must be of type <int> or <float>'
+        assert deposit > 0, 'deposit can\'t be 0 or less'
         assert isinstance(bet, (float, int)), 'bet must be of type <int> or <float>'
+        assert bet > 0, 'bet can\'t be 0 or less'
         assert isinstance(commission, (float, int)), 'commission must be of type <int> or <float>'
+        assert 0 <= commission < 100, 'commission cannot be >=100% or less then 0'
         assert isinstance(plot, bool), 'plot must be of type <bool>'
         assert isinstance(print_out, bool), 'print_out must be of type <bool>'
         assert isinstance(show, bool), 'show must be of type <bool>'
-        assert commission < 100, 'commission cannot be 100% or more'
 
         exit_take_stop: bool
         no_order: bool
@@ -865,15 +867,21 @@ winrate: {self.winrate}%"""
         assert isinstance(tickers, Iterable), 'tickers must be of type <Iterable[str]>'
         for el in tickers:
             assert isinstance(el, str), 'tickers must be of type <Iterable[str]>'
-            assert fullmatch(utils.TICKER_PATTERN, el), f'Ticker must match the pattern <{utils.TICKER_PATTERN}>'
+            assert fullmatch(utils.TICKER_PATTERN, el), f'all tickers must match the pattern <{utils.TICKER_PATTERN}>'
         assert isinstance(strategy_name, str), 'strategy_name must be of type <str>'
         assert strategy_name in self.__dir__(), 'There is no such strategy'
         assert isinstance(strategy_kwargs, dict)
         assert isinstance(limit, int), 'limit must be of type <int>'
+        assert limit > 0, 'limit can\'t be 0 or less'
         assert isinstance(deposit, (float, int)), 'deposit must be of type <int> or <float>'
+        assert deposit > 0, 'deposit can\'t be 0 or less'
         assert isinstance(bet, (float, int)), 'bet must be of type <int> or <float>'
+        assert bet > 0, 'bet can\'t be 0 or less'
         assert isinstance(commission, (float, int)), 'commission must be of type <int> or <float>'
-        assert commission < 100, 'commission cannot be 100% or more'
+        assert 0 <= commission < 100, 'commission cannot be >=100% or less then 0'
+        assert isinstance(plot, bool), 'plot must be of type <bool>'
+        assert isinstance(print_out, bool), 'print_out must be of type <bool>'
+        assert isinstance(show, bool), 'show must be of type <bool>'
 
         winrates: List[float] = []
         percentage_profits: List[float] = []
@@ -1197,7 +1205,14 @@ winrate: {self.winrate}%"""
         :param strategy_args: arguments to -strategy.
         """
         assert fullmatch(utils.TICKER_PATTERN, ticker), f'Ticker must match the pattern <{utils.TICKER_PATTERN}>'
-        assert isinstance(print_out, (bool, int, float)) # TODO
+        assert isinstance(print_out, bool), 'print_out must be of type <bool>'
+        assert isinstance(bet_for_trading_on_client, (float, int)), 'bet_for_trading_on_client must be of type <float> or <int>'
+        assert isinstance(ignore_exceptions, bool), 'ignore_exceptions must be of type <bool>'
+        assert isinstance(print_exc, bool), 'print_exc must be of type <bool>'
+        assert isinstance(wait_sl_tp_checking, (float, int)), 'wait_sl_tp_checking must be of type <float> or <int>'
+        assert isinstance(limit, int), 'limit must be of type <int>'
+        assert isinstance(strategy_in_sleep, bool), 'strategy_in_sleep must be of type <bool>'
+        assert isinstance(coin_lotsize_division, bool), 'coin_lotsize_division must be of type <bool>'
 
         self.ticker = ticker
         open_time = time()
@@ -1266,6 +1281,27 @@ winrate: {self.winrate}%"""
                                strategy_in_sleep: bool = False,
                                deposit_part: Union[float, int] = 1.0,  # for all trades
                                **strategy_kwargs):
+        assert isinstance(tickers, Iterable), 'tickers must be of type <Iterable[str]>'
+        for el in tickers:
+            assert isinstance(el, str), 'tickers must be of type <Iterable[str]>'
+            assert fullmatch(utils.TICKER_PATTERN, el), f'all tickers must match the pattern <{utils.TICKER_PATTERN}>'
+        assert isinstance(print_out, bool), 'print_out must be of type <bool>'
+        assert isinstance(bet_for_trading_on_client,
+                          (float, int)), 'bet_for_trading_on_client must be of type <float> or <int>'
+        assert isinstance(ignore_exceptions, bool), 'ignore_exceptions must be of type <bool>'
+        assert isinstance(print_exc, bool), 'print_exc must be of type <bool>'
+        assert isinstance(wait_sl_tp_checking, (float, int)), 'wait_sl_tp_checking must be of type <float> or <int>'
+        assert wait_sl_tp_checking < self._sec_interval, 'wait_sl_tp_checking cannot be greater than or equal to the timeframe'
+        assert isinstance(limit, int), 'limit must be of type <int>'
+        assert isinstance(strategy_in_sleep, bool), 'strategy_in_sleep must be of type <bool>'
+        assert isinstance(start_time, datetime), 'start_time must be of type <datetime.datetime>'
+        assert start_time > datetime.now(), 'start_time cannot be earlier than the present time'
+        assert isinstance(strategy_name, str), 'strategy_name must be of type <str>'
+        assert strategy_name in self.__dir__(), 'There is no such strategy'
+        assert isinstance(coin_lotsize_division, bool), 'coin_lotsize_division must be of type <bool>'
+        assert isinstance(deposit_part, (int, float)), 'deposit_part must be of type <int> or <float>'
+        assert 1 >= deposit_part > 0, 'deposit_part cannot be greater than 1 or less than 0(inclusively)'
+
         can_orders: int = len(tickers)
         bet_for_trading_on_client_copy: Union[float, int] = bet_for_trading_on_client
 
