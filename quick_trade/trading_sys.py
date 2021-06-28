@@ -4,10 +4,7 @@
 
 
 # TODO:
-#   add tradingview realtime signals
-#   numpy
 #   scalper and dca bot
-#   unit-tests
 #   more docs and examples
 #   decimal
 #   3.9
@@ -30,7 +27,8 @@ import ta.trend
 import ta.volatility
 import ta.volume
 from plotly.subplots import make_subplots
-from quick_trade import brokers
+#from quick_trade import brokers
+from quick_trade.brokers import TradingClient
 from quick_trade import utils
 
 Line = dict  # To avoid the deprecation warning
@@ -67,7 +65,7 @@ class Trader(object):
     _backtest_out_no_drop: pd.DataFrame
     backtest_out: pd.DataFrame
     _open_lot_prices: List[float]
-    client: brokers.TradingClient
+    client: TradingClient
     __last_stop_loss: float
     __last_take_profit: float
     returns_strategy_diff: List[float]
@@ -85,11 +83,11 @@ class Trader(object):
                  interval: str = '1d',
                  trading_on_client: bool = True):
         ticker = ticker.upper()
-        assert isinstance(ticker, str), 'Deposit can only be a number.'
+        assert isinstance(ticker, str), 'The ticker can only be of type <str>.'
         assert fullmatch(r'[A-Z]+/[A-Z]+', ticker), 'Ticker must match the pattern <[A-Z]+/[A-Z]+>'
-        assert isinstance(df, pd.DataFrame), 'Dataframe can only be of type pd.DataFrame.'
-        assert isinstance(interval, str), 'interval can only be of the string type.'
-        assert isinstance(trading_on_client, bool), 'trading_on_client can only be True or False.'
+        assert isinstance(df, pd.DataFrame), 'Dataframe can only be of type <pd.DataFrame>.'
+        assert isinstance(interval, str), 'interval can only be of the <str> type.'
+        assert isinstance(trading_on_client, bool), 'trading_on_client can only be True or False (<bool>).'
 
         self.df = df.reset_index(drop=True)
         self.ticker = ticker
@@ -156,7 +154,7 @@ class Trader(object):
         :return: (stop losses, take profits)
         """
         assert isinstance(add_stop_loss, (int, float)) and isinstance(add_take_profit, (int, float)), \
-            'Arguments to this function can only be float or int.'
+            'Arguments to this function can only be <float> or <int>.'
 
         utils.logger.debug('add stop-loss: %f pips, take-profit: %s pips', add_stop_loss, add_take_profit)
         stop_losses = []
@@ -582,7 +580,7 @@ class Trader(object):
         sell = buy.
         exit = exit.
         """
-        assert isinstance(swap_stop_take, (bool, int, float)), 'swap_stop_take can only be boolean or int(float)'
+        assert isinstance(swap_stop_take, (bool, int, float)), 'swap_stop_take can only be <bool>'
         if not isinstance(swap_stop_take, bool):
             msg = 'swap_stop_take is not a standard type'
             warn(msg)
@@ -621,12 +619,12 @@ class Trader(object):
         :param show: show the graph
         returns: pd.DataFrame with data of test
         """
-        assert isinstance(deposit, (float, int)), 'deposit must be of type int or float'
-        assert isinstance(bet, (float, int)), 'bet must be of type int or float'
-        assert isinstance(commission, (float, int)), 'commission must be of type int or float'
-        assert isinstance(plot, bool), 'plot must be of type bool'
-        assert isinstance(print_out, bool), 'print_out must be of type bool'
-        assert isinstance(show, bool), 'show must be of type bool'
+        assert isinstance(deposit, (float, int)), 'deposit must be of type <int> or <float>'
+        assert isinstance(bet, (float, int)), 'bet must be of type <int> or <float>'
+        assert isinstance(commission, (float, int)), 'commission must be of type <int> or <float>'
+        assert isinstance(plot, bool), 'plot must be of type <bool>'
+        assert isinstance(print_out, bool), 'print_out must be of type <bool>'
+        assert isinstance(show, bool), 'show must be of type <bool>'
 
         exit_take_stop: bool
         no_order: bool
@@ -864,10 +862,10 @@ winrate: {self.winrate}%"""
                        plot: bool = True,
                        print_out: bool = True,
                        show: bool = True) -> pd.DataFrame:
-        assert isinstance(tickers, Iterable), 'tickers must be of type Iterable[str]'
+        assert isinstance(tickers, Iterable), 'tickers must be of type <Iterable[str]>'
         for el in tickers:
-            assert isinstance(el, str), 'tickers must be of type Iterable[str]'
-        assert isinstance(strategy_name, str), 'strategy_name must be of type str'
+            assert isinstance(el, str), 'tickers must be of type <Iterable[str]>'
+        assert isinstance(strategy_name, str), 'strategy_name must be of type <str>'
         assert strategy_name in self.__dir__(), 'There is no such strategy'
         assert isinstance(strategy_kwargs, dict)
 
@@ -962,12 +960,12 @@ winrate: {self.winrate}%"""
         :param template: plotly template
         :param row_heights: standard
         """
-        assert isinstance(height, (int, float)), 'height must be of type int or float'
-        assert isinstance(width, (int, float)), 'width must be of type int or float'
-        assert isinstance(template, str), 'template must be of type str'
-        assert isinstance(row_heights, list), 'row_heights must be of type List[int, float]'
+        assert isinstance(height, (int, float)), 'height must be of type <int> or <float>'
+        assert isinstance(width, (int, float)), 'width must be of type <int> or <float>'
+        assert isinstance(template, str), 'template must be of type <str>'
+        assert isinstance(row_heights, list), 'row_heights must be of type <List[int, float]>'
         for el in row_heights:
-            assert isinstance(el, (int, float))
+            assert isinstance(el, (int, float)), 'row_heights must be of type <List[int, float]>'
 
         self.fig = make_subplots(3, 1, row_heights=row_heights, **subplot_kwargs)
         self.fig.update_layout(
@@ -985,6 +983,7 @@ winrate: {self.winrate}%"""
             title_text=utils.DATA_TITLE, row=1, col=1, color=utils.TEXT_COLOR)
         utils.logger.info('new %s graph', self)
 
+    @utils.assert_logger
     def strategy_collider(self,
                           first_returns: utils.PREDICT_TYPE_LIST,
                           second_returns: utils.PREDICT_TYPE_LIST,
@@ -1052,6 +1051,8 @@ winrate: {self.winrate}%"""
 
         :return: combining of 2 strategies
         """
+        assert isinstance(first_returns, utils.PREDICT_TYPE_LIST), 'first_returns can only be of type <utils.PREDICT_TYPE_LIST>'
+        assert isinstance(second_returns, utils.PREDICT_TYPE_LIST), 'second_returns can only be of type <utils.PREDICT_TYPE_LIST>'
 
         if mode == 'minimalist':
             self.returns = []
@@ -1266,7 +1267,7 @@ winrate: {self.winrate}%"""
                                     coin_lotsize_division: bool = True
                                     ) -> Dict[str, Union[str, float]]:
                 balance = self.client.get_balance_ticker(self.ticker.split('/')[1])
-                bet = (balance * 10) / (can_orders / deposit_part - brokers.TradingClient.cls_open_orders)
+                bet = (balance * 10) / (can_orders / deposit_part - TradingClient.cls_open_orders)
                 bet /= 10  # decimal analog
                 if bet > bet_for_trading_on_client_copy:
                     bet = bet_for_trading_on_client_copy
@@ -1310,7 +1311,7 @@ winrate: {self.winrate}%"""
         self.fig.update_yaxes(row=3, col=1, type='log')
         utils.logger.debug('trader log returns')
 
-    def set_client(self, your_client: brokers.TradingClient):
+    def set_client(self, your_client: TradingClient):
         """
         :param your_client: trading client
         """
