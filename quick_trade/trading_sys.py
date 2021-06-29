@@ -137,8 +137,6 @@ class Trader(object):
                 take = self._open_price
             if self._stop_loss is not np.inf:
                 _stop_loss = self._open_price
-        utils.logger.debug(
-            'stop loss: %f (%f pips), take profit: %f (%f pips)', _stop_loss, self._stop_loss, take, self._take_profit)
 
         return {'stop': _stop_loss,
                 'take': take}
@@ -664,14 +662,14 @@ class Trader(object):
                 low,
                 next_h,
                 next_l) in enumerate(zip(self.returns[:-1],
-                                         self._stop_losses[:-1],
-                                         self._take_profits[:-1],
-                                         converted[:-1],
-                                         self._credit_leverages[:-1],
-                                         data_high[:-1],
-                                         data_low[:-1],
-                                         data_high[1:],
-                                         data_low[1:])):
+                                      self._stop_losses[:-1],
+                                      self._take_profits[:-1],
+                                      converted[:-1],
+                                      self._credit_leverages[:-1],
+                                      data_high[:-1],
+                                      data_low[:-1],
+                                      data_high[1:],
+                                      data_low[1:])):
 
             if converted_element is not np.nan:
                 if oldsig != utils.EXIT:
@@ -697,14 +695,14 @@ class Trader(object):
                 diff = data_column[e + 1] - data_column[e]
             else:
                 exit_take_stop = True
-                if sig == utils.BUY and high >= take_profit:
-                    diff = take_profit - data_column[e]
-
-                elif sig == utils.BUY and low <= stop_loss:
+                if sig == utils.BUY and low <= stop_loss:
                     diff = stop_loss - data_column[e]
 
                 elif sig == utils.SELL and high >= stop_loss:
                     diff = stop_loss - data_column[e]
+
+                elif sig == utils.BUY and high >= take_profit:
+                    diff = take_profit - data_column[e]
 
                 elif sig == utils.SELL and low <= take_profit:
                     diff = take_profit - data_column[e]
@@ -740,6 +738,7 @@ class Trader(object):
             self.winrate = (self.profits / self.trades) * 100
         else:
             self.winrate = 0
+            utils.logger.error('0 trades in %s', self)
         self._info = f"""losses: {self.losses}
 trades: {self.trades}
 profits: {self.profits}
@@ -1117,8 +1116,6 @@ winrate: {self.winrate}%"""
         if len(strategies) >= 3:
             for ret in strategies[2:]:
                 self.strategy_collider(self.returns, ret, mode=mode)
-        self.set_open_stop_and_take()
-        self.set_credit_leverages()
         return self.returns
 
     def get_trading_predict(self,
@@ -1164,8 +1161,8 @@ winrate: {self.winrate}%"""
                         bet = _moneys_
                     if coin_lotsize_division:
                         bet /= ticker_price
-                    self.client.exit_last_order()
 
+                    self.client.exit_last_order()
                     self.client.order_create(predict,
                                              self.ticker,
                                              bet * self.__last_credit_leverage)
