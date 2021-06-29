@@ -21,7 +21,7 @@ setup(
         'Source': 'https://github.com/VladKochetov007/quick_trade',
     },
     install_requires=[
-        'plotly==5.0.0',
+        'plotly==5.1.0',
         'numpy==1.21.0',
         'pandas==1.2.5',
         'ta==0.7.0',
