@@ -174,10 +174,10 @@ import ccxt
 ticker = 'MATIC/USDT'
 
 start_time = datetime.datetime(2021,  # year
-                               6,   # month
+                               6,  # month
                                24,  # day
 
-                               5,   # hour
+                               5,  # hour
                                16,  # minute
                                57)  # second (Leave a few seconds to download data from the exchange and strategy.)
 
@@ -218,7 +218,6 @@ trader.realtime_trading(
 ```
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/realtime_example.png?raw=true)
-
 
 # Help the project
 

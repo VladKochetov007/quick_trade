@@ -277,15 +277,15 @@ This method allows you to combine two strategies into one; it takes the lists of
 mode as input values.
 
 Available modes:
-  
-- `minimalist`: If both predictions are short, then the result of the collider will be short. If both are long, then 
-long. If the predictions do not match - exit
-  
-- `maximalist`: If both predictions are short, then the result of the collider will be short. If both are long, then 
-long. If the predictions do not match - result of the last merge.
-  
-- `super`: If an element of one of the predictions has changed, but the other not, the result is equal to the one
-that has changed. If they changed at the same time - exit.
+
+- `minimalist`: If both predictions are short, then the result of the collider will be short. If both are long, then
+  long. If the predictions do not match - exit
+
+- `maximalist`: If both predictions are short, then the result of the collider will be short. If both are long, then
+  long. If the predictions do not match - result of the last merge.
+
+- `super`: If an element of one of the predictions has changed, but the other not, the result is equal to the one that
+  has changed. If they changed at the same time - exit.
 
 | param  | type | description |
 | :---: | :---: | :---: |

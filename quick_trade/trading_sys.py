@@ -27,8 +27,8 @@ import ta.trend
 import ta.volatility
 import ta.volume
 from plotly.subplots import make_subplots
-from quick_trade.brokers import TradingClient
 from quick_trade import utils
+from quick_trade.brokers import TradingClient
 
 Line = dict  # To avoid the deprecation warning
 
@@ -691,11 +691,11 @@ class Trader(object):
 
             next_not_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
 
-            stop_loss = self._stop_losses[e-1]
-            take_profit = self._take_profits[e-1]
+            stop_loss = self._stop_losses[e - 1]
+            take_profit = self._take_profits[e - 1]
             # be careful with e=0
             now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss,
-                                                                take_profit)
+                                                                               take_profit)
             if (ignore_breakout or now_not_breakout) and next_not_breakout:
                 diff = data_column[e + 1] - data_column[e]
             else:
