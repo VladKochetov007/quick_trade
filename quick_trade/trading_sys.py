@@ -662,14 +662,14 @@ class Trader(object):
                 low,
                 next_h,
                 next_l) in enumerate(zip(self.returns[:-1],
-                                      self._stop_losses[:-1],
-                                      self._take_profits[:-1],
-                                      converted[:-1],
-                                      self._credit_leverages[:-1],
-                                      data_high[:-1],
-                                      data_low[:-1],
-                                      data_high[1:],
-                                      data_low[1:])):
+                                         self._stop_losses[:-1],
+                                         self._take_profits[:-1],
+                                         converted[:-1],
+                                         self._credit_leverages[:-1],
+                                         data_high[:-1],
+                                         data_low[:-1],
+                                         data_high[1:],
+                                         data_low[1:])):
 
             if converted_element is not np.nan:
                 if oldsig != utils.EXIT:
@@ -690,11 +690,17 @@ class Trader(object):
                 ignore_breakout = True
 
             next_not_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
-            if (min(stop_loss, take_profit) < low <= high < max(stop_loss,
-                                                                take_profit) and next_not_breakout) or ignore_breakout:
+
+            stop_loss = self._stop_losses[e-1]
+            take_profit = self._take_profits[e-1]
+            # be careful with e=0
+            now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss,
+                                                                take_profit)
+            if (ignore_breakout or now_not_breakout) and next_not_breakout:
                 diff = data_column[e + 1] - data_column[e]
             else:
                 exit_take_stop = True
+
                 if sig == utils.BUY and low <= stop_loss:
                     diff = stop_loss - data_column[e]
 
