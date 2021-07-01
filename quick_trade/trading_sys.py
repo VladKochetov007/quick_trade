@@ -820,14 +820,16 @@ winrate: {self.winrate}%"""
                                                          'bprice': [],
                                                          'sprice': [],
                                                          'eprice': []}
-            for e, i in enumerate(converted):
-                if i == utils.SELL:
+            for e, (pred, conv, crlev) in enumerate(zip(self.returns,
+                                                        converted,
+                                                        utils.convert(self._credit_leverages))):
+                if conv == utils.SELL or (crlev is not np.nan and pred == utils.SELL):
                     preds['sellind'].append(e)
                     preds['sprice'].append(loc[e])
-                elif i == utils.BUY:
+                elif conv == utils.BUY or (crlev is not np.nan and pred == utils.BUY):
                     preds['buyind'].append(e)
                     preds['bprice'].append(loc[e])
-                elif i == utils.EXIT:
+                elif conv == utils.EXIT or (crlev is not np.nan and pred == utils.EXIT):
                     preds['exitind'].append(e)
                     preds['eprice'].append(loc[e])
             name: str
