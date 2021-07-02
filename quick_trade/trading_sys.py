@@ -17,7 +17,6 @@ from re import fullmatch
 from threading import Thread
 from time import ctime, sleep, time
 from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
-from warnings import warn
 
 import numpy as np
 import pandas as pd
@@ -72,8 +71,6 @@ class Trader(object):
     _sec_interval: int
     supports: Dict[int, float]
     resistances: Dict[int, float]
-    __last_credit_leverage: Union[float, int]
-    __prev_credit_lev: Union[float, int] = 1
     trading_on_client: bool
 
     @utils.assert_logger
@@ -224,11 +221,7 @@ class Trader(object):
         sell = buy.
         exit = exit.
         """
-        assert isinstance(swap_stop_take, (bool, int, float)), 'swap_stop_take can only be <bool>'
-        if not isinstance(swap_stop_take, bool):
-            msg = 'swap_stop_take is not a standard type'
-            warn(msg)
-            utils.logger.info(msg)
+        assert isinstance(swap_stop_take, bool), 'swap_stop_take can only be <bool>'
 
         returns = []
         flag: utils.PREDICT_TYPE = utils.EXIT
@@ -793,9 +786,11 @@ winrate: {self.winrate}%"""
         # trading
         self.__last_stop_loss = self._stop_losses[-1]
         self.__last_take_profit = self._take_profits[-1]
-        self.__last_credit_leverage = self._credit_leverages[-1]
 
-        if self._prev_predict != predict or self.__prev_credit_lev != self.__last_credit_leverage:
+        converted = utils.convert(self.returns)
+        conv_cred_lev = utils.convert(self._credit_leverages)
+
+        if converted[-1] is not np.nan or conv_cred_lev[-1] is not np.nan:
             utils.logger.info('open trade %s', predict)
             self.__exit_order__ = False
             if self.trading_on_client:
@@ -819,7 +814,7 @@ winrate: {self.winrate}%"""
                     self.client.exit_last_order()
                     self.client.order_create(predict,
                                              self.ticker,
-                                             bet * self.__last_credit_leverage)
+                                             bet * self._credit_leverages[-1])
         utils.logger.debug("returning prediction")
         return {
             'predict': predict,
@@ -827,7 +822,7 @@ winrate: {self.winrate}%"""
             'stop loss': self.__last_stop_loss,
             'take profit': self.__last_take_profit,
             'currency close': close[-1],
-            'credit leverage': self.__last_credit_leverage
+            'credit leverage': self._credit_leverages[-1]
         }
 
     @utils.assert_logger
@@ -1088,7 +1083,7 @@ winrate: {self.winrate}%"""
         Sets the leverage for bets.
         :param credit_lev: leverage in points
         """
-        self.__prev_credit_lev = credit_lev
+        # TODO
         self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
         utils.logger.debug('trader credit leverage: %f', credit_lev)
 
@@ -1102,6 +1097,17 @@ winrate: {self.winrate}%"""
                 self.resistances[i] = highs[i]
         return {'resistance': self.resistances,
                 'supports': self.supports}
+
+    def strategy_diff(self, frame_to_diff: pd.Series) -> utils.PREDICT_TYPE_LIST:
+        """
+        frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
+        """
+        # TODO
+        self.returns = list(np.digitize(frame_to_diff.diff(), bins=[0]))
+        self.set_open_stop_and_take()
+        self.set_credit_leverages()
+        return self.returns
+
 
 class ExampleStrategies(Trader):
 
@@ -1310,15 +1316,6 @@ class ExampleStrategies(Trader):
                                     set_stop=False)
         self.set_credit_leverages()
         self.sl_tp_adder(add_stop_loss=stop_loss_plus)
-        return self.returns
-
-    def strategy_diff(self, frame_to_diff: pd.Series) -> utils.PREDICT_TYPE_LIST:
-        """
-        frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
-        """
-        self.returns = list(np.digitize(frame_to_diff.diff(), bins=[0]))
-        self.set_open_stop_and_take()
-        self.set_credit_leverages()
         return self.returns
 
     def strategy_buy_hold(self) -> utils.PREDICT_TYPE_LIST:
