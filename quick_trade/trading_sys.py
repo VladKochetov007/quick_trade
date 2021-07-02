@@ -9,6 +9,7 @@
 #   decimal
 #   3.9
 #   subplot plot directory
+#   decorator for strategies without exit condition (not converted data)
 
 from copy import copy
 from datetime import datetime
@@ -1072,10 +1073,8 @@ winrate: {self.winrate}%"""
 
         :return: combining of 2 strategies
         """
-        assert isinstance(first_returns, utils.PREDICT_TYPE_LIST), \
-            'first_returns can only be of type <utils.PREDICT_TYPE_LIST>'
-        assert isinstance(second_returns, utils.PREDICT_TYPE_LIST), \
-            'second_returns can only be of type <utils.PREDICT_TYPE_LIST>'
+        assert isinstance(first_returns, utils.PREDICT_TYPE_LIST) and isinstance(second_returns, utils.PREDICT_TYPE_LIST), \
+            'Arguments to this function can only be <utils.PREDICT_TYPE>.'
 
         if mode == 'minimalist':
             self.returns = []
@@ -1184,6 +1183,7 @@ winrate: {self.winrate}%"""
             'credit leverage': self.__last_credit_leverage
         }
 
+    @utils.assert_logger
     def realtime_trading(self,
                          strategy,
                          ticker: str = 'BTC/USDT',
@@ -1277,6 +1277,7 @@ winrate: {self.winrate}%"""
                 else:
                     raise exc
 
+    @utils.assert_logger
     def multi_realtime_trading(self,
                                tickers: List[str],
                                start_time: datetime,  # LOCAL TIME
@@ -1366,16 +1367,23 @@ winrate: {self.winrate}%"""
         self.fig.update_yaxes(row=3, col=1, type='log')
         utils.logger.debug('trader log returns')
 
+    @utils.assert_logger
     def set_client(self, your_client: TradingClient):
         """
         :param your_client: trading client
         """
+        assert isinstance(your_client, TradingClient), 'your_client must be of type <TradingClient>'
+
         self.client = your_client
         utils.logger.debug('trader set client')
 
+    @utils.assert_logger
     def convert_signal(self,
                        old: utils.PREDICT_TYPE = utils.SELL,
                        new: utils.PREDICT_TYPE = utils.EXIT) -> utils.PREDICT_TYPE_LIST:
+        assert isinstance(old, utils.PREDICT_TYPE) and isinstance(new, utils.PREDICT_TYPE), \
+            'Arguments to this function can only be <utils.PREDICT_TYPE>.'
+
         pos: int
         val: utils.PREDICT_TYPE
         for pos, val in enumerate(self.returns):
@@ -1384,6 +1392,7 @@ winrate: {self.winrate}%"""
         utils.logger.debug("trader signals converted: %s >> %s", old, new)
         return self.returns
 
+    @utils.assert_logger
     def set_open_stop_and_take(self,
                                take_profit: Union[float, int] = np.inf,
                                stop_loss: Union[float, int] = np.inf,
@@ -1395,6 +1404,8 @@ winrate: {self.winrate}%"""
         :param take_profit: take profit in points
         :param stop_loss: stop loss in points
         """
+        # TODO
+
         self._take_profit = take_profit
         self._stop_loss = stop_loss
         take_flag: float = np.inf
