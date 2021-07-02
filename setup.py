@@ -33,7 +33,6 @@ setup(
         'technical-analysis',
         'python3',
         'trading',
-        'binance',
         'trading-bot',
         'trading',
         'binance-trading',

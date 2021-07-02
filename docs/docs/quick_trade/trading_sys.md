@@ -66,85 +66,6 @@ trader.strategy_parabolic_SAR()
 trader.sl_tp_adder(add_stop_loss=50)  # The stop loss moved 50 pips away from the opening price.
 ```
 
-### strategy_diff
-
-The strategy issues its verdict based on the last change to the dataframe. If you give the entry the closing price of
-candles, then if the candle is green - long, if red - short
-
-| param  | type | description |
-| :---: | :---: | :---: |
-| frame_to_diff | pd.Series | series of dataframe |
-| returns | `utils.PREDICT_TYPE_LIST` | returns |
-
-### strategy_rsi
-
-When the RSI is greater than the `maximum`, and the current value is less than the previous one, short. It's the same
-with long (but with `minimum`).
-
-If the value has crossed the border with mid` - exit
-
-| param  | type | description |
-| :---: | :---: | :---: |
-| minimum | Union\[float, int] | min level of RSI |
-| maximum | Union\[float, int] | max level of RSI |
-| max_mid | Union\[float, int] | max/mid level of RSI (exit from short) |
-| min_mid | Union\[float, int] | min/mid level of RSI (exit from long) |
-| returns | `utils.PREDICT_TYPE_LIST` | returns |
-
-example:
-![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/rsi_strat_example.jpg?raw=true)
-![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/rsi_2.jpg?raw=true)
-
-### strategy_parabolic_SAR
-
-parabolic SAR strategy
-
-| param  | type | description |
-| :---: | :---: | :---: |
-| plot | bool | plotting of SAR indicator |
-| **sar_kwargs | named arguments | named arguments for `ta.trend.PSARIndicator` |
-| returns | `utils.PREDICT_TYPE_LIST` | returns |
-
-### strategy_macd_histogram_diff
-
-`strategy_diff` with MACD's histogram data.
-
-| param  | type | description |
-| :---: | :---: | :---: |
-| slow | int | slow MA of MACD |
-| fast | int | fast MA of MACD |
-| **macd_kwargs | named arguments | named arguments for `ta.trend.MACD` |
-| returns | `utils.PREDICT_TYPE_LIST` | returns |
-
-example:
-
-![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/macd_diff_example.jpg?raw=true)
-
-### strategy_supertrend
-
-supertrend strategy. S/L - ST indicator
-
-| param  | type | description |
-| :---: | :---: | :---: |
-| plot | bool | plotting of SAR indicator |
-| **st_args | arguments | arguments for [`utils.SuperTrendIndicator`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=supertrendindicator) |
-| **st_kwargs | named arguments | named arguments for [`utils.SuperTrendIndicator`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=supertrendindicator) |
-| returns | `utils.PREDICT_TYPE_LIST` | returns |
-
-![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/supertrend.png?raw=true)
-
-### strategy_bollinger
-
-Bollinger bands strategy (not breakout)
-
-| param  | type | description |
-| :---: | :---: | :---: |
-| plot | bool | plotting of bollinger bands |
-| to_mid | bool | exit on mid line of `ta.volatility.BollingerBands` |
-| **bollinger_args | arguments | arguments for `ta.volatility.BollingerBands` |
-| **bollinger_kwargs | named arguments | named arguments for `ta.volatility.BollingerBands` |
-| returns | `utils.PREDICT_TYPE_LIST` | returns |
-
 ### get_heikin_ashi
 
 Heikin Ashi candles
@@ -337,6 +258,12 @@ This method is needed to get the result of the strategy and open an order on the
 
 ### set_credit_leverages
 
+### get_support_resistance
+
+## ExampleStrategies
+
+Class with examples of strategies, inherited from the [`Trader`](#Trader) class
+
 ### \_window_
 
 ### find_pip_bar
@@ -347,4 +274,83 @@ This method is needed to get the result of the strategy and open an order on the
 
 ### find_PPR
 
-### get_support_resistance
+### strategy_diff
+
+The strategy issues its verdict based on the last change to the dataframe. If you give the entry the closing price of
+candles, then if the candle is green - long, if red - short
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| frame_to_diff | pd.Series | series of dataframe |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
+
+### strategy_rsi
+
+When the RSI is greater than the `maximum`, and the current value is less than the previous one, short. It's the same
+with long (but with `minimum`).
+
+If the value has crossed the border with mid` - exit
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| minimum | Union\[float, int] | min level of RSI |
+| maximum | Union\[float, int] | max level of RSI |
+| max_mid | Union\[float, int] | max/mid level of RSI (exit from short) |
+| min_mid | Union\[float, int] | min/mid level of RSI (exit from long) |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
+
+example:
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/rsi_strat_example.jpg?raw=true)
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/rsi_2.jpg?raw=true)
+
+### strategy_parabolic_SAR
+
+parabolic SAR strategy
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| plot | bool | plotting of SAR indicator |
+| **sar_kwargs | named arguments | named arguments for `ta.trend.PSARIndicator` |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
+
+### strategy_macd_histogram_diff
+
+`strategy_diff` with MACD's histogram data.
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| slow | int | slow MA of MACD |
+| fast | int | fast MA of MACD |
+| **macd_kwargs | named arguments | named arguments for `ta.trend.MACD` |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
+
+example:
+
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/macd_diff_example.jpg?raw=true)
+
+### strategy_supertrend
+
+supertrend strategy. S/L - ST indicator
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| plot | bool | plotting of SAR indicator |
+| **st_args | arguments | arguments for [`utils.SuperTrendIndicator`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=supertrendindicator) |
+| **st_kwargs | named arguments | named arguments for [`utils.SuperTrendIndicator`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=supertrendindicator) |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
+
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/supertrend.png?raw=true)
+
+### strategy_bollinger
+
+Bollinger bands strategy (not breakout)
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| plot | bool | plotting of bollinger bands |
+| to_mid | bool | exit on mid line of `ta.volatility.BollingerBands` |
+| **bollinger_args | arguments | arguments for `ta.volatility.BollingerBands` |
+| **bollinger_kwargs | named arguments | named arguments for `ta.volatility.BollingerBands` |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
+
+...

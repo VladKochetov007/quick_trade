@@ -53,7 +53,7 @@ from quick_trade.quick_trade_tuner import *
 from quick_trade.brokers import TradingClient
 
 
-class Test(qtr.Trader):
+class Test(qtr.ExampleStrategies):  # examples of strategies
     def strategy_supertrend1(self, plot: bool = False, *st_args, **st_kwargs):
         self.strategy_supertrend(plot=plot, *st_args, **st_kwargs)
         self.set_credit_leverages()
@@ -140,7 +140,7 @@ from quick_trade import brokers
 
 client = brokers.TradingClient(ccxt.binance())
 df = client.get_data_historical('BTC/USDT', '15m', 1000)
-trader = qtr.Trader('BTC/USDT', df=df, interval='15m')
+trader = qtr.ExampleStrategies('BTC/USDT', df=df, interval='15m')
 trader.set_client(client)
 trader.set_pyplot(height=731, width=1440, row_heights=[10, 5, 2])
 trader.strategy_2_sma(55, 21)
@@ -167,7 +167,7 @@ Use the strategy on real moneys. YES, IT'S FULLY AUTOMATED!
 
 ```python
 import datetime
-from quick_trade.trading_sys import Trader
+from quick_trade.trading_sys import ExampleStrategies
 from quick_trade.brokers import TradingClient
 import ccxt
 
@@ -182,7 +182,7 @@ start_time = datetime.datetime(2021,  # year
                                57)  # second (Leave a few seconds to download data from the exchange and strategy.)
 
 
-class MyTrade(Trader):
+class MyTrade(ExampleStrategies):
     def strategy(self):
         self.strategy_supertrend(multiplier=2, length=1, plot=False)
         self.convert_signal()

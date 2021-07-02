@@ -178,265 +178,6 @@ class Trader(object):
         self._take_profits = take_profits
         return self._stop_losses, self._take_profits
 
-    def strategy_diff(self, frame_to_diff: pd.Series) -> utils.PREDICT_TYPE_LIST:
-        """
-        frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
-        """
-        self.returns = list(np.digitize(frame_to_diff.diff(), bins=[0]))
-        self.set_open_stop_and_take()
-        self.set_credit_leverages()
-        return self.returns
-
-    def strategy_buy_hold(self) -> utils.PREDICT_TYPE_LIST:
-        self.returns = [utils.BUY for _ in range(len(self.df))]
-        self.set_credit_leverages()
-        self.set_open_stop_and_take()
-        return self.returns
-
-    def strategy_2_sma(self,
-                       slow: int = 100,
-                       fast: int = 30,
-                       plot: bool = True) -> utils.PREDICT_TYPE_LIST:
-        self.returns = []
-        SMA1 = ta.trend.sma_indicator(self.df['Close'], fast)
-        SMA2 = ta.trend.sma_indicator(self.df['Close'], slow)
-        if plot:
-            self.fig.add_trace(
-                Line(
-                    name=f'SMA{fast}',
-                    y=SMA1.values,
-                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.GREEN)), 1, 1)
-            self.fig.add_trace(
-                Line(
-                    name=f'SMA{slow}',
-                    y=SMA2.values,
-                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.RED)), 1, 1)
-
-        for SMA13, SMA26 in zip(SMA1, SMA2):
-            if SMA26 < SMA13:
-                self.returns.append(utils.BUY)
-            elif SMA13 < SMA26:
-                self.returns.append(utils.SELL)
-            else:
-                self.returns.append(utils.EXIT)
-        self.set_open_stop_and_take()
-        self.set_credit_leverages()
-        return self.returns
-
-    def strategy_3_sma(self,
-                       slow: int = 100,
-                       mid: int = 26,
-                       fast: int = 13,
-                       plot: bool = True) -> utils.PREDICT_TYPE_LIST:
-        self.returns = []
-        SMA1 = ta.trend.sma_indicator(self.df['Close'], fast)
-        SMA2 = ta.trend.sma_indicator(self.df['Close'], mid)
-        SMA3 = ta.trend.sma_indicator(self.df['Close'], slow)
-
-        if plot:
-            for SMA, Co, name in zip([SMA1, SMA2, SMA3],
-                                     [utils.GREEN, utils.BLUE, utils.RED],
-                                     [fast, mid, slow]):
-                self.fig.add_trace(
-                    Line(
-                        name=f'SMA{name}',
-                        y=SMA.values,
-                        line=dict(width=utils.SUB_LINES_WIDTH, color=Co)), 1, 1)
-
-        for SMA13, SMA26, SMA100 in zip(SMA1, SMA2, SMA3):
-            if SMA100 < SMA26 < SMA13:
-                self.returns.append(utils.BUY)
-            elif SMA100 > SMA26 > SMA13:
-                self.returns.append(utils.SELL)
-            else:
-                self.returns.append(utils.EXIT)
-
-        self.set_credit_leverages()
-        self.set_open_stop_and_take()
-        return self.returns
-
-    def strategy_3_ema(self,
-                       slow: int = 46,
-                       mid: int = 21,
-                       fast: int = 3,
-                       plot: bool = True) -> utils.PREDICT_TYPE_LIST:
-        self.returns = []
-        ema3 = ta.trend.ema_indicator(self.df['Close'], fast)
-        ema21 = ta.trend.ema_indicator(self.df['Close'], mid)
-        ema46 = ta.trend.ema_indicator(self.df['Close'], slow)
-
-        if plot:
-            for ema, Co, name in zip([ema3.values, ema21.values, ema46.values],
-                                     [utils.GREEN, utils.BLUE, utils.RED], [slow, mid, fast]):
-                self.fig.add_trace(
-                    Line(
-                        name=f'SMA{name}',
-                        y=ema,
-                        line=dict(width=utils.SUB_LINES_WIDTH, color=Co)), 1, 1)
-
-        for EMA1, EMA2, EMA3 in zip(ema3, ema21, ema46):
-            if EMA1 > EMA2 > EMA3:
-                self.returns.append(utils.BUY)
-            elif EMA1 < EMA2 < EMA3:
-                self.returns.append(utils.SELL)
-            else:
-                self.returns.append(utils.EXIT)
-        self.set_credit_leverages()
-        self.set_open_stop_and_take()
-        return self.returns
-
-    def strategy_macd(self,
-                      slow: int = 100,
-                      fast: int = 30) -> utils.PREDICT_TYPE_LIST:
-        self.returns = []
-        diff = ta.trend.macd_diff(self.df['Close'], slow, fast)
-
-        for j in diff:
-            if j > 0:
-                self.returns.append(utils.BUY)
-            elif 0 > j:
-                self.returns.append(utils.SELL)
-            else:
-                self.returns.append(utils.EXIT)
-        self.set_credit_leverages()
-        self.set_open_stop_and_take()
-        return self.returns
-
-    def strategy_rsi(self,
-                     minimum: Union[float, int] = 20,
-                     maximum: Union[float, int] = 80,
-                     max_mid: Union[float, int] = 75,
-                     min_mid: Union[float, int] = 35,
-                     **rsi_kwargs) -> utils.PREDICT_TYPE_LIST:
-        self.returns = []
-        rsi = ta.momentum.rsi(close=self.df['Close'], **rsi_kwargs)
-        flag: utils.PREDICT_TYPE = utils.EXIT
-
-        for val in rsi.values:
-            if val < minimum:
-                flag = utils.BUY
-            elif val > maximum:
-                flag = utils.SELL
-            elif flag == utils.BUY and val < max_mid:
-                flag = utils.EXIT
-            elif flag == utils.SELL and val > min_mid:
-                flag = utils.EXIT
-            self.returns.append(flag)
-
-        self.set_credit_leverages()
-        self.set_open_stop_and_take()
-        return self.returns
-
-    def strategy_parabolic_SAR(self, plot: bool = True, **sar_kwargs) -> utils.PREDICT_TYPE_LIST:
-        self.returns = []
-        sar: ta.trend.PSARIndicator = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
-                                                             self.df['Close'], **sar_kwargs)
-        sardown: np.ndarray = sar.psar_down().values
-        sarup: np.ndarray = sar.psar_up().values
-        self._stop_losses = list(sar.psar().values)
-
-        if plot:
-            for SAR_ in (sarup, sardown):
-                self.fig.add_trace(
-                    Line(
-                        name='SAR', y=SAR_, line=dict(width=utils.SUB_LINES_WIDTH)),
-                    1, 1)
-        for price, up, down in zip(
-                list(self.df['Close'].values), list(sarup), list(sardown)):
-            numup = np.nan_to_num(up, nan=-9999.0)
-            numdown = np.nan_to_num(down, nan=-9999.0)
-            if numup != -9999:
-                self.returns.append(utils.BUY)
-            elif numdown != -9999:
-                self.returns.append(utils.SELL)
-            else:
-                self.returns.append(utils.EXIT)
-        self.set_credit_leverages()
-        self.set_open_stop_and_take(set_stop=False)
-        return self.returns
-
-    def strategy_macd_histogram_diff(self,
-                                     slow: int = 23,
-                                     fast: int = 12,
-                                     **macd_kwargs) -> utils.PREDICT_TYPE_LIST:
-        _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
-        signal_ = _MACD_.macd_signal()
-        macd_ = _MACD_.macd()
-        histogram: pd.DataFrame = pd.DataFrame(macd_.values - signal_.values)
-        for element in histogram.diff().values:
-            if element == 0:
-                self.returns.append(utils.EXIT)
-            elif element > 0:
-                self.returns.append(utils.BUY)
-            else:
-                self.returns.append(utils.SELL)
-        self.set_credit_leverages()
-        self.set_open_stop_and_take()
-        return self.returns
-
-    def strategy_supertrend(self, plot: bool = True, *st_args, **st_kwargs) -> utils.PREDICT_TYPE_LIST:
-        st: utils.SuperTrendIndicator = utils.SuperTrendIndicator(self.df['Close'],
-                                                                  self.df['High'],
-                                                                  self.df['Low'],
-                                                                  *st_args,
-                                                                  **st_kwargs)
-        if plot:
-            self.fig.add_trace(Line(y=st.get_supertrend_upper(),
-                                    name='supertrend upper',
-                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.RED)))
-            self.fig.add_trace(Line(y=st.get_supertrend_lower(),
-                                    name='supertrend lower',
-                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.GREEN)))
-        self._stop_losses = list(st.get_supertrend())
-        self.returns = list(st.get_supertrend_strategy_returns())
-        self._stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
-        self.set_open_stop_and_take(set_stop=False)
-        self.set_credit_leverages()
-        return self.returns
-
-    def strategy_bollinger(self,
-                           plot: bool = True,
-                           to_mid: bool = True,
-                           *bollinger_args,
-                           **bollinger_kwargs) -> utils.PREDICT_TYPE_LIST:
-        self.returns = []
-        flag: utils.PREDICT_TYPE = utils.EXIT
-        bollinger: ta.volatility.BollingerBands = ta.volatility.BollingerBands(self.df['Close'],
-                                                                               fillna=True,
-                                                                               *bollinger_args,
-                                                                               **bollinger_kwargs)
-
-        mid_: pd.Series = bollinger.bollinger_mavg()
-        upper: pd.Series = bollinger.bollinger_hband()
-        lower: pd.Series = bollinger.bollinger_lband()
-        if plot:
-            name: str
-            TR: pd.Series
-            for TR, name in zip([upper, mid_, lower], ['upper band', 'mid band', 'lower band']):
-                self.fig.add_trace(Line(y=TR, name=name, line=dict(width=utils.SUB_LINES_WIDTH)), col=1, row=1)
-        close: float
-        up: float
-        mid: float
-        low: float
-        for close, up, mid, low in zip(self.df['Close'].values,
-                                       upper,
-                                       mid_,
-                                       lower):
-            if close <= low:
-                flag = utils.BUY
-            if close >= up:
-                flag = utils.SELL
-
-            if to_mid:
-                if flag == utils.SELL and close <= mid:
-                    flag = utils.EXIT
-                if flag == utils.BUY and close >= mid:
-                    flag = utils.EXIT
-            self.returns.append(flag)
-        self.set_open_stop_and_take()
-        self.set_credit_leverages()
-        return self.returns
-
     def get_heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()) -> pd.DataFrame:
         """
         :param df: dataframe, standard: self.df
@@ -457,101 +198,6 @@ class Trader(object):
                      "HA_Close": "Close"})
 
         return df
-
-    def strategy_ichimoku(self,
-                          tenkansen: int = 9,
-                          kijunsen: int = 26,
-                          senkouspan: int = 52,
-                          chinkouspan: int = 26,
-                          stop_loss_plus: Union[float, int] = 40.0,  # sl_tp_adder
-                          plot: bool = True) -> utils.PREDICT_TYPE_LIST:
-        cloud = ta.trend.IchimokuIndicator(self.df["High"],
-                                           self.df["Low"],
-                                           tenkansen,
-                                           kijunsen,
-                                           senkouspan,
-                                           visual=True)
-        tenkan_sen: np.ndarray = cloud.ichimoku_conversion_line().values
-        kinjun_sen: np.ndarray = cloud.ichimoku_base_line().values
-        senkou_span_a: np.ndarray = cloud.ichimoku_a().values
-        senkou_span_b: np.ndarray = cloud.ichimoku_b().values
-        prices: pd.Series = self.df['Close']
-        chenkou_span: np.ndarray = prices.shift(-chinkouspan).values
-        flag1: utils.PREDICT_TYPE = utils.EXIT
-        flag2: utils.PREDICT_TYPE = utils.EXIT
-        flag3: utils.PREDICT_TYPE = utils.EXIT
-        trade: utils.PREDICT_TYPE = utils.EXIT
-        name: str
-        data: np.ndarray
-        e: int
-        close: float
-        tenkan: float
-        kijun: float
-        A: float
-        B: float
-        chickou: float
-
-        if plot:
-            for name, data, color in zip(['tenkan-sen',
-                                          'kijun-sen',
-                                          'chinkou-span'],
-                                         [tenkan_sen,
-                                          kinjun_sen,
-                                          chenkou_span],
-                                         ['red',
-                                          'blue',
-                                          'green']):
-                self.fig.add_trace(Line(y=data, name=name, line=dict(width=utils.ICHIMOKU_LINES_WIDTH, color=color)),
-                                   col=1, row=1)
-
-            self.fig.add_trace(Line(y=senkou_span_a,
-                                    fill=None,
-                                    line_color=utils.RED,
-                                    ))
-            self.fig.add_trace(Line(
-                y=senkou_span_b,
-                fill='tonexty',
-                line_color=utils.ICHIMOKU_CLOUD_COLOR))
-
-            self.returns = [utils.EXIT for i in range(chinkouspan)]
-            self._stop_losses = [np.inf] * chinkouspan
-            for e, (close, tenkan, kijun, A, B) in enumerate(zip(
-                    prices.values[chinkouspan:],
-                    tenkan_sen[chinkouspan:],
-                    kinjun_sen[chinkouspan:],
-                    senkou_span_a[chinkouspan:],
-                    senkou_span_b[chinkouspan:],
-            ), chinkouspan):
-                max_cloud = max((A, B))
-                min_cloud = min((A, B))
-
-                if not min_cloud < close < max_cloud:
-                    if tenkan > kijun:
-                        flag1 = utils.BUY
-                    elif tenkan < kijun:
-                        flag1 = utils.SELL
-
-                    if close > max_cloud:
-                        flag2 = utils.BUY
-                    elif close < min_cloud:
-                        flag2 = utils.SELL
-
-                    if close > prices[e - chinkouspan]:
-                        flag3 = utils.BUY
-                    elif close < prices[e - chinkouspan]:
-                        flag3 = utils.SELL
-
-                    if flag3 == flag1 == flag2:
-                        trade = flag1
-                    if (trade == utils.BUY and flag1 == utils.SELL) or (trade == utils.SELL and flag1 == utils.BUY):
-                        trade = utils.EXIT
-                self.returns.append(trade)
-
-        self.set_open_stop_and_take(set_take=True,
-                                    set_stop=False)
-        self.set_credit_leverages()
-        self.sl_tp_adder(add_stop_loss=stop_loss_plus)
-        return self.returns
 
     @utils.assert_logger
     def crossover(self, fast: Iterable, slow: Iterable):
@@ -1148,6 +794,7 @@ winrate: {self.winrate}%"""
         self.__last_stop_loss = self._stop_losses[-1]
         self.__last_take_profit = self._take_profits[-1]
         self.__last_credit_leverage = self._credit_leverages[-1]
+
         if self._prev_predict != predict or self.__prev_credit_lev != self.__last_credit_leverage:
             utils.logger.info('open trade %s', predict)
             self.__exit_order__ = False
@@ -1445,6 +1092,19 @@ winrate: {self.winrate}%"""
         self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
         utils.logger.debug('trader credit leverage: %f', credit_lev)
 
+    def get_support_resistance(self) -> Dict[str, Dict[int, float]]:
+        lows = self.df['Low'].values
+        highs = self.df['High'].values
+        for i in range(2, len(lows) - 2):
+            if lows[i - 2] >= lows[i - 1] >= lows[i] <= lows[i + 1] <= lows[i + 2]:
+                self.supports[i] = lows[i]
+            if highs[i - 2] <= highs[i - 1] <= highs[i] >= highs[i + 1] >= highs[i + 2]:
+                self.resistances[i] = highs[i]
+        return {'resistance': self.resistances,
+                'supports': self.supports}
+
+class ExampleStrategies(Trader):
+
     def _window_(self,
                  column: str,
                  n: int = 2,
@@ -1557,13 +1217,356 @@ winrate: {self.winrate}%"""
         self.set_open_stop_and_take()
         return self.returns
 
-    def get_support_resistance(self) -> Dict[str, Dict[int, float]]:
-        lows = self.df['Low'].values
-        highs = self.df['High'].values
-        for i in range(2, len(lows) - 2):
-            if lows[i - 2] >= lows[i - 1] >= lows[i] <= lows[i + 1] <= lows[i + 2]:
-                self.supports[i] = lows[i]
-            if highs[i - 2] <= highs[i - 1] <= highs[i] >= highs[i + 1] >= highs[i + 2]:
-                self.resistances[i] = highs[i]
-        return {'resistance': self.resistances,
-                'supports': self.supports}
+    def strategy_ichimoku(self,
+                          tenkansen: int = 9,
+                          kijunsen: int = 26,
+                          senkouspan: int = 52,
+                          chinkouspan: int = 26,
+                          stop_loss_plus: Union[float, int] = 40.0,  # sl_tp_adder
+                          plot: bool = True) -> utils.PREDICT_TYPE_LIST:
+        cloud = ta.trend.IchimokuIndicator(self.df["High"],
+                                           self.df["Low"],
+                                           tenkansen,
+                                           kijunsen,
+                                           senkouspan,
+                                           visual=True)
+        tenkan_sen: np.ndarray = cloud.ichimoku_conversion_line().values
+        kinjun_sen: np.ndarray = cloud.ichimoku_base_line().values
+        senkou_span_a: np.ndarray = cloud.ichimoku_a().values
+        senkou_span_b: np.ndarray = cloud.ichimoku_b().values
+        prices: pd.Series = self.df['Close']
+        chenkou_span: np.ndarray = prices.shift(-chinkouspan).values
+        flag1: utils.PREDICT_TYPE = utils.EXIT
+        flag2: utils.PREDICT_TYPE = utils.EXIT
+        flag3: utils.PREDICT_TYPE = utils.EXIT
+        trade: utils.PREDICT_TYPE = utils.EXIT
+        name: str
+        data: np.ndarray
+        e: int
+        close: float
+        tenkan: float
+        kijun: float
+        A: float
+        B: float
+        chickou: float
+
+        if plot:
+            for name, data, color in zip(['tenkan-sen',
+                                          'kijun-sen',
+                                          'chinkou-span'],
+                                         [tenkan_sen,
+                                          kinjun_sen,
+                                          chenkou_span],
+                                         ['red',
+                                          'blue',
+                                          'green']):
+                self.fig.add_trace(Line(y=data, name=name, line=dict(width=utils.ICHIMOKU_LINES_WIDTH, color=color)),
+                                   col=1, row=1)
+
+            self.fig.add_trace(Line(y=senkou_span_a,
+                                    fill=None,
+                                    line_color=utils.RED,
+                                    ))
+            self.fig.add_trace(Line(
+                y=senkou_span_b,
+                fill='tonexty',
+                line_color=utils.ICHIMOKU_CLOUD_COLOR))
+
+            self.returns = [utils.EXIT for i in range(chinkouspan)]
+            self._stop_losses = [np.inf] * chinkouspan
+            for e, (close, tenkan, kijun, A, B) in enumerate(zip(
+                    prices.values[chinkouspan:],
+                    tenkan_sen[chinkouspan:],
+                    kinjun_sen[chinkouspan:],
+                    senkou_span_a[chinkouspan:],
+                    senkou_span_b[chinkouspan:],
+            ), chinkouspan):
+                max_cloud = max((A, B))
+                min_cloud = min((A, B))
+
+                if not min_cloud < close < max_cloud:
+                    if tenkan > kijun:
+                        flag1 = utils.BUY
+                    elif tenkan < kijun:
+                        flag1 = utils.SELL
+
+                    if close > max_cloud:
+                        flag2 = utils.BUY
+                    elif close < min_cloud:
+                        flag2 = utils.SELL
+
+                    if close > prices[e - chinkouspan]:
+                        flag3 = utils.BUY
+                    elif close < prices[e - chinkouspan]:
+                        flag3 = utils.SELL
+
+                    if flag3 == flag1 == flag2:
+                        trade = flag1
+                    if (trade == utils.BUY and flag1 == utils.SELL) or (trade == utils.SELL and flag1 == utils.BUY):
+                        trade = utils.EXIT
+                self.returns.append(trade)
+
+        self.set_open_stop_and_take(set_take=True,
+                                    set_stop=False)
+        self.set_credit_leverages()
+        self.sl_tp_adder(add_stop_loss=stop_loss_plus)
+        return self.returns
+
+    def strategy_diff(self, frame_to_diff: pd.Series) -> utils.PREDICT_TYPE_LIST:
+        """
+        frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
+        """
+        self.returns = list(np.digitize(frame_to_diff.diff(), bins=[0]))
+        self.set_open_stop_and_take()
+        self.set_credit_leverages()
+        return self.returns
+
+    def strategy_buy_hold(self) -> utils.PREDICT_TYPE_LIST:
+        self.returns = [utils.BUY for _ in range(len(self.df))]
+        self.set_credit_leverages()
+        self.set_open_stop_and_take()
+        return self.returns
+
+    def strategy_2_sma(self,
+                       slow: int = 100,
+                       fast: int = 30,
+                       plot: bool = True) -> utils.PREDICT_TYPE_LIST:
+        self.returns = []
+        SMA1 = ta.trend.sma_indicator(self.df['Close'], fast)
+        SMA2 = ta.trend.sma_indicator(self.df['Close'], slow)
+        if plot:
+            self.fig.add_trace(
+                Line(
+                    name=f'SMA{fast}',
+                    y=SMA1.values,
+                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.GREEN)), 1, 1)
+            self.fig.add_trace(
+                Line(
+                    name=f'SMA{slow}',
+                    y=SMA2.values,
+                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.RED)), 1, 1)
+
+        for SMA13, SMA26 in zip(SMA1, SMA2):
+            if SMA26 < SMA13:
+                self.returns.append(utils.BUY)
+            elif SMA13 < SMA26:
+                self.returns.append(utils.SELL)
+            else:
+                self.returns.append(utils.EXIT)
+        self.set_open_stop_and_take()
+        self.set_credit_leverages()
+        return self.returns
+
+    def strategy_3_sma(self,
+                       slow: int = 100,
+                       mid: int = 26,
+                       fast: int = 13,
+                       plot: bool = True) -> utils.PREDICT_TYPE_LIST:
+        self.returns = []
+        SMA1 = ta.trend.sma_indicator(self.df['Close'], fast)
+        SMA2 = ta.trend.sma_indicator(self.df['Close'], mid)
+        SMA3 = ta.trend.sma_indicator(self.df['Close'], slow)
+
+        if plot:
+            for SMA, Co, name in zip([SMA1, SMA2, SMA3],
+                                     [utils.GREEN, utils.BLUE, utils.RED],
+                                     [fast, mid, slow]):
+                self.fig.add_trace(
+                    Line(
+                        name=f'SMA{name}',
+                        y=SMA.values,
+                        line=dict(width=utils.SUB_LINES_WIDTH, color=Co)), 1, 1)
+
+        for SMA13, SMA26, SMA100 in zip(SMA1, SMA2, SMA3):
+            if SMA100 < SMA26 < SMA13:
+                self.returns.append(utils.BUY)
+            elif SMA100 > SMA26 > SMA13:
+                self.returns.append(utils.SELL)
+            else:
+                self.returns.append(utils.EXIT)
+
+        self.set_credit_leverages()
+        self.set_open_stop_and_take()
+        return self.returns
+
+    def strategy_3_ema(self,
+                       slow: int = 46,
+                       mid: int = 21,
+                       fast: int = 3,
+                       plot: bool = True) -> utils.PREDICT_TYPE_LIST:
+        self.returns = []
+        ema3 = ta.trend.ema_indicator(self.df['Close'], fast)
+        ema21 = ta.trend.ema_indicator(self.df['Close'], mid)
+        ema46 = ta.trend.ema_indicator(self.df['Close'], slow)
+
+        if plot:
+            for ema, Co, name in zip([ema3.values, ema21.values, ema46.values],
+                                     [utils.GREEN, utils.BLUE, utils.RED], [slow, mid, fast]):
+                self.fig.add_trace(
+                    Line(
+                        name=f'SMA{name}',
+                        y=ema,
+                        line=dict(width=utils.SUB_LINES_WIDTH, color=Co)), 1, 1)
+
+        for EMA1, EMA2, EMA3 in zip(ema3, ema21, ema46):
+            if EMA1 > EMA2 > EMA3:
+                self.returns.append(utils.BUY)
+            elif EMA1 < EMA2 < EMA3:
+                self.returns.append(utils.SELL)
+            else:
+                self.returns.append(utils.EXIT)
+        self.set_credit_leverages()
+        self.set_open_stop_and_take()
+        return self.returns
+
+    def strategy_macd(self,
+                      slow: int = 100,
+                      fast: int = 30) -> utils.PREDICT_TYPE_LIST:
+        self.returns = []
+        diff = ta.trend.macd_diff(self.df['Close'], slow, fast)
+
+        for j in diff:
+            if j > 0:
+                self.returns.append(utils.BUY)
+            elif 0 > j:
+                self.returns.append(utils.SELL)
+            else:
+                self.returns.append(utils.EXIT)
+        self.set_credit_leverages()
+        self.set_open_stop_and_take()
+        return self.returns
+
+    def strategy_rsi(self,
+                     minimum: Union[float, int] = 20,
+                     maximum: Union[float, int] = 80,
+                     max_mid: Union[float, int] = 75,
+                     min_mid: Union[float, int] = 35,
+                     **rsi_kwargs) -> utils.PREDICT_TYPE_LIST:
+        self.returns = []
+        rsi = ta.momentum.rsi(close=self.df['Close'], **rsi_kwargs)
+        flag: utils.PREDICT_TYPE = utils.EXIT
+
+        for val in rsi.values:
+            if val < minimum:
+                flag = utils.BUY
+            elif val > maximum:
+                flag = utils.SELL
+            elif flag == utils.BUY and val < max_mid:
+                flag = utils.EXIT
+            elif flag == utils.SELL and val > min_mid:
+                flag = utils.EXIT
+            self.returns.append(flag)
+
+        self.set_credit_leverages()
+        self.set_open_stop_and_take()
+        return self.returns
+
+    def strategy_parabolic_SAR(self, plot: bool = True, **sar_kwargs) -> utils.PREDICT_TYPE_LIST:
+        self.returns = []
+        sar: ta.trend.PSARIndicator = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
+                                                             self.df['Close'], **sar_kwargs)
+        sardown: np.ndarray = sar.psar_down().values
+        sarup: np.ndarray = sar.psar_up().values
+        self._stop_losses = list(sar.psar().values)
+
+        if plot:
+            for SAR_ in (sarup, sardown):
+                self.fig.add_trace(
+                    Line(
+                        name='SAR', y=SAR_, line=dict(width=utils.SUB_LINES_WIDTH)),
+                    1, 1)
+        for price, up, down in zip(
+                list(self.df['Close'].values), list(sarup), list(sardown)):
+            numup = np.nan_to_num(up, nan=-9999.0)
+            numdown = np.nan_to_num(down, nan=-9999.0)
+            if numup != -9999:
+                self.returns.append(utils.BUY)
+            elif numdown != -9999:
+                self.returns.append(utils.SELL)
+            else:
+                self.returns.append(utils.EXIT)
+        self.set_credit_leverages()
+        self.set_open_stop_and_take(set_stop=False)
+        return self.returns
+
+    def strategy_macd_histogram_diff(self,
+                                     slow: int = 23,
+                                     fast: int = 12,
+                                     **macd_kwargs) -> utils.PREDICT_TYPE_LIST:
+        _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
+        signal_ = _MACD_.macd_signal()
+        macd_ = _MACD_.macd()
+        histogram: pd.DataFrame = pd.DataFrame(macd_.values - signal_.values)
+        for element in histogram.diff().values:
+            if element == 0:
+                self.returns.append(utils.EXIT)
+            elif element > 0:
+                self.returns.append(utils.BUY)
+            else:
+                self.returns.append(utils.SELL)
+        self.set_credit_leverages()
+        self.set_open_stop_and_take()
+        return self.returns
+
+    def strategy_supertrend(self, plot: bool = True, *st_args, **st_kwargs) -> utils.PREDICT_TYPE_LIST:
+        st: utils.SuperTrendIndicator = utils.SuperTrendIndicator(self.df['Close'],
+                                                                  self.df['High'],
+                                                                  self.df['Low'],
+                                                                  *st_args,
+                                                                  **st_kwargs)
+        if plot:
+            self.fig.add_trace(Line(y=st.get_supertrend_upper(),
+                                    name='supertrend upper',
+                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.RED)))
+            self.fig.add_trace(Line(y=st.get_supertrend_lower(),
+                                    name='supertrend lower',
+                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.GREEN)))
+        self._stop_losses = list(st.get_supertrend())
+        self.returns = list(st.get_supertrend_strategy_returns())
+        self._stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
+        self.set_open_stop_and_take(set_stop=False)
+        self.set_credit_leverages()
+        return self.returns
+
+    def strategy_bollinger(self,
+                           plot: bool = True,
+                           to_mid: bool = True,
+                           *bollinger_args,
+                           **bollinger_kwargs) -> utils.PREDICT_TYPE_LIST:
+        self.returns = []
+        flag: utils.PREDICT_TYPE = utils.EXIT
+        bollinger: ta.volatility.BollingerBands = ta.volatility.BollingerBands(self.df['Close'],
+                                                                               fillna=True,
+                                                                               *bollinger_args,
+                                                                               **bollinger_kwargs)
+
+        mid_: pd.Series = bollinger.bollinger_mavg()
+        upper: pd.Series = bollinger.bollinger_hband()
+        lower: pd.Series = bollinger.bollinger_lband()
+        if plot:
+            name: str
+            TR: pd.Series
+            for TR, name in zip([upper, mid_, lower], ['upper band', 'mid band', 'lower band']):
+                self.fig.add_trace(Line(y=TR, name=name, line=dict(width=utils.SUB_LINES_WIDTH)), col=1, row=1)
+        close: float
+        up: float
+        mid: float
+        low: float
+        for close, up, mid, low in zip(self.df['Close'].values,
+                                       upper,
+                                       mid_,
+                                       lower):
+            if close <= low:
+                flag = utils.BUY
+            if close >= up:
+                flag = utils.SELL
+
+            if to_mid:
+                if flag == utils.SELL and close <= mid:
+                    flag = utils.EXIT
+                if flag == utils.BUY and close >= mid:
+                    flag = utils.EXIT
+            self.returns.append(flag)
+        self.set_open_stop_and_take()
+        self.set_credit_leverages()
+        return self.returns
