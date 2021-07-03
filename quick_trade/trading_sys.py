@@ -19,7 +19,7 @@ from time import ctime, sleep, time
 from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
 
 import numpy as np
-import pandas as pd
+from pandas import DataFrame, Series
 import ta
 import ta.momentum
 import ta.others
@@ -43,7 +43,7 @@ class Trader(object):
     """
     _profit_calculate_coef: Union[float, int]
     returns: utils.PREDICT_TYPE_LIST = []
-    df: pd.DataFrame
+    df: DataFrame
     ticker: str
     interval: str
     __exit_order__: bool = False
@@ -61,8 +61,8 @@ class Trader(object):
     year_profit: float
     average_growth: np.ndarray
     _info: str
-    _backtest_out_no_drop: pd.DataFrame
-    backtest_out: pd.DataFrame
+    _backtest_out_no_drop: DataFrame
+    backtest_out: DataFrame
     _open_lot_prices: List[float]
     client: TradingClient
     __last_stop_loss: float
@@ -81,13 +81,13 @@ class Trader(object):
     @utils.assert_logger
     def __init__(self,
                  ticker: str = 'BTC/USDT',
-                 df: pd.DataFrame = pd.DataFrame(),
+                 df: DataFrame = DataFrame(),
                  interval: str = '1d',
                  trading_on_client: bool = True):
         ticker = ticker.upper()
         assert isinstance(ticker, str), 'The ticker can only be of type <str>.'
         assert fullmatch(utils.TICKER_PATTERN, ticker), f'Ticker must match the pattern <{utils.TICKER_PATTERN}>'
-        assert isinstance(df, pd.DataFrame), 'Dataframe can only be of type <pd.DataFrame>.'
+        assert isinstance(df, DataFrame), 'Dataframe can only be of type <DataFrame>.'
         assert isinstance(interval, str), 'interval can only be of the <str> type.'
         assert isinstance(trading_on_client, bool), 'trading_on_client can only be True or False (<bool>).'
 
@@ -180,13 +180,13 @@ class Trader(object):
         self._take_profits = take_profits
         return self._stop_losses, self._take_profits
 
-    def get_heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()) -> pd.DataFrame:
+    def get_heikin_ashi(self, df: DataFrame = DataFrame()) -> DataFrame:
         """
         :param df: dataframe, standard: self.df
         :return: heikin ashi
         """
         if 'Close' not in df.columns:
-            df: pd.DataFrame = self.df.copy()
+            df: DataFrame = self.df.copy()
         df['HA_Close'] = (df['Open'] + df['High'] + df['Low'] + df['Close']) / 4
         df['HA_Open'] = (df['Open'].shift(1) + df['Open'].shift(1)) / 2
         df.iloc[0, df.columns.get_loc("HA_Open")] = (df.iloc[0]['Open'] + df.iloc[0]['Close']) / 2
@@ -250,7 +250,7 @@ class Trader(object):
                  commission: Union[float, int] = 0.0,
                  plot: bool = True,
                  print_out: bool = True,
-                 show: bool = True) -> pd.DataFrame:
+                 show: bool = True) -> DataFrame:
         """
         testing the strategy.
         :param deposit: start deposit.
@@ -259,7 +259,7 @@ class Trader(object):
         :param plot: plotting.
         :param print_out: printing.
         :param show: show the graph
-        returns: pd.DataFrame with data of test
+        returns: DataFrame with data of test
         """
         assert isinstance(deposit, (float, int)), 'deposit must be of type <int> or <float>'
         assert deposit > 0, 'deposit can\'t be 0 or less'
@@ -277,15 +277,15 @@ class Trader(object):
         take_profit: float
         converted_element: utils.CONVERTED_TYPE
         diff: float
-        lin_calc_df: pd.DataFrame
+        lin_calc_df: DataFrame
         high: float
         low: float
         credit_lev: Union[float, int]
 
         start_bet: Union[float, int] = bet
-        data_column: pd.Series = self.df['Close']
-        data_high: pd.Series = self.df['High']
-        data_low: pd.Series = self.df['Low']
+        data_column: Series = self.df['Close']
+        data_high: Series = self.df['High']
+        data_low: Series = self.df['Low']
         self.deposit_history = [deposit]
         self.trades = 0
         self.profits = 0
@@ -397,9 +397,9 @@ winrate: {self.winrate}%"""
         utils.logger.info('trader info: %s', self._info)
         if print_out:
             print(self._info)
-        self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
+        self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
-        self._backtest_out_no_drop = pd.DataFrame(
+        self._backtest_out_no_drop = DataFrame(
             (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
              self._open_lot_prices, data_column, self.average_growth, self.returns_strategy_diff),
             index=[
@@ -410,7 +410,7 @@ winrate: {self.winrate}%"""
             ]).T
         self.backtest_out = self._backtest_out_no_drop.dropna()
         if plot:
-            loc: pd.Series = self.df['Close']
+            loc: Series = self.df['Close']
             self.fig.add_trace(
                 Line(
                     y=self._backtest_out_no_drop['returns'].values,
@@ -514,7 +514,7 @@ winrate: {self.winrate}%"""
                        commission: Union[float, int] = 0.0,
                        plot: bool = True,
                        print_out: bool = True,
-                       show: bool = True) -> pd.DataFrame:
+                       show: bool = True) -> DataFrame:
         assert isinstance(tickers, Iterable), 'tickers must be of type <Iterable[str]>'
         for el in tickers:
             assert isinstance(el, str), 'tickers must be of type <Iterable[str]>'
@@ -572,9 +572,9 @@ winrate: {self.winrate}%"""
         self.deposit_history = list(sum(depo))
 
         self.average_growth = utils.get_exponential_growth(self.deposit_history)
-        self.returns_strategy_diff = list(pd.Series(self.deposit_history).diff().values)
+        self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
-        self._backtest_out_no_drop = pd.DataFrame(
+        self._backtest_out_no_drop = DataFrame(
             (self.deposit_history, self.average_growth, self.returns_strategy_diff),
             index=[
                 f'deposit',
@@ -1101,7 +1101,7 @@ winrate: {self.winrate}%"""
         return {'resistance': self.resistances,
                 'supports': self.supports}
 
-    def strategy_diff(self, frame_to_diff: pd.Series) -> utils.PREDICT_TYPE_LIST:
+    def strategy_diff(self, frame_to_diff: Series) -> utils.PREDICT_TYPE_LIST:
         """
         frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
         """
@@ -1243,7 +1243,7 @@ class ExampleStrategies(Trader):
         kinjun_sen: np.ndarray = cloud.ichimoku_base_line().values
         senkou_span_a: np.ndarray = cloud.ichimoku_a().values
         senkou_span_b: np.ndarray = cloud.ichimoku_b().values
-        prices: pd.Series = self.df['Close']
+        prices: Series = self.df['Close']
         chenkou_span: np.ndarray = prices.shift(-chinkouspan).values
         flag1: utils.PREDICT_TYPE = utils.EXIT
         flag2: utils.PREDICT_TYPE = utils.EXIT
@@ -1496,7 +1496,7 @@ class ExampleStrategies(Trader):
         _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
         signal_ = _MACD_.macd_signal()
         macd_ = _MACD_.macd()
-        histogram: pd.DataFrame = pd.DataFrame(macd_.values - signal_.values)
+        histogram: DataFrame = DataFrame(macd_.values - signal_.values)
         for element in histogram.diff().values:
             if element == 0:
                 self.returns.append(utils.EXIT)
@@ -1540,12 +1540,12 @@ class ExampleStrategies(Trader):
                                                                                *bollinger_args,
                                                                                **bollinger_kwargs)
 
-        mid_: pd.Series = bollinger.bollinger_mavg()
-        upper: pd.Series = bollinger.bollinger_hband()
-        lower: pd.Series = bollinger.bollinger_lband()
+        mid_: Series = bollinger.bollinger_mavg()
+        upper: Series = bollinger.bollinger_hband()
+        lower: Series = bollinger.bollinger_lband()
         if plot:
             name: str
-            TR: pd.Series
+            TR: Series
             for TR, name in zip([upper, mid_, lower], ['upper band', 'mid band', 'lower band']):
                 self.fig.add_trace(Line(y=TR, name=name, line=dict(width=utils.SUB_LINES_WIDTH)), col=1, row=1)
         close: float

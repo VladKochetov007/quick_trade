@@ -3,8 +3,8 @@ import json
 from collections import defaultdict
 from typing import Iterable, Dict, Any, List
 
-import numpy as np
-import pandas as pd
+from numpy import arange, linspace
+from pandas import DataFrame
 from quick_trade.brokers import TradingClient
 
 from . import core
@@ -63,7 +63,7 @@ class QuickTradeTuner(object):
                                                      interval=interval,
                                                      limit=start)
             else:
-                df = pd.DataFrame()
+                df = DataFrame()
             for strategy, kwargs in self._strategies:
                 trader = your_trading_class(ticker='ALL/ALL' if self.multi_test else ticker, df=df, interval=interval)
                 trader.set_client(self.client)
@@ -134,9 +134,9 @@ class Choise(core.TunableValue):
 
 class Arange(core.TunableValue):
     def __init__(self, min_value, max_value, step):
-        self.values = np.arange(min_value, max_value + step, step)
+        self.values = arange(min_value, max_value + step, step)
 
 
 class Linspace(core.TunableValue):
     def __init__(self, start, stop, num):
-        self.values = np.linspace(start=start, stop=stop, num=num)
+        self.values = linspace(start=start, stop=stop, num=num)
