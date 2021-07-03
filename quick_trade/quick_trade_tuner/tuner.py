@@ -1,5 +1,5 @@
-import itertools
-import json
+from itertools import product
+from json import dump
 from collections import defaultdict
 from typing import Iterable, Dict, Any, List
 
@@ -7,7 +7,7 @@ from numpy import arange, linspace
 from pandas import DataFrame
 from quick_trade.brokers import TradingClient
 
-from . import core
+from .core import TunableValue, transform_all_tunable_values
 
 
 class QuickTradeTuner(object):
@@ -27,7 +27,7 @@ class QuickTradeTuner(object):
         :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choice, Linspace, Arange as argument's value and recourse it
 
         """
-        strategies_kwargs = core.transform_all_tunable_values(strategies_kwargs)
+        strategies_kwargs = transform_all_tunable_values(strategies_kwargs)
         strategies = list(strategies_kwargs.keys())
         self.strategies_and_kwargs: List[str] = []
         self._strategies = []
@@ -35,7 +35,7 @@ class QuickTradeTuner(object):
         self.multi_test: bool = multi_backtest
         if multi_backtest:
             tickers = [tickers]
-        self._frames_data: tuple = tuple(itertools.product(tickers, intervals, starts))
+        self._frames_data: tuple = tuple(product(tickers, intervals, starts))
         self.client = client
         for strategy in strategies:
             for kwargs in strategies_kwargs[strategy]:
@@ -124,19 +124,19 @@ class QuickTradeTuner(object):
 
     def save_tunes(self, path: str = 'returns.json'):
         with open(path, 'w') as file:
-            json.dump(self.result_tunes, file)
+            dump(self.result_tunes, file)
 
 
-class Choise(core.TunableValue):
+class Choise(TunableValue):
     def __init__(self, values: Iterable[Any]):
         self.values = values
 
 
-class Arange(core.TunableValue):
+class Arange(TunableValue):
     def __init__(self, min_value, max_value, step):
         self.values = arange(min_value, max_value + step, step)
 
 
-class Linspace(core.TunableValue):
+class Linspace(TunableValue):
     def __init__(self, start, stop, num):
         self.values = linspace(start=start, stop=stop, num=num)

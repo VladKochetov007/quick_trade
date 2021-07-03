@@ -3,7 +3,7 @@ from logging import basicConfig, getLogger
 from time import sleep
 from typing import Any, List, Union, Tuple, Sequence, Sized
 
-import numpy as np
+from numpy import array, NaN, nan, nan_to_num, ndarray
 from pandas import DataFrame, Series
 from ta.volatility import AverageTrueRange
 
@@ -121,7 +121,7 @@ class SuperTrendIndicator(object):
         """
         m = self.close.size
         dir_, trend = [1] * m, [0] * m
-        long, short = [np.NaN] * m, [np.NaN] * m
+        long, short = [NaN] * m, [NaN] * m
         ATR = AverageTrueRange(high=self.high, low=self.low, close=self.close, window=self.length)
 
         hl2_ = (self.high + self.low) / 2
@@ -165,12 +165,12 @@ def convert(data: PREDICT_TYPE_LIST) -> CONVERTED_TYPE_LIST:
     e: int
     for e, i in enumerate(data[1:]):
         if i == data[e]:
-            ret[e + 1] = np.nan
+            ret[e + 1] = nan
     return ret
 
 
 def anti_convert(converted: CONVERTED_TYPE_LIST, _nan_num: float = 18699.9) -> PREDICT_TYPE_LIST:
-    converted = np.nan_to_num(converted, nan=_nan_num)
+    converted = nan_to_num(converted, nan=_nan_num)
     ret: List[Any] = [converted[0]]
     flag = converted[0]
     e: int
@@ -199,14 +199,14 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
         return 'Exit'
 
 
-def get_exponential_growth(dataset: Sequence[float]) -> np.ndarray:
+def get_exponential_growth(dataset: Sequence[float]) -> ndarray:
     return_list: List[float] = []
     coef = profit_factor(dataset)
     curr = dataset[0]
     for i in range(len(dataset)):
         return_list.append(curr)
         curr *= coef
-    return np.array(return_list)
+    return array(return_list)
 
 
 def get_coef_sec(timeframe: str = '1d') -> Tuple[float, int]:
