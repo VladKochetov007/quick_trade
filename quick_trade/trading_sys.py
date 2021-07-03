@@ -72,6 +72,11 @@ class Trader(object):
     supports: Dict[int, float]
     resistances: Dict[int, float]
     trading_on_client: bool
+    _converted: utils.CONVERTED_TYPE_LIST
+
+    @property
+    def _converted(self):
+        return utils.convert(self.returns)
 
     @utils.assert_logger
     def __init__(self,
@@ -282,7 +287,6 @@ class Trader(object):
         data_high: pd.Series = self.df['High']
         data_low: pd.Series = self.df['Low']
         self.deposit_history = [deposit]
-        converted: utils.CONVERTED_TYPE_LIST = utils.convert(self.returns)
         self.trades = 0
         self.profits = 0
         self.losses = 0
@@ -304,7 +308,7 @@ class Trader(object):
                 next_l) in enumerate(zip(self.returns[:-1],
                                          self._stop_losses[:-1],
                                          self._take_profits[:-1],
-                                         converted[:-1],
+                                         self._converted[:-1],
                                          self._credit_leverages[:-1],
                                          data_high[:-1],
                                          data_low[:-1],
@@ -461,7 +465,7 @@ winrate: {self.winrate}%"""
                                                          'sprice': [],
                                                          'eprice': []}
             for e, (pred, conv, crlev) in enumerate(zip(self.returns,
-                                                        converted,
+                                                        self._converted,
                                                         utils.convert(self._credit_leverages))):
                 if conv == utils.SELL or (crlev is not np.nan and pred == utils.SELL):
                     preds['sellind'].append(e)
@@ -787,10 +791,9 @@ winrate: {self.winrate}%"""
         self.__last_stop_loss = self._stop_losses[-1]
         self.__last_take_profit = self._take_profits[-1]
 
-        converted = utils.convert(self.returns)
         conv_cred_lev = utils.convert(self._credit_leverages)
 
-        if converted[-1] is not np.nan or conv_cred_lev[-1] is not np.nan:
+        if self._converted[-1] is not np.nan or conv_cred_lev[-1] is not np.nan:
             utils.logger.info('open trade %s', predict)
             self.__exit_order__ = False
             if self.trading_on_client:
@@ -1062,7 +1065,7 @@ winrate: {self.winrate}%"""
         close: float
         seted: utils.CONVERTED_TYPE
         ts: Dict[str, float]
-        for sig, close, seted in zip(self.returns, closes, utils.convert(self.returns)):
+        for sig, close, seted in zip(self.returns, closes, self._converted):
             if seted is not np.nan:
                 self._open_price = close
                 if set_take or set_stop:
