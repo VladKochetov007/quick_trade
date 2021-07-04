@@ -358,7 +358,7 @@ class Trader(object):
                 else:
                     stop_loss = self._stop_losses[e - 1]
                     take_profit = self._take_profits[e - 1]
-                    diff = utils.get_diff(price=data_column[e-1],
+                    diff = utils.get_diff(price=data_column[e],
                                           low=low,
                                           high=high,
                                           stop_loss=stop_loss,

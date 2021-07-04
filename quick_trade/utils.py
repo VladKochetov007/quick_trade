@@ -308,7 +308,7 @@ def assert_logger(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
         except AssertionError as AE:
             logger.critical(AE)
             raise AE
@@ -323,7 +323,8 @@ def get_diff(price: float,
              stop_loss: float,
              take_profit: float,
              signal: PREDICT_TYPE) -> float:
-    print(price, low, high, stop_loss, take_profit, signal)
+    if signal == EXIT:
+        return 0.0
     if signal == BUY and low <= stop_loss:
         return stop_loss - price
 
@@ -335,6 +336,3 @@ def get_diff(price: float,
 
     elif signal == SELL and low <= take_profit:
         return take_profit - price
-
-    if signal == EXIT:
-        return 0.0
