@@ -35,8 +35,8 @@ GREEN: str = '#55ff00'
 BLUE: str = '#0015ff'
 CYAN: str = 'cyan'
 BUY: PREDICT_TYPE = 1
-SELL: PREDICT_TYPE = 0
-EXIT: PREDICT_TYPE = 2
+SELL: PREDICT_TYPE = -1
+EXIT: PREDICT_TYPE = 0
 
 __version__: str = "5.2.1"
 __author__: str = 'Vlad Kochetov'
@@ -316,7 +316,6 @@ def assert_logger(func):
     return wrapper
 
 
-@assert_logger
 def get_diff(price: float,
              low: float,
              high: float,
@@ -325,6 +324,7 @@ def get_diff(price: float,
              signal: PREDICT_TYPE) -> float:
     if signal == EXIT:
         return 0.0
+
     if signal == BUY and low <= stop_loss:
         return stop_loss - price
 

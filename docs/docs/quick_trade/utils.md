@@ -12,35 +12,9 @@ This function performs an operation on the data
 if the element is equal to the previous one, then it becomes np.nan.
 
 ```
-[2,    [2
-2,      nan
-2,      nan
-2,      nan
-2,      nan
-2,      nan
-2,      nan
-2,      nan
-1,      1
-1,      nan
-1,      nan
-1,      nan
-1,      nan
-1,      nan
-0,      0
-0,      nan
-1,      1
-0,      0
-1,      1
-0,      0
+[0,    [0
 0,      nan
 0,      nan
-2,      2
-2,  ->  nan
-2,      nan
-2,      nan
-2,      nan
-2,      nan
-0,      0
 0,      nan
 0,      nan
 0,      nan
@@ -50,15 +24,41 @@ if the element is equal to the previous one, then it becomes np.nan.
 1,      nan
 1,      nan
 1,      nan
-2,      2
-2,      nan
-2,      nan
-2,      nan
-2,      nan
-2,      nan
+1,      nan
+1,      nan
+-1,     -1
+-1,     nan
+1,      1
+-1,     -1
+1,      1
+-1,     -1
+-1,     nan
+-1,     nan
+0,      0
+0,  ->  nan
+0,      nan
+0,      nan
+0,      nan
+0,      nan
+-1,     -1
+-1,     nan
+-1,     nan
+-1,     nan
+-1,     nan
+-1,     nan
+1,      1
+1,      nan
+1,      nan
+1,      nan
 0,      0
 0,      nan
-0]      nan]
+0,      nan
+0,      nan
+0,      nan
+0,      nan
+-1,     -1
+-1,     nan
+-1]     nan]
 ```
 
 ## anti_convert
@@ -72,8 +72,8 @@ Reverse from [`convert`](#convert)
 | returns   | `utils.PREDICT_TYPE_LIST` | list without `np.nan` |
 
 ```commandline
-In[8]: anti_convert([1, np.nan, np.nan, 0, np.nan, np.nan, np.nan, 1, 2, np.nan])
-Out[8]: [1, 1, 1, 0, 0, 0, 0, 1, 2, 2]
+In[8]: anti_convert([1, np.nan, np.nan, -1, np.nan, np.nan, np.nan, 1, 0, np.nan])
+Out[8]: [1, 1, 1, -1, -1, -1, -1, 1, 0, 0]
 ```
 
 ## get_window
@@ -218,3 +218,17 @@ Function for calculating the coefficient of exponential growth of a deposit when
 
 Decorator. If AssertionError was called, then first the error is written to the log with the "critical" level, and then
 the program stops.
+
+## get_diff
+
+abc
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| price | float |  |
+| low | low |  |
+| high | float |  |
+| stop_loss | float |  |
+| take_profit | float |  |
+| signal | `utils.PREDICT_TYPE` |  |
+| returns | float |  |

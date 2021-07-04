@@ -1577,32 +1577,20 @@ class ExampleStrategies(Trader):
         self.set_credit_leverages()
         return self.returns
 
-    def strategy_idris(self, point=20):
+    def strategy_idris(self, points=20):
         self._stop_losses = [inf] * 2
         self._take_profits = [inf] * 2
         flag = utils.EXIT
-        f2 = flag
         self.returns = [flag] * 2
-        sl = tp = inf
         for e in range(len(self.df) - 2):
             bar3price = self.df['Close'][e + 2]
             mid2bar = (self.df['High'][e + 1] + self.df['Low'][e + 1]) / 2
             if bar3price < mid2bar:
                 flag = utils.SELL
-                sl = mid2bar + 2 * point  # 2 points
-                tp = mid2bar - 20 * point  # 20 points.
             elif bar3price > mid2bar:
                 flag = utils.BUY
-                sl = mid2bar - 2 * point  # 2 points
-                tp = mid2bar + 20 * point  # 20 points.
-            if flag != f2:
-                slflag = sl
-                tpflag = tp
             f2 = flag
-            self._stop_losses.append(slflag)
-            self._take_profits.append(tpflag)
             self.returns.append(flag)
-        self.set_open_stop_and_take(set_stop=False,
-                                    set_take=False)
+        self.set_open_stop_and_take(stop_loss=points*2, take_profits=points*20)
         self.set_credit_leverages()
         return self.returns
