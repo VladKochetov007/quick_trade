@@ -221,7 +221,7 @@ the program stops.
 
 ## get_diff
 
-abc
+Function for getting the price movement from the current one to TP or SL. Mainly SL
 
 | param  | type | description |
 | :---: | :---: | :---: |
