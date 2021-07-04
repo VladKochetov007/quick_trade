@@ -314,3 +314,27 @@ def assert_logger(func):
             raise AE
 
     return wrapper
+
+
+@assert_logger
+def get_diff(price: float,
+             low: float,
+             high: float,
+             stop_loss: float,
+             take_profit: float,
+             signal: PREDICT_TYPE) -> float:
+    print(price, low, high, stop_loss, take_profit, signal)
+    if signal == BUY and low <= stop_loss:
+        return stop_loss - price
+
+    elif signal == SELL and high >= stop_loss:
+        return stop_loss - price
+
+    elif signal == BUY and high >= take_profit:
+        return take_profit - price
+
+    elif signal == SELL and low <= take_profit:
+        return take_profit - price
+
+    if signal == EXIT:
+        return 0.0

@@ -345,24 +345,29 @@ class Trader(object):
             else:
                 exit_take_stop = True
 
-                if sig == utils.BUY and low <= stop_loss:
-                    diff = stop_loss - data_column[e]
-
-                elif sig == utils.SELL and high >= stop_loss:
-                    diff = stop_loss - data_column[e]
-
-                elif sig == utils.BUY and high >= take_profit:
-                    diff = take_profit - data_column[e]
-
-                elif sig == utils.SELL and low <= take_profit:
-                    diff = take_profit - data_column[e]
+                if not next_not_breakout:
+                    stop_loss = self._stop_losses[e]
+                    take_profit = self._take_profits[e]
+                    diff = utils.get_diff(price=data_column[e],
+                                          low=next_l,
+                                          high=next_h,
+                                          stop_loss=stop_loss,
+                                          take_profit=take_profit,
+                                          signal=sig)
 
                 else:
-                    diff = 0.0
+                    stop_loss = self._stop_losses[e - 1]
+                    take_profit = self._take_profits[e - 1]
+                    diff = utils.get_diff(price=data_column[e-1],
+                                          low=low,
+                                          high=high,
+                                          stop_loss=stop_loss,
+                                          take_profit=take_profit,
+                                          signal=sig)
 
             if sig == utils.SELL:
                 diff = -diff
-            elif sig == utils.EXIT:
+            if sig == utils.EXIT:
                 diff = 0.0
             if not no_order:
                 deposit += bet * credit_lev * diff / open_price
@@ -716,7 +721,8 @@ winrate: {self.winrate}%"""
 
         :return: combining of 2 strategies
         """
-        assert isinstance(first_returns, utils.PREDICT_TYPE_LIST) and isinstance(second_returns, utils.PREDICT_TYPE_LIST), \
+        assert isinstance(first_returns, utils.PREDICT_TYPE_LIST) and isinstance(second_returns,
+                                                                                 utils.PREDICT_TYPE_LIST), \
             'Arguments to this function can only be <utils.PREDICT_TYPE>.'
 
         if mode == 'minimalist':
@@ -1571,23 +1577,23 @@ class ExampleStrategies(Trader):
         self.set_credit_leverages()
         return self.returns
 
-    def strategy_idris(self, point = 20):
+    def strategy_idris(self, point=20):
         self._stop_losses = [inf] * 2
         self._take_profits = [inf] * 2
         flag = utils.EXIT
         f2 = flag
         self.returns = [flag] * 2
         sl = tp = inf
-        for e in range(len(self.df)-2):
-            bar3price = self.df['Close'][e+2]
-            mid2bar = (self.df['High'][e+1] + self.df['Low'][e+1]) / 2
+        for e in range(len(self.df) - 2):
+            bar3price = self.df['Close'][e + 2]
+            mid2bar = (self.df['High'][e + 1] + self.df['Low'][e + 1]) / 2
             if bar3price < mid2bar:
                 flag = utils.SELL
-                sl = mid2bar + 2 * point   # 2 points
+                sl = mid2bar + 2 * point  # 2 points
                 tp = mid2bar - 20 * point  # 20 points.
             elif bar3price > mid2bar:
                 flag = utils.BUY
-                sl = mid2bar - 2 * point   # 2 points
+                sl = mid2bar - 2 * point  # 2 points
                 tp = mid2bar + 20 * point  # 20 points.
             if flag != f2:
                 slflag = sl
