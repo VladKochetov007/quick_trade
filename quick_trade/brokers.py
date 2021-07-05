@@ -1,7 +1,7 @@
 from typing import Dict
 
-import ccxt
-import pandas as pd
+from ccxt import Exchange
+from pandas import DataFrame
 from quick_trade import utils
 
 
@@ -14,7 +14,7 @@ class TradingClient(object):
     base: str
     quote: str
 
-    def __init__(self, client: ccxt.Exchange):
+    def __init__(self, client: Exchange):
         self.client = client
         self._update_balances()
 
@@ -66,8 +66,8 @@ class TradingClient(object):
         frames = self.client.fetch_ohlcv(ticker,
                                          interval,
                                          limit=limit)
-        data = pd.DataFrame(frames,
-                            columns=['time', 'Open', 'High', 'Low', 'Close', 'Volume'])
+        data = DataFrame(frames,
+                         columns=['time', 'Open', 'High', 'Low', 'Close', 'Volume'])
         return data.astype(float)
 
     def exit_last_order(self):

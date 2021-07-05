@@ -43,8 +43,8 @@ getattr from self
 
 ### __get_stop_take
 
-The method converts stop loss and take profit in points to stop loss and take profit in specific prices using `self._
-stop_loss` and `self._take_profit` as values and `self._open_price` as the initial price
+The method converts stop loss and take profit in points to stop loss and take profit in specific prices using
+`self._stop_loss` and `self._take_profit` as values and `self._open_price` as the initial price
 
 | param | type | description |
 |:---:|:---:|:---:|

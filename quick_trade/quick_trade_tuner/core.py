@@ -4,10 +4,10 @@ from typing import Iterable, Dict, Any, List
 def transform_tunable_param(param_and_value: Dict[str, Any]):
     values = tuple(param_and_value.values())
     keys = tuple(param_and_value.keys())
-    for e, (key, value) in enumerate(zip(keys, values), 1):
+    for e, (key, value) in enumerate(zip(keys, values)):
         if isinstance(value, TunableValue):
-            valkeys = dict(zip(keys[e:], values[e:]))
-            valkeys2 = dict(zip(keys[:e - 1], values[:e - 1]))
+            valkeys = dict(zip(keys[e + 1:], values[e + 1:]))
+            valkeys2 = dict(zip(keys[:e], values[:e]))  # without this element
             return [{key: val,
                      **valkeys,
                      **valkeys2} for val in set(value.values)]
