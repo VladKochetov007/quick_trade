@@ -67,7 +67,7 @@ class TradingClient(object):
                                          interval,
                                          limit=limit)
         data = DataFrame(frames,
-                            columns=['time', 'Open', 'High', 'Low', 'Close', 'Volume'])
+                         columns=['time', 'Open', 'High', 'Low', 'Close', 'Volume'])
         return data.astype(float)
 
     def exit_last_order(self):

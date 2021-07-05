@@ -331,7 +331,6 @@ def get_diff(price: float,
     elif signal == SELL and high >= stop_loss:
         return stop_loss - price
 
-
     elif signal == BUY and high >= take_profit:
         return take_profit - price
 

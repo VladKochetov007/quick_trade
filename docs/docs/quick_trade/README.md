@@ -68,31 +68,31 @@ class MyTrader(qtr.Trader):
     def new_macd_strategy(self, slow=21, fast=12, ATR_win=14, ATR_multiplier=5):
         self._stop_losses = []
         self.returns = []
-        
-        macd_indicator = MACD(close=self.df['Close'], 
-                              window_slow=slow, 
+
+        macd_indicator = MACD(close=self.df['Close'],
+                              window_slow=slow,
                               window_fast=fast,
                               fillna=True)  # MACD indicator from ta module
         histogram = macd_indicator.macd_diff()
-        
+
         atr = AverageTrueRange(high=self.df['High'],
                                low=self.df['Low'],
                                close=self.df['Close'],
                                window=ATR_win,
                                fillna=True)  # ATR for custom stop-loss
-        
+
         for diff, price, stop_indicator in zip(histogram.values,
                                                self.df['Close'].values,
                                                atr.average_true_range().values):
             stop_indicator *= ATR_multiplier
-            
+
             if diff > 0:
                 self.returns.append(utils.BUY)
                 self._stop_losses.append(price - stop_indicator)  # custom ATR stop-loss
             else:
                 self.returns.append(utils.SELL)
                 self._stop_losses.append(price + stop_indicator)  # same
-                
+
         self.set_open_stop_and_take(set_stop=False)
         self.set_credit_leverages(1)  # trading without any leverage but for all deposit
         return self.returns  # It's not obligatory

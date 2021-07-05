@@ -1,6 +1,6 @@
+from collections import defaultdict
 from itertools import product
 from json import dump
-from collections import defaultdict
 from typing import Iterable, Dict, Any, List
 
 from numpy import arange, linspace

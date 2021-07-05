@@ -18,17 +18,17 @@ from threading import Thread
 from time import ctime, sleep, time
 from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
 
-from numpy import array, ndarray, inf, nan, digitize, mean, nan_to_num, where
-from pandas import DataFrame, Series
-from plotly.subplots import make_subplots
-from quick_trade import utils
-from quick_trade.brokers import TradingClient
 import ta
 import ta.momentum
 import ta.others
 import ta.trend
 import ta.volatility
 import ta.volume
+from numpy import array, ndarray, inf, nan, digitize, mean, nan_to_num
+from pandas import DataFrame, Series
+from plotly.subplots import make_subplots
+from quick_trade import utils
+from quick_trade.brokers import TradingClient
 
 Line = dict  # To avoid the deprecation warning
 
@@ -1593,6 +1593,6 @@ class ExampleStrategies(Trader):
                 flag = utils.BUY
             f2 = flag
             self.returns.append(flag)
-        self.set_open_stop_and_take(stop_loss=points*2, take_profits=points*20)
+        self.set_open_stop_and_take(stop_loss=points * 2, take_profits=points * 20)
         self.set_credit_leverages()
         return self.returns
