@@ -38,7 +38,7 @@ BUY: PREDICT_TYPE = 1
 SELL: PREDICT_TYPE = -1
 EXIT: PREDICT_TYPE = 0
 
-__version__: str = "5.2.1"
+__version__: str = "5.5.0"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
                           "hpaulj -- Stack overflow",
