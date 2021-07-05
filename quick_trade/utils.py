@@ -277,21 +277,20 @@ def get_coef_sec(timeframe: str = '1d') -> Tuple[float, int]:
 def wait_success(func):
     @wraps(func)
     def checker(*args, **kwargs):
-        if USE_WAIT_SUCCESS:
-            while True:
-                try:
-                    return func(*args, **kwargs)
-                except Exception as e:
-                    if not isinstance(e, KeyboardInterrupt):
-                        if WAIT_SUCCESS_PRINT:
-                            print(f'An error occurred: {e}, repeat request')
-                        logger.error(f'An error occurred: {e}', exc_info=True)
-                        sleep(WAIT_SUCCESS_SLEEP)
-                        continue
-                    else:
-                        raise e
-        else:
-            return func(*args, **kwargs)
+        while True:
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                if not USE_WAIT_SUCCESS:
+                    raise e
+                if not isinstance(e, KeyboardInterrupt):
+                    if WAIT_SUCCESS_PRINT:
+                        print(f'An error occurred: {e}, repeat request')
+                    logger.error(f'An error occurred: {e}', exc_info=True)
+                    sleep(WAIT_SUCCESS_SLEEP)
+                    continue
+                else:
+                    raise e
 
     return checker
 
