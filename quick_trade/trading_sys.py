@@ -18,7 +18,7 @@ from threading import Thread
 from time import ctime, sleep, time
 from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
 
-from numpy import array, ndarray, inf, nan, digitize, mean, nan_to_num
+from numpy import array, ndarray, inf, nan, digitize, mean, nan_to_num, where
 from pandas import DataFrame, Series
 from plotly.subplots import make_subplots
 from quick_trade import utils
@@ -338,6 +338,7 @@ class Trader(object):
             stop_loss = self._stop_losses[e - 1]
             take_profit = self._take_profits[e - 1]
             # be careful with e=0
+            # haha))) no)
             now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss,
                                                                                take_profit)
             if (ignore_breakout or now_not_breakout) and next_not_breakout:
@@ -355,7 +356,7 @@ class Trader(object):
                                           take_profit=take_profit,
                                           signal=sig)
 
-                else:
+                if (not now_not_breakout) and not ignore_breakout:
                     stop_loss = self._stop_losses[e - 1]
                     take_profit = self._take_profits[e - 1]
                     diff = utils.get_diff(price=data_column[e],
@@ -364,7 +365,6 @@ class Trader(object):
                                           stop_loss=stop_loss,
                                           take_profit=take_profit,
                                           signal=sig)
-
             if sig == utils.SELL:
                 diff = -diff
             if sig == utils.EXIT:
@@ -1113,6 +1113,8 @@ winrate: {self.winrate}%"""
         """
         # TODO
         self.returns = list(digitize(frame_to_diff.diff(), bins=[0]))
+        self.convert_signal(1, utils.BUY)
+        self.convert_signal(0, utils.SELL)
         self.set_open_stop_and_take()
         self.set_credit_leverages()
         return self.returns
