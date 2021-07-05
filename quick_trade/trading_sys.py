@@ -1087,12 +1087,14 @@ winrate: {self.winrate}%"""
                 self._stop_losses.append(stop_flag)
         utils.logger.debug('trader stop loss: %f pips, trader take profit: %f pips', stop_loss, take_profit)
 
+    @utils.assert_logger
     def set_credit_leverages(self, credit_lev: Union[float, int] = 1.0):
         """
         Sets the leverage for bets.
         :param credit_lev: leverage in points
         """
-        # TODO
+        assert isinstance(credit_lev, (float, int)), 'credit_lev must be of type <float> or <int>'
+
         self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
         utils.logger.debug('trader credit leverage: %f', credit_lev)
 
@@ -1107,6 +1109,7 @@ winrate: {self.winrate}%"""
         return {'resistance': self.resistances,
                 'supports': self.supports}
 
+    @utils.assert_logger
     def strategy_diff(self, frame_to_diff: Series) -> utils.PREDICT_TYPE_LIST:
         """
         frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
