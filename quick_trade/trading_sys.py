@@ -481,15 +481,15 @@ winrate: {self.winrate}%"""
                 else:
                     sell = buy = False
 
-                if conv == utils.SELL or sell:
+                if conv == utils.EXIT or crlev == 0:
+                    preds['exitind'].append(e)
+                    preds['eprice'].append(loc[e])
+                elif conv == utils.SELL or sell:
                     preds['sellind'].append(e)
                     preds['sprice'].append(loc[e])
                 elif conv == utils.BUY or buy:
                     preds['buyind'].append(e)
                     preds['bprice'].append(loc[e])
-                elif conv == utils.EXIT or crlev == 0:
-                    preds['exitind'].append(e)
-                    preds['eprice'].append(loc[e])
             name: str
             index: int
             price: float
