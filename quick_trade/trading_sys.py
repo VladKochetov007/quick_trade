@@ -1064,7 +1064,10 @@ winrate: {self.winrate}%"""
         :param take_profit: take profit in points
         :param stop_loss: stop loss in points
         """
-        # TODO
+        assert isinstance(take_profit, (float, int)), 'take_profit must be of type <float> or <int>'
+        assert isinstance(stop_loss, (float, int)), 'stop_loss must be of type <float> or <int>'
+        assert isinstance(set_stop, bool), 'set_stop must be of type <bool>'
+        assert isinstance(set_take, bool), 'set_stop must be of type <bool>'
 
         self._take_profit = take_profit
         self._stop_loss = stop_loss
@@ -1123,7 +1126,8 @@ winrate: {self.winrate}%"""
         """
         frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
         """
-        # TODO
+        assert isinstance(frame_to_diff, Series), 'frame_to_diff must be of type <pd.Series>'
+
         self.returns = list(digitize(frame_to_diff.diff(), bins=[0]))
         self.convert_signal(1, utils.BUY)
         self.convert_signal(0, utils.SELL)
