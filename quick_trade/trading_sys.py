@@ -27,6 +27,7 @@ import ta.volume
 from numpy import array, ndarray, inf, nan, digitize, mean, nan_to_num
 from pandas import DataFrame, Series
 from plotly.subplots import make_subplots
+from plotly.graph_objs import Figure
 from quick_trade import utils
 from quick_trade.brokers import TradingClient
 
@@ -73,6 +74,7 @@ class Trader(object):
     resistances: Dict[int, float]
     trading_on_client: bool
     _converted: utils.CONVERTED_TYPE_LIST
+    fig: Figure
 
     @property
     def _converted(self):
