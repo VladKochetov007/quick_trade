@@ -346,16 +346,6 @@ class Trader(object):
             else:
                 exit_take_stop = True
 
-                if not next_not_breakout:
-                    stop_loss = self._stop_losses[e]
-                    take_profit = self._take_profits[e]
-                    diff = utils.get_diff(price=data_column[e],
-                                          low=next_l,
-                                          high=next_h,
-                                          stop_loss=stop_loss,
-                                          take_profit=take_profit,
-                                          signal=sig)
-
                 if (not now_not_breakout) and not ignore_breakout:
                     stop_loss = self._stop_losses[e - 1]
                     take_profit = self._take_profits[e - 1]
@@ -365,6 +355,17 @@ class Trader(object):
                                           stop_loss=stop_loss,
                                           take_profit=take_profit,
                                           signal=sig)
+
+                elif not next_not_breakout:
+                    stop_loss = self._stop_losses[e]
+                    take_profit = self._take_profits[e]
+                    diff = utils.get_diff(price=data_column[e],
+                                          low=next_l,
+                                          high=next_h,
+                                          stop_loss=stop_loss,
+                                          take_profit=take_profit,
+                                          signal=sig)
+
             if sig == utils.SELL:
                 diff = -diff
             if sig == utils.EXIT:
@@ -472,15 +473,23 @@ winrate: {self.winrate}%"""
             for e, (pred, conv, crlev) in enumerate(zip(self.returns,
                                                         self._converted,
                                                         utils.convert(self._credit_leverages))):
-                if conv == utils.SELL or (crlev is not nan and pred == utils.SELL):
-                    preds['sellind'].append(e)
-                    preds['sprice'].append(loc[e])
-                elif conv == utils.BUY or (crlev is not nan and pred == utils.BUY):
-                    preds['buyind'].append(e)
-                    preds['bprice'].append(loc[e])
-                elif conv == utils.EXIT or (crlev is not nan and pred == utils.EXIT):
+                if e != 0:
+                    credlev_up = self._credit_leverages[e-1] < self._credit_leverages[e]
+                    credlev_down = self._credit_leverages[e-1] > self._credit_leverages[e]
+                    sell = (credlev_down and pred == utils.BUY) or (credlev_up and pred == utils.SELL)
+                    buy  = (credlev_down and pred == utils.SELL) or (credlev_up and pred == utils.BUY)
+                else:
+                    sell = buy = False
+
+                if conv == utils.EXIT or crlev == 0:
                     preds['exitind'].append(e)
                     preds['eprice'].append(loc[e])
+                elif conv == utils.SELL or sell:
+                    preds['sellind'].append(e)
+                    preds['sprice'].append(loc[e])
+                elif conv == utils.BUY or buy:
+                    preds['buyind'].append(e)
+                    preds['bprice'].append(loc[e])
             name: str
             index: int
             price: float
