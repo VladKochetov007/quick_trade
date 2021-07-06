@@ -473,13 +473,21 @@ winrate: {self.winrate}%"""
             for e, (pred, conv, crlev) in enumerate(zip(self.returns,
                                                         self._converted,
                                                         utils.convert(self._credit_leverages))):
-                if conv == utils.SELL or (crlev is not nan and pred == utils.SELL):
+                if e != 0:
+                    credlev_up = self._credit_leverages[e-1] < self._credit_leverages[e]
+                    credlev_down = self._credit_leverages[e-1] > self._credit_leverages[e]
+                    sell = (credlev_down and pred == utils.BUY) or (credlev_up and pred == utils.SELL)
+                    buy  = (credlev_down and pred == utils.SELL) or (credlev_up and pred == utils.BUY)
+                else:
+                    sell = buy = False
+
+                if conv == utils.SELL or sell:
                     preds['sellind'].append(e)
                     preds['sprice'].append(loc[e])
-                elif conv == utils.BUY or (crlev is not nan and pred == utils.BUY):
+                elif conv == utils.BUY or buy:
                     preds['buyind'].append(e)
                     preds['bprice'].append(loc[e])
-                elif conv == utils.EXIT or (crlev is not nan and pred == utils.EXIT):
+                elif conv == utils.EXIT or crlev == 0:
                     preds['exitind'].append(e)
                     preds['eprice'].append(loc[e])
             name: str
