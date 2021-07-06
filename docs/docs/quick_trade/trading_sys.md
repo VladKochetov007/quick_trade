@@ -232,8 +232,8 @@ strategies.
 trader.strategy_collider(trader.strategy_2_sma(50, 20),
                          trader.strategy_2_sma(20, 10),
                          trader.strategy_parabolic_SAR(),
-                         trader.strategy_macd()
-mode = 'maximalist')
+                         trader.strategy_macd(),
+                         mode = 'maximalist')
 ```
 
 ### get_trading_predict
@@ -260,6 +260,16 @@ This method is needed to get the result of the strategy and open an order on the
 
 ### get_support_resistance
 
+### strategy_diff
+
+The strategy issues its verdict based on the last change to the dataframe. If you give the entry the closing price of
+candles, then if the candle is green - long, if red - short
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| frame_to_diff | pd.Series | series of dataframe |
+| returns | `utils.PREDICT_TYPE_LIST` | returns |
+
 ## ExampleStrategies
 
 Class with examples of strategies, inherited from the [`Trader`](#Trader) class
@@ -273,16 +283,6 @@ Class with examples of strategies, inherited from the [`Trader`](#Trader) class
 ### find_TBH_TBL
 
 ### find_PPR
-
-### strategy_diff
-
-The strategy issues its verdict based on the last change to the dataframe. If you give the entry the closing price of
-candles, then if the candle is green - long, if red - short
-
-| param  | type | description |
-| :---: | :---: | :---: |
-| frame_to_diff | pd.Series | series of dataframe |
-| returns | `utils.PREDICT_TYPE_LIST` | returns |
 
 ### strategy_rsi
 

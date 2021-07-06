@@ -122,7 +122,8 @@ class SuperTrendIndicator(object):
         m = self.close.size
         dir_, trend = [1] * m, [0] * m
         long, short = [NaN] * m, [NaN] * m
-        ATR = AverageTrueRange(high=self.high, low=self.low, close=self.close, window=self.length)
+        ATR = AverageTrueRange(high=self.high, low=self.low, close=self.close,
+                               window=self.length)
 
         hl2_ = (self.high + self.low) / 2
         matr = ATR.average_true_range() * self.multiplier
@@ -138,7 +139,8 @@ class SuperTrendIndicator(object):
                 dir_[i] = dir_[i - 1]
                 if dir_[i] == BUY and lowerband.iloc[i] < lowerband.iloc[i - 1]:
                     lowerband.iloc[i] = lowerband.iloc[i - 1]
-                if dir_[i] == SELL and upperband.iloc[i] > upperband.iloc[i - 1]:
+                if dir_[i] == SELL and upperband.iloc[i] > upperband.iloc[
+                    i - 1]:
                     upperband.iloc[i] = upperband.iloc[i - 1]
 
             if dir_[i] > 0:
@@ -169,7 +171,8 @@ def convert(data: PREDICT_TYPE_LIST) -> CONVERTED_TYPE_LIST:
     return ret
 
 
-def anti_convert(converted: CONVERTED_TYPE_LIST, _nan_num: float = 18699.9) -> PREDICT_TYPE_LIST:
+def anti_convert(converted: CONVERTED_TYPE_LIST,
+                 _nan_num: float = 18699.9) -> PREDICT_TYPE_LIST:
     converted = nan_to_num(converted, nan=_nan_num)
     ret: List[Any] = [converted[0]]
     flag = converted[0]
