@@ -276,14 +276,6 @@ Class with examples of strategies, inherited from the [`Trader`](#Trader) class
 
 ### \_window_
 
-### find_pip_bar
-
-### find_DBLHC_DBHLC
-
-### find_TBH_TBL
-
-### find_PPR
-
 ### strategy_rsi
 
 When the RSI is greater than the `maximum`, and the current value is less than the previous one, short. It's the same
@@ -352,5 +344,13 @@ Bollinger bands strategy (not breakout)
 | **bollinger_args | arguments | arguments for `ta.volatility.BollingerBands` |
 | **bollinger_kwargs | named arguments | named arguments for `ta.volatility.BollingerBands` |
 | returns | `utils.PREDICT_TYPE_LIST` | returns |
+
+### find_pip_bar
+
+### find_DBLHC_DBHLC
+
+### find_TBH_TBL
+
+### find_PPR
 
 ...
