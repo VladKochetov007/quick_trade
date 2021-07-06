@@ -346,16 +346,6 @@ class Trader(object):
             else:
                 exit_take_stop = True
 
-                if not next_not_breakout:
-                    stop_loss = self._stop_losses[e]
-                    take_profit = self._take_profits[e]
-                    diff = utils.get_diff(price=data_column[e],
-                                          low=next_l,
-                                          high=next_h,
-                                          stop_loss=stop_loss,
-                                          take_profit=take_profit,
-                                          signal=sig)
-
                 if (not now_not_breakout) and not ignore_breakout:
                     stop_loss = self._stop_losses[e - 1]
                     take_profit = self._take_profits[e - 1]
@@ -365,6 +355,17 @@ class Trader(object):
                                           stop_loss=stop_loss,
                                           take_profit=take_profit,
                                           signal=sig)
+
+                elif not next_not_breakout:
+                    stop_loss = self._stop_losses[e]
+                    take_profit = self._take_profits[e]
+                    diff = utils.get_diff(price=data_column[e],
+                                          low=next_l,
+                                          high=next_h,
+                                          stop_loss=stop_loss,
+                                          take_profit=take_profit,
+                                          signal=sig)
+
             if sig == utils.SELL:
                 diff = -diff
             if sig == utils.EXIT:
