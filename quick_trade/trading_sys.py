@@ -10,7 +10,7 @@
 #   3.9
 #   subplot plot directory
 #   decorator for strategies without exit condition (not converted data)
-
+import pprint
 from copy import copy
 from datetime import datetime
 from re import fullmatch
@@ -633,7 +633,7 @@ winrate: {self.winrate}%"""
                    width: Union[int, float] = 1300,
                    template: str = 'plotly_dark',
                    row_heights: List[Union[int, float]] = [10, 16, 7],
-                   **subplot_kwargs):
+                   **subplot_kwargs):  # TODO: make overload
         """
 
         :param height: window height
