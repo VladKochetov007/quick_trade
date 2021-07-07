@@ -8,10 +8,21 @@ from pandas import DataFrame, Series
 from ta.volatility import AverageTrueRange
 
 
+RED: str = '#ff0000'
+GREEN: str = '#55ff00'
+BLUE: str = '#0015ff'
+CYAN: str = 'cyan'
+
 PREDICT_TYPE: type = int
 PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
 CONVERTED_TYPE: type = Union[PREDICT_TYPE, float]
 CONVERTED_TYPE_LIST: type = List[CONVERTED_TYPE]
+
+BUY: PREDICT_TYPE = 1
+SELL: PREDICT_TYPE = -1
+EXIT: PREDICT_TYPE = 0
+
+TEXT_COLOR: str = 'white'
 
 TIME_TITLE: str = 'T I M E'
 
@@ -38,27 +49,31 @@ AVERAGE_GROWTH_COLOR: str = '#F1A5FB'
 AVERAGE_GROWTH_WIDTH: float = 1.0
 AVERAGE_GROWTH_ALPHA: float = 1.0
 
+STOP_LOSS_NAME: str = 'stop loss'
+STOP_LOSS_COLOR: str = '#ff0000'
+STOP_LOSS_WIDTH: float = 1.0
+STOP_LOSS_ALPHA: float = 0.8
+
+TAKE_PROFIT_NAME: str = 'take profit'
+TAKE_PROFIT_COLOR: str = '#55ff00'
+TAKE_PROFIT_WIDTH: float = 1.0
+TAKE_PROFIT_ALPHA: float = 0.8
+
+OPEN_TRADE_NAME: str = 'open trade'
+OPEN_TRADE_COLOR: str = '#0015ff'
+OPEN_TRADE_WIDTH: float = 1.0
+OPEN_TRADE_ALPHA: float = 0.8
+
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
-TAKE_STOP_OPN_WIDTH: float = 1.0
-TAKE_STOP_OPN_ALPHA: float = 0.8
 ICHIMOKU_LINES_WIDTH: float = 2.0
 ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
 ICHIMOKU_CLOUD_ALPHA: float = 0.4
-TEXT_COLOR: str = 'white'
 SUB_LINES_WIDTH: float = 3.0
 WAIT_SUCCESS_SLEEP: float = 15.0
 WAIT_SUCCESS_PRINT: bool = True
 WAIT_SUCCESS_USE: bool = True
 TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
-
-RED: str = '#ff0000'
-GREEN: str = '#55ff00'
-BLUE: str = '#0015ff'
-CYAN: str = 'cyan'
-BUY: PREDICT_TYPE = 1
-SELL: PREDICT_TYPE = -1
-EXIT: PREDICT_TYPE = 0
 
 __version__: str = "5.5.1"
 __author__: str = 'Vlad Kochetov'

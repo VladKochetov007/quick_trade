@@ -88,10 +88,9 @@ class QuickTradeGraph(object):
             opacity=utils.DATA_ALPHA
         )
 
-    def plot_deposit(self,
-                     deposit_history: Sequence):
-        deposit_start = deposit_history[0]
-        self.plot_line(line=deposit_history,
+    def plot_deposit(self):
+        deposit_start = self.trader.deposit_history[0]
+        self.plot_line(line=self.trader.deposit_history,
                        width=utils.DEPOSIT_WIDTH,
                        opacity=utils.DEPOSIT_ALPHA,
                        color=utils.DEPOSIT_COLOR,
@@ -107,14 +106,39 @@ class QuickTradeGraph(object):
                        _row=self.deposit_row,
                        _col=self.deposit_col)
 
-    def plot_returns(self, returns: Sequence):
-        self.plot_line(line=returns,
+    def plot_returns(self):
+        self.plot_line(line=self.trader.returns_strategy_diff,
                        width=utils.RETURNS_WIDTH,
                        opacity=utils.RETURNS_ALPHA,
                        color=utils.RETURNS_COLOR,
                        name=utils.RETURNS_NAME,
                        _row=self.returns_row,
                        _col=self.returns_col)
+
+    def plot_SL_TP_OPN(self):
+        self.plot_line(line=self.trader._stop_losses,
+                       width=utils.STOP_LOSS_WIDTH,
+                       opacity=utils.STOP_LOSS_ALPHA,
+                       color=utils.STOP_LOSS_COLOR,
+                       name=utils.STOP_LOSS_NAME,
+                       _row=self.data_row,
+                       _col=self.data_col)
+
+        self.plot_line(line=self.trader._take_profits,
+                       width=utils.TAKE_PROFIT_WIDTH,
+                       opacity=utils.TAKE_PROFIT_ALPHA,
+                       color=utils.TAKE_PROFIT_COLOR,
+                       name=utils.TAKE_PROFIT_NAME,
+                       _row=self.data_row,
+                       _col=self.data_col)
+
+        self.plot_line(line=self.trader._open_lot_prices,
+                       width=utils.OPEN_TRADE_WIDTH,
+                       opacity=utils.OPEN_TRADE_ALPHA,
+                       color=utils.OPEN_TRADE_COLOR,
+                       name=utils.OPEN_TRADE_NAME,
+                       _row=self.data_row,
+                       _col=self.data_col)
 
 
 if __name__ == "__main__":
@@ -138,4 +162,4 @@ if __name__ == "__main__":
                 width=3,
                 name='really cool',
                 _row=3)
-    g.figure.show()
+    g.show()
