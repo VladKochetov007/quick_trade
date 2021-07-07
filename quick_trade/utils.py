@@ -7,6 +7,29 @@ from numpy import array, NaN, nan, nan_to_num, ndarray
 from pandas import DataFrame, Series
 from ta.volatility import AverageTrueRange
 
+
+PREDICT_TYPE: type = int
+PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
+CONVERTED_TYPE: type = Union[PREDICT_TYPE, float]
+CONVERTED_TYPE_LIST: type = List[CONVERTED_TYPE]
+
+DEPOSIT_TITLE: str = 'M O N E Y S'
+DEPOSIT_NAME: str = 'deposit (start: {})'
+DEPOSIT_COLOR: str = 'white'
+DEPOSIT_WIDTH: float = 1.0
+DEPOSIT_ALPHA: float = 1.0
+
+RETURNS_TITLE: str = 'R E T U R N S'
+RETURNS_NAME: str = 'returns'
+RETURNS_COLOR: str = DEPOSIT_COLOR
+RETURNS_WIDTH: float = 1.0
+RETURNS_ALPHA: float = 1.0
+
+DATA_TITLE: str = 'D A T A'
+DATA_NAME: str = '{} {}'  # '{} {}'.format(Trader.ticker, Trader.interval)
+DATA_UP_COLOR = 'green'
+DATA_DOWN_COLOR = 'red'
+
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
 TAKE_STOP_OPN_WIDTH: float = 1.0
@@ -16,21 +39,11 @@ ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
 ICHIMOKU_CLOUD_ALPHA: float = 0.4
 TEXT_COLOR: str = 'white'
 SUB_LINES_WIDTH: float = 3.0
-COLOR_DEPOSIT: str = 'white'
 WAIT_SUCCESS_SLEEP: float = 15.0
 WAIT_SUCCESS_PRINT: bool = True
-USE_WAIT_SUCCESS: bool = True
-PREDICT_TYPE: type = int
-PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
-CONVERTED_TYPE: type = Union[PREDICT_TYPE, float]
-CONVERTED_TYPE_LIST: type = List[CONVERTED_TYPE]
-TIME_TITLE = 'T I M E'
-MONEYS_TITLE = 'M O N E Y S'
-RETURNS_TITLE = 'R E T U R N S'
-DATA_TITLE = 'D A T A'
+WAIT_SUCCESS_USE: bool = True
+TIME_TITLE: str = 'T I M E'
 TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
-DATA_UP_COLOR = 'green'
-DATA_DOWN_COLOR = 'red'
 
 RED: str = '#ff0000'
 GREEN: str = '#55ff00'
@@ -48,7 +61,6 @@ __credits__: List[str] = [
     "furas -- Stack overflow",
     "Devin Jeanpierre (edit: wjandrea) -- Stack overflow",
     "Войтенко Николай Поликарпович (Vojtenko Nikolay Polikarpovich) -- helped me test the system of interaction with the binance crypto exchange with 50 dollars.",
-
     "https://fxgears.com/index.php?threads/how-to-acquire-free-historical-tick-and-bar-data-for-algo-trading-and-backtesting-in-2020-stocks-forex-and-crypto-currency.1229/#post-19305 -- binance get historical data method",
     "https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/ and https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
     "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests -- IEX token",
@@ -281,7 +293,7 @@ def wait_success(func):
             try:
                 return func(*args, **kwargs)
             except Exception as e:
-                if not USE_WAIT_SUCCESS:
+                if not WAIT_SUCCESS_USE:
                     raise e
                 if not isinstance(e, KeyboardInterrupt):
                     if WAIT_SUCCESS_PRINT:

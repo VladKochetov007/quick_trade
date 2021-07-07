@@ -415,7 +415,7 @@ winrate: {self.winrate}%"""
             self.fig.add_trace(
                 Line(
                     y=self._backtest_out_no_drop['returns'].values,
-                    line=dict(color=utils.COLOR_DEPOSIT),
+                    line=dict(color=utils.DEPOSIT_COLOR),
                     name='returns'
                 ),
                 row=3,
@@ -459,7 +459,7 @@ winrate: {self.winrate}%"""
             self.fig.add_trace(
                 Line(
                     y=self.deposit_history,
-                    line=dict(color=utils.COLOR_DEPOSIT),
+                    line=dict(color=utils.DEPOSIT_COLOR),
                     name=f'deposit (start: {money_start})'), 2, 1)
             self.fig.add_trace(Line(y=self.average_growth, name='average growth'), 2, 1)
             preds: Dict[str, List[Union[int, float]]] = {'sellind': [],
@@ -607,13 +607,13 @@ winrate: {self.winrate}%"""
             self.fig.add_trace(
                 Line(
                     y=self.deposit_history,
-                    line=dict(color=utils.COLOR_DEPOSIT),
+                    line=dict(color=utils.DEPOSIT_COLOR),
                     name=f'deposit (start: {deposit})'), 2, 1)
             self.fig.add_trace(Line(y=self.average_growth, name='average growth'), 2, 1)
             self.fig.add_trace(
                 Line(
                     y=self.returns_strategy_diff,
-                    line=dict(color=utils.COLOR_DEPOSIT),
+                    line=dict(color=utils.DEPOSIT_COLOR),
                     name='returns'
                 ),
                 row=3,
