@@ -86,6 +86,8 @@ if __name__ == "__main__":
     g = QuickTradeGraph(figure=make_figure())
     from quick_trade.brokers import TradingClient
     import ccxt
+    utils.DATA_UP_COLOR = 'white'
+    utils.DATA_DOWN_COLOR = 'black'
     client = TradingClient(ccxt.binance())
     g.plot_candlestick(client.get_data_historical(ticker='BTC/USDT'))
     g.plot_line([1, 3, 2, 4, 2, 4, 3], color='#fff', width=10, name='stop loss', _row=2, opacity=0.3)
