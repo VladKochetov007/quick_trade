@@ -51,15 +51,22 @@ class QuickTradeGraph(object):
                   _row: int = 1,
                   _col: int = 1):
         return self.figure.add_trace(
-            trace=Scatter(y=line,
-                          name=name,
-                          mode='lines',
-                          line=dict(color=color)),
             row=_row,
-            col=_col)
+            col=_col,
+            trace=Scatter(
+                y=line,
+                text=name,
+                mode='lines',
+                opacity=opacity,
+                line=dict(
+                    color=color,
+                    width=width
+                )
+            )
+        )
 
 
 if __name__ == "__main__":
     g = QuickTradeGraph(figure=make_figure())
-    g.plot_line([1,3,2,4,2,4,3], color='#fff')
+    g.plot_line([1,3,2,4,2,4,3], color='#fff', width=10, name='trrbgbb bgrbg 4 b')
     g.figure.show()

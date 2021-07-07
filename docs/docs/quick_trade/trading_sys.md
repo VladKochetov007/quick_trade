@@ -186,11 +186,18 @@ The method sets the plotly figure for graphs
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| height | Union\[int, float] | Plotly plot height |
-| width | Union\[int, float] | Plotly plot width |
-| template | str | template from https://plotly.com/python/templates/ |
-| row_heights | list | The ratio of the heights of the symbol data, deposit and the deposit change. |
-| subplot_kwargs | named arguments | named arguments for [`plotly.subplots.make_subplots`](https://github.com/plotly/plotly.py/blob/master/packages/python/plotly/plotly/subplots.py#L45) |
+| figure | `_plots.QuickTradeGraph` | QuickTradeGraph figure |
+
+```python
+from quick_trade._plots import QuickTradeGraph, make_figure
+
+
+trader.set_pyplot(
+    QuickTradeGraph(
+        figure=make_figure()
+    )
+)
+```
 
 ### strategy_collider
 
