@@ -13,6 +13,8 @@ PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
 CONVERTED_TYPE: type = Union[PREDICT_TYPE, float]
 CONVERTED_TYPE_LIST: type = List[CONVERTED_TYPE]
 
+TIME_TITLE: str = 'T I M E'
+
 DEPOSIT_TITLE: str = 'M O N E Y S'
 DEPOSIT_NAME: str = 'deposit (start: {})'
 DEPOSIT_COLOR: str = 'white'
@@ -29,6 +31,7 @@ DATA_TITLE: str = 'D A T A'
 DATA_NAME: str = '{} {}'  # '{} {}'.format(Trader.ticker, Trader.interval)
 DATA_UP_COLOR = 'green'
 DATA_DOWN_COLOR = 'red'
+DATA_ALPHA: float = 1.0
 
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
@@ -42,7 +45,6 @@ SUB_LINES_WIDTH: float = 3.0
 WAIT_SUCCESS_SLEEP: float = 15.0
 WAIT_SUCCESS_PRINT: bool = True
 WAIT_SUCCESS_USE: bool = True
-TIME_TITLE: str = 'T I M E'
 TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
 
 RED: str = '#ff0000'

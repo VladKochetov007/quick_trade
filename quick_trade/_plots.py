@@ -84,7 +84,8 @@ class QuickTradeGraph(object):
             col=self.data_col,
             increasing_line_color=utils.DATA_UP_COLOR,
             decreasing_line_color=utils.DATA_DOWN_COLOR,
-            name=utils.DATA_NAME.format(self.trader.ticker, self.trader.interval)
+            name=utils.DATA_NAME.format(self.trader.ticker, self.trader.interval),
+            opacity=utils.DATA_ALPHA
         )
 
     def plot_deposit(self,
