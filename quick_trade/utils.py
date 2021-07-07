@@ -10,12 +10,12 @@ from ta.volatility import AverageTrueRange
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
 TAKE_STOP_OPN_WIDTH: float = 1.0
+TAKE_STOP_OPN_ALPHA: float = 0.8
 ICHIMOKU_LINES_WIDTH: float = 2.0
 ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
 ICHIMOKU_CLOUD_ALPHA: float = 0.4
 TEXT_COLOR: str = 'white'
 SUB_LINES_WIDTH: float = 3.0
-STOP_TAKE_OPN_ALPHA: float = 0.8
 COLOR_DEPOSIT: str = 'white'
 WAIT_SUCCESS_SLEEP: float = 15.0
 WAIT_SUCCESS_PRINT: bool = True
@@ -29,6 +29,8 @@ MONEYS_TITLE = 'M O N E Y S'
 RETURNS_TITLE = 'R E T U R N S'
 DATA_TITLE = 'D A T A'
 TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
+DATA_UP_COLOR = 'green'
+DATA_DOWN_COLOR = 'red'
 
 RED: str = '#ff0000'
 GREEN: str = '#55ff00'

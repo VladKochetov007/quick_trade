@@ -2,6 +2,7 @@ from plotly.graph_objs import Figure, Scatter
 from plotly.subplots import make_subplots
 from typing import Union, List
 import utils
+from pandas import DataFrame
 
 
 @utils.assert_logger
@@ -65,10 +66,28 @@ class QuickTradeGraph(object):
             )
         )
 
+    def plot_candlestick(self,
+                         df: DataFrame,
+                         _row:int=1,
+                         _col:int=1):
+        return self.figure.add_candlestick(
+            open=df['Open'],
+            high=df['High'],
+            low=df['Low'],
+            close=df['Close'],
+            row=_row,
+            col=_col,
+            increasing_line_color=utils.DATA_UP_COLOR,
+            decreasing_line_color=utils.DATA_DOWN_COLOR
+        )
+
 
 if __name__ == "__main__":
     g = QuickTradeGraph(figure=make_figure())
-    g.plot_line([1,3,2,4,2,4,3], color='#fff', width=10, name='stop loss')
-    g.plot_line([1,3,2,4,2,4,3], color='#fff', width=10, name='stop loss', _row=2)
-    g.plot_line([1,3,2,4,2,4,3], color='#fff', width=10, name='stop loss', _row=3)
+    from quick_trade.brokers import TradingClient
+    import ccxt
+    client = TradingClient(ccxt.binance())
+    g.plot_candlestick(client.get_data_historical(ticker='BTC/USDT'))
+    g.plot_line([1, 3, 2, 4, 2, 4, 3], color='#fff', width=10, name='stop loss', _row=2, opacity=0.3)
+    g.plot_line([1, 3, 2, 4, 2, 4, 3], color='#fff', width=3, name='stop lcxzsd`asoss', _row=3)
     g.figure.show()

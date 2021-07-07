@@ -428,12 +428,15 @@ winrate: {self.winrate}%"""
                 open=self.df['Open'],
                 row=1,
                 col=1,
-                name=f'{self.ticker} {self.interval}')
+                name=f'{self.ticker} {self.interval}',
+                increasing_line_color=utils.DATA_UP_COLOR,
+                decreasing_line_color=utils.DATA_DOWN_COLOR
+            )
             self.fig.add_trace(
                 Line(
                     y=self._take_profits,
                     line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.GREEN),
-                    opacity=utils.STOP_TAKE_OPN_ALPHA,
+                    opacity=utils.TAKE_STOP_OPN_ALPHA,
                     name='take profit'),
                 row=1,
                 col=1)
@@ -441,7 +444,7 @@ winrate: {self.winrate}%"""
                 Line(
                     y=self._stop_losses,
                     line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.RED),
-                    opacity=utils.STOP_TAKE_OPN_ALPHA,
+                    opacity=utils.TAKE_STOP_OPN_ALPHA,
                     name='stop loss'),
                 row=1,
                 col=1)
@@ -449,7 +452,7 @@ winrate: {self.winrate}%"""
                 Line(
                     y=self._open_lot_prices,
                     line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.BLUE),
-                    opacity=utils.STOP_TAKE_OPN_ALPHA,
+                    opacity=utils.TAKE_STOP_OPN_ALPHA,
                     name='open trade'),
                 row=1,
                 col=1)
