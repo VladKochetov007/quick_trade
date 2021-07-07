@@ -95,8 +95,17 @@ class QuickTradeGraph(object):
                        width=utils.DEPOSIT_WIDTH,
                        opacity=utils.DEPOSIT_ALPHA,
                        color=utils.DEPOSIT_COLOR,
-                       name=utils.DEPOSIT_NAME.format(deposit_start))
-        average_growth = self.trader.average_growth
+                       name=utils.DEPOSIT_NAME.format(deposit_start),
+                       _row=self.deposit_row,
+                       _col=self.deposit_col)
+
+        self.plot_line(line=self.trader.average_growth,
+                       width=utils.AVERAGE_GROWTH_WIDTH,
+                       opacity=utils.AVERAGE_GROWTH_ALPHA,
+                       color=utils.AVERAGE_GROWTH_COLOR,
+                       name=utils.AVERAGE_GROWTH_NAME,
+                       _row=self.deposit_row,
+                       _col=self.deposit_col)
 
     def plot_returns(self, returns: Sequence):
         self.plot_line(line=returns,
@@ -106,6 +115,7 @@ class QuickTradeGraph(object):
                        name=utils.RETURNS_NAME,
                        _row=self.returns_row,
                        _col=self.returns_col)
+
 
 if __name__ == "__main__":
     from quick_trade.brokers import TradingClient

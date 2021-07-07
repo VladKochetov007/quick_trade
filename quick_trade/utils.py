@@ -33,6 +33,11 @@ DATA_UP_COLOR = 'green'
 DATA_DOWN_COLOR = 'red'
 DATA_ALPHA: float = 1.0
 
+AVERAGE_GROWTH_NAME: str = 'average growth'
+AVERAGE_GROWTH_COLOR: str = '#F1A5FB'
+AVERAGE_GROWTH_WIDTH: float = 1.0
+AVERAGE_GROWTH_ALPHA: float = 1.0
+
 SCATTER_SIZE: float = 12.0
 SCATTER_ALPHA: float = 1.0
 TAKE_STOP_OPN_WIDTH: float = 1.0
