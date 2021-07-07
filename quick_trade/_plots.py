@@ -55,7 +55,7 @@ class QuickTradeGraph(object):
             col=_col,
             trace=Scatter(
                 y=line,
-                text=name,
+                name=name,
                 mode='lines',
                 opacity=opacity,
                 line=dict(
@@ -68,5 +68,7 @@ class QuickTradeGraph(object):
 
 if __name__ == "__main__":
     g = QuickTradeGraph(figure=make_figure())
-    g.plot_line([1,3,2,4,2,4,3], color='#fff', width=10, name='trrbgbb bgrbg 4 b')
+    g.plot_line([1,3,2,4,2,4,3], color='#fff', width=10, name='stop loss')
+    g.plot_line([1,3,2,4,2,4,3], color='#fff', width=10, name='stop loss', _row=2)
+    g.plot_line([1,3,2,4,2,4,3], color='#fff', width=10, name='stop loss', _row=3)
     g.figure.show()
