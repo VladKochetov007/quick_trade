@@ -10,7 +10,6 @@
 #   3.9
 #   subplot plot directory
 #   decorator for strategies without exit condition (not converted data)
-import pprint
 from copy import copy
 from datetime import datetime
 from re import fullmatch
@@ -19,17 +18,11 @@ from time import ctime, sleep, time
 from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
 
 import ta
-import ta.momentum
-import ta.others
-import ta.trend
-import ta.volatility
-import ta.volume
 from numpy import array, ndarray, inf, nan, digitize, mean, nan_to_num
 from pandas import DataFrame, Series
-from plotly.subplots import make_subplots
-from plotly.graph_objs import Figure
-from quick_trade import utils
-from quick_trade.brokers import TradingClient
+from _plots import QuickTradeGraph
+import utils
+from brokers import TradingClient
 
 Line = dict  # To avoid the deprecation warning
 
@@ -74,7 +67,7 @@ class Trader(object):
     resistances: Dict[int, float]
     trading_on_client: bool
     _converted: utils.CONVERTED_TYPE_LIST
-    fig: Figure
+    fig: QuickTradeGraph
 
     @property
     def _converted(self):
@@ -294,7 +287,7 @@ class Trader(object):
         self.losses = 0
         moneys_open_bet: Union[float, int] = deposit
         money_start: Union[float, int] = deposit
-        oldsig = utils.EXIT
+        prev_sig = utils.EXIT
 
         e: int
         sig: utils.PREDICT_TYPE
@@ -318,7 +311,7 @@ class Trader(object):
                                          data_low[1:])):
 
             if converted_element is not nan:
-                if oldsig != utils.EXIT:
+                if prev_sig != utils.EXIT:
                     commission_reuse = 2
                 else:
                     commission_reuse = 1
@@ -376,11 +369,11 @@ class Trader(object):
                 deposit += bet * credit_lev * diff / open_price
             no_order = exit_take_stop
             self.deposit_history.append(deposit)
-            oldsig = sig
+            prev_sig = sig
             if converted_element is not nan:
                 if sig != utils.EXIT:
                     self.trades += 1
-                if oldsig != utils.EXIT:
+                if prev_sig != utils.EXIT:
                     if deposit > moneys_open_bet:
                         self.profits += 1
                     elif deposit < moneys_open_bet:
@@ -629,39 +622,11 @@ winrate: {self.winrate}%"""
 
     @utils.assert_logger
     def set_pyplot(self,
-                   height: Union[int, float] = 900,
-                   width: Union[int, float] = 1300,
-                   template: str = 'plotly_dark',
-                   row_heights: List[Union[int, float]] = [10, 16, 7],
-                   **subplot_kwargs):  # TODO: make overload
+                   figure: QuickTradeGraph):
         """
 
-        :param height: window height
-        :param width: window width
-        :param template: plotly template
-        :param row_heights: standard
         """
-        assert isinstance(height, (int, float)), 'height must be of type <int> or <float>'
-        assert isinstance(width, (int, float)), 'width must be of type <int> or <float>'
-        assert isinstance(template, str), 'template must be of type <str>'
-        assert isinstance(row_heights, list), 'row_heights must be of type <List[int, float]>'
-        for el in row_heights:
-            assert isinstance(el, (int, float)), 'row_heights must be of type <List[int, float]>'
-
-        self.fig = make_subplots(3, 1, row_heights=row_heights, **subplot_kwargs)
-        self.fig.update_layout(
-            height=height,
-            width=width,
-            template=template,
-            xaxis_rangeslider_visible=False)
-        self.fig.update_xaxes(
-            title_text=utils.TIME_TITLE, row=3, col=1, color=utils.TEXT_COLOR)
-        self.fig.update_yaxes(
-            title_text=utils.MONEYS_TITLE, row=2, col=1, color=utils.TEXT_COLOR)
-        self.fig.update_yaxes(
-            title_text=utils.RETURNS_TITLE, row=3, col=1, color=utils.TEXT_COLOR)
-        self.fig.update_yaxes(
-            title_text=utils.DATA_TITLE, row=1, col=1, color=utils.TEXT_COLOR)
+        self.fig = figure
         utils.logger.info('new %s graph', self)
 
     @utils.assert_logger

@@ -1,4 +1,4 @@
-from plotly.graph_objs import Figure
+from plotly.graph_objs import Figure, Scatter
 from plotly.subplots import make_subplots
 from typing import Union, List
 import utils
@@ -36,10 +36,30 @@ def make_figure(height: Union[int, float] = 900,
 class QuickTradeGraph(object):
     figure: Figure
 
-    def __init__(self, figure):
+    def __init__(self, figure: Figure):
         self.figure = figure
+
+    def show(self, **kwargs):
+        return self.figure.show(**kwargs)
+
+    def plot_line(self,
+                  line=None,
+                  width: float = 1.0,
+                  opacity: float = 1.0,
+                  color: str = None,
+                  name: str = None,
+                  _row: int = 1,
+                  _col: int = 1):
+        return self.figure.add_trace(
+            trace=Scatter(y=line,
+                          name=name,
+                          mode='lines',
+                          line=dict(color=color)),
+            row=_row,
+            col=_col)
 
 
 if __name__ == "__main__":
     g = QuickTradeGraph(figure=make_figure())
+    g.plot_line([1,3,2,4,2,4,3], color='#fff')
     g.figure.show()
