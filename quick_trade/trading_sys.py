@@ -18,11 +18,11 @@ from time import ctime, sleep, time
 from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
 
 import ta
+import utils
+from _plots import QuickTradeGraph
+from brokers import TradingClient
 from numpy import array, ndarray, inf, nan, digitize, mean, nan_to_num
 from pandas import DataFrame, Series
-from _plots import QuickTradeGraph
-import utils
-from brokers import TradingClient
 
 Line = dict  # To avoid the deprecation warning
 
@@ -472,10 +472,10 @@ winrate: {self.winrate}%"""
                                                         self._converted,
                                                         utils.convert(self._credit_leverages))):
                 if e != 0:
-                    credlev_up = self._credit_leverages[e-1] < self._credit_leverages[e]
-                    credlev_down = self._credit_leverages[e-1] > self._credit_leverages[e]
+                    credlev_up = self._credit_leverages[e - 1] < self._credit_leverages[e]
+                    credlev_down = self._credit_leverages[e - 1] > self._credit_leverages[e]
                     sell = (credlev_down and pred == utils.BUY) or (credlev_up and pred == utils.SELL)
-                    buy  = (credlev_down and pred == utils.SELL) or (credlev_up and pred == utils.BUY)
+                    buy = (credlev_down and pred == utils.SELL) or (credlev_up and pred == utils.BUY)
                 else:
                     sell = buy = False
 

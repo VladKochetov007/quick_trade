@@ -12,8 +12,7 @@ To create a strategy, you will need to generate values for:
 
 ?> Lengths of all these variables are equal to the length of the dataframe with the prices of the traded currency.
 
-If your strategy does not provide for the use of anything from this list, quick_trade provides methods for setting
-default values (as if the trader and tester would not use them).
+If your strategy does not provide for the use of anything from this list, quick_trade provides methods for setting default values (as if the trader and tester would not use them).
 
 If your strategy does not generate stop loss or take profit, there is the
 [`Trader.set_open_stop_and_take`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=set_open_stop_and_take)

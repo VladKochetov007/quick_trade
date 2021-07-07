@@ -1,8 +1,9 @@
-from plotly.graph_objs import Figure, Scatter
-from plotly.subplots import make_subplots
 from typing import Union, List
+
 import utils
 from pandas import DataFrame
+from plotly.graph_objs import Figure, Scatter
+from plotly.subplots import make_subplots
 
 
 @utils.assert_logger
@@ -68,8 +69,8 @@ class QuickTradeGraph(object):
 
     def plot_candlestick(self,
                          df: DataFrame,
-                         _row:int=1,
-                         _col:int=1):
+                         _row: int = 1,
+                         _col: int = 1):
         return self.figure.add_candlestick(
             open=df['Open'],
             high=df['High'],
@@ -86,10 +87,11 @@ if __name__ == "__main__":
     g = QuickTradeGraph(figure=make_figure())
     from quick_trade.brokers import TradingClient
     import ccxt
+
     utils.DATA_UP_COLOR = 'white'
     utils.DATA_DOWN_COLOR = 'black'
     client = TradingClient(ccxt.binance())
     g.plot_candlestick(client.get_data_historical(ticker='BTC/USDT'))
-    g.plot_line([1, 3, 2, 4, 2, 4, 3], color='#fff', width=10, name='stop loss', _row=2, opacity=0.3)
-    g.plot_line([1, 3, 2, 4, 2, 4, 3], color='#fff', width=3, name='stop lcxzsd`asoss', _row=3)
+    g.plot_line([1, 3, 2, 4, 2, 4, 3], color='#fff', width=10, name='hm§', _row=2, opacity=0.3)
+    g.plot_line([1, 3, 2, 4, 2, 4, 3], color='#fff', width=3, name='if u cn rd ths u r programmer', _row=3)
     g.figure.show()

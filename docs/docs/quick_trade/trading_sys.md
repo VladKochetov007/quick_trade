@@ -107,8 +107,8 @@ trader.inverse_strategy()
 
 ### backtest
 
-A method with the functionality of testing a strategy on historical data. For it to work, you need to use a strategy
-that will assign values to `self.returns`,` self._stop_losses`, `self._take_profits` and `self._credit_leverages`.
+A method with the functionality of testing a strategy on historical data. For it to work, you need to use a strategy that will assign values to `self.returns`,` self._stop_losses`, `self._take_profits`
+and `self._credit_leverages`.
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -120,8 +120,7 @@ that will assign values to `self.returns`,` self._stop_losses`, `self._take_prof
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
 | returns | `pd.DataFrame` | Dataframe with information about the deposit, strategy signals, `.diff()` of deposit, stop loss, take profit, opening prices, average growth of deposit, and dataframe series. |
 
-?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the
-desired trade, deal is immediately reduced to the level of the deposit.
+?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the desired trade, deal is immediately reduced to the level of the deposit.
 
 ```python
 trader.set_pyplot()
@@ -150,8 +149,7 @@ A method for testing a strategy on several symbols.
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
 | returns | `pd.DataFrame` | Dataframe with information about the deposit, average growth of deposit and `.diff()` of deposit. |
 
-!> Each pair is tested separately and then the results are summarized. Because of this, the strategies do not use the
-total deposit in such a test.
+!> Each pair is tested separately and then the results are summarized. Because of this, the strategies do not use the total deposit in such a test.
 
 ```python
 import numpy as np
@@ -191,7 +189,6 @@ The method sets the plotly figure for graphs
 ```python
 from quick_trade._plots import QuickTradeGraph, make_figure
 
-
 trader.set_pyplot(
     QuickTradeGraph(
         figure=make_figure()
@@ -201,19 +198,15 @@ trader.set_pyplot(
 
 ### strategy_collider
 
-This method allows you to combine two strategies into one; it takes the lists of strategy predictions, and the combining
-mode as input values.
+This method allows you to combine two strategies into one; it takes the lists of strategy predictions, and the combining mode as input values.
 
 Available modes:
 
-- `minimalist`: If both predictions are short, then the result of the collider will be short. If both are long, then
-  long. If the predictions do not match - exit
+- `minimalist`: If both predictions are short, then the result of the collider will be short. If both are long, then long. If the predictions do not match - exit
 
-- `maximalist`: If both predictions are short, then the result of the collider will be short. If both are long, then
-  long. If the predictions do not match - result of the last merge.
+- `maximalist`: If both predictions are short, then the result of the collider will be short. If both are long, then long. If the predictions do not match - result of the last merge.
 
-- `super`: If an element of one of the predictions has changed, but the other not, the result is equal to the one that
-  has changed. If they changed at the same time - exit.
+- `super`: If an element of one of the predictions has changed, but the other not, the result is equal to the one that has changed. If they changed at the same time - exit.
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -232,15 +225,14 @@ trader.strategy_collider(trader.strategy_2_sma(50, 20),
 
 [`strategy_collider`](#strategy_collider) for multiple strategies
 
-?> First, the first two strategies are combined, and then the result of the previous join is combined with subsequent
-strategies.
+?> First, the first two strategies are combined, and then the result of the previous join is combined with subsequent strategies.
 
 ```python
 trader.strategy_collider(trader.strategy_2_sma(50, 20),
                          trader.strategy_2_sma(20, 10),
                          trader.strategy_parabolic_SAR(),
                          trader.strategy_macd(),
-                         mode = 'maximalist')
+                         mode='maximalist')
 ```
 
 ### get_trading_predict
@@ -269,8 +261,7 @@ This method is needed to get the result of the strategy and open an order on the
 
 ### strategy_diff
 
-The strategy issues its verdict based on the last change to the dataframe. If you give the entry the closing price of
-candles, then if the candle is green - long, if red - short
+The strategy issues its verdict based on the last change to the dataframe. If you give the entry the closing price of candles, then if the candle is green - long, if red - short
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -285,8 +276,7 @@ Class with examples of strategies, inherited from the [`Trader`](#Trader) class
 
 ### strategy_rsi
 
-When the RSI is greater than the `maximum`, and the current value is less than the previous one, short. It's the same
-with long (but with `minimum`).
+When the RSI is greater than the `maximum`, and the current value is less than the previous one, short. It's the same with long (but with `minimum`).
 
 If the value has crossed the border with mid` - exit
 
