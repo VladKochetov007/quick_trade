@@ -17,7 +17,7 @@ def make_figure(height: Union[int, float] = 900,
     for el in row_heights:
         assert isinstance(el, (int, float)), 'row_heights must be of type <List[int, float]>'
 
-    fig = make_subplots(3, 1, row_heights=row_heights, )
+    fig = make_subplots(3, 1, row_heights=row_heights)
     fig.update_layout(
         height=height,
         width=width,
@@ -35,7 +35,7 @@ def make_figure(height: Union[int, float] = 900,
 
 
 class QuickTradeGraph(object):
-    figure: Figure
+    _figure: Figure
     data_row: int = 1
     data_col: int = 1
     deposit_row: int = 2
@@ -43,26 +43,33 @@ class QuickTradeGraph(object):
     returns_row: int = 3
     returns_col: int = 1
 
-    def __init__(self, trader, figure: Figure):
-        self.figure = figure
+    def __init__(self, figure: Figure):
+        self._figure = figure
+
+    def connect_trader(self, trader):
         self.trader = trader
+        self.trader.fig = self
+        utils.logger.info('new %s graph', self.trader)
 
     def show(self, **kwargs):
-        self.figure.show(**kwargs)
+        self._figure.show(**kwargs)
 
     def plot_line(self,
-                  line: Iterable=None,
+                  line: Iterable = None,
+                  index: Iterable = None,
                   width: float = 1.0,
                   opacity: float = 1.0,
                   color: str = None,
                   name: str = None,
                   _row: int = 1,
                   _col: int = 1,
-                  mode: str = 'lines'):
-        self.figure.add_trace(
+                  mode: str = 'lines',
+                  marker: str = None):
+        self._figure.add_trace(
             row=_row,
             col=_col,
             trace=Scatter(
+                x=index,
                 y=line,
                 name=name,
                 mode=mode,
@@ -70,12 +77,18 @@ class QuickTradeGraph(object):
                 line=dict(
                     color=color,
                     width=width
+                ),
+                marker=dict(
+                    color=color,
+                    size=width,
+                    opacity=opacity,
+                    symbol=marker
                 )
             )
         )
 
     def plot_candlestick(self):
-        self.figure.add_candlestick(
+        self._figure.add_candlestick(
             open=self.trader.df['Open'],
             high=self.trader.df['High'],
             low=self.trader.df['Low'],
@@ -171,8 +184,8 @@ class QuickTradeGraph(object):
                 preds['buyind'].append(e)
                 preds['bprice'].append(loc[e])
         name: str
-        index: int
-        price: float
+        index: List[Union[int, float]]
+        price: List[Union[int, float]]
         width: float
         alpha: float
         for name, index, price, triangle_type, color, width, alpha in zip(
@@ -199,39 +212,29 @@ class QuickTradeGraph(object):
                  utils.TRADE_MARKER_SELL_ALPHA,
                  utils.TRADE_MARKER_EXIT_ALPHA]
         ):
-            self.figure.add_scatter(
+            self.plot_line(
                 mode='markers',
                 name=name,
-                y=price,
-                x=index,
-                row=self.data_row,
-                col=self.data_col,
-                line=dict(color=color),
-                marker=dict(
-                    symbol=triangle_type,
-                    size=width,
-                    opacity=alpha))
+                line=price,
+                index=index,
+                _row=self.data_row,
+                _col=self.data_col,
+                color=color,
+                marker=triangle_type,
+                width=width,
+                opacity=alpha)
 
 
 if __name__ == "__main__":
     from quick_trade.brokers import TradingClient
-    from trading_sys import Trader
+    from trading_sys import Trader, ExampleStrategies
     import ccxt
 
+    g = QuickTradeGraph(figure=make_figure())
+
     client = TradingClient(ccxt.binance())
-    t = Trader(df=client.get_data_historical('BTC/USDT'))
-    g = QuickTradeGraph(trader=t,
-                        figure=make_figure())
-    g.plot_candlestick()
-    g.plot_line([1, 3, 2, 4, 2, 4, 3],
-                color='#fff',
-                width=10,
-                name='hm, quick-trade is cool',
-                _row=2,
-                opacity=0.3)
-    g.plot_line([1, 23, 45, 68, 9, 86, 53, 34, 56, 78, 9, 8, 76, 5, 4, 3, 4, 57],
-                color='#fff',
-                width=3,
-                name='really cool',
-                _row=3)
-    g.show()
+    t = ExampleStrategies(df=client.get_data_historical('BTC/USDT'))
+    t.connect_graph(graph=g)
+
+    t.strategy_macd()
+    t.backtest()

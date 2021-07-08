@@ -24,7 +24,6 @@ from brokers import TradingClient
 from numpy import array, ndarray, inf, nan, digitize, mean, nan_to_num
 from pandas import DataFrame, Series
 
-Line = dict  # To avoid the deprecation warning
 
 
 class Trader(object):
@@ -412,104 +411,14 @@ winrate: {self.winrate}%"""
         self.backtest_out = self._backtest_out_no_drop.dropna()
         if plot:
             loc: Series = self.df['Close']
-            self.fig.add_trace(
-                Line(
-                    y=self._backtest_out_no_drop['returns'].values,
-                    line=dict(color=utils.DEPOSIT_COLOR),
-                    name='returns'
-                ),
-                row=3,
-                col=1
-            )
-            self.fig.add_candlestick(
-                close=self.df['Close'],
-                high=self.df['High'],
-                low=self.df['Low'],
-                open=self.df['Open'],
-                row=1,
-                col=1,
-                name=f'{self.ticker} {self.interval}',
-                increasing_line_color=utils.DATA_UP_COLOR,
-                decreasing_line_color=utils.DATA_DOWN_COLOR
-            )
-            self.fig.add_trace(
-                Line(
-                    y=self._take_profits,
-                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.GREEN),
-                    opacity=utils.TAKE_STOP_OPN_ALPHA,
-                    name='take profit'),
-                row=1,
-                col=1)
-            self.fig.add_trace(
-                Line(
-                    y=self._stop_losses,
-                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.RED),
-                    opacity=utils.TAKE_STOP_OPN_ALPHA,
-                    name='stop loss'),
-                row=1,
-                col=1)
-            self.fig.add_trace(
-                Line(
-                    y=self._open_lot_prices,
-                    line=dict(width=utils.TAKE_STOP_OPN_WIDTH, color=utils.BLUE),
-                    opacity=utils.TAKE_STOP_OPN_ALPHA,
-                    name='open trade'),
-                row=1,
-                col=1)
-            self.fig.add_trace(
-                Line(
-                    y=self.deposit_history,
-                    line=dict(color=utils.DEPOSIT_COLOR),
-                    name=f'deposit (start: {money_start})'), 2, 1)
-            self.fig.add_trace(Line(y=self.average_growth, name='average growth'), 2, 1)
-            preds: Dict[str, List[Union[int, float]]] = {'sellind': [],
-                                                         'exitind': [],
-                                                         'buyind': [],
-                                                         'bprice': [],
-                                                         'sprice': [],
-                                                         'eprice': []}
-            for e, (pred, conv, crlev) in enumerate(zip(self.returns,
-                                                        self._converted,
-                                                        utils.convert(self._credit_leverages))):
-                if e != 0:
-                    credlev_up = self._credit_leverages[e - 1] < self._credit_leverages[e]
-                    credlev_down = self._credit_leverages[e - 1] > self._credit_leverages[e]
-                    sell = (credlev_down and pred == utils.BUY) or (credlev_up and pred == utils.SELL)
-                    buy = (credlev_down and pred == utils.SELL) or (credlev_up and pred == utils.BUY)
-                else:
-                    sell = buy = False
 
-                if conv == utils.EXIT or crlev == 0:
-                    preds['exitind'].append(e)
-                    preds['eprice'].append(loc[e])
-                elif conv == utils.SELL or sell:
-                    preds['sellind'].append(e)
-                    preds['sprice'].append(loc[e])
-                elif conv == utils.BUY or buy:
-                    preds['buyind'].append(e)
-                    preds['bprice'].append(loc[e])
-            name: str
-            index: int
-            price: float
-            for name, index, price, triangle_type, color in zip(
-                    ['Buy', 'Sell', 'Exit'],
-                    [preds['buyind'], preds['sellind'], preds['exitind']],
-                    [preds['bprice'], preds['sprice'], preds['eprice']],
-                    ['triangle-up', 'triangle-down', 'triangle-left'],
-                    [utils.GREEN, utils.RED, utils.BLUE]
-            ):
-                self.fig.add_scatter(
-                    mode='markers',
-                    name=name,
-                    y=price,
-                    x=index,
-                    row=1,
-                    col=1,
-                    line=dict(color=color),
-                    marker=dict(
-                        symbol=triangle_type,
-                        size=utils.SCATTER_SIZE,
-                        opacity=utils.SCATTER_ALPHA))
+            self.fig.plot_candlestick()
+            self.fig.plot_trade_triangles()
+            self.fig.plot_SL_TP_OPN()
+
+            self.fig.plot_deposit()
+
+            self.fig.plot_returns()
             if show:
                 self.fig.show()
 
@@ -558,7 +467,7 @@ winrate: {self.winrate}%"""
             df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
             new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
             new_trader.set_client(your_client=self.client)
-            new_trader.set_pyplot()
+            new_trader.connect_graph()
             new_trader._get_attr(strategy_name)(**strategy_kwargs)
             new_trader.backtest(deposit=deposit / len(tickers),
                                 bet=bet,
@@ -604,33 +513,21 @@ winrate: {self.winrate}%"""
         if print_out:
             print(self._info)
         if plot:
-            self.fig.add_trace(
-                Line(
-                    y=self.deposit_history,
-                    line=dict(color=utils.DEPOSIT_COLOR),
-                    name=f'deposit (start: {deposit})'), 2, 1)
-            self.fig.add_trace(Line(y=self.average_growth, name='average growth'), 2, 1)
-            self.fig.add_trace(
-                Line(
-                    y=self.returns_strategy_diff,
-                    line=dict(color=utils.DEPOSIT_COLOR),
-                    name='returns'
-                ),
-                row=3,
-                col=1
-            )
+            self.fig.plot_deposit()
+            self.fig.plot_returns()
         if show:
             self.fig.show()
         return self.backtest_out
 
     @utils.assert_logger
-    def set_pyplot(self,
-                   figure: QuickTradeGraph):
+    def connect_graph(self,
+                      graph: QuickTradeGraph):
+        """
+        connect QuickTradeGraph
         """
 
-        """
-        self.fig = figure
-        utils.logger.info('new %s graph', self)
+        self.fig = graph
+        self.fig.connect_trader(self)
 
     @utils.assert_logger
     def strategy_collider(self,
@@ -964,7 +861,7 @@ winrate: {self.winrate}%"""
             trader = MultiRealTimeTrader(ticker=pare,
                                          interval=self.interval,
                                          trading_on_client=self.trading_on_client)
-            trader.set_pyplot()
+            trader.connect_graph(graph=self.fig)
             trader.set_client(copy(self.client))
 
             while True:
@@ -985,16 +882,16 @@ winrate: {self.winrate}%"""
             thread = Thread(target=start_trading, args=(ticker,))
             thread.start()
 
-    def log_data(self):
-        self.fig.update_yaxes(row=1, col=1, type='log')
+    def log_data(self):  # TODO \/ do normal graph
+        self.fig._figure.update_yaxes(row=1, col=1, type='log')
         utils.logger.debug('trader log data')
 
     def log_deposit(self):
-        self.fig.update_yaxes(row=2, col=1, type='log')
+        self.fig._figure.update_yaxes(row=2, col=1, type='log')
         utils.logger.debug('trader log deposit')
 
     def log_returns(self):
-        self.fig.update_yaxes(row=3, col=1, type='log')
+        self.fig._figure.update_yaxes(row=3, col=1, type='log')
         utils.logger.debug('trader log returns')
 
     @utils.assert_logger
@@ -1051,10 +948,10 @@ winrate: {self.winrate}%"""
         closes: ndarray = self.df['Close'].values
         sig: utils.PREDICT_TYPE
         close: float
-        seted: utils.CONVERTED_TYPE
+        converted: utils.CONVERTED_TYPE
         ts: Dict[str, float]
-        for sig, close, seted in zip(self.returns, closes, self._converted):
-            if seted is not nan:
+        for sig, close, converted in zip(self.returns, closes, self._converted):
+            if converted is not nan:
                 self._open_price = close
                 if set_take or set_stop:
                     ts = self.__get_stop_take(sig)
@@ -1263,14 +1160,20 @@ class ExampleStrategies(Trader):
                                          ['red',
                                           'blue',
                                           'green']):
-                self.fig.add_trace(Line(y=data, name=name, line=dict(width=utils.ICHIMOKU_LINES_WIDTH, color=color)),
-                                   col=1, row=1)
+                self.fig.plot_line(
+                    line=data,
+                    name=name,
+                    width=utils.ICHIMOKU_LINES_WIDTH,
+                    color=color,
+                    _row=self.fig.data_row,
+                    _col=self.fig.data_col
+                )
 
-            self.fig.add_trace(Line(y=senkou_span_a,
+            self.fig.add_trace(dict(y=senkou_span_a,
                                     fill=None,
                                     line_color=utils.RED,
                                     ))
-            self.fig.add_trace(Line(
+            self.figadd_trace(dict(
                 y=senkou_span_b,
                 fill='tonexty',
                 line_color=utils.ICHIMOKU_CLOUD_COLOR))

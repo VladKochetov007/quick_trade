@@ -26,7 +26,7 @@ TEXT_COLOR: str = 'white'
 TIME_TITLE: str = 'T I M E'
 
 DEPOSIT_TITLE: str = 'M O N E Y S'
-DEPOSIT_NAME: str = 'deposit (start: {})'
+DEPOSIT_NAME: str = 'deposit (start: {})'  # .format(Trader.deposit_history[0])
 DEPOSIT_COLOR: str = 'white'
 DEPOSIT_WIDTH: float = 1.0
 DEPOSIT_ALPHA: float = 1.0

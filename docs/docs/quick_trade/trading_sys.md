@@ -123,7 +123,7 @@ and `self._credit_leverages`.
 ?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the desired trade, deal is immediately reduced to the level of the deposit.
 
 ```python
-trader.set_pyplot()
+trader.connect_graph()
 
 # At this point, you need to use the strategy
 
@@ -178,22 +178,29 @@ winrate: 49.9921984709003%
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/multi_backtest.png?raw=true)
 
-### set_pyplot
+### connect_graph
 
 The method sets the plotly figure for graphs
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| figure | `_plots.QuickTradeGraph` | QuickTradeGraph figure |
+| graph | `_plots.QuickTradeGraph` | QuickTradeGraph figure |
 
 ```python
 from quick_trade._plots import QuickTradeGraph, make_figure
 
-trader.set_pyplot(
-    QuickTradeGraph(
-        figure=make_figure()
-    )
-)
+figure = make_figure()
+graph = QuickTradeGraph(figure=figure)
+```
+
+```python
+trader.connect_graph(graph)
+```
+
+or
+
+```python
+graph.connect_trader(trader=trader)
 ```
 
 ### strategy_collider
