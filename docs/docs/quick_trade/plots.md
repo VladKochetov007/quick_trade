@@ -1,4 +1,4 @@
-# _plots
+# plots
 
 File for creating quick-trade charts.
 

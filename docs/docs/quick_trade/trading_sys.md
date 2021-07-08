@@ -184,10 +184,10 @@ The method sets the plotly figure for graphs
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| graph | `_plots.QuickTradeGraph` | QuickTradeGraph figure |
+| graph | `plots.QuickTradeGraph` | QuickTradeGraph figure |
 
 ```python
-from quick_trade._plots import QuickTradeGraph, make_figure
+from quick_trade.plots import QuickTradeGraph, make_figure
 
 figure = make_figure()
 graph = QuickTradeGraph(figure=figure)

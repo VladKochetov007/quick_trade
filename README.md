@@ -169,7 +169,7 @@ Use the strategy on real moneys. YES, IT'S FULLY AUTOMATED!
 import datetime
 from quick_trade.trading_sys import ExampleStrategies
 from quick_trade.brokers import TradingClient
-from quick_trade._plots import QuickTradeGraph, make_figure
+from quick_trade.plots import QuickTradeGraph, make_figure
 import ccxt
 
 ticker = 'MATIC/USDT'

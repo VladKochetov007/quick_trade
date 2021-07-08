@@ -19,7 +19,7 @@ from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
 
 import ta
 import utils
-from _plots import QuickTradeGraph
+from plots import QuickTradeGraph
 from brokers import TradingClient
 from numpy import array, ndarray, inf, nan, digitize, mean, nan_to_num
 from pandas import DataFrame, Series

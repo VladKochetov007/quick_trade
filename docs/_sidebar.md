@@ -2,6 +2,7 @@
 
     - [trading_sys](docs/quick_trade/trading_sys.md)
     - [utils](docs/quick_trade/utils.md)
+    - [plots](docs/quick_trade/plots.md)
     - [quick_trade_tuner](docs/quick_trade/quick_trade_tuner/README.md)
 
         - [core](docs/quick_trade/quick_trade_tuner/core.md)
