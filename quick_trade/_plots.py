@@ -209,8 +209,8 @@ class QuickTradeGraph(object):
                 line=dict(color=color),
                 marker=dict(
                     symbol=triangle_type,
-                    size=utils.SCATTER_SIZE,
-                    opacity=utils.SCATTER_ALPHA))
+                    size=width,
+                    opacity=alpha))
 
 
 if __name__ == "__main__":
