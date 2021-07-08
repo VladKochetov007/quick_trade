@@ -1,4 +1,4 @@
-from typing import Union, List, Iterable, Sequence, Dict
+from typing import Union, List, Iterable, Dict
 
 import utils
 from plotly.graph_objs import Figure, Scatter
@@ -233,11 +233,28 @@ class QuickTradeGraph(object):
                                  col=_col,
                                  type='log')
 
+    def plot_area(self,
+                  fast: Iterable = None,
+                  slow: Iterable = None,
+                  name_fast: str = None,
+                  name_slow: str = None):
+        self.plot_line(line=fast,
+                       color=utils.SENKOU_SPAN_A_COLOR,
+                       _row=self.data_row,
+                       _col=self.data_col,
+                       name=name_fast)
+        self.plot_line(line=slow,
+                       fill='tonexty',
+                       color=utils.ICHIMOKU_CLOUD_COLOR,
+                       _row=self.data_row,
+                       _col=self.data_col,
+                       name=name_slow)
+
 
 if __name__ == "__main__":
     from quick_trade.brokers import TradingClient
-    from trading_sys import Trader, ExampleStrategies
-    import ccxt
+    from trading_sys import ExampleStrategies
+    import ccxt, time
 
     g = QuickTradeGraph(figure=make_figure())
 
@@ -245,5 +262,7 @@ if __name__ == "__main__":
     t = ExampleStrategies(df=client.get_data_historical('BTC/USDT'))
     t.connect_graph(graph=g)
 
-    t.strategy_macd()
+    t.strategy_ichimoku()
     t.backtest()
+    time.sleep(1)
+    print('aboba')

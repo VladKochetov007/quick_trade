@@ -953,20 +953,28 @@ winrate: {self.winrate}%"""
         close: float
         converted: utils.CONVERTED_TYPE
         ts: Dict[str, float]
-        for sig, close, converted in zip(self.returns, closes, self._converted):
+        for e, (sig, close, converted) in enumerate(zip(self.returns, closes, self._converted)):
             if converted is not nan:
                 self._open_price = close
-                if set_take or set_stop:
-                    ts = self.__get_stop_take(sig)
-                if set_take:
-                    take_flag = ts['take']
-                if set_stop:
-                    stop_flag = ts['stop']
+                if sig != utils.EXIT:
+                    if set_take or set_stop:
+                        ts = self.__get_stop_take(sig)
+                    if set_take:
+                        take_flag = ts['take']
+                    if set_stop:
+                        stop_flag = ts['stop']
+                else:
+                    take_flag = stop_flag = self._open_price
+
             self._open_lot_prices.append(self._open_price)
             if set_take:
                 self._take_profits.append(take_flag)
+            elif sig == utils.EXIT:
+                self._take_profits[e] = take_flag
             if set_stop:
                 self._stop_losses.append(stop_flag)
+            elif sig == utils.EXIT:
+                self._stop_losses[e] = take_flag
         utils.logger.debug('trader stop loss: %f pips, trader take profit: %f pips', stop_loss, take_profit)
 
     @utils.assert_logger
@@ -1132,7 +1140,8 @@ class ExampleStrategies(Trader):
                                            tenkansen,
                                            kijunsen,
                                            senkouspan,
-                                           visual=True)
+                                           visual=True,
+                                           fillna=True)
         tenkan_sen: ndarray = cloud.ichimoku_conversion_line().values
         kinjun_sen: ndarray = cloud.ichimoku_base_line().values
         senkou_span_a: ndarray = cloud.ichimoku_a().values
@@ -1172,17 +1181,13 @@ class ExampleStrategies(Trader):
                     _col=self.fig.data_col
                 )
 
-            self.fig.add_trace(dict(y=senkou_span_a,
-                                    fill=None,
-                                    line_color=utils.RED,
-                                    ))
-            self.fig.add_trace(dict(
-                y=senkou_span_b,
-                fill='tonexty',
-                line_color=utils.ICHIMOKU_CLOUD_COLOR))
+            self.fig.plot_area(fast=senkou_span_a,
+                              slow=senkou_span_b,
+                              name_fast=utils.SENKOU_SPAN_A_NAME,
+                              name_slow=utils.SENKOU_SPAN_B_NAME)
 
             self.returns = [utils.EXIT for i in range(chinkouspan)]
-            self._stop_losses = [inf] * chinkouspan
+            self._stop_losses = [self.df['Close'].values[0]] * chinkouspan
             for e, (close, tenkan, kijun, A, B) in enumerate(zip(
                     prices.values[chinkouspan:],
                     tenkan_sen[chinkouspan:],
@@ -1213,10 +1218,20 @@ class ExampleStrategies(Trader):
                         trade = flag1
                     if (trade == utils.BUY and flag1 == utils.SELL) or (trade == utils.SELL and flag1 == utils.BUY):
                         trade = utils.EXIT
-                self.returns.append(trade)
 
-        self.set_open_stop_and_take(set_take=True,
-                                    set_stop=False)
+                self.returns.append(trade)
+                min_cloud_now = min(senkou_span_a[e], senkou_span_b[e])
+                max_cloud_now = max(senkou_span_a[e], senkou_span_b[e])
+                if trade == utils.BUY:
+                    self._stop_losses.append(min_cloud_now)
+                elif trade == utils.SELL:
+                    self._stop_losses.append(max_cloud_now)
+                elif trade == utils.EXIT:
+                    self._stop_losses.append(0.0)
+                else:
+                    raise ValueError('What???')
+
+        self.set_open_stop_and_take(set_stop=False)
         self.set_credit_leverages()
         self.sl_tp_adder(add_stop_loss=stop_loss_plus)
         return self.returns

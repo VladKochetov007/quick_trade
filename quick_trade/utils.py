@@ -92,6 +92,9 @@ WAIT_SUCCESS_PRINT: bool = True
 WAIT_SUCCESS_USE: bool = True
 
 ICHIMOKU_LINES_WIDTH: float = 2.0
+SENKOU_SPAN_A_COLOR: str = '#ff0000'
+SENKOU_SPAN_A_NAME: str = 'senkou span a'
+SENKOU_SPAN_B_NAME: str = 'senkou span b'
 ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
 ICHIMOKU_CLOUD_ALPHA: float = 0.4
 
