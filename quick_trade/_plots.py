@@ -1,4 +1,4 @@
-from typing import Union, List, Iterable, Sequence
+from typing import Union, List, Iterable, Sequence, Dict
 
 import utils
 from plotly.graph_objs import Figure, Scatter
@@ -139,6 +139,78 @@ class QuickTradeGraph(object):
                        name=utils.OPEN_TRADE_NAME,
                        _row=self.data_row,
                        _col=self.data_col)
+
+    def plot_trade_triangles(self):
+        loc = self.trader.df['Close']
+        preds: Dict[str, List[Union[int, float]]] = {
+            'sellind': [],
+            'exitind': [],
+            'buyind': [],
+            'bprice': [],
+            'sprice': [],
+            'eprice': []
+        }
+        for e, (pred, conv, crlev) in enumerate(zip(self.trader.returns,
+                                                    self.trader._converted,
+                                                    utils.convert(self.trader._credit_leverages))):
+            if e != 0:
+                credlev_up = self.trader._credit_leverages[e - 1] < self.trader._credit_leverages[e]
+                credlev_down = self.trader._credit_leverages[e - 1] > self.trader._credit_leverages[e]
+                sell = (credlev_down and pred == utils.BUY) or (credlev_up and pred == utils.SELL)
+                buy = (credlev_down and pred == utils.SELL) or (credlev_up and pred == utils.BUY)
+            else:
+                sell = buy = False
+
+            if conv == utils.EXIT or crlev == 0:
+                preds['exitind'].append(e)
+                preds['eprice'].append(loc[e])
+            elif conv == utils.SELL or sell:
+                preds['sellind'].append(e)
+                preds['sprice'].append(loc[e])
+            elif conv == utils.BUY or buy:
+                preds['buyind'].append(e)
+                preds['bprice'].append(loc[e])
+        name: str
+        index: int
+        price: float
+        width: float
+        alpha: float
+        for name, index, price, triangle_type, color, width, alpha in zip(
+                [utils.TRADE_MARKER_BUY_NAME,
+                 utils.TRADE_MARKER_SELL_NAME,
+                 utils.TRADE_MARKER_EXIT_NAME],
+
+                [preds['buyind'], preds['sellind'], preds['exitind']],
+                [preds['bprice'], preds['sprice'], preds['eprice']],
+
+                [utils.TRADE_MARKER_BUY_TYPE,
+                 utils.TRADE_MARKER_SELL_TYPE,
+                 utils.TRADE_MARKER_EXIT_TYPE],
+
+                [utils.TRADE_MARKER_BUY_COLOR,
+                 utils.TRADE_MARKER_SELL_COLOR,
+                 utils.TRADE_MARKER_EXIT_COLOR],
+
+                [utils.TRADE_MARKER_BUY_WIDTH,
+                 utils.TRADE_MARKER_SELL_WIDTH,
+                 utils.TRADE_MARKER_EXIT_WIDTH],
+
+                [utils.TRADE_MARKER_BUY_ALPHA,
+                 utils.TRADE_MARKER_SELL_ALPHA,
+                 utils.TRADE_MARKER_EXIT_ALPHA]
+        ):
+            self.figure.add_scatter(
+                mode='markers',
+                name=name,
+                y=price,
+                x=index,
+                row=self.data_row,
+                col=self.data_col,
+                line=dict(color=color),
+                marker=dict(
+                    symbol=triangle_type,
+                    size=utils.SCATTER_SIZE,
+                    opacity=utils.SCATTER_ALPHA))
 
 
 if __name__ == "__main__":

@@ -11,7 +11,6 @@ from ta.volatility import AverageTrueRange
 RED: str = '#ff0000'
 GREEN: str = '#55ff00'
 BLUE: str = '#0015ff'
-CYAN: str = 'cyan'
 
 PREDICT_TYPE: type = int
 PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
@@ -64,16 +63,37 @@ OPEN_TRADE_COLOR: str = '#0015ff'
 OPEN_TRADE_WIDTH: float = 1.0
 OPEN_TRADE_ALPHA: float = 0.8
 
-SCATTER_SIZE: float = 12.0
-SCATTER_ALPHA: float = 1.0
-ICHIMOKU_LINES_WIDTH: float = 2.0
-ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
-ICHIMOKU_CLOUD_ALPHA: float = 0.4
+
+TRADE_MARKER_BUY_NAME: str = 'Buy'
+TRADE_MARKER_BUY_TYPE: str = 'triangle-up'
+TRADE_MARKER_BUY_COLOR: str = '#55ff00'
+TRADE_MARKER_BUY_WIDTH: float = 12.0
+TRADE_MARKER_BUY_ALPHA: float = 1.0
+
+TRADE_MARKER_SELL_NAME: str = 'Sell'
+TRADE_MARKER_SELL_TYPE: str = 'triangle-down'
+TRADE_MARKER_SELL_COLOR: str = '#ff0000'
+TRADE_MARKER_SELL_WIDTH: float = 12.0
+TRADE_MARKER_SELL_ALPHA: float = 1.0
+
+TRADE_MARKER_EXIT_NAME: str = 'Exit'
+TRADE_MARKER_EXIT_TYPE: str = 'triangle-left'
+TRADE_MARKER_EXIT_COLOR: str = '#0015ff'
+TRADE_MARKER_EXIT_WIDTH: float = 12.0
+TRADE_MARKER_EXIT_ALPHA: float = 1.0
+
+
 SUB_LINES_WIDTH: float = 3.0
+
+TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
+
 WAIT_SUCCESS_SLEEP: float = 15.0
 WAIT_SUCCESS_PRINT: bool = True
 WAIT_SUCCESS_USE: bool = True
-TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
+
+ICHIMOKU_LINES_WIDTH: float = 2.0
+ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
+ICHIMOKU_CLOUD_ALPHA: float = 0.4
 
 __version__: str = "5.5.1"
 __author__: str = 'Vlad Kochetov'
