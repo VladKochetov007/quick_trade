@@ -882,16 +882,19 @@ winrate: {self.winrate}%"""
             thread = Thread(target=start_trading, args=(ticker,))
             thread.start()
 
-    def log_data(self):  # TODO \/ do normal graph
-        self.fig._figure.update_yaxes(row=1, col=1, type='log')
+    def log_data(self):
+        self.fig.log_y(_row=self.fig.data_row,
+                      _col=self.fig.data_col)
         utils.logger.debug('trader log data')
 
     def log_deposit(self):
-        self.fig._figure.update_yaxes(row=2, col=1, type='log')
+        self.fig.log_y(_row=self.fig.deposit_row,
+                      _col=self.fig.deposit_col)
         utils.logger.debug('trader log deposit')
 
     def log_returns(self):
-        self.fig._figure.update_yaxes(row=3, col=1, type='log')
+        self.fig.log_y(_row=self.fig.returns_row,
+                      _col=self.fig.returns_col)
         utils.logger.debug('trader log returns')
 
     @utils.assert_logger
@@ -1173,7 +1176,7 @@ class ExampleStrategies(Trader):
                                     fill=None,
                                     line_color=utils.RED,
                                     ))
-            self.figadd_trace(dict(
+            self.fig.add_trace(dict(
                 y=senkou_span_b,
                 fill='tonexty',
                 line_color=utils.ICHIMOKU_CLOUD_COLOR))

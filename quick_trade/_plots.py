@@ -64,7 +64,8 @@ class QuickTradeGraph(object):
                   _row: int = 1,
                   _col: int = 1,
                   mode: str = 'lines',
-                  marker: str = None):
+                  marker: str = None,
+                  fill: str = None):
         self._figure.add_trace(
             row=_row,
             col=_col,
@@ -74,6 +75,7 @@ class QuickTradeGraph(object):
                 name=name,
                 mode=mode,
                 opacity=opacity,
+                fill=fill,
                 line=dict(
                     color=color,
                     width=width
@@ -223,6 +225,13 @@ class QuickTradeGraph(object):
                 marker=triangle_type,
                 width=width,
                 opacity=alpha)
+
+    def log_y(self,
+              _row: int = 1,
+              _col: int = 1):
+        self._figure.update_yaxes(row=_row,
+                                 col=_col,
+                                 type='log')
 
 
 if __name__ == "__main__":
