@@ -3,14 +3,9 @@ from logging import basicConfig, getLogger
 from time import sleep
 from typing import Any, List, Union, Tuple, Sequence, Sized
 
-from numpy import array, NaN, nan, nan_to_num, ndarray
+from numpy import array, nan, nan_to_num, ndarray
 from pandas import DataFrame, Series
 from ta.volatility import AverageTrueRange
-
-
-RED: str = '#ff0000'
-GREEN: str = '#55ff00'
-BLUE: str = '#0015ff'
 
 PREDICT_TYPE: type = int
 PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
@@ -63,7 +58,6 @@ OPEN_TRADE_COLOR: str = '#0015ff'
 OPEN_TRADE_WIDTH: float = 1.0
 OPEN_TRADE_ALPHA: float = 0.8
 
-
 TRADE_MARKER_BUY_NAME: str = 'Buy'
 TRADE_MARKER_BUY_TYPE: str = 'triangle-up'
 TRADE_MARKER_BUY_COLOR: str = '#55ff00'
@@ -82,14 +76,26 @@ TRADE_MARKER_EXIT_COLOR: str = '#0015ff'
 TRADE_MARKER_EXIT_WIDTH: float = 12.0
 TRADE_MARKER_EXIT_ALPHA: float = 1.0
 
-
-SUB_LINES_WIDTH: float = 3.0
-
 TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
 
 WAIT_SUCCESS_SLEEP: float = 15.0
 WAIT_SUCCESS_PRINT: bool = True
 WAIT_SUCCESS_USE: bool = True
+
+MA_FAST_NAME: str = 'SMA{}'  # .format(<SMA length>)
+MA_FAST_COLOR: str = '#55ff00'
+MA_FAST_WIDTH: float = 1.5
+MA_FAST_ALPHA: float = 1.0
+
+MA_MID_NAME: str = 'SMA{}'  # .format(<SMA length>)
+MA_MID_COLOR: str = '#0015ff'
+MA_MID_WIDTH: float = 3.0
+MA_MID_ALPHA: float = 1.0
+
+MA_SLOW_NAME: str = 'SMA{}'  # .format(<SMA length>)
+MA_SLOW_COLOR: str = '#ff0000'
+MA_SLOW_WIDTH: float = 4.5
+MA_SLOW_ALPHA: float = 1.0
 
 ICHIMOKU_LINES_WIDTH: float = 2.0
 SENKOU_SPAN_A_COLOR: str = '#ff0000'
@@ -98,7 +104,42 @@ SENKOU_SPAN_B_NAME: str = 'senkou span b'
 ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
 ICHIMOKU_CLOUD_ALPHA: float = 0.4
 
-__version__: str = "5.5.1"
+SAR_UP_NAME: str = 'SAR up'
+SAR_UP_COLOR: str = '#ffff00'
+SAR_UP_WIDTH: float = 2
+SAR_UP_ALPHA: float = 1.0
+
+SAR_DOWN_NAME: str = 'SAR down'
+SAR_DOWN_COLOR: str = '#ffff00'
+SAR_DOWN_WIDTH: float = 2
+SAR_DOWN_ALPHA: float = 1.0
+
+ST_UP_NAME: str = 'SuperTrend up'
+ST_UP_COLOR: str = '#ffff00'
+ST_UP_WIDTH: float = 2
+ST_UP_ALPHA: float = 1.0
+
+ST_DOWN_NAME: str = 'SuperTrend down'
+ST_DOWN_COLOR: str = '#55ff00'
+ST_DOWN_WIDTH: float = 2
+ST_DOWN_ALPHA: float = 1.0
+
+UPPER_BB_NAME: str = 'upper band'
+UPPER_BB_COLOR: str = '#00ff7b'
+UPPER_BB_WIDTH: float = 2
+UPPER_BB_ALPHA: float = 1.0
+
+MID_BB_NAME: str = 'mid band'
+MID_BB_COLOR: str = '#00ff7b'
+MID_BB_WIDTH: float = 2
+MID_BB_ALPHA: float = 1.0
+
+LOWER_BB_NAME: str = 'lower band'
+LOWER_BB_COLOR: str = '#00ff7b'
+LOWER_BB_WIDTH: float = 2
+LOWER_BB_ALPHA: float = 1.0
+
+__version__: str = "6.0.0"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -176,7 +217,7 @@ class SuperTrendIndicator(object):
         """
         m = self.close.size
         dir_, trend = [1] * m, [0] * m
-        long, short = [NaN] * m, [NaN] * m
+        long, short = [nan] * m, [nan] * m
         ATR = AverageTrueRange(high=self.high, low=self.low, close=self.close,
                                window=self.length)
 

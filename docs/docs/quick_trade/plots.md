@@ -18,8 +18,22 @@ Method for creating standard figure for plotly.
 
 ## QuickTradeGraph
 
+### connect_trader
+
 ### show
 
 ### plot_line
 
 ### plot_candlestick
+
+### plot_deposit
+
+### plot_returns
+
+### plot_SL_TP_OPN
+
+### plot_trade_triangles
+
+### log_y
+
+### plot_area

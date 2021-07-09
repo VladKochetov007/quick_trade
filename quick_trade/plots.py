@@ -230,8 +230,8 @@ class QuickTradeGraph(object):
               _row: int = 1,
               _col: int = 1):
         self._figure.update_yaxes(row=_row,
-                                 col=_col,
-                                 type='log')
+                                  col=_col,
+                                  type='log')
 
     def plot_area(self,
                   fast: Iterable = None,

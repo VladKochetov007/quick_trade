@@ -19,11 +19,10 @@ from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
 
 import ta
 import utils
-from plots import QuickTradeGraph
 from brokers import TradingClient
 from numpy import array, ndarray, inf, nan, digitize, mean, nan_to_num
 from pandas import DataFrame, Series
-
+from plots import QuickTradeGraph
 
 
 class Trader(object):
@@ -884,17 +883,17 @@ winrate: {self.winrate}%"""
 
     def log_data(self):
         self.fig.log_y(_row=self.fig.data_row,
-                      _col=self.fig.data_col)
+                       _col=self.fig.data_col)
         utils.logger.debug('trader log data')
 
     def log_deposit(self):
         self.fig.log_y(_row=self.fig.deposit_row,
-                      _col=self.fig.deposit_col)
+                       _col=self.fig.deposit_col)
         utils.logger.debug('trader log deposit')
 
     def log_returns(self):
         self.fig.log_y(_row=self.fig.returns_row,
-                      _col=self.fig.returns_col)
+                       _col=self.fig.returns_col)
         utils.logger.debug('trader log returns')
 
     @utils.assert_logger
@@ -1182,9 +1181,9 @@ class ExampleStrategies(Trader):
                 )
 
             self.fig.plot_area(fast=senkou_span_a,
-                              slow=senkou_span_b,
-                              name_fast=utils.SENKOU_SPAN_A_NAME,
-                              name_slow=utils.SENKOU_SPAN_B_NAME)
+                               slow=senkou_span_b,
+                               name_fast=utils.SENKOU_SPAN_A_NAME,
+                               name_slow=utils.SENKOU_SPAN_B_NAME)
 
             self.returns = [utils.EXIT for i in range(chinkouspan)]
             self._stop_losses = [self.df['Close'].values[0]] * chinkouspan
@@ -1250,16 +1249,21 @@ class ExampleStrategies(Trader):
         SMA1 = ta.trend.sma_indicator(self.df['Close'], fast)
         SMA2 = ta.trend.sma_indicator(self.df['Close'], slow)
         if plot:
-            self.fig.add_trace(
-                Line(
-                    name=f'SMA{fast}',
-                    y=SMA1.values,
-                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.GREEN)), 1, 1)
-            self.fig.add_trace(
-                Line(
-                    name=f'SMA{slow}',
-                    y=SMA2.values,
-                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.RED)), 1, 1)
+            self.fig.plot_line(line=SMA1.values,
+                               width=utils.MA_FAST_WIDTH,
+                               color=utils.MA_FAST_COLOR,
+                               name=utils.MA_FAST_NAME.format(fast),
+                               opacity=utils.MA_FAST_ALPHA,
+                               _row=self.fig.data_row,
+                               _col=self.fig.data_col)
+
+            self.fig.plot_line(line=SMA2.values,
+                               width=utils.MA_SLOW_WIDTH,
+                               color=utils.MA_SLOW_COLOR,
+                               name=utils.MA_SLOW_NAME.format(slow),
+                               opacity=utils.MA_SLOW_ALPHA,
+                               _row=self.fig.data_row,
+                               _col=self.fig.data_col)
 
         for SMA13, SMA26 in zip(SMA1, SMA2):
             if SMA26 < SMA13:
@@ -1283,14 +1287,19 @@ class ExampleStrategies(Trader):
         SMA3 = ta.trend.sma_indicator(self.df['Close'], slow)
 
         if plot:
-            for SMA, Co, name in zip([SMA1, SMA2, SMA3],
-                                     [utils.GREEN, utils.BLUE, utils.RED],
-                                     [fast, mid, slow]):
-                self.fig.add_trace(
-                    Line(
-                        name=f'SMA{name}',
-                        y=SMA.values,
-                        line=dict(width=utils.SUB_LINES_WIDTH, color=Co)), 1, 1)
+            for SMA, color, speed, name, alpha, size in zip([SMA1, SMA2, SMA3],
+                                                            [utils.MA_FAST_COLOR, utils.MA_MID_COLOR, utils.MA_SLOW_COLOR],
+                                                            [fast, mid, slow],
+                                                            [utils.MA_FAST_NAME, utils.MA_MID_NAME, utils.MA_SLOW_NAME],
+                                                            [utils.MA_FAST_ALPHA, utils.MA_MID_ALPHA, utils.MA_SLOW_ALPHA],
+                                                            [utils.MA_FAST_WIDTH, utils.MA_MID_WIDTH, utils.MA_SLOW_WIDTH]):
+                self.fig.plot_line(line=SMA.values,
+                                   width=size,
+                                   color=color,
+                                   name=name.format(speed),
+                                   opacity=alpha,
+                                   _row=self.fig.data_row,
+                                   _col=self.fig.data_col)
 
         for SMA13, SMA26, SMA100 in zip(SMA1, SMA2, SMA3):
             if SMA100 < SMA26 < SMA13:
@@ -1315,13 +1324,19 @@ class ExampleStrategies(Trader):
         ema46 = ta.trend.ema_indicator(self.df['Close'], slow)
 
         if plot:
-            for ema, Co, name in zip([ema3.values, ema21.values, ema46.values],
-                                     [utils.GREEN, utils.BLUE, utils.RED], [slow, mid, fast]):
-                self.fig.add_trace(
-                    Line(
-                        name=f'SMA{name}',
-                        y=ema,
-                        line=dict(width=utils.SUB_LINES_WIDTH, color=Co)), 1, 1)
+            for SMA, color, speed, name, alpha, size in zip([ema3.values, ema21.values, ema46.values],
+                                                            [utils.MA_FAST_COLOR, utils.MA_MID_COLOR, utils.MA_SLOW_COLOR],
+                                                            [fast, mid, slow],
+                                                            [utils.MA_FAST_NAME, utils.MA_MID_NAME, utils.MA_SLOW_NAME],
+                                                            [utils.MA_FAST_ALPHA, utils.MA_MID_ALPHA, utils.MA_SLOW_ALPHA],
+                                                            [utils.MA_FAST_WIDTH, utils.MA_MID_WIDTH, utils.MA_SLOW_WIDTH]):
+                self.fig.plot_line(line=SMA.values,
+                                   width=size,
+                                   color=color,
+                                   name=name.format(speed),
+                                   opacity=alpha,
+                                   _row=self.fig.data_row,
+                                   _col=self.fig.data_col)
 
         for EMA1, EMA2, EMA3 in zip(ema3, ema21, ema46):
             if EMA1 > EMA2 > EMA3:
@@ -1386,10 +1401,22 @@ class ExampleStrategies(Trader):
 
         if plot:
             for SAR_ in (sarup, sardown):
-                self.fig.add_trace(
-                    Line(
-                        name='SAR', y=SAR_, line=dict(width=utils.SUB_LINES_WIDTH)),
-                    1, 1)
+                self.fig.plot_line(line=sarup,
+                                   width=utils.SAR_UP_WIDTH,
+                                   color=utils.SAR_UP_COLOR,
+                                   name=utils.SAR_UP_NAME,
+                                   opacity=utils.SAR_UP_ALPHA,
+                                   _row=self.fig.data_row,
+                                   _col=self.fig.data_col)
+
+                self.fig.plot_line(line=sardown,
+                                   width=utils.SAR_DOWN_WIDTH,
+                                   color=utils.SAR_DOWN_COLOR,
+                                   name=utils.SAR_DOWN_NAME,
+                                   opacity=utils.SAR_DOWN_ALPHA,
+                                   _row=self.fig.data_row,
+                                   _col=self.fig.data_col)
+
         for price, up, down in zip(
                 list(self.df['Close'].values), list(sarup), list(sardown)):
             numup = nan_to_num(up, nan=-9999.0)
@@ -1430,12 +1457,21 @@ class ExampleStrategies(Trader):
                                                                   *st_args,
                                                                   **st_kwargs)
         if plot:
-            self.fig.add_trace(Line(y=st.get_supertrend_upper(),
-                                    name='supertrend upper',
-                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.RED)))
-            self.fig.add_trace(Line(y=st.get_supertrend_lower(),
-                                    name='supertrend lower',
-                                    line=dict(width=utils.SUB_LINES_WIDTH, color=utils.GREEN)))
+            self.fig.plot_line(line=st.get_supertrend_upper(),
+                               width=utils.ST_UP_WIDTH,
+                               color=utils.ST_UP_COLOR,
+                               name=utils.ST_UP_NAME,
+                               opacity=utils.ST_UP_ALPHA,
+                               _row=self.fig.data_row,
+                               _col=self.fig.data_col)
+
+            self.fig.plot_line(line=st.get_supertrend_upper(),
+                               width=utils.ST_DOWN_WIDTH,
+                               color=utils.ST_DOWN_COLOR,
+                               name=utils.ST_DOWN_NAME,
+                               opacity=utils.ST_DOWN_ALPHA,
+                               _row=self.fig.data_row,
+                               _col=self.fig.data_col)
         self._stop_losses = list(st.get_supertrend())
         self.returns = list(st.get_supertrend_strategy_returns())
         self._stop_losses[0] = inf if self.returns[0] == utils.SELL else -inf
@@ -1459,10 +1495,27 @@ class ExampleStrategies(Trader):
         upper: Series = bollinger.bollinger_hband()
         lower: Series = bollinger.bollinger_lband()
         if plot:
-            name: str
-            TR: Series
-            for TR, name in zip([upper, mid_, lower], ['upper band', 'mid band', 'lower band']):
-                self.fig.add_trace(Line(y=TR, name=name, line=dict(width=utils.SUB_LINES_WIDTH)), col=1, row=1)
+            self.fig.plot_line(line=upper.values,
+                               width=utils.UPPER_BB_WIDTH,
+                               color=utils.UPPER_BB_COLOR,
+                               name=utils.UPPER_BB_NAME,
+                               opacity=utils.UPPER_BB_ALPHA,
+                               _row=self.fig.data_row,
+                               _col=self.fig.data_col)
+            self.fig.plot_line(line=mid_.values,
+                               width=utils.MID_BB_WIDTH,
+                               color=utils.MID_BB_COLOR,
+                               name=utils.MID_BB_NAME,
+                               opacity=utils.MID_BB_ALPHA,
+                               _row=self.fig.data_row,
+                               _col=self.fig.data_col)
+            self.fig.plot_line(line=lower.values,
+                               width=utils.LOWER_BB_WIDTH,
+                               color=utils.LOWER_BB_COLOR,
+                               name=utils.LOWER_BB_NAME,
+                               opacity=utils.LOWER_BB_ALPHA,
+                               _row=self.fig.data_row,
+                               _col=self.fig.data_col)
         close: float
         up: float
         mid: float
