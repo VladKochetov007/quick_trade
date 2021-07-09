@@ -13,14 +13,29 @@ from copy import copy
 from datetime import datetime
 from re import fullmatch
 from threading import Thread
-from time import ctime, sleep, time
-from typing import Dict, List, Tuple, Any, Iterable, Union, Sized
+from time import ctime
+from time import sleep
+from time import time
+from typing import Any
+from typing import Dict
+from typing import Iterable
+from typing import List
+from typing import Sized
+from typing import Tuple
+from typing import Union
 
 import ta
 import utils
 from brokers import TradingClient
-from numpy import array, ndarray, inf, nan, digitize, mean, nan_to_num
-from pandas import DataFrame, Series
+from numpy import array
+from numpy import digitize
+from numpy import inf
+from numpy import mean
+from numpy import nan
+from numpy import nan_to_num
+from numpy import ndarray
+from pandas import DataFrame
+from pandas import Series
 from plots import QuickTradeGraph
 
 

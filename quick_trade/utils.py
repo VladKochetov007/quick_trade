@@ -1,10 +1,20 @@
 from functools import wraps
-from logging import basicConfig, getLogger
+from logging import basicConfig
+from logging import getLogger
 from time import sleep
-from typing import Any, List, Union, Tuple, Sequence, Sized
+from typing import Any
+from typing import List
+from typing import Sequence
+from typing import Sized
+from typing import Tuple
+from typing import Union
 
-from numpy import array, nan, nan_to_num, ndarray
-from pandas import DataFrame, Series
+from numpy import array
+from numpy import nan
+from numpy import nan_to_num
+from numpy import ndarray
+from pandas import DataFrame
+from pandas import Series
 from ta.volatility import AverageTrueRange
 
 PREDICT_TYPE: type = int
@@ -97,7 +107,6 @@ MA_SLOW_COLOR: str = '#ff0000'
 MA_SLOW_WIDTH: float = 4.5
 MA_SLOW_ALPHA: float = 1.0
 
-
 ICHIMOKU_LINES_WIDTH: float = 2.0
 
 ICHIMOKU_CLOUD_COLOR: str = 'rgb(200,250,10)'
@@ -109,7 +118,6 @@ SENKOU_SPAN_B_ALPHA: float = 0.4
 SENKOU_SPAN_A_NAME: str = 'senkou span a'
 SENKOU_SPAN_A_COLOR: str = '#ff0000'
 SENKOU_SPAN_A_ALPHA: float = 0.4
-
 
 SAR_UP_NAME: str = 'SAR up'
 SAR_UP_COLOR: str = '#ffff00'

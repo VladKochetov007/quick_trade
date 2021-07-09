@@ -1,7 +1,11 @@
-from typing import Union, List, Iterable, Dict
+from typing import Dict
+from typing import Iterable
+from typing import List
+from typing import Union
 
 import utils
-from plotly.graph_objs import Figure, Scatter
+from plotly.graph_objs import Figure
+from plotly.graph_objs import Scatter
 from plotly.subplots import make_subplots
 
 
@@ -259,7 +263,7 @@ class QuickTradeGraph(object):
 if __name__ == "__main__":
     from quick_trade.brokers import TradingClient
     from trading_sys import ExampleStrategies
-    import ccxt, time
+    import ccxt
 
     g = QuickTradeGraph(figure=make_figure())
 

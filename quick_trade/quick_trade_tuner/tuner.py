@@ -1,13 +1,16 @@
 from collections import defaultdict
 from itertools import product
 from json import dump
-from typing import Iterable, Dict, Any, List
+from typing import Any
+from typing import Dict
+from typing import Iterable
+from typing import List
 
+from core import TunableValue
+from core import transform_all_tunable_values
 from numpy import arange, linspace
 from pandas import DataFrame
 from quick_trade.brokers import TradingClient
-
-from .core import TunableValue, transform_all_tunable_values
 
 
 class QuickTradeTuner(object):
