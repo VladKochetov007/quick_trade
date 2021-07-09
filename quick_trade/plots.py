@@ -264,5 +264,3 @@ if __name__ == "__main__":
 
     t.strategy_ichimoku()
     t.backtest()
-    time.sleep(1)
-    print('aboba')

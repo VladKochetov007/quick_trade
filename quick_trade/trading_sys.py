@@ -8,7 +8,6 @@
 #   more docs and examples
 #   decimal
 #   3.9
-#   subplot plot directory
 #   decorator for strategies without exit condition (not converted data)
 from copy import copy
 from datetime import datetime
@@ -388,11 +387,7 @@ class Trader(object):
         else:
             self.winrate = 0
             utils.logger.error('0 trades in %s', self)
-        self._info = f"""losses: {self.losses}
-trades: {self.trades}
-profits: {self.profits}
-mean year percentage profit: {self.year_profit}%
-winrate: {self.winrate}%"""
+        self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate)
         utils.logger.info('trader info: %s', self._info)
         if print_out:
             print(self._info)
@@ -418,8 +413,8 @@ winrate: {self.winrate}%"""
             self.fig.plot_deposit()
 
             self.fig.plot_returns()
-            if show:
-                self.fig.show()
+        if show:
+            self.fig.show()
 
         return self.backtest_out
 

@@ -139,7 +139,13 @@ LOWER_BB_COLOR: str = '#00ff7b'
 LOWER_BB_WIDTH: float = 2
 LOWER_BB_ALPHA: float = 1.0
 
-__version__: str = "6.0.0"
+INFO_TEXT: str = """losses: {}
+trades: {}
+profits: {}
+mean year percentage profit: {}%
+winrate: {}%"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate)
+
+__version__: str = "6.0.1"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
