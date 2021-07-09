@@ -97,12 +97,19 @@ MA_SLOW_COLOR: str = '#ff0000'
 MA_SLOW_WIDTH: float = 4.5
 MA_SLOW_ALPHA: float = 1.0
 
+
 ICHIMOKU_LINES_WIDTH: float = 2.0
-SENKOU_SPAN_A_COLOR: str = '#ff0000'
-SENKOU_SPAN_A_NAME: str = 'senkou span a'
+
+ICHIMOKU_CLOUD_COLOR: str = 'rgb(200,250,10)'
+
 SENKOU_SPAN_B_NAME: str = 'senkou span b'
-ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
-ICHIMOKU_CLOUD_ALPHA: float = 0.4
+SENKOU_SPAN_B_COLOR: str = '#55ff00'
+SENKOU_SPAN_B_ALPHA: float = 0.4
+
+SENKOU_SPAN_A_NAME: str = 'senkou span a'
+SENKOU_SPAN_A_COLOR: str = '#ff0000'
+SENKOU_SPAN_A_ALPHA: float = 0.4
+
 
 SAR_UP_NAME: str = 'SAR up'
 SAR_UP_COLOR: str = '#ffff00'

@@ -65,7 +65,8 @@ class QuickTradeGraph(object):
                   _col: int = 1,
                   mode: str = 'lines',
                   marker: str = None,
-                  fill: str = None):
+                  fill: str = None,
+                  fill_color: str = None):
         self._figure.add_trace(
             row=_row,
             col=_col,
@@ -76,9 +77,10 @@ class QuickTradeGraph(object):
                 mode=mode,
                 opacity=opacity,
                 fill=fill,
+                fillcolor=fill_color,
                 line=dict(
                     color=color,
-                    width=width
+                    width=width,
                 ),
                 marker=dict(
                     color=color,
@@ -242,13 +244,16 @@ class QuickTradeGraph(object):
                        color=utils.SENKOU_SPAN_A_COLOR,
                        _row=self.data_row,
                        _col=self.data_col,
-                       name=name_fast)
+                       name=name_fast,
+                       opacity=utils.SENKOU_SPAN_A_ALPHA)
         self.plot_line(line=slow,
                        fill='tonexty',
-                       color=utils.ICHIMOKU_CLOUD_COLOR,
+                       color=utils.SENKOU_SPAN_B_COLOR,
                        _row=self.data_row,
                        _col=self.data_col,
-                       name=name_slow)
+                       name=name_slow,
+                       fill_color=utils.ICHIMOKU_CLOUD_COLOR,
+                       opacity=utils.SENKOU_SPAN_B_ALPHA)
 
 
 if __name__ == "__main__":
