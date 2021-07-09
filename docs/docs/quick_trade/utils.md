@@ -78,8 +78,7 @@ Out[8]: [1, 1, 1, -1, -1, -1, -1, 1, 0, 0]
 
 ## get_window
 
-A function for getting a list of lists, each of which has n elements. These lists will be "data windows" with an offset
-of 1.
+A function for getting a list of lists, each of which has n elements. These lists will be "data windows" with an offset of 1.
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -168,8 +167,7 @@ Function for calculating [Compound interest](https://investmentu.com/simple-inte
 
 ## get_coef_sec
 
-Function for converting timeframe to profit ratio and sleep time
-for [`realtime_trading`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=realtime_trading)
+Function for converting timeframe to profit ratio and sleep time for [`realtime_trading`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=realtime_trading)
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -189,8 +187,7 @@ Out[16]: (105120, 300)
 
 ## wait_success
 
-Decorator. If a traceback was received during the execution of the function, then the action is repeated
-after `utils.WAIT_SUCCESS_SLEEP` seconds.
+Decorator. If a traceback was received during the execution of the function, then the action is repeated after `utils.WAIT_SUCCESS_SLEEP` seconds.
 
 The main purpose is to avoid ConnectionError when trading in real time.
 [see this page](https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error)
@@ -216,8 +213,7 @@ Function for calculating the coefficient of exponential growth of a deposit when
 
 ## assert_logger
 
-Decorator. If AssertionError was called, then first the error is written to the log with the "critical" level, and then
-the program stops.
+Decorator. If AssertionError was called, then first the error is written to the log with the "critical" level, and then the program stops.
 
 ## get_diff
 

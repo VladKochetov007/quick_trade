@@ -3,62 +3,158 @@ from logging import basicConfig, getLogger
 from time import sleep
 from typing import Any, List, Union, Tuple, Sequence, Sized
 
-from numpy import array, NaN, nan, nan_to_num, ndarray
+from numpy import array, nan, nan_to_num, ndarray
 from pandas import DataFrame, Series
 from ta.volatility import AverageTrueRange
 
-SCATTER_SIZE: float = 12.0
-SCATTER_ALPHA: float = 1.0
-TAKE_STOP_OPN_WIDTH: float = 1.0
-ICHIMOKU_LINES_WIDTH: float = 2.0
-ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
-ICHIMOKU_CLOUD_ALPHA: float = 0.4
-TEXT_COLOR: str = 'white'
-SUB_LINES_WIDTH: float = 3.0
-STOP_TAKE_OPN_ALPHA: float = 0.8
-COLOR_DEPOSIT: str = 'white'
-WAIT_SUCCESS_SLEEP: float = 15.0
-WAIT_SUCCESS_PRINT: bool = True
-USE_WAIT_SUCCESS: bool = True
 PREDICT_TYPE: type = int
 PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
 CONVERTED_TYPE: type = Union[PREDICT_TYPE, float]
 CONVERTED_TYPE_LIST: type = List[CONVERTED_TYPE]
-TIME_TITLE = 'T I M E'
-MONEYS_TITLE = 'M O N E Y S'
-RETURNS_TITLE = 'R E T U R N S'
-DATA_TITLE = 'D A T A'
-TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
 
-RED: str = '#ff0000'
-GREEN: str = '#55ff00'
-BLUE: str = '#0015ff'
-CYAN: str = 'cyan'
 BUY: PREDICT_TYPE = 1
 SELL: PREDICT_TYPE = -1
 EXIT: PREDICT_TYPE = 0
 
-__version__: str = "5.5.0"
-__author__: str = 'Vlad Kochetov'
-__credits__: List[str] = ["Hemerson Tacon -- Stack overflow",
-                          "hpaulj -- Stack overflow",
-                          "furas -- Stack overflow",
-                          "Devin Jeanpierre (edit: wjandrea) -- Stack overflow",
-                          "Войтенко Николай Поликарпович (Vojtenko Nikolay Polikarpovich) -- helped me test the "
-                          "system of interaction with the binance crypto exchange with 50 dollars.",
+TEXT_COLOR: str = 'white'
 
-                          "https://fxgears.com/index.php?threads/how-to-acquire-free-historical-tick-and-bar-data-for"
-                          "-algo-trading-and-backtesting-in-2020-stocks-forex-and-crypto-currency.1229/#post-19305"
-                          " -- binance get historical data method",
-                          "https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/ and "
-                          "https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
-                          "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests --"
-                          "IEX token",
-                          "Igor Kroitor -- donate 0.5 ETH (~1320$)",
-                          "Igor Kroitor -- Helped to solve the problem with exception ConnectionError(10054).",
-                          "https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error",
-                          "Pavel Fedotov (https://github.com/Pfed-prog) -- pull request https://github.com/"
-                          "VladKochetov007/quick_trade/pull/60"]
+TIME_TITLE: str = 'T I M E'
+
+DEPOSIT_TITLE: str = 'M O N E Y S'
+DEPOSIT_NAME: str = 'deposit (start: {})'  # .format(Trader.deposit_history[0])
+DEPOSIT_COLOR: str = 'white'
+DEPOSIT_WIDTH: float = 1.0
+DEPOSIT_ALPHA: float = 1.0
+
+RETURNS_TITLE: str = 'R E T U R N S'
+RETURNS_NAME: str = 'returns'
+RETURNS_COLOR: str = DEPOSIT_COLOR
+RETURNS_WIDTH: float = 1.0
+RETURNS_ALPHA: float = 1.0
+
+DATA_TITLE: str = 'D A T A'
+DATA_NAME: str = '{} {}'  # '{} {}'.format(Trader.ticker, Trader.interval)
+DATA_UP_COLOR = 'green'
+DATA_DOWN_COLOR = 'red'
+DATA_ALPHA: float = 1.0
+
+AVERAGE_GROWTH_NAME: str = 'average growth'
+AVERAGE_GROWTH_COLOR: str = '#F1A5FB'
+AVERAGE_GROWTH_WIDTH: float = 1.0
+AVERAGE_GROWTH_ALPHA: float = 1.0
+
+STOP_LOSS_NAME: str = 'stop loss'
+STOP_LOSS_COLOR: str = '#ff0000'
+STOP_LOSS_WIDTH: float = 1.0
+STOP_LOSS_ALPHA: float = 0.8
+
+TAKE_PROFIT_NAME: str = 'take profit'
+TAKE_PROFIT_COLOR: str = '#55ff00'
+TAKE_PROFIT_WIDTH: float = 1.0
+TAKE_PROFIT_ALPHA: float = 0.8
+
+OPEN_TRADE_NAME: str = 'open trade'
+OPEN_TRADE_COLOR: str = '#0015ff'
+OPEN_TRADE_WIDTH: float = 1.0
+OPEN_TRADE_ALPHA: float = 0.8
+
+TRADE_MARKER_BUY_NAME: str = 'Buy'
+TRADE_MARKER_BUY_TYPE: str = 'triangle-up'
+TRADE_MARKER_BUY_COLOR: str = '#55ff00'
+TRADE_MARKER_BUY_WIDTH: float = 12.0
+TRADE_MARKER_BUY_ALPHA: float = 1.0
+
+TRADE_MARKER_SELL_NAME: str = 'Sell'
+TRADE_MARKER_SELL_TYPE: str = 'triangle-down'
+TRADE_MARKER_SELL_COLOR: str = '#ff0000'
+TRADE_MARKER_SELL_WIDTH: float = 12.0
+TRADE_MARKER_SELL_ALPHA: float = 1.0
+
+TRADE_MARKER_EXIT_NAME: str = 'Exit'
+TRADE_MARKER_EXIT_TYPE: str = 'triangle-left'
+TRADE_MARKER_EXIT_COLOR: str = '#0015ff'
+TRADE_MARKER_EXIT_WIDTH: float = 12.0
+TRADE_MARKER_EXIT_ALPHA: float = 1.0
+
+TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
+
+WAIT_SUCCESS_SLEEP: float = 15.0
+WAIT_SUCCESS_PRINT: bool = True
+WAIT_SUCCESS_USE: bool = True
+
+MA_FAST_NAME: str = 'SMA{}'  # .format(<SMA length>)
+MA_FAST_COLOR: str = '#55ff00'
+MA_FAST_WIDTH: float = 1.5
+MA_FAST_ALPHA: float = 1.0
+
+MA_MID_NAME: str = 'SMA{}'  # .format(<SMA length>)
+MA_MID_COLOR: str = '#0015ff'
+MA_MID_WIDTH: float = 3.0
+MA_MID_ALPHA: float = 1.0
+
+MA_SLOW_NAME: str = 'SMA{}'  # .format(<SMA length>)
+MA_SLOW_COLOR: str = '#ff0000'
+MA_SLOW_WIDTH: float = 4.5
+MA_SLOW_ALPHA: float = 1.0
+
+ICHIMOKU_LINES_WIDTH: float = 2.0
+SENKOU_SPAN_A_COLOR: str = '#ff0000'
+SENKOU_SPAN_A_NAME: str = 'senkou span a'
+SENKOU_SPAN_B_NAME: str = 'senkou span b'
+ICHIMOKU_CLOUD_COLOR: str = 'rgb(0,250,250)'
+ICHIMOKU_CLOUD_ALPHA: float = 0.4
+
+SAR_UP_NAME: str = 'SAR up'
+SAR_UP_COLOR: str = '#ffff00'
+SAR_UP_WIDTH: float = 2
+SAR_UP_ALPHA: float = 1.0
+
+SAR_DOWN_NAME: str = 'SAR down'
+SAR_DOWN_COLOR: str = '#ffff00'
+SAR_DOWN_WIDTH: float = 2
+SAR_DOWN_ALPHA: float = 1.0
+
+ST_UP_NAME: str = 'SuperTrend up'
+ST_UP_COLOR: str = '#ffff00'
+ST_UP_WIDTH: float = 2
+ST_UP_ALPHA: float = 1.0
+
+ST_DOWN_NAME: str = 'SuperTrend down'
+ST_DOWN_COLOR: str = '#55ff00'
+ST_DOWN_WIDTH: float = 2
+ST_DOWN_ALPHA: float = 1.0
+
+UPPER_BB_NAME: str = 'upper band'
+UPPER_BB_COLOR: str = '#00ff7b'
+UPPER_BB_WIDTH: float = 2
+UPPER_BB_ALPHA: float = 1.0
+
+MID_BB_NAME: str = 'mid band'
+MID_BB_COLOR: str = '#00ff7b'
+MID_BB_WIDTH: float = 2
+MID_BB_ALPHA: float = 1.0
+
+LOWER_BB_NAME: str = 'lower band'
+LOWER_BB_COLOR: str = '#00ff7b'
+LOWER_BB_WIDTH: float = 2
+LOWER_BB_ALPHA: float = 1.0
+
+__version__: str = "6.0.0"
+__author__: str = 'Vlad Kochetov'
+__credits__: List[str] = [
+    "Hemerson Tacon -- Stack overflow",
+    "hpaulj -- Stack overflow",
+    "furas -- Stack overflow",
+    "Devin Jeanpierre (edit: wjandrea) -- Stack overflow",
+    "Войтенко Николай Поликарпович (Vojtenko Nikolay Polikarpovich) -- helped me test the system of interaction with the binance crypto exchange with 50 dollars.",
+    "https://fxgears.com/index.php?threads/how-to-acquire-free-historical-tick-and-bar-data-for-algo-trading-and-backtesting-in-2020-stocks-forex-and-crypto-currency.1229/#post-19305 -- binance get historical data method",
+    "https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/ and https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
+    "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests -- IEX token",
+    "Igor Kroitor -- donate 0.5 ETH (~1320$)",
+    "Igor Kroitor -- Helped to solve the problem with exception ConnectionError(10054).",
+    "https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error",
+    "Pavel Fedotov (https://github.com/Pfed-prog) -- pull request https://github.com/VladKochetov007/quick_trade/pull/60"
+]
 
 logger = getLogger(__name__)
 getLogger('ccxt').setLevel(30)
@@ -121,8 +217,9 @@ class SuperTrendIndicator(object):
         """
         m = self.close.size
         dir_, trend = [1] * m, [0] * m
-        long, short = [NaN] * m, [NaN] * m
-        ATR = AverageTrueRange(high=self.high, low=self.low, close=self.close, window=self.length)
+        long, short = [nan] * m, [nan] * m
+        ATR = AverageTrueRange(high=self.high, low=self.low, close=self.close,
+                               window=self.length)
 
         hl2_ = (self.high + self.low) / 2
         matr = ATR.average_true_range() * self.multiplier
@@ -169,7 +266,8 @@ def convert(data: PREDICT_TYPE_LIST) -> CONVERTED_TYPE_LIST:
     return ret
 
 
-def anti_convert(converted: CONVERTED_TYPE_LIST, _nan_num: float = 18699.9) -> PREDICT_TYPE_LIST:
+def anti_convert(converted: CONVERTED_TYPE_LIST,
+                 _nan_num: float = 18699.9) -> PREDICT_TYPE_LIST:
     converted = nan_to_num(converted, nan=_nan_num)
     ret: List[Any] = [converted[0]]
     flag = converted[0]
@@ -281,7 +379,7 @@ def wait_success(func):
             try:
                 return func(*args, **kwargs)
             except Exception as e:
-                if not USE_WAIT_SUCCESS:
+                if not WAIT_SUCCESS_USE:
                     raise e
                 if not isinstance(e, KeyboardInterrupt):
                     if WAIT_SUCCESS_PRINT:

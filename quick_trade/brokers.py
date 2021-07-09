@@ -24,7 +24,8 @@ class TradingClient(object):
                      ticker: str = 'None',
                      quantity: float = 0.0):
         self._update_balances()
-        utils.logger.info('quantity: %f, side: %s, ticker: %s', quantity, side, ticker)
+        utils.logger.info('quantity: %f, side: %s, ticker: %s', quantity, side,
+                          ticker)
         if side == 'Buy':
             self.client.create_market_buy_order(symbol=ticker, amount=quantity)
         elif side == 'Sell':
@@ -67,7 +68,8 @@ class TradingClient(object):
                                          interval,
                                          limit=limit)
         data = DataFrame(frames,
-                         columns=['time', 'Open', 'High', 'Low', 'Close', 'Volume'])
+                         columns=['time', 'Open', 'High', 'Low', 'Close',
+                                  'Volume'])
         return data.astype(float)
 
     def exit_last_order(self):
