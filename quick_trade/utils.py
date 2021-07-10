@@ -454,3 +454,6 @@ def get_diff(price: float,
 
     elif signal == SELL and low <= take_profit:
         return take_profit - price
+
+def make_multi_deal_returns(converted_returns: CONVERTED_TYPE_LIST):
+    pass

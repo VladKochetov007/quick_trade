@@ -48,7 +48,7 @@ class Trader(object):
 
     """
     _profit_calculate_coef: Union[float, int]
-    returns: utils.PREDICT_TYPE_LIST = []
+    _returns: utils.PREDICT_TYPE_LIST = []
     df: DataFrame
     ticker: str
     interval: str
@@ -78,12 +78,20 @@ class Trader(object):
     supports: Dict[int, float]
     resistances: Dict[int, float]
     trading_on_client: bool
-    _converted: utils.CONVERTED_TYPE_LIST
     fig: QuickTradeGraph
 
     @property
-    def _converted(self):
+    def _converted(self) -> utils.CONVERTED_TYPE_LIST:
         return utils.convert(self.returns)
+
+    @property
+    def returns(self):
+        return self._returns
+
+    @returns.setter
+    def returns(self, rets):
+        self._returns = utils.anti_convert(rets)
+        # TODO
 
     @utils.assert_logger
     def __init__(self,
@@ -351,6 +359,9 @@ class Trader(object):
             if (ignore_breakout or now_not_breakout) and next_not_breakout:
                 diff = data_column[e + 1] - data_column[e]
             else:
+                # Here I am using the previous value,
+                # because we do not know the value at this point
+                # (it is generated only when the candle is closed).
                 exit_take_stop = True
 
                 if (not now_not_breakout) and not ignore_breakout:
@@ -372,7 +383,6 @@ class Trader(object):
                                           stop_loss=stop_loss,
                                           take_profit=take_profit,
                                           signal=sig)
-
             if sig == utils.SELL:
                 diff = -diff
             if sig == utils.EXIT:

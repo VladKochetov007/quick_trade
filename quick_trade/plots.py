@@ -171,7 +171,7 @@ class QuickTradeGraph(object):
             'sprice': [],
             'eprice': []
         }
-        for e, (pred, conv, crlev) in enumerate(zip(self.trader.returns,
+        for e, (pred, conv, crlev) in enumerate(zip(self.trader._returns,
                                                     self.trader._converted,
                                                     utils.convert(self.trader._credit_leverages))):
             if e != 0:
@@ -250,6 +250,7 @@ class QuickTradeGraph(object):
                        _col=self.data_col,
                        name=name_fast,
                        opacity=utils.SENKOU_SPAN_A_ALPHA)
+
         self.plot_line(line=slow,
                        fill='tonexty',
                        color=utils.SENKOU_SPAN_B_COLOR,
@@ -258,18 +259,3 @@ class QuickTradeGraph(object):
                        name=name_slow,
                        fill_color=utils.ICHIMOKU_CLOUD_COLOR,
                        opacity=utils.SENKOU_SPAN_B_ALPHA)
-
-
-if __name__ == "__main__":
-    from quick_trade.brokers import TradingClient
-    from trading_sys import ExampleStrategies
-    import ccxt
-
-    g = QuickTradeGraph(figure=make_figure())
-
-    client = TradingClient(ccxt.binance())
-    t = ExampleStrategies(df=client.get_data_historical('BTC/USDT'))
-    t.connect_graph(graph=g)
-
-    t.strategy_ichimoku()
-    t.backtest()
