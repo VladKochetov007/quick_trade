@@ -228,3 +228,5 @@ Function for getting the price movement from the current one to TP or SL. Mainly
 | take_profit | float | Directly permissible value of TP. |
 | signal | `utils.PREDICT_TYPE` | trading prediction at current candle. |
 | returns | float | difference of SL/TP price and current price. |
+
+## make_multi_deal_returns
