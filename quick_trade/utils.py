@@ -31,19 +31,19 @@ TEXT_COLOR: str = 'white'
 TIME_TITLE: str = 'T I M E'
 
 DEPOSIT_TITLE: str = 'M O N E Y S'
-DEPOSIT_NAME: str = 'deposit (start: {})'  # .format(Trader.deposit_history[0])
+DEPOSIT_NAME: str = 'deposit (start: {0})'  # .format(Trader.deposit_history[0])
 DEPOSIT_COLOR: str = 'white'
-DEPOSIT_WIDTH: float = 1.0
+DEPOSIT_WIDTH: float = 2.0
 DEPOSIT_ALPHA: float = 1.0
 
 RETURNS_TITLE: str = 'R E T U R N S'
 RETURNS_NAME: str = 'returns'
 RETURNS_COLOR: str = DEPOSIT_COLOR
-RETURNS_WIDTH: float = 1.0
+RETURNS_WIDTH: float = 2.0
 RETURNS_ALPHA: float = 1.0
 
 DATA_TITLE: str = 'D A T A'
-DATA_NAME: str = '{} {}'  # '{} {}'.format(Trader.ticker, Trader.interval)
+DATA_NAME: str = '{0} {1}'  # '{} {}'.format(Trader.ticker, Trader.interval)
 DATA_UP_COLOR = 'green'
 DATA_DOWN_COLOR = 'red'
 DATA_ALPHA: float = 1.0
@@ -130,7 +130,7 @@ SAR_DOWN_WIDTH: float = 2
 SAR_DOWN_ALPHA: float = 1.0
 
 ST_UP_NAME: str = 'SuperTrend up'
-ST_UP_COLOR: str = '#ffff00'
+ST_UP_COLOR: str = '#ff0000'
 ST_UP_WIDTH: float = 2
 ST_UP_ALPHA: float = 1.0
 
@@ -455,5 +455,27 @@ def get_diff(price: float,
     elif signal == SELL and low <= take_profit:
         return take_profit - price
 
-def make_multi_deal_returns(converted_returns: CONVERTED_TYPE_LIST):
-    pass
+def make_multi_deal_returns(converted_returns: CONVERTED_TYPE_LIST) -> Tuple[PREDICT_TYPE_LIST, List[Union[int]]]:
+    result_credlev: List[Union[int]] = []
+    result_returns: PREDICT_TYPE_LIST = [BUY] * len(converted_returns)
+    flag_lev: int = 0
+    if converted_returns[0] is nan:
+        converted_returns[0] = EXIT
+    ret: CONVERTED_TYPE
+    for ret in converted_returns:
+        if ret is not nan:
+            if ret is BUY:
+                flag_lev += 1
+            elif ret is SELL:
+                flag_lev -= 1
+        result_credlev.append(flag_lev)
+    e: int
+    lev: int
+    for e, lev in enumerate(result_credlev):
+        if lev < 0:
+            result_credlev[e] = -lev
+            result_returns[e] = SELL
+        elif lev == 0:
+            result_credlev[e] = 1
+            result_returns[e] = EXIT
+    return result_returns, result_credlev

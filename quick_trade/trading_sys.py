@@ -25,8 +25,8 @@ from typing import Tuple
 from typing import Union
 
 import ta
-import utils
-from brokers import TradingClient
+from . import utils
+from .brokers import TradingClient
 from numpy import array
 from numpy import digitize
 from numpy import inf
@@ -36,7 +36,7 @@ from numpy import nan_to_num
 from numpy import ndarray
 from pandas import DataFrame
 from pandas import Series
-from plots import QuickTradeGraph
+from .plots import QuickTradeGraph
 
 
 class Trader(object):
@@ -309,9 +309,17 @@ class Trader(object):
         money_start: Union[float, int] = deposit
         prev_sig = utils.EXIT
 
+        ignore_breakout: bool = False
         e: int
         sig: utils.PREDICT_TYPE
-        ignore_breakout: bool = False
+        stop_loss: float
+        take_profit: float
+        converted_element: utils.CONVERTED_TYPE
+        credit_lev: Union[float, int]
+        high: float
+        low: float
+        next_h: float
+        next_l: float
         for e, (sig,
                 stop_loss,
                 take_profit,
