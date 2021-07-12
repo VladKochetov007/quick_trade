@@ -48,7 +48,7 @@ class Trader(object):
 
     """
     _profit_calculate_coef: Union[float, int]
-    _returns: utils.PREDICT_TYPE_LIST = []
+    returns: utils.PREDICT_TYPE_LIST = []
     df: DataFrame
     ticker: str
     interval: str
@@ -83,15 +83,6 @@ class Trader(object):
     @property
     def _converted(self) -> utils.CONVERTED_TYPE_LIST:
         return utils.convert(self.returns)
-
-    @property
-    def returns(self):
-        return self._returns
-
-    @returns.setter
-    def returns(self, rets):
-        self._returns = utils.anti_convert(rets)
-        # TODO
 
     @utils.assert_logger
     def __init__(self,
@@ -310,6 +301,7 @@ class Trader(object):
         prev_sig = utils.EXIT
 
         ignore_breakout: bool = False
+        next_not_breakout: bool
         e: int
         sig: utils.PREDICT_TYPE
         stop_loss: float
@@ -494,7 +486,10 @@ class Trader(object):
             df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
             new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
             new_trader.set_client(your_client=self.client)
-            new_trader.connect_graph()
+            try:
+                new_trader.connect_graph(self.fig)
+            except:
+                pass
             new_trader._get_attr(strategy_name)(**strategy_kwargs)
             new_trader.backtest(deposit=deposit / len(tickers),
                                 bet=bet,

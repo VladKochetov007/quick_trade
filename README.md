@@ -12,6 +12,7 @@ used:
  ├──plotly (https://github.com/plotly/plotly.py)
  ├──pandas (https://github.com/pandas-dev/pandas)
  ├──numpy (https://github.com/numpy/numpy)
+ ├──tqdm (https://github.com/tqdm/tqdm)
  └──ccxt (https://github.com/ccxt/ccxt)
 ```
 

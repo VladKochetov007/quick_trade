@@ -8,6 +8,7 @@ from typing import Sequence
 from typing import Sized
 from typing import Tuple
 from typing import Union
+from warnings import warn
 
 from numpy import array
 from numpy import nan
@@ -456,6 +457,8 @@ def get_diff(price: float,
         return take_profit - price
 
 def make_multi_deal_returns(converted_returns: CONVERTED_TYPE_LIST) -> Tuple[PREDICT_TYPE_LIST, List[Union[int]]]:
+    if EXIT in converted_returns:
+        warn('The use of utils.EXIT is deprecated in this type of strategy. If utils.EXIT is the first item in the sequence, you can replace it with np.nan.')
     result_credlev: List[Union[int]] = []
     result_returns: PREDICT_TYPE_LIST = [BUY] * len(converted_returns)
     flag_lev: int = 0

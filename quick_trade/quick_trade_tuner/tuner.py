@@ -6,11 +6,13 @@ from typing import Dict
 from typing import Iterable
 from typing import List
 
-from core import TunableValue
-from core import transform_all_tunable_values
+from .core import TunableValue
+from .core import transform_all_tunable_values
 from numpy import arange, linspace
 from pandas import DataFrame
 from quick_trade.brokers import TradingClient
+from tqdm import tqdm
+from quick_trade import utils
 
 
 class QuickTradeTuner(object):
@@ -26,7 +28,7 @@ class QuickTradeTuner(object):
         :param client: trading client
         :param tickers: ticker
         :param intervals: list of intervals -> ['1m', '4h'...]
-        :param starts: starts(period)(limit) for client.get_data_historical (['2 Dec 2020', '3 Sep 1970'])
+        :param starts: starts(period)(limit) for client.get_data_historical ([1000, 700...])
         :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choice, Linspace, Arange as argument's value and recourse it
 
         """
@@ -47,11 +49,16 @@ class QuickTradeTuner(object):
     def tune(
             self,
             your_trading_class,
+            use_tqdm: bool = True,
             **backtest_kwargs
     ) -> dict:
         backtest_kwargs['plot'] = False
         backtest_kwargs['show'] = False
         backtest_kwargs['print_out'] = False
+        if use_tqdm:
+            bar: tqdm = tqdm(
+                total=len(self._strategies) * len(self._frames_data)
+            )
 
         def get_dict():
             return defaultdict(get_dict)
@@ -81,12 +88,13 @@ class QuickTradeTuner(object):
                     trader._get_attr(strategy)(**kwargs)
                     trader.backtest(**backtest_kwargs)
 
-                __ = str(kwargs).replace(": ", "=").replace("'", "").strip("{").strip("}")
-                strat_kw = f'{strategy}({__})'
+                arguments = str(kwargs).replace(": ", "=").replace("'", "").strip("{").strip("}")
+                strat_kw = f'{strategy}({arguments})'
                 self.strategies_and_kwargs.append(strat_kw)
                 if self.multi_test:
                     old_tick = ticker
                     ticker = 'ALL'
+                utils.logger.debug('testing %s strategy... :', strat_kw)
                 self.result_tunes[ticker][interval][start][strat_kw]['winrate'] = trader.winrate
                 self.result_tunes[ticker][interval][start][strat_kw]['trades'] = trader.trades
                 self.result_tunes[ticker][interval][start][strat_kw]['losses'] = trader.losses
@@ -94,6 +102,8 @@ class QuickTradeTuner(object):
                 self.result_tunes[ticker][interval][start][strat_kw]['percentage year profit'] = trader.year_profit
                 if self.multi_test:
                     ticker = old_tick
+                if use_tqdm:
+                    bar.update(1)
 
         for data in self._frames_data:
             ticker = data[0]
