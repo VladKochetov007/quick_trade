@@ -3,7 +3,7 @@ from typing import Iterable
 from typing import List
 from typing import Union
 
-from . import utils
+import utils
 from plotly.graph_objs import Figure
 from plotly.graph_objs import Scatter
 from plotly.subplots import make_subplots
@@ -171,7 +171,7 @@ class QuickTradeGraph(object):
             'sprice': [],
             'eprice': []
         }
-        for e, (pred, conv, crlev) in enumerate(zip(self.trader._returns,
+        for e, (pred, conv, crlev) in enumerate(zip(self.trader.returns,
                                                     self.trader._converted,
                                                     utils.convert(self.trader._credit_leverages))):
             if e != 0:

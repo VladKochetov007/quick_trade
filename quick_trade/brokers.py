@@ -2,7 +2,7 @@ from typing import Dict
 
 from ccxt import Exchange
 from pandas import DataFrame
-from quick_trade import utils
+import utils
 
 
 class TradingClient(object):
