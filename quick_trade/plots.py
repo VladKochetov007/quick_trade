@@ -3,7 +3,7 @@ from typing import Iterable
 from typing import List
 from typing import Union
 
-import utils
+from . import utils
 from plotly.graph_objs import Figure
 from plotly.graph_objs import Scatter
 from plotly.subplots import make_subplots

@@ -25,8 +25,8 @@ from typing import Tuple
 from typing import Union
 
 import ta
-import utils
-from brokers import TradingClient
+from . import utils
+from .brokers import TradingClient
 from numpy import array
 from numpy import digitize
 from numpy import inf
@@ -36,7 +36,7 @@ from numpy import nan_to_num
 from numpy import ndarray
 from pandas import DataFrame
 from pandas import Series
-from plots import QuickTradeGraph
+from .plots import QuickTradeGraph
 
 
 class Trader(object):
