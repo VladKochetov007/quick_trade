@@ -89,7 +89,7 @@ TRADE_MARKER_EXIT_ALPHA: float = 1.0
 
 TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
 
-WAIT_SUCCESS_SLEEP: float = 15.0
+WAIT_SUCCESS_SLEEP: float = 1.0
 WAIT_SUCCESS_PRINT: bool = True
 WAIT_SUCCESS_USE: bool = True
 
@@ -161,7 +161,7 @@ profits: {}
 mean year percentage profit: {}%
 winrate: {}%"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate)
 
-__version__: str = "6.0.1"
+__version__: str = "6.3.5"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",

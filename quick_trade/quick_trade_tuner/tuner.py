@@ -10,9 +10,9 @@ from .core import TunableValue
 from .core import transform_all_tunable_values
 from numpy import arange, linspace
 from pandas import DataFrame
-from quick_trade.brokers import TradingClient
+from ..brokers import TradingClient
 from tqdm import tqdm
-from quick_trade import utils
+from .. import utils
 
 
 class QuickTradeTuner(object):
@@ -50,6 +50,8 @@ class QuickTradeTuner(object):
             self,
             your_trading_class,
             use_tqdm: bool = True,
+            update_json: bool = True,
+            update_json_path: str = 'returns.json',
             **backtest_kwargs
     ) -> dict:
         backtest_kwargs['plot'] = False
@@ -94,7 +96,7 @@ class QuickTradeTuner(object):
                 if self.multi_test:
                     old_tick = ticker
                     ticker = 'ALL'
-                utils.logger.debug('testing %s strategy... :', strat_kw)
+                utils.logger.debug('testing %s ... :', strat_kw)
                 self.result_tunes[ticker][interval][limit][strat_kw]['winrate'] = trader.winrate
                 self.result_tunes[ticker][interval][limit][strat_kw]['trades'] = trader.trades
                 self.result_tunes[ticker][interval][limit][strat_kw]['losses'] = trader.losses
@@ -104,6 +106,8 @@ class QuickTradeTuner(object):
                     ticker = old_tick
                 if use_tqdm:
                     bar.update(1)
+                if update_json:
+                    self.save_tunes(path=update_json_path)
 
         for data in self._frames_data:
             ticker = data[0]
@@ -125,6 +129,7 @@ class QuickTradeTuner(object):
         return self.result_tunes
 
     def sort_tunes(self, sort_by: str = 'percentage year profit', print_exc=True) -> dict:
+        utils.logger.debug('sorting tunes')
         filtered = {}
         for ticker, tname in zip(self.result_tunes.values(), self.result_tunes):
             for interval, iname in zip(ticker.values(), ticker):
@@ -133,16 +138,17 @@ class QuickTradeTuner(object):
                         filtered[
                             f'ticker: {tname}, interval: {iname}, limit: {sname} :: {stratname}'] = strategy
         self.result_tunes = {k: v for k, v in sorted(filtered.items(), key=lambda x: -x[1][sort_by])}
+        utils.logger.debug('tunes are sorted')
         return self.result_tunes
 
     def save_tunes(self, path: str = 'returns.json'):
+        utils.logger.debug('saving tunes in "%s"', path)
         with open(path, 'w') as file:
             dump(self.result_tunes, file)
 
 
 class Choise(TunableValue):
-    def __init__(self, values: Iterable[Any]):
-        self.values = values
+    pass
 
 
 class Arange(TunableValue):

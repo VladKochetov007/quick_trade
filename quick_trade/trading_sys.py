@@ -106,7 +106,7 @@ class Trader(object):
         utils.logger.info('new trader: %s', self)
 
     def __repr__(self):
-        return f'{self.ticker} {self.interval} trader'
+        return f'{self.ticker} {self.interval} trader. Trading: {self.trading_on_client}'
 
     def _get_attr(self, attr: str):
         return getattr(self, attr)
@@ -389,17 +389,18 @@ class Trader(object):
                 diff = 0.0
             if not no_order:
                 deposit += bet * credit_lev * diff / open_price
-            no_order = exit_take_stop
             self.deposit_history.append(deposit)
-            prev_sig = sig
+
             if converted_element is not nan:
-                if sig != utils.EXIT:
-                    self.trades += 1
                 if prev_sig != utils.EXIT:
+                    self.trades += 1
                     if deposit > moneys_open_bet:
                         self.profits += 1
                     elif deposit < moneys_open_bet:
                         self.losses += 1
+
+            no_order = exit_take_stop
+            prev_sig = sig
             ignore_breakout = False
 
         self.average_growth = utils.get_exponential_growth(self.deposit_history)
@@ -411,7 +412,7 @@ class Trader(object):
             self.winrate = (self.profits / self.trades) * 100
         else:
             self.winrate = 0
-            utils.logger.error('0 trades in %s', self)
+            utils.logger.critical('0 trades in %s', self)
         self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate)
         utils.logger.info('trader info: %s', self._info)
         if print_out:
@@ -429,8 +430,6 @@ class Trader(object):
             ]).T
         self.backtest_out = self._backtest_out_no_drop.dropna()
         if plot:
-            loc: Series = self.df['Close']
-
             self.fig.plot_candlestick()
             self.fig.plot_trade_triangles()
             self.fig.plot_SL_TP_OPN()
