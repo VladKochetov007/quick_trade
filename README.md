@@ -27,7 +27,7 @@ import yfinance as yf
 import ccxt
 
 
-class My_trader(qtr.Trader):
+class MyTrader(qtr.Trader):
     def strategy_sell_and_hold(self):
         ret = []
         for i in self.df['Close'].values:
@@ -38,7 +38,7 @@ class My_trader(qtr.Trader):
         return ret
 
 
-a = My_trader('MSFT/USD', df=yf.download('MSFT', start='2019-01-01'))
+a = MyTrader('MSFT/USD', df=yf.download('MSFT', start='2019-01-01'))
 a.connect_graph()
 a.set_client(brokers.TradingClient(ccxt.ftx()))
 a.strategy_sell_and_hold()
