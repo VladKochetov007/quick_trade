@@ -23,6 +23,7 @@ from typing import List
 from typing import Sized
 from typing import Tuple
 from typing import Union
+from warnings import warn
 
 import ta
 from . import utils
@@ -312,6 +313,7 @@ class Trader(object):
         low: float
         next_h: float
         next_l: float
+        pass_math: bool = False
         for e, (sig,
                 stop_loss,
                 take_profit,
@@ -347,6 +349,16 @@ class Trader(object):
                 no_order = False
                 exit_take_stop = False
                 ignore_breakout = True
+                if not min(stop_loss, take_profit) <= open_price <= max(stop_loss, take_profit):
+                    warn('The deal was opened out of range!')
+                    utils.logger.error('The deal was opened out of range!')
+                    self.winrate = 0.0
+                    self.year_profit = 0.0
+                    self.losses = 0
+                    self.profits = 0
+                    self.trades = 0
+                    pass_math = True
+                    break
 
             next_not_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
 
@@ -354,8 +366,7 @@ class Trader(object):
             take_profit = self._take_profits[e - 1]
             # be careful with e=0
             # haha))) no)
-            now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss,
-                                                                               take_profit)
+            now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit)
             if (ignore_breakout or now_not_breakout) and next_not_breakout:
                 diff = data_column[e + 1] - data_column[e]
             else:
@@ -404,15 +415,17 @@ class Trader(object):
             ignore_breakout = False
 
         self.average_growth = utils.get_exponential_growth(self.deposit_history)
-        self.year_profit = utils.profit_factor(self.deposit_history) ** (self._profit_calculate_coef - 1)
-        #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
-        self.year_profit -= 1  # The initial deposit does not count as profit
-        self.year_profit *= 100  # Percentage
-        if self.trades != 0:
-            self.winrate = (self.profits / self.trades) * 100
-        else:
-            self.winrate = 0
-            utils.logger.critical('0 trades in %s', self)
+        if not pass_math:
+            print(pass_math)
+            self.year_profit = utils.profit_factor(self.deposit_history) ** (self._profit_calculate_coef - 1)
+            #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
+            self.year_profit -= 1  # The initial deposit does not count as profit
+            self.year_profit *= 100  # Percentage
+            if self.trades != 0:
+                self.winrate = (self.profits / self.trades) * 100
+            else:
+                self.winrate = 0
+                utils.logger.critical('0 trades in %s', self)
         self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate)
         utils.logger.info('trader info: %s', self._info)
         if print_out:
