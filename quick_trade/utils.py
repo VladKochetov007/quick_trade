@@ -161,7 +161,7 @@ profits: {}
 mean year percentage profit: {}%
 winrate: {}%"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate)
 
-__version__: str = "6.3.5"
+__version__: str = "6.3.6"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -456,10 +456,10 @@ def get_diff(price: float,
     elif signal == SELL and low <= take_profit:
         return take_profit - price
 
-def make_multi_deal_returns(converted_returns: CONVERTED_TYPE_LIST) -> Tuple[PREDICT_TYPE_LIST, List[Union[int]]]:
+def make_multi_deal_returns(converted_returns: CONVERTED_TYPE_LIST) -> Tuple[PREDICT_TYPE_LIST, List[int]]:
     if EXIT in converted_returns:
         warn('The use of utils.EXIT is deprecated in this type of strategy. If utils.EXIT is the first item in the sequence, you can replace it with np.nan.')
-    result_credlev: List[Union[int]] = []
+    result_credlev: List[int] = []
     result_returns: PREDICT_TYPE_LIST = [BUY] * len(converted_returns)
     flag_lev: int = 0
     if converted_returns[0] is nan:

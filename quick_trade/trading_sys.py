@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
-
 # TODO:
 #   scalper and dca bot
 #   more docs and examples
 #   decimal
 #   3.9
 #   decorator for strategies without exit condition (not converted data)
+#   quick-trade-tuner arguments blacklist
+
 from copy import copy
 from datetime import datetime
 from re import fullmatch
@@ -349,7 +350,7 @@ class Trader(object):
                 no_order = False
                 exit_take_stop = False
                 ignore_breakout = True
-                if not min(stop_loss, take_profit) <= open_price <= max(stop_loss, take_profit):
+                if sig != utils.EXIT and not min(stop_loss, take_profit) <= open_price <= max(stop_loss, take_profit) and e > 0:
                     warn('The deal was opened out of range!')
                     utils.logger.error('The deal was opened out of range!')
                     self.winrate = 0.0
@@ -416,7 +417,6 @@ class Trader(object):
 
         self.average_growth = utils.get_exponential_growth(self.deposit_history)
         if not pass_math:
-            print(pass_math)
             self.year_profit = utils.profit_factor(self.deposit_history) ** (self._profit_calculate_coef - 1)
             #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
             self.year_profit -= 1  # The initial deposit does not count as profit

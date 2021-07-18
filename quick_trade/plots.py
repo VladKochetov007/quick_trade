@@ -38,7 +38,7 @@ def make_figure(height: Union[int, float] = 900,
     return fig
 
 
-class QuickTradeGraph(object):
+class BaseGraph(object):
     _figure: Figure
     data_row: int = 1
     data_col: int = 1
@@ -58,6 +58,8 @@ class QuickTradeGraph(object):
     def show(self, **kwargs):
         self._figure.show(**kwargs)
 
+
+class BasePlotlyGraph(BaseGraph):
     def plot_line(self,
                   line: Iterable = None,
                   index: Iterable = None,
@@ -108,6 +110,30 @@ class QuickTradeGraph(object):
             name=utils.DATA_NAME.format(self.trader.ticker, self.trader.interval),
             opacity=utils.DATA_ALPHA
         )
+
+    def plot_area(self,
+                  fast: Iterable = None,
+                  slow: Iterable = None,
+                  name_fast: str = None,
+                  name_slow: str = None):
+        self.plot_line(line=fast,
+                       color=utils.SENKOU_SPAN_A_COLOR,
+                       _row=self.data_row,
+                       _col=self.data_col,
+                       name=name_fast,
+                       opacity=utils.SENKOU_SPAN_A_ALPHA)
+
+        self.plot_line(line=slow,
+                       fill='tonexty',
+                       color=utils.SENKOU_SPAN_B_COLOR,
+                       _row=self.data_row,
+                       _col=self.data_col,
+                       name=name_slow,
+                       fill_color=utils.ICHIMOKU_CLOUD_COLOR,
+                       opacity=utils.SENKOU_SPAN_B_ALPHA)
+
+
+class QuickTradeGraph(BasePlotlyGraph):
 
     def plot_deposit(self):
         deposit_start = self.trader.deposit_history[0]
@@ -238,24 +264,3 @@ class QuickTradeGraph(object):
         self._figure.update_yaxes(row=_row,
                                   col=_col,
                                   type='log')
-
-    def plot_area(self,
-                  fast: Iterable = None,
-                  slow: Iterable = None,
-                  name_fast: str = None,
-                  name_slow: str = None):
-        self.plot_line(line=fast,
-                       color=utils.SENKOU_SPAN_A_COLOR,
-                       _row=self.data_row,
-                       _col=self.data_col,
-                       name=name_fast,
-                       opacity=utils.SENKOU_SPAN_A_ALPHA)
-
-        self.plot_line(line=slow,
-                       fill='tonexty',
-                       color=utils.SENKOU_SPAN_B_COLOR,
-                       _row=self.data_row,
-                       _col=self.data_col,
-                       name=name_slow,
-                       fill_color=utils.ICHIMOKU_CLOUD_COLOR,
-                       opacity=utils.SENKOU_SPAN_B_ALPHA)
