@@ -39,5 +39,6 @@ def transform_all_tunable_values(strategies_kwargs: Dict[str, List[Dict[str, Any
 
 class TunableValue(object):
     values: Iterable[Any]
+
     def __init__(self, values: Iterable[Any]):
         self.values = values

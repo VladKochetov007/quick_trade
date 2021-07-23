@@ -161,7 +161,7 @@ profits: {}
 mean year percentage profit: {}%
 winrate: {}%"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate)
 
-__version__: str = "6.3.6"
+__version__: str = "6.3.7"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -455,6 +455,7 @@ def get_diff(price: float,
 
     elif signal == SELL and low <= take_profit:
         return take_profit - price
+
 
 def make_multi_deal_returns(converted_returns: CONVERTED_TYPE_LIST) -> Tuple[PREDICT_TYPE_LIST, List[int]]:
     if EXIT in converted_returns:

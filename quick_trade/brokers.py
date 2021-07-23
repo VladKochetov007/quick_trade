@@ -2,6 +2,7 @@ from typing import Dict
 
 from ccxt import Exchange
 from pandas import DataFrame
+
 from . import utils
 
 

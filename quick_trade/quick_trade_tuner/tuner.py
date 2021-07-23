@@ -6,13 +6,14 @@ from typing import Dict
 from typing import Iterable
 from typing import List
 
-from .core import TunableValue
-from .core import transform_all_tunable_values
 from numpy import arange, linspace
 from pandas import DataFrame
-from ..brokers import TradingClient
 from tqdm import tqdm
+
+from .core import TunableValue
+from .core import transform_all_tunable_values
 from .. import utils
+from ..brokers import TradingClient
 
 
 class QuickTradeTuner(object):
