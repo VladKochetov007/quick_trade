@@ -221,10 +221,12 @@ Function for getting the price movement from the current one to TP or SL. Mainly
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| price | float |  |
-| low | low |  |
-| high | float |  |
-| stop_loss | float |  |
-| take_profit | float |  |
-| signal | `utils.PREDICT_TYPE` |  |
-| returns | float |  |
+| price | float | The closing price at which the breakout was detected at this or the next moment. |
+| low | low | The lower price of the candlestick that turned out to be outside the limits of the acceptable value for SL / TP. |
+| high | float | The higher price of the candlestick that turned out to be outside the limits of the acceptable value for SL / TP. |
+| stop_loss | float | Directly permissible value of SL. |
+| take_profit | float | Directly permissible value of TP. |
+| signal | `utils.PREDICT_TYPE` | trading prediction at current candle. |
+| returns | float | difference of SL/TP price and current price. |
+
+## make_multi_deal_returns

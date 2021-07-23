@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 # used ta by Darío López Padial (Bukosabino https://github.com/bukosabino/ta)
 
-
 # TODO:
 #   scalper and dca bot
 #   more docs and examples
 #   decimal
 #   3.9
 #   decorator for strategies without exit condition (not converted data)
+#   quick-trade-tuner arguments blacklist
+#   multi-backtest normal calculating(real multi-test, not sum of single tests)
+
 from copy import copy
 from datetime import datetime
 from re import fullmatch
@@ -23,10 +25,11 @@ from typing import List
 from typing import Sized
 from typing import Tuple
 from typing import Union
+from warnings import warn
 
 import ta
-import utils
-from brokers import TradingClient
+from . import utils
+from .brokers import TradingClient
 from numpy import array
 from numpy import digitize
 from numpy import inf
@@ -36,7 +39,7 @@ from numpy import nan_to_num
 from numpy import ndarray
 from pandas import DataFrame
 from pandas import Series
-from plots import QuickTradeGraph
+from .plots import QuickTradeGraph
 
 
 class Trader(object):
@@ -78,11 +81,10 @@ class Trader(object):
     supports: Dict[int, float]
     resistances: Dict[int, float]
     trading_on_client: bool
-    _converted: utils.CONVERTED_TYPE_LIST
     fig: QuickTradeGraph
 
     @property
-    def _converted(self):
+    def _converted(self) -> utils.CONVERTED_TYPE_LIST:
         return utils.convert(self.returns)
 
     @utils.assert_logger
@@ -107,7 +109,7 @@ class Trader(object):
         utils.logger.info('new trader: %s', self)
 
     def __repr__(self):
-        return f'{self.ticker} {self.interval} trader'
+        return f'{self.ticker} {self.interval} trader. Trading: {self.trading_on_client}'
 
     def _get_attr(self, attr: str):
         return getattr(self, attr)
@@ -301,9 +303,19 @@ class Trader(object):
         money_start: Union[float, int] = deposit
         prev_sig = utils.EXIT
 
+        ignore_breakout: bool = False
+        next_not_breakout: bool
         e: int
         sig: utils.PREDICT_TYPE
-        ignore_breakout: bool = False
+        stop_loss: float
+        take_profit: float
+        converted_element: utils.CONVERTED_TYPE
+        credit_lev: Union[float, int]
+        high: float
+        low: float
+        next_h: float
+        next_l: float
+        pass_math: bool = False
         for e, (sig,
                 stop_loss,
                 take_profit,
@@ -339,6 +351,16 @@ class Trader(object):
                 no_order = False
                 exit_take_stop = False
                 ignore_breakout = True
+                if sig != utils.EXIT and not min(stop_loss, take_profit) <= open_price <= max(stop_loss, take_profit) and e > 0:
+                    warn('The deal was opened out of range!')
+                    utils.logger.error('The deal was opened out of range!')
+                    self.winrate = 0.0
+                    self.year_profit = 0.0
+                    self.losses = 0
+                    self.profits = 0
+                    self.trades = 0
+                    pass_math = True
+                    break
 
             next_not_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
 
@@ -346,11 +368,13 @@ class Trader(object):
             take_profit = self._take_profits[e - 1]
             # be careful with e=0
             # haha))) no)
-            now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss,
-                                                                               take_profit)
+            now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit)
             if (ignore_breakout or now_not_breakout) and next_not_breakout:
                 diff = data_column[e + 1] - data_column[e]
             else:
+                # Here I am using the previous value,
+                # because we do not know the value at this point
+                # (it is generated only when the candle is closed).
                 exit_take_stop = True
 
                 if (not now_not_breakout) and not ignore_breakout:
@@ -372,36 +396,37 @@ class Trader(object):
                                           stop_loss=stop_loss,
                                           take_profit=take_profit,
                                           signal=sig)
-
             if sig == utils.SELL:
                 diff = -diff
             if sig == utils.EXIT:
                 diff = 0.0
             if not no_order:
                 deposit += bet * credit_lev * diff / open_price
-            no_order = exit_take_stop
             self.deposit_history.append(deposit)
-            prev_sig = sig
+
             if converted_element is not nan:
-                if sig != utils.EXIT:
-                    self.trades += 1
                 if prev_sig != utils.EXIT:
+                    self.trades += 1
                     if deposit > moneys_open_bet:
                         self.profits += 1
                     elif deposit < moneys_open_bet:
                         self.losses += 1
+
+            no_order = exit_take_stop
+            prev_sig = sig
             ignore_breakout = False
 
         self.average_growth = utils.get_exponential_growth(self.deposit_history)
-        self.year_profit = utils.profit_factor(self.deposit_history) ** (self._profit_calculate_coef - 1)
-        #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
-        self.year_profit -= 1  # The initial deposit does not count as profit
-        self.year_profit *= 100  # Percentage
-        if self.trades != 0:
-            self.winrate = (self.profits / self.trades) * 100
-        else:
-            self.winrate = 0
-            utils.logger.error('0 trades in %s', self)
+        if not pass_math:
+            self.year_profit = utils.profit_factor(self.deposit_history) ** (self._profit_calculate_coef - 1)
+            #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
+            self.year_profit -= 1  # The initial deposit does not count as profit
+            self.year_profit *= 100  # Percentage
+            if self.trades != 0:
+                self.winrate = (self.profits / self.trades) * 100
+            else:
+                self.winrate = 0
+                utils.logger.critical('0 trades in %s', self)
         self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate)
         utils.logger.info('trader info: %s', self._info)
         if print_out:
@@ -419,8 +444,6 @@ class Trader(object):
             ]).T
         self.backtest_out = self._backtest_out_no_drop.dropna()
         if plot:
-            loc: Series = self.df['Close']
-
             self.fig.plot_candlestick()
             self.fig.plot_trade_triangles()
             self.fig.plot_SL_TP_OPN()
@@ -476,7 +499,10 @@ class Trader(object):
             df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
             new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
             new_trader.set_client(your_client=self.client)
-            new_trader.connect_graph()
+            try:
+                new_trader.connect_graph(self.fig)
+            except:
+                pass
             new_trader._get_attr(strategy_name)(**strategy_kwargs)
             new_trader.backtest(deposit=deposit / len(tickers),
                                 bet=bet,

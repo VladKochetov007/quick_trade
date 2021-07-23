@@ -12,6 +12,7 @@ used:
  ├──plotly (https://github.com/plotly/plotly.py)
  ├──pandas (https://github.com/pandas-dev/pandas)
  ├──numpy (https://github.com/numpy/numpy)
+ ├──tqdm (https://github.com/tqdm/tqdm)
  └──ccxt (https://github.com/ccxt/ccxt)
 ```
 
@@ -22,11 +23,12 @@ Algo-trading system with python.
 ```python
 import quick_trade.trading_sys as qtr
 from quick_trade import brokers
+from quick_trade.plots import QuickTradeGraph, make_figure
 import yfinance as yf
 import ccxt
 
 
-class My_trader(qtr.Trader):
+class MyTrader(qtr.Trader):
     def strategy_sell_and_hold(self):
         ret = []
         for i in self.df['Close'].values:
@@ -37,8 +39,8 @@ class My_trader(qtr.Trader):
         return ret
 
 
-a = My_trader('MSFT/USD', df=yf.download('MSFT', start='2019-01-01'))
-a.connect_graph()
+a = MyTrader('MSFT/USD', df=yf.download('MSFT', start='2019-01-01'))
+a.connect_graph(QuickTradeGraph(make_figure()))
 a.set_client(brokers.TradingClient(ccxt.ftx()))
 a.strategy_sell_and_hold()
 a.backtest()
@@ -123,6 +125,8 @@ tuner.save_tunes('quick-trade-tunes.json')  # save tunes as JSON
 ```commandline
 $ git clone https://github.com/VladKochetov007/quick_trade.git
 $ pip3 install -r quick_trade/requirements.txt
+$ cd quick_trade
+$ python3 setup.py install
 ```
 
 or
@@ -137,12 +141,13 @@ $ pip3 install quick-trade
 import quick_trade.trading_sys as qtr
 import ccxt
 from quick_trade import brokers
+from quick_trade.plots import make_figure, QuickTradeGraph
 
 client = brokers.TradingClient(ccxt.binance())
 df = client.get_data_historical('BTC/USDT', '15m', 1000)
 trader = qtr.ExampleStrategies('BTC/USDT', df=df, interval='15m')
 trader.set_client(client)
-trader.connect_graph(height=731, width=1440, row_heights=[10, 5, 2])
+trader.connect_graph(QuickTradeGraph(make_figure(height=731, width=1440, row_heights=[10, 5, 2])))
 trader.strategy_2_sma(55, 21)
 trader.backtest(deposit=1000, commission=0.075, bet=qtr.utils.np.inf)  # backtest on one pair
 ```
