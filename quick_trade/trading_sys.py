@@ -9,6 +9,7 @@
 #   3.9
 #   decorator for strategies without exit condition (not converted data)
 #   quick-trade-tuner arguments blacklist
+#   multi-backtest normal calculating(real multi-test, not sum of single tests)
 
 from copy import copy
 from datetime import datetime
