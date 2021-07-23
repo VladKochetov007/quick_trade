@@ -456,6 +456,7 @@ def get_diff(price: float,
     elif signal == SELL and low <= take_profit:
         return take_profit - price
 
+
 def make_multi_deal_returns(converted_returns: CONVERTED_TYPE_LIST) -> Tuple[PREDICT_TYPE_LIST, List[int]]:
     if EXIT in converted_returns:
         warn('The use of utils.EXIT is deprecated in this type of strategy. If utils.EXIT is the first item in the sequence, you can replace it with np.nan.')
