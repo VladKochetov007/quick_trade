@@ -1,4 +1,5 @@
 # quick_trade
+[![Downloads](https://pepy.tech/badge/quick-trade)](https://pepy.tech/project/quick-trade)
 
 View documentation: 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧 in process
 
