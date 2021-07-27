@@ -1183,7 +1183,7 @@ class ExampleStrategies(Trader):
         senkou_span_a: ndarray = cloud.ichimoku_a().values
         senkou_span_b: ndarray = cloud.ichimoku_b().values
         prices: Series = self.df['Close']
-        chenkou_span: ndarray = prices.shift(-chinkouspan).values
+        chinkou_span: ndarray = prices.shift(-chinkouspan).values
         flag1: utils.PREDICT_TYPE = utils.EXIT
         flag2: utils.PREDICT_TYPE = utils.EXIT
         flag3: utils.PREDICT_TYPE = utils.EXIT
@@ -1204,7 +1204,7 @@ class ExampleStrategies(Trader):
                                           'chinkou-span'],
                                          [tenkan_sen,
                                           kinjun_sen,
-                                          chenkou_span],
+                                          chinkou_span],
                                          ['red',
                                           'blue',
                                           'green']):
