@@ -1,5 +1,6 @@
 # quick_trade
 [![Downloads](https://pepy.tech/badge/quick-trade)](https://pepy.tech/project/quick-trade)
+[![Downloads](https://img.shields.io/pypi/dm/quick_trade.svg?label=Pypi%20downloads)](https://pepy.tech/project/quick-trade)
 
 View documentation: 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧 in process
 
