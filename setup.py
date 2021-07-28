@@ -26,7 +26,7 @@ setup(
         'numpy==1.21.1',
         'pandas==1.3.1',
         'ta==0.7.0',
-        'ccxt==1.53.67'
+        'ccxt==1.53.73'
     ],
     download_url=f'https://github.com/VladKochetov007/quick_trade/archive/{__version__}.tar.gz',
     keywords=[
