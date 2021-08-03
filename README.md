@@ -119,12 +119,6 @@ tuner = QuickTradeTuner(
 tuner.tune(Test)
 print(tuner.sort_tunes())
 tuner.save_tunes('quick-trade-tunes.json')  # save tunes as JSON
-```
-You can also set rules for arranging arguments for each strategy by using `_RULES_` and `kwargs` to access the values of the arguments:
-
-```python
-
-```
 
 ## Installing:
 
