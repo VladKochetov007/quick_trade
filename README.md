@@ -1,5 +1,6 @@
 # quick_trade
-[![Downloads](https://pepy.tech/badge/quick-trade)](https://pepy.tech/project/quick-trade)
+[![Downloads](https://static.pepy.tech/personalized-badge/quick-trade?period=total&units=none&left_color=grey&right_color=brightgreen&left_text=PyPi%20downloads)](https://pepy.tech/project/quick-trade)
+[![Downloads](https://static.pepy.tech/personalized-badge/quick-trade?period=month&units=none&left_color=grey&right_color=brightgreen&left_text=PyPi%20downloads%20(month))](https://pepy.tech/project/quick-trade)
 
 View documentation: 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧 in process
 
@@ -119,6 +120,23 @@ tuner = QuickTradeTuner(
 tuner.tune(Test)
 print(tuner.sort_tunes())
 tuner.save_tunes('quick-trade-tunes.json')  # save tunes as JSON
+
+```
+You can also set rules for arranging arguments for each strategy by using `_RULES_` and `kwargs` to access the values of the arguments:
+
+```python
+params = {
+    'strategy_3_sma':
+        [
+            dict(
+                plot=False,
+                slow=Choise([2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597]),
+                fast=Choise([2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597]),
+                mid=Choise([2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597]),
+                _RULES_='kwargs["slow"] > kwargs["mid"] > kwargs["fast"]'
+            )
+        ],
+}
 ```
 
 ## Installing:
@@ -128,6 +146,7 @@ $ git clone https://github.com/VladKochetov007/quick_trade.git
 $ pip3 install -r quick_trade/requirements.txt
 $ cd quick_trade
 $ python3 setup.py install
+$ cd ..
 ```
 
 or
