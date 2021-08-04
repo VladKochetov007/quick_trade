@@ -8,8 +8,8 @@
 #   decimal
 #   3.9
 #   decorator for strategies without exit condition (not converted data)
-#   quick-trade-tuner arguments blacklist
 #   multi-backtest normal calculating(real multi-test, not sum of single tests)
+#   add meta-data in tuner's returns
 
 from copy import copy
 from datetime import datetime
@@ -336,6 +336,15 @@ class Trader(object):
                                          data_low[1:])):
 
             if converted_element is not nan:
+                # count the number of profitable and unprofitable trades.
+                if prev_sig != utils.EXIT:
+                    self.trades += 1
+                    if deposit > moneys_open_bet:
+                        self.profits += 1
+                    elif deposit < moneys_open_bet:
+                        self.losses += 1
+
+                # calculating commission
                 if prev_sig != utils.EXIT:
                     commission_reuse = 2
                 else:
@@ -343,11 +352,13 @@ class Trader(object):
                 bet = start_bet
                 if bet > deposit:
                     bet = deposit
-                open_price = data_column[e]
                 for i in range(commission_reuse):
                     deposit -= bet * (commission / 100) * credit_lev
                     if bet > deposit:
                         bet = deposit
+
+                # reset service variables
+                open_price = data_column[e]
                 moneys_open_bet = deposit
                 no_order = False
                 exit_take_stop = False
@@ -404,14 +415,6 @@ class Trader(object):
             if not no_order:
                 deposit += bet * credit_lev * diff / open_price
             self.deposit_history.append(deposit)
-
-            if converted_element is not nan:
-                if prev_sig != utils.EXIT:
-                    self.trades += 1
-                    if deposit > moneys_open_bet:
-                        self.profits += 1
-                    elif deposit < moneys_open_bet:
-                        self.losses += 1
 
             no_order = exit_take_stop
             prev_sig = sig

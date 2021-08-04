@@ -161,7 +161,7 @@ profits: {}
 mean year percentage profit: {}%
 winrate: {}%"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate)
 
-__version__: str = "6.3.7"
+__version__: str = "6.3.8"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -415,7 +415,7 @@ def wait_success(func):
     return checker
 
 
-def root(x: float, pwr: float = 2) -> float:
+def root(x: float, pwr: float = 2.0) -> float:
     return x ** (1 / pwr)
 
 

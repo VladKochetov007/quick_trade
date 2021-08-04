@@ -30,7 +30,7 @@ class QuickTradeTuner(object):
         :param tickers: ticker
         :param intervals: list of intervals -> ['1m', '4h'...]
         :param limits: limits for client.get_data_historical ([1000, 700...])
-        :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choice, Linspace, Arange as argument's value and recourse it
+        :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choice, Linspace, Arange as argument's value and recourse it. You can also set rules for arranging arguments for each strategy by using _RULES_ and kwargs to access the values of the arguments.
 
         """
         strategies_kwargs = transform_all_tunable_values(strategies_kwargs)
@@ -45,7 +45,8 @@ class QuickTradeTuner(object):
         self.client = client
         for strategy in strategies:
             for kwargs in strategies_kwargs[strategy]:
-                self._strategies.append([strategy, kwargs])
+                if eval(kwargs.get('_RULES_', 'True')):
+                    self._strategies.append([strategy, kwargs])
 
     def tune(
             self,
