@@ -46,7 +46,9 @@ class QuickTradeTuner(object):
         for strategy in strategies:
             for kwargs in strategies_kwargs[strategy]:
                 if eval(kwargs.get('_RULES_', 'True')):
-                    self._strategies.append([strategy, kwargs])
+                    without_rules = kwargs.copy()
+                    without_rules.pop('_RULES_')
+                    self._strategies.append([strategy, without_rules])
 
     def tune(
             self,
