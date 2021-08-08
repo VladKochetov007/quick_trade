@@ -247,25 +247,6 @@ trader.realtime_trading(
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/realtime_example.png?raw=true)
 
-# Help the project
-
-BTC: ```33BEsCUi1C3NbnoNda32z9S5pXdaHBq6gA```
-
-ETH ERC20: ```0x064fb4Dfe9c91913FE1847AAB04146b9757E4066```
-
-USDT ERC20: ```0xc33AfF803aCdf08a1D0b8B4939E75598aB2518c1```
-
-USDT TRC20: ```TDvegWDM7bvZthw8Z8Su6CsE8zasVGhWNa```
-
-### My telegram
-
-```
-@VladKochetov07
-```
-
-## Donations:
-
-[0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740](https://etherscan.io/address/0xbc7d8d7fb6ccc0963a7bf5eb41faf8e4bb546740)
 
 # License
 
