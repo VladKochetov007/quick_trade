@@ -543,11 +543,7 @@ class Trader(object):
             ]).T
         self.backtest_out = self._backtest_out_no_drop.dropna()
 
-        self._info = f"""losses: {self.losses}
-trades: {self.trades}
-profits: {self.profits}
-mean year percentage profit: {self.year_profit}%
-winrate: {self.winrate}%"""
+        self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate)
         utils.logger.info('trader multi info: %s', self._info)
         if print_out:
             print(self._info)
