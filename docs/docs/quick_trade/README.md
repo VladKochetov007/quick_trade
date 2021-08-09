@@ -140,7 +140,31 @@ winrate: 38.23529411764706%
 ```
 ![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/simple_backtest_example.png)
 
+To use [`multi_backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_backtest), you do not need to apply the strategy before the test, 
+you do not even need to set the `dataframe` and `ticker` when [initializing the trader](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=trader).
 
+```python
+client = TradingClient(ftx())
+trader = MyTrader(ticker='ETH/BTC',
+                  interval='5m')
+
+fig = make_figure()
+graph = QuickTradeGraph(figure=fig)
+trader.connect_graph(graph)
+trader.set_client(client)
+
+# BACKTESTING
+trader.multi_backtest(tickers=['BTC/USDT',
+                               'ETH/USDT',
+                               'LINK/BTC'],
+                      strategy_name='new_macd_strategy',
+                      strategy_kwargs=dict(
+                          slow=100,
+                          fast=30
+                      ),
+                      deposit=1000,
+                      commission=0.075)
+```
 ## What if I combine the two strategies?
 
 ### More strategies?
