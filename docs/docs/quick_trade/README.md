@@ -130,6 +130,16 @@ trader.strategy_3_sma(slow=100, mid=50, fast=25)
 trader.backtest(deposit=1000,
                 commission=0.075)
 ```
+Result:
+```commandline
+losses: 11
+trades: 15
+profits: 4
+mean year percentage profit: -99.79886792921234%
+winrate: 26.666666666666668%
+```
+![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/simple_backtest_exampe.png)
+
 
 ## What if I combine the two strategies?
 
