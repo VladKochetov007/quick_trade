@@ -112,10 +112,10 @@ Code:
 from quick_trade.brokers import TradingClient
 from quick_trade.plots import QuickTradeGraph, make_figure
 from ccxt import ftx
-from quick_trade import trading_sys as qtr
+
 
 client = TradingClient(ftx())
-trader = qtr.ExampleStrategies(ticker='ETH/BTC',
+trader = MyTrader(ticker='ETH/BTC',
                                df=client.get_data_historical('ETH/BTC', interval='5m'),
                                interval='5m')
 
@@ -124,7 +124,7 @@ graph = QuickTradeGraph(figure=fig)
 trader.connect_graph(graph)
 trader.set_client(client)
 
-trader.strategy_3_sma(slow=100, mid=50, fast=25)
+trader.new_macd_strategy()
 
 # BACKTESTING
 trader.backtest(deposit=1000,
@@ -132,11 +132,11 @@ trader.backtest(deposit=1000,
 ```
 Result:
 ```commandline
-losses: 11
-trades: 15
-profits: 4
-mean year percentage profit: -99.79886792921234%
-winrate: 26.666666666666668%
+losses: 39
+trades: 68
+profits: 26
+mean year percentage profit: -99.98989936325025%
+winrate: 38.23529411764706%
 ```
 ![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/simple_backtest_exampe.png)
 
