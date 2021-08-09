@@ -138,7 +138,7 @@ profits: 26
 mean year percentage profit: -99.98989936325025%
 winrate: 38.23529411764706%
 ```
-![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/simple_backtest_exampe.png)
+![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/simple_backtest_example.png)
 
 
 ## What if I combine the two strategies?
