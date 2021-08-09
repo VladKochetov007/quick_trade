@@ -116,8 +116,8 @@ from ccxt import ftx
 
 client = TradingClient(ftx())
 trader = MyTrader(ticker='ETH/BTC',
-                               df=client.get_data_historical('ETH/BTC', interval='5m'),
-                               interval='5m')
+                  df=client.get_data_historical('ETH/BTC', interval='5m'),
+                  interval='5m')
 
 fig = make_figure()
 graph = QuickTradeGraph(figure=fig)
