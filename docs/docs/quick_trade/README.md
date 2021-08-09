@@ -102,10 +102,34 @@ class MyTrader(qtr.Trader):
 
 There are two methods for testing in quick_trade:
 
-- [`backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=backtest)
-- [`multi_backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_backtest)
+- [`backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=backtest) - A method for testing a strategy on a single dataframe. This method will show you a graph of the dataframe, deposit and its changes
+- [`multi_backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_backtest) - A method for testing a strategy on multiple dataframes. This method will show you a graph of the deposit and its changes, but without any dataframe, because there are a lot of them
 
-[`backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=backtest) -
+Code:
+
+```python
+# initializing a trader, connecting the exchange and the graph and using the strategy.
+from quick_trade.brokers import TradingClient
+from quick_trade.plots import QuickTradeGraph, make_figure
+from ccxt import ftx
+from quick_trade import trading_sys as qtr
+
+client = TradingClient(ftx())
+trader = qtr.ExampleStrategies(ticker='ETH/BTC',
+                               df=client.get_data_historical('ETH/BTC', interval='5m'),
+                               interval='5m')
+
+fig = make_figure()
+graph = QuickTradeGraph(figure=fig)
+trader.connect_graph(graph)
+trader.set_client(client)
+
+trader.strategy_3_sma(slow=100, mid=50, fast=25)
+
+# BACKTESTING
+trader.backtest(deposit=1000,
+                commission=0.075)
+```
 
 ## What if I combine the two strategies?
 

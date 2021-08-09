@@ -217,9 +217,9 @@ class MyTrade(ExampleStrategies):
         return self.returns
 
 
-keys = {'apiKey': 'your binance api key',
-        'secret': 'your binance secret key'}  # or any other exchange
-client = TradingClient(ccxt.binance(config=keys))
+keys = {'apiKey': 'your api key',
+        'secret': 'your secret key'}
+client = TradingClient(ccxt.binance(config=keys))  # or any other exchange
 
 trader = MyTrade(ticker=ticker,
                  interval='1m',
