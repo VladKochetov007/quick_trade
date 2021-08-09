@@ -504,7 +504,7 @@ class Trader(object):
             new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
             new_trader.set_client(your_client=self.client)
             try:
-                new_trader.connect_graph(self.fig)
+                new_trader.connect_graph(copy(self.fig))
             except:
                 pass
             new_trader._get_attr(strategy_name)(**strategy_kwargs)
