@@ -27,7 +27,9 @@ from typing import Tuple
 from typing import Union
 from warnings import warn
 
-import ta
+import ta.momentum
+import ta.trend
+import ta.volatility
 from numpy import array
 from numpy import digitize
 from numpy import inf
@@ -1591,4 +1593,25 @@ class ExampleStrategies(Trader):
             self.returns.append(flag)
         self.set_open_stop_and_take(stop_loss=points * 2, take_profits=points * 20)
         self.set_credit_leverages()
+        return self.returns
+
+    def DP_strategy(self,
+                    length: int = 14,
+                    s1: int = 3,
+                    s2: int = 3,
+                    sl:float=300.0,
+                    tp:float=500.0):
+        self.returns = []
+        stoch = ta.momentum.StochRSIIndicator((self.df['High'] + self.df['Low']) / 2, length, s1, s2)
+        flag = utils.EXIT
+        for fast, slow in zip(stoch.stochrsi_k()*100,
+                              stoch.stochrsi_d()*100):
+            if fast > 80 and slow > 80:
+                flag = utils.SELL
+            if fast < 20 and slow < 20:
+                flag = utils.BUY
+            self.returns.append(flag)
+        self.set_credit_leverages()
+        self.set_open_stop_and_take(take_profit=500,
+                                    stop_loss=300)
         return self.returns
