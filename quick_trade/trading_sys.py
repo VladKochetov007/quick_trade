@@ -1599,13 +1599,13 @@ class ExampleStrategies(Trader):
                     length: int = 14,
                     s1: int = 3,
                     s2: int = 3,
-                    sl:float=300.0,
-                    tp:float=500.0):
+                    sl: float = 300.0,
+                    tp: float = 500.0):
         self.returns = []
         stoch = ta.momentum.StochRSIIndicator((self.df['High'] + self.df['Low']) / 2, length, s1, s2)
         flag = utils.EXIT
-        for fast, slow in zip(stoch.stochrsi_k()*100,
-                              stoch.stochrsi_d()*100):
+        for fast, slow in zip(stoch.stochrsi_k() * 100,
+                              stoch.stochrsi_d() * 100):
             if fast > 80 and slow > 80:
                 flag = utils.SELL
             if fast < 20 and slow < 20:

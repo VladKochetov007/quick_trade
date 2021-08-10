@@ -1,4 +1,5 @@
 # quick_trade
+
 [![Downloads](https://static.pepy.tech/personalized-badge/quick-trade?period=total&units=none&left_color=grey&right_color=brightgreen&left_text=PyPi%20downloads)](https://pepy.tech/project/quick-trade)
 [![Downloads](https://static.pepy.tech/personalized-badge/quick-trade?period=month&units=none&left_color=grey&right_color=brightgreen&left_text=PyPi%20downloads%20(month))](https://pepy.tech/project/quick-trade)
 
@@ -122,6 +123,7 @@ print(tuner.sort_tunes())
 tuner.save_tunes('quick-trade-tunes.json')  # save tunes as JSON
 
 ```
+
 You can also set rules for arranging arguments for each strategy by using `_RULES_` and `kwargs` to access the values of the arguments:
 
 ```python
@@ -246,7 +248,6 @@ trader.realtime_trading(
 ```
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/realtime_example.png?raw=true)
-
 
 # License
 

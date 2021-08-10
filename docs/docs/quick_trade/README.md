@@ -102,8 +102,10 @@ class MyTrader(qtr.Trader):
 
 There are two methods for testing in quick_trade:
 
-- [`backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=backtest) - A method for testing a strategy on a single dataframe. This method will show you a graph of the dataframe, deposit and its changes
-- [`multi_backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_backtest) - A method for testing a strategy on multiple dataframes. This method will show you a graph of the deposit and its changes, but without any dataframe, because there are a lot of them
+- [`backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=backtest) - A method for testing a strategy on a single dataframe. This method will show you a graph of the dataframe,
+  deposit and its changes
+- [`multi_backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_backtest) - A method for testing a strategy on multiple dataframes. This method will show you a graph of the
+  deposit and its changes, but without any dataframe, because there are a lot of them
 
 Code:
 
@@ -130,7 +132,9 @@ trader.new_macd_strategy()
 trader.backtest(deposit=1000,
                 commission=0.075)
 ```
+
 Result:
+
 ```commandline
 losses: 39
 trades: 68
@@ -138,10 +142,11 @@ profits: 26
 mean year percentage profit: -99.98989936325025%
 winrate: 38.23529411764706%
 ```
+
 ![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/simple_backtest_example.png)
 
-To use [`multi_backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_backtest), you do not need to apply the strategy before the test, 
-you do not even need to set the `dataframe` and `ticker` when [initializing the trader](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=trader).
+To use [`multi_backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_backtest), you do not need to apply the strategy before the test, you do not even need to set
+the `dataframe` and `ticker` when [initializing the trader](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=trader).
 
 ```python
 client = TradingClient(ftx())
@@ -165,6 +170,7 @@ trader.multi_backtest(tickers=['BTC/USDT',
                       deposit=1000,
                       commission=0.075)
 ```
+
 ## What if I combine the two strategies?
 
 ### More strategies?

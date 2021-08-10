@@ -27,7 +27,7 @@ setup(
         'pandas==1.3.1',
         'ta==0.7.0',
         'tqdm==4.6.2',
-        'ccxt==1.54.64'
+        'ccxt==1.54.64',
     ],
     download_url=f'https://github.com/VladKochetov007/quick_trade/archive/{__version__}.tar.gz',
     keywords=[
@@ -37,7 +37,7 @@ setup(
         'trading-bot',
         'trading',
         'binance-trading',
-        'ccxt'
+        'ccxt',
     ],
     license='cc-by-sa-4.0',
     classifiers=[
@@ -47,5 +47,5 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3',
     ],
-    python_requires='>=3.0'
+    python_requires='>=3.0',
 )
