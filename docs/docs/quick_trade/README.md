@@ -179,7 +179,7 @@ mean year percentage profit: 585.9944401169377%
 winrate: 32.65594541910331%
 ```
 
-![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/multi_backtest_example.png)
+![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/multi_backtest_example.png?raw=true)
 
 ## What if I combine the two strategies?
 
