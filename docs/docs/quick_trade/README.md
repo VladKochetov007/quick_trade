@@ -170,6 +170,16 @@ trader.multi_backtest(tickers=['BTC/USDT',
                       deposit=1000,
                       commission=0.075)
 ```
+Result:
+```commandline
+losses: 76
+trades: 40
+profits: 40
+mean year percentage profit: 585.9944401169377%
+winrate: 32.65594541910331%
+```
+
+![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/multi_backtest_example.png)
 
 ## What if I combine the two strategies?
 
