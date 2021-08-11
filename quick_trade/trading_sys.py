@@ -1602,7 +1602,10 @@ class ExampleStrategies(Trader):
                     sl: float = 300.0,
                     tp: float = 500.0):
         self.returns = []
-        stoch = ta.momentum.StochRSIIndicator((self.df['High'] + self.df['Low']) / 2, length, s1, s2)
+        stoch = ta.momentum.StochRSIIndicator(close=(self.df['High'] + self.df['Low']) / 2,
+                                              window=length,
+                                              smooth1=s1,
+                                              smooth2=s2)
         flag = utils.EXIT
         for fast, slow in zip(stoch.stochrsi_k() * 100,
                               stoch.stochrsi_d() * 100):
@@ -1612,6 +1615,95 @@ class ExampleStrategies(Trader):
                 flag = utils.BUY
             self.returns.append(flag)
         self.set_credit_leverages()
-        self.set_open_stop_and_take(take_profit=500,
-                                    stop_loss=300)
+        self.set_open_stop_and_take(take_profit=tp,
+                                    stop_loss=sl)
+        return self.returns
+
+    def DP_2_strategy(self,
+                      RSI_length: int = 14,
+                      STOCH_length: int = 14,
+                      STOCH_smooth: int = 3,
+                      sl: float = 300.0,
+                      tp: float = 500.0):
+        self.returns = []
+        stoch = ta.momentum.StochasticOscillator(close=self.df['Close'],
+                                                 high=self.df['High'],
+                                                 low=self.df['Low'],
+                                                 window=STOCH_length,
+                                                 smooth_window=STOCH_smooth)
+
+        rsi = ta.momentum.RSIIndicator(close=self.df['Close'],
+                                       window=RSI_length)
+
+        flag = utils.EXIT
+        for a, b, c in zip(stoch.stoch(),
+                           stoch.stoch_signal(),
+                           rsi.rsi()):
+            if min(a, b) > 80 and c > 80:
+                flag = utils.SELL
+            if max(a, b) < 20 and c < 20:
+                flag = utils.BUY
+            self.returns.append(flag)
+        self.set_credit_leverages()
+        self.set_open_stop_and_take(take_profit=tp,
+                                    stop_loss=sl)
+        return self.returns
+
+    def strategy_kst(self):
+        KST = ta.trend.KSTIndicator(close=self.df['Close'])
+        fast = KST.kst()
+        slow = KST.kst_sig()
+        self.returns = []
+        for e, s in zip(fast, slow):
+            if e > s:
+                self.returns.append(utils.BUY)
+            else:
+                self.returns.append(utils.SELL)
+        self.set_credit_leverages(1)
+        self.set_open_stop_and_take(stop_loss=5000)
+        return self.returns
+
+    def strategy_cci(self):
+        self.returns = []
+        CCI = ta.trend.CCIIndicator(self.df['High'],
+                                    self.df['Low'],
+                                    self.df['Close'],
+                                    window=20)
+        RSI = ta.momentum.RSIIndicator(self.df['Close'])
+        for price, cci, rsi in zip(self.df['Close'].values, CCI.cci(), RSI.rsi()):
+            if cci < 10 and rsi < 43:
+                self.returns.append(utils.BUY)
+        self.set_credit_leverages()
+        self.set_open_stop_and_take()
+
+    def new_macd_strategy(self, slow=21, fast=12, ATR_win=14, ATR_multiplier=5):
+        self._stop_losses = []
+        self.returns = []
+
+        macd_indicator = ta.trend.MACD(close=self.df['Close'],
+                                       window_slow=slow,
+                                       window_fast=fast,
+                                       fillna=True)
+        histogram = macd_indicator.macd_diff()
+
+        atr = ta.volatility.AverageTrueRange(high=self.df['High'],
+                                             low=self.df['Low'],
+                                             close=self.df['Close'],
+                                             window=ATR_win,
+                                             fillna=True)
+
+        for diff, price, stop_indicator in zip(histogram.values,
+                                               self.df['Close'].values,
+                                               atr.average_true_range().values):
+            stop_indicator *= ATR_multiplier
+
+            if diff > 0:
+                self.returns.append(utils.BUY)
+                self._stop_losses.append(price - stop_indicator)
+            else:
+                self.returns.append(utils.SELL)
+                self._stop_losses.append(price + stop_indicator)
+
+        self.set_open_stop_and_take(set_stop=False)
+        self.set_credit_leverages()
         return self.returns
