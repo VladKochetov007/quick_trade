@@ -319,6 +319,7 @@ class Trader(object):
         next_h: float
         next_l: float
         pass_math: bool = False
+        normal: bool
         for e, (sig,
                 stop_loss,
                 take_profit,
@@ -383,7 +384,12 @@ class Trader(object):
             # be careful with e=0
             # haha))) no)
             now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit)
-            if (ignore_breakout or now_not_breakout) and next_not_breakout:
+            normal = (ignore_breakout or now_not_breakout) and next_not_breakout
+            if credit_lev != self._credit_leverages[e-1] and not ignore_breakout:
+                deposit -= bet * (commission / 100) ** abs(credit_lev-self._credit_leverages[e-1])
+                if bet > deposit:
+                    bet = deposit
+            if normal:
                 diff = data_column[e + 1] - data_column[e]
             else:
                 # Here I am using the previous value,
@@ -414,6 +420,7 @@ class Trader(object):
                 diff = -diff
             if sig == utils.EXIT:
                 diff = 0.0
+
             if not no_order:
                 deposit += bet * credit_lev * diff / open_price
             self.deposit_history.append(deposit)
