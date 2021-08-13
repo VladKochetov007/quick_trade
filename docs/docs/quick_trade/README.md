@@ -170,7 +170,9 @@ trader.multi_backtest(tickers=['BTC/USDT',
                       deposit=1000,
                       commission=0.075)
 ```
+
 Result:
+
 ```commandline
 losses: 76
 trades: 40

@@ -385,8 +385,8 @@ class Trader(object):
             # haha))) no)
             now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit)
             normal = (ignore_breakout or now_not_breakout) and next_not_breakout
-            if credit_lev != self._credit_leverages[e-1] and not ignore_breakout:
-                deposit -= bet * (commission / 100) * abs(self._credit_leverages[e-1]-credit_lev)
+            if credit_lev != self._credit_leverages[e - 1] and not ignore_breakout:
+                deposit -= bet * (commission / 100) * abs(self._credit_leverages[e - 1] - credit_lev)
                 # Commission when changing the leverage.
                 if bet > deposit:
                     bet = deposit
