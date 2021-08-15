@@ -6,8 +6,7 @@
 #   scalper and dca bot
 #   more docs and examples
 #   decimal
-#   3.9
-#   decorator for strategies without exit condition (not converted data)
+#   decorator (or not) for strategies without exit condition (not converted data)
 #   multi-backtest normal calculating(real multi-test, not sum of single tests)
 #   add meta-data in tuner's returns
 
