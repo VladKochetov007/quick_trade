@@ -22,12 +22,12 @@ setup(
         'Source': 'https://github.com/VladKochetov007/quick_trade',
     },
     install_requires=[
-        'plotly==5.1.0',
         'numpy==1.21.2',
+        'plotly==5.2.1',
         'pandas==1.3.1',
         'ta==0.7.0',
         'tqdm==4.6.2',
-        'ccxt==1.54.87',
+        'ccxt==1.55.9',
     ],
     download_url=f'https://github.com/VladKochetov007/quick_trade/archive/{__version__}.tar.gz',
     keywords=[
