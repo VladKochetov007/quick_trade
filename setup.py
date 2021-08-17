@@ -6,7 +6,7 @@ from setuptools import find_packages
 with open('README.md') as file:
     long_desc = file.read()
 
-__version__ = "6.4.6"
+__version__ = "6.4.7"
 
 setup(
     name='quick_trade',
@@ -24,7 +24,6 @@ setup(
     install_requires=[
         'numpy==1.21.2',
         'plotly==5.2.1',
-        'numpy==1.21.1',
         'pandas==1.3.2',
         'ta==0.7.0',
         'tqdm==4.62.1',
