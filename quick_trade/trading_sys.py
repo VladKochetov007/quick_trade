@@ -1598,7 +1598,7 @@ class ExampleStrategies(Trader):
                 flag = utils.BUY
             f2 = flag
             self.returns.append(flag)
-        self.set_open_stop_and_take(stop_loss=points * 2, take_profits=points * 20)
+        self.set_open_stop_and_take(stop_loss=points * 2, take_profit=points * 20)
         self.set_credit_leverages()
         return self.returns
 
