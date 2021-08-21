@@ -1068,8 +1068,8 @@ class ExampleStrategies(Trader):
         return utils.get_window(self.df[column].values, n)
 
     def find_pip_bar(self,
-                     min_diff_coef: float = 2.0,
-                     body_coef: float = 10.0) -> utils.PREDICT_TYPE_LIST:
+                    min_diff_coef: float = 2.0,
+                    body_coef: float = 10.0) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         flag = utils.EXIT
         e: int
@@ -1412,10 +1412,10 @@ class ExampleStrategies(Trader):
         return self.returns
 
     def strategy_rsi(self,
-                     minimum: Union[float, int] = 20,
-                     maximum: Union[float, int] = 80,
-                     max_mid: Union[float, int] = 75,
-                     min_mid: Union[float, int] = 35,
+                     minimum: Union[float, int] = 13,
+                     maximum: Union[float, int] = 87,
+                     max_mid: Union[float, int] = 13,
+                     min_mid: Union[float, int] = 87,
                      **rsi_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         rsi = ta.momentum.rsi(close=self.df['Close'], **rsi_kwargs)
