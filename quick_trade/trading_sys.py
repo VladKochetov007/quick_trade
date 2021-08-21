@@ -45,13 +45,6 @@ from .plots import QuickTradeGraph
 
 
 class Trader(object):
-    """
-    algo-trading main class.
-    ticker:   |     str      |  ticker/symbol of chart
-    df:       |   dataframe  |  data of chart
-    interval: |     str      |  interval of df.
-
-    """
     _profit_calculate_coef: Union[float, int]
     returns: utils.PREDICT_TYPE_LIST = []
     df: DataFrame
