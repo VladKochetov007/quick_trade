@@ -146,12 +146,12 @@ UPPER_BB_WIDTH: float = 2
 UPPER_BB_ALPHA: float = 1.0
 
 MID_BB_NAME: str = 'mid band'
-MID_BB_COLOR: str = '#00ff7b'
+MID_BB_COLOR: str = '#fff200'
 MID_BB_WIDTH: float = 2
 MID_BB_ALPHA: float = 1.0
 
 LOWER_BB_NAME: str = 'lower band'
-LOWER_BB_COLOR: str = '#00ff7b'
+LOWER_BB_COLOR: str = '#ff0000'
 LOWER_BB_WIDTH: float = 2
 LOWER_BB_ALPHA: float = 1.0
 

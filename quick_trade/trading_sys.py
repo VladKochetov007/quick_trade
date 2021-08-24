@@ -9,6 +9,7 @@
 #   decorator (or not) for strategies without exit condition (not converted data)
 #   multi-backtest normal calculating(real multi-test, not sum of single tests)
 #   add meta-data in tuner's returns
+#   add "tradingview backtest" 
 
 from copy import copy
 from datetime import datetime
@@ -1519,7 +1520,7 @@ class ExampleStrategies(Trader):
 
     def strategy_bollinger(self,
                            plot: bool = True,
-                           to_mid: bool = True,
+                           to_mid: bool = False,
                            *bollinger_args,
                            **bollinger_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
