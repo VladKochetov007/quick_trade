@@ -6,10 +6,9 @@
 #   scalper and dca bot
 #   more docs and examples
 #   decimal
-#   decorator (or not) for strategies without exit condition (not converted data)
 #   multi-backtest normal calculating(real multi-test, not sum of single tests)
 #   add meta-data in tuner's returns
-#   add "tradingview backtest" 
+#   add "tradingview backtest"
 
 from copy import copy
 from datetime import datetime
@@ -184,6 +183,9 @@ class Trader(object):
         self._stop_losses = stop_losses
         self._take_profits = take_profits
         return self._stop_losses, self._take_profits
+
+    def multi_trades(self):
+        self.returns, self._credit_leverages = utils.make_multi_trade_returns(self.returns)
 
     def get_heikin_ashi(self, df: DataFrame = DataFrame()) -> DataFrame:
         """

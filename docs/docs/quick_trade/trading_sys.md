@@ -66,6 +66,38 @@ trader.strategy_parabolic_SAR()
 trader.sl_tp_adder(add_stop_loss=50)  # The stop loss moved 50 pips away from the opening price.
 ```
 
+### multi_trades
+This method is needed to process strategies with the ability to use several trades at once.
+
+?> The method translates predictions that look like
+[converted](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=convert)
+data into [unconverted](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=anti_convert) 
+predictions and leverages.
+
+```python
+from quick_trade.utils import EXIT, BUY, SELL
+import numpy as np
+
+
+class MultiTrader(Trader):
+    def multi_trade_strategy(self):
+        ...
+        for i in range(len(self.df)):
+            ...
+            if a:
+                self.returns.append(BUY)
+            elif b:
+                self.returns.append(SELL)
+            else:
+                self.returns.append(np.nan)  # <------
+        self.multi_trades()  # <----------------------
+        self.set_open_stop_and_take()
+        self.set_credit_leverages()
+```
+
+!> Using [`set_credit_leverages`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=set_credit_leverages) 
+after [`multi_trades`](#multi_trades) is not advisable!
+
 ### get_heikin_ashi
 
 Heikin Ashi candles

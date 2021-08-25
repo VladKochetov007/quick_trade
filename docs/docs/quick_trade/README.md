@@ -183,6 +183,10 @@ winrate: 32.65594541910331%
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/multi_backtest_example.png?raw=true)
 
+?> If your strategy does not provide for exit conditions or provides for the ability to enter several trades 
+at once, you can use [`multi_trades`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_trades).
+This method processes the strategist's prediction data and generates leverage.
+
 ## What if I combine the two strategies?
 
 ### More strategies?
