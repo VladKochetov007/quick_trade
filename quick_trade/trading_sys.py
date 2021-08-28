@@ -6,7 +6,6 @@
 #   scalper and dca bot
 #   more docs and examples
 #   decimal
-#   multi-backtest normal calculating(real multi-test, not sum of single tests)
 #   add meta-data in tuner's returns
 #   add "tradingview backtest"
 
@@ -29,7 +28,7 @@ from warnings import warn
 import ta.momentum
 import ta.trend
 import ta.volatility
-from numpy import array
+from math import prod
 from numpy import digitize
 from numpy import inf
 from numpy import mean
@@ -501,8 +500,9 @@ class Trader(object):
         losses: List[int] = []
         trades: List[int] = []
         profits: List[int] = []
-        depo: List[ndarray] = []
+        depos: List[Series] = []
         lens_dep: List[int] = []
+        self.deposit_history = []
 
         for ticker in tickers:
             df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
@@ -524,7 +524,7 @@ class Trader(object):
             losses.append(new_trader.losses)
             trades.append(new_trader.trades)
             profits.append(new_trader.profits)
-            depo.append(array(new_trader.deposit_history))
+            depos.append(Series(new_trader.deposit_history))
             lens_dep.append(len(new_trader.deposit_history))
         self.losses = sum(losses)
         self.trades = sum(profits)
@@ -532,10 +532,14 @@ class Trader(object):
         self.year_profit = float(mean(percentage_profits))
         self.winrate = float(mean(winrates))
 
-        for enum, elem in enumerate(depo):
-            depo[enum] = array(elem[-min(lens_dep):]) / (elem[-min(lens_dep)] / (deposit / len(tickers)))
-        self.deposit_history = list(sum(depo))
+        for enum, elem in enumerate(depos):
+            depos[enum] = utils.get_multipliers(Series(elem[-min(lens_dep):]))
 
+        multipliers: Series = prod(depos)
+        deposit_elem: float = deposit
+        for multiplier in multipliers.values:
+            deposit_elem *= multiplier
+            self.deposit_history.append(deposit_elem)
         self.average_growth = utils.get_exponential_growth(self.deposit_history)
         self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0

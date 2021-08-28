@@ -181,8 +181,6 @@ A method for testing a strategy on several symbols.
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
 | returns | `pd.DataFrame` | Dataframe with information about the deposit, average growth of deposit and `.diff()` of deposit. |
 
-!> Each pair is tested separately and then the results are summarized. Because of this, the strategies do not use the total deposit in such a test.
-
 ```python
 import numpy as np
 

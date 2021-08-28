@@ -10,6 +10,7 @@ from typing import Tuple
 from typing import Union
 from warnings import warn
 
+import pandas as pd
 from numpy import array
 from numpy import nan
 from numpy import nan_to_num
@@ -483,3 +484,9 @@ def make_multi_trade_returns(converted_returns: CONVERTED_TYPE_LIST) -> Tuple[PR
             result_credlev[e] = 1
             result_returns[e] = EXIT
     return result_returns, result_credlev
+
+def get_multipliers(df: pd.Series) -> pd.Series:
+    df = df.reset_index(drop=True)
+    ret: pd.Series = df / df.shift(1)
+    ret[0] = 1
+    return ret

@@ -146,7 +146,7 @@ winrate: 38.23529411764706%
 ![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/simple_backtest_example.png)
 
 To use [`multi_backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_backtest), you do not need to apply the strategy before the test, you do not even need to set
-the `dataframe` and `ticker` when [initializing the trader](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=trader).
+the `df` and `ticker` when [initializing the trader](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=trader).
 
 ```python
 client = TradingClient(ftx())

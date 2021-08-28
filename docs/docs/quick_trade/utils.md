@@ -230,3 +230,5 @@ Function for getting the price movement from the current one to TP or SL. Mainly
 | returns | float | difference of SL/TP price and current price. |
 
 ## make_multi_trade_returns
+
+## get_multipliers
