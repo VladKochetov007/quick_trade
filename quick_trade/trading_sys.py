@@ -360,6 +360,7 @@ class Trader(object):
                 no_order = False
                 exit_take_stop = False
                 ignore_breakout = True
+
                 if sig != utils.EXIT and not min(stop_loss, take_profit) <= open_price <= max(stop_loss, take_profit) and e > 0:
                     warn('The deal was opened out of range!')
                     utils.logger.error('The deal was opened out of range!')
