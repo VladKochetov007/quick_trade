@@ -371,50 +371,53 @@ class Trader(object):
                     pass_math = True
                     break
 
-            next_not_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
+            if sig != utils.EXIT:
+                next_not_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
 
-            stop_loss = self._stop_losses[e - 1]
-            take_profit = self._take_profits[e - 1]
-            # be careful with e=0
-            # haha))) no)
-            now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit)
-            normal = (ignore_breakout or now_not_breakout) and next_not_breakout
-            if credit_lev != self._credit_leverages[e - 1] and not ignore_breakout:
-                deposit -= bet * (commission / 100) * abs(self._credit_leverages[e - 1] - credit_lev)
-                # Commission when changing the leverage.
-                if bet > deposit:
-                    bet = deposit
-            if normal:
-                diff = data_column[e + 1] - data_column[e]
+                stop_loss = self._stop_losses[e - 1]
+                take_profit = self._take_profits[e - 1]
+                # be careful with e=0
+                # haha))) no)
+                now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit)
+
+                normal = (ignore_breakout or now_not_breakout) and next_not_breakout
+
+                if credit_lev != self._credit_leverages[e - 1] and not ignore_breakout:
+                    deposit -= bet * (commission / 100) * abs(self._credit_leverages[e - 1] - credit_lev)
+                    # Commission when changing the leverage.
+                    if bet > deposit:
+                        bet = deposit
+                if normal:
+                    diff = data_column[e + 1] - data_column[e]
+                else:
+                    # Here I am using the previous value,
+                    # because we do not know the value at this point
+                    # (it is generated only when the candle is closed).
+                    exit_take_stop = True
+
+                    if (not now_not_breakout) and not ignore_breakout:
+                        stop_loss = self._stop_losses[e - 1]
+                        take_profit = self._take_profits[e - 1]
+                        diff = utils.get_diff(price=data_column[e],
+                                              low=low,
+                                              high=high,
+                                              stop_loss=stop_loss,
+                                              take_profit=take_profit,
+                                              signal=sig)
+
+                    elif not next_not_breakout:
+                        stop_loss = self._stop_losses[e]
+                        take_profit = self._take_profits[e]
+                        diff = utils.get_diff(price=data_column[e],
+                                              low=next_l,
+                                              high=next_h,
+                                              stop_loss=stop_loss,
+                                              take_profit=take_profit,
+                                              signal=sig)
             else:
-                # Here I am using the previous value,
-                # because we do not know the value at this point
-                # (it is generated only when the candle is closed).
-                exit_take_stop = True
-
-                if (not now_not_breakout) and not ignore_breakout:
-                    stop_loss = self._stop_losses[e - 1]
-                    take_profit = self._take_profits[e - 1]
-                    diff = utils.get_diff(price=data_column[e],
-                                          low=low,
-                                          high=high,
-                                          stop_loss=stop_loss,
-                                          take_profit=take_profit,
-                                          signal=sig)
-
-                elif not next_not_breakout:
-                    stop_loss = self._stop_losses[e]
-                    take_profit = self._take_profits[e]
-                    diff = utils.get_diff(price=data_column[e],
-                                          low=next_l,
-                                          high=next_h,
-                                          stop_loss=stop_loss,
-                                          take_profit=take_profit,
-                                          signal=sig)
+                diff = 0.0
             if sig == utils.SELL:
                 diff = -diff
-            if sig == utils.EXIT:
-                diff = 0.0
 
             if not no_order:
                 deposit += bet * credit_lev * diff / open_price
