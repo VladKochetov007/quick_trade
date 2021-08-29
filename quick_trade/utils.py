@@ -162,7 +162,7 @@ profits: {}
 mean year percentage profit: {}%
 winrate: {}%"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate)
 
-__version__: str = "6.5.0"
+__version__: str = "6.5.5"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
