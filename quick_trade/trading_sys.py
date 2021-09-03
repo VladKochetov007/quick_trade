@@ -8,6 +8,7 @@
 #   decimal
 #   add meta-data in tuner's returns
 #   add "tradingview backtest"
+#   logarithmic regression and stable growth in tester
 
 from copy import copy
 from datetime import datetime

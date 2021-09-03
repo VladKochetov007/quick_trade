@@ -379,12 +379,4 @@ Bollinger bands strategy (not breakout)
 | **bollinger_kwargs | named arguments | named arguments for `ta.volatility.BollingerBands` |
 | returns | `utils.PREDICT_TYPE_LIST` | returns |
 
-### find_pip_bar
-
-### find_DBLHC_DBHLC
-
-### find_TBH_TBL
-
-### find_PPR
-
 ...
