@@ -490,5 +490,5 @@ def get_multipliers(df: pd.Series) -> pd.Series:
     return ret
 
 def mean_deviation(frame: Series, avg_grwth: ndarray) -> float:
-    relative_diff = abs(frame.values / avg_grwth)
+    relative_diff = abs(frame.values - avg_grwth) / avg_grwth
     return relative_diff.mean()
