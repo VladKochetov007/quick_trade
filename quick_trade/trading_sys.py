@@ -77,6 +77,7 @@ class Trader(object):
     resistances: Dict[int, float]
     trading_on_client: bool
     fig: QuickTradeGraph
+    mean_deviation: float
 
     @property
     def _converted(self) -> utils.CONVERTED_TYPE_LIST:
@@ -430,6 +431,7 @@ class Trader(object):
             ignore_breakout = False
 
         self.average_growth = utils.get_exponential_growth(self.deposit_history)
+        self.mean_deviation = utils.mean_deviation(Series(self.deposit_history), self.average_growth)
         if not pass_math:
             self.year_profit = utils.profit_factor(self.deposit_history) ** (self._profit_calculate_coef - 1)
             #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
@@ -440,7 +442,7 @@ class Trader(object):
             else:
                 self.winrate = 0
                 utils.logger.critical('0 trades in %s', self)
-        self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate)
+        self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate, self.mean_deviation)
         utils.logger.info('trader info: %s', self._info)
         if print_out:
             print(self._info)
@@ -557,7 +559,7 @@ class Trader(object):
             ]).T
         self.backtest_out = self._backtest_out_no_drop.dropna()
 
-        self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate)
+        self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate, self.mean_deviation)
         utils.logger.info('trader multi info: %s', self._info)
         if print_out:
             print(self._info)

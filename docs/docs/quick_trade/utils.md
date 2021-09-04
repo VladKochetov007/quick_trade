@@ -232,3 +232,5 @@ Function for getting the price movement from the current one to TP or SL. Mainly
 ## make_multi_trade_returns
 
 ## get_multipliers
+
+## mean_deviation

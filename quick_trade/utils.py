@@ -160,7 +160,8 @@ INFO_TEXT: str = """losses: {}
 trades: {}
 profits: {}
 mean year percentage profit: {}%
-winrate: {}%"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate)
+winrate: {}%,
+mean deviation: {}"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate, Trader.mean_deviation)
 
 __version__: str = "6.5.5"
 __author__: str = 'Vlad Kochetov'
@@ -490,3 +491,7 @@ def get_multipliers(df: pd.Series) -> pd.Series:
     ret: pd.Series = df / df.shift(1)
     ret[0] = 1
     return ret
+
+def mean_deviation(frame: Series, avg_grwth: ndarray) -> float:
+    relative_diff = abs(frame.values / avg_grwth)
+    return relative_diff.mean()
