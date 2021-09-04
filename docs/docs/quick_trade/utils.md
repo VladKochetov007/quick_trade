@@ -192,23 +192,13 @@ Decorator. If a traceback was received during the execution of the function, the
 The main purpose is to avoid ConnectionError when trading in real time.
 [see this page](https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error)
 
-## root
-
-Math root
-
-| param  | type | description |
-| :---: | :---: | :---: |
-| x | float | The number from which you want to calculate the root. |
-| pwr | float | power of root |
-| returns | float | root at base `y` |
-
 ## profit_factor
 
 Function for calculating the coefficient of exponential growth of a deposit when testing a strategy.
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| deposit_list | float | Deposit history |
+| deposit_list | Sequence[float] | exponential growth history |
 | returns | float | Growth rate with every step |
 
 ## assert_logger

@@ -63,7 +63,6 @@ class Trader(object):
     _credit_leverages: List[Union[float, int]]
     deposit_history: List[Union[float, int]]
     year_profit: float
-    average_growth: ndarray
     _info: str
     backtest_out: DataFrame
     _open_lot_prices: List[float]
@@ -84,6 +83,10 @@ class Trader(object):
     @property
     def mean_deviation(self) -> float:
         return utils.mean_deviation(Series(self.deposit_history), self.average_growth) * 100
+
+    @property
+    def average_growth(self) -> ndarray:
+        return utils.get_exponential_growth(self.deposit_history)
 
     @utils.assert_logger
     def __init__(self,
@@ -432,9 +435,8 @@ class Trader(object):
             prev_sig = sig
             ignore_breakout = False
 
-        self.average_growth = utils.get_exponential_growth(self.deposit_history)
         if not pass_math:
-            self.year_profit = utils.profit_factor(self.deposit_history) ** (self._profit_calculate_coef - 1)
+            self.year_profit = utils.profit_factor(self.average_growth) ** (self._profit_calculate_coef - 1)
             #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
             self.year_profit -= 1  # The initial deposit does not count as profit
             self.year_profit *= 100  # Percentage
@@ -547,7 +549,6 @@ class Trader(object):
         for multiplier in multipliers.values:
             deposit_elem *= multiplier
             self.deposit_history.append(deposit_elem)
-        self.average_growth = utils.get_exponential_growth(self.deposit_history)
         self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
         self.backtest_out = DataFrame(

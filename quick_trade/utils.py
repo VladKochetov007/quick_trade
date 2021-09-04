@@ -17,6 +17,10 @@ from numpy import nan_to_num
 from numpy import ndarray
 from pandas import DataFrame
 from pandas import Series
+from numpy import arange
+from numpy import polyfit
+from numpy import exp
+from numpy import log
 from ta.volatility import AverageTrueRange
 
 PREDICT_TYPE: type = int
@@ -322,13 +326,10 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
 
 
 def get_exponential_growth(dataset: Sequence[float]) -> ndarray:
-    return_list: List[float] = []
-    coef = profit_factor(dataset)
-    curr = dataset[0]
-    for i in range(len(dataset)):
-        return_list.append(curr)
-        curr *= coef
-    return array(return_list)
+    x = arange(1, len(dataset)+1, 1)
+    b, a = polyfit(x, log(array(dataset)), 1)
+    regression = exp(a + b*x)
+    return array(regression)
 
 
 def get_coef_sec(timeframe: str = '1d') -> Tuple[float, int]:
@@ -417,12 +418,8 @@ def wait_success(func):
     return checker
 
 
-def root(x: float, pwr: float = 2.0) -> float:
-    return x ** (1 / pwr)
-
-
-def profit_factor(deposit_list: Sequence) -> float:
-    return root(deposit_list[-1] / deposit_list[0], len(deposit_list) - 1)
+def profit_factor(deposit_list: Sequence[float]) -> float:
+    return deposit_list[1] / deposit_list[0]
 
 
 def assert_logger(func):
