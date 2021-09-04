@@ -8,7 +8,7 @@
 #   decimal
 #   add meta-data in tuner's returns
 #   add "tradingview backtest"
-#   logarithmic regression and stable growth in tester
+#   exponential regression and stable growth in tester
 
 from copy import copy
 from datetime import datetime
@@ -65,7 +65,6 @@ class Trader(object):
     year_profit: float
     average_growth: ndarray
     _info: str
-    _backtest_out_no_drop: DataFrame
     backtest_out: DataFrame
     _open_lot_prices: List[float]
     client: TradingClient
@@ -77,11 +76,14 @@ class Trader(object):
     resistances: Dict[int, float]
     trading_on_client: bool
     fig: QuickTradeGraph
-    mean_deviation: float
 
     @property
     def _converted(self) -> utils.CONVERTED_TYPE_LIST:
         return utils.convert(self.returns)
+
+    @property
+    def mean_deviation(self) -> float:
+        return utils.mean_deviation(Series(self.deposit_history), self.average_growth) * 100
 
     @utils.assert_logger
     def __init__(self,
@@ -431,7 +433,6 @@ class Trader(object):
             ignore_breakout = False
 
         self.average_growth = utils.get_exponential_growth(self.deposit_history)
-        self.mean_deviation = utils.mean_deviation(Series(self.deposit_history), self.average_growth)
         if not pass_math:
             self.year_profit = utils.profit_factor(self.deposit_history) ** (self._profit_calculate_coef - 1)
             #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
@@ -448,7 +449,7 @@ class Trader(object):
             print(self._info)
         self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
-        self._backtest_out_no_drop = DataFrame(
+        self.backtest_out = DataFrame(
             (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
              self._open_lot_prices, data_column, self.average_growth, self.returns_strategy_diff),
             index=[
@@ -457,7 +458,6 @@ class Trader(object):
                 f"average growth deposit data",
                 "returns"
             ]).T
-        self.backtest_out = self._backtest_out_no_drop.dropna()
         if plot:
             self.fig.plot_candlestick()
             self.fig.plot_trade_triangles()
@@ -550,14 +550,13 @@ class Trader(object):
         self.average_growth = utils.get_exponential_growth(self.deposit_history)
         self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
         self.returns_strategy_diff[0] = 0
-        self._backtest_out_no_drop = DataFrame(
+        self.backtest_out = DataFrame(
             (self.deposit_history, self.average_growth, self.returns_strategy_diff),
             index=[
                 f'deposit',
                 f"average growth deposit data",
                 "returns"
             ]).T
-        self.backtest_out = self._backtest_out_no_drop.dropna()
 
         self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate, self.mean_deviation)
         utils.logger.info('trader multi info: %s', self._info)
