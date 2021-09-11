@@ -107,6 +107,7 @@ class QuickTradeTuner(object):
                 self.result_tunes[ticker][interval][limit][strat_kw]['losses'] = trader.losses
                 self.result_tunes[ticker][interval][limit][strat_kw]['profits'] = trader.profits
                 self.result_tunes[ticker][interval][limit][strat_kw]['percentage year profit'] = trader.year_profit
+                self.result_tunes[ticker][interval][limit][strat_kw]['mean deviation'] = trader.mean_deviation
                 if self.multi_test:
                     ticker = old_tick
                 if use_tqdm:
