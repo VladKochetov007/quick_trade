@@ -483,6 +483,7 @@ class Trader(object):
         if show:
             self.fig.show()
 
+        self._multi_converted_ = False
         return self.backtest_out
 
     @utils.assert_logger
