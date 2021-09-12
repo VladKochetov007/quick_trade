@@ -1,6 +1,7 @@
 from collections import defaultdict
 from itertools import product
 from json import dump
+from json import load
 from typing import Any
 from typing import Dict
 from typing import Iterable
@@ -151,6 +152,11 @@ class QuickTradeTuner(object):
         utils.logger.debug('saving tunes in "%s"', path)
         with open(path, 'w') as file:
             dump(self.result_tunes, file)
+
+    def load_tunes(self, path: str = 'returns.json'):
+        utils.logger.debug('loading tunes from %s', path)
+        with open(path, 'r') as file:
+            self.result_tunes = load(file)
 
 
 class Choise(TunableValue):
