@@ -75,6 +75,7 @@ class Trader(object):
     resistances: Dict[int, float]
     trading_on_client: bool
     fig: QuickTradeGraph
+    _multi_converted_: bool
 
     @property
     def _converted(self) -> utils.CONVERTED_TYPE_LIST:
@@ -192,6 +193,7 @@ class Trader(object):
 
     def multi_trades(self):
         self.returns, self._credit_leverages = utils.make_multi_trade_returns(self.returns)
+        self._multi_converted_ = True
 
     def get_heikin_ashi(self, df: DataFrame = DataFrame()) -> DataFrame:
         """
@@ -395,6 +397,16 @@ class Trader(object):
                     # Commission when changing the leverage.
                     if bet > deposit:
                         bet = deposit
+
+                    if self._multi_converted_ == True:
+                        if prev_sig != utils.EXIT:
+                            self.trades += 1
+                            if deposit > moneys_open_bet:
+                                self.profits += 1
+                            elif deposit < moneys_open_bet:
+                                self.losses += 1
+                        moneys_open_bet = deposit
+
                 if normal:
                     diff = data_column[e + 1] - data_column[e]
                 else:
