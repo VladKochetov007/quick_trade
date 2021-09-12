@@ -14,7 +14,10 @@ old documentation (V3 doc): https://vladkochetov007.github.io/quick_trade.github
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/logo_with_slogan_v2_fixed.PNG?raw=true)
 
+Python algo-trading system.
+
 ```
+
 used:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
  ├──plotly (https://github.com/plotly/plotly.py)
@@ -24,7 +27,21 @@ used:
  └──ccxt (https://github.com/ccxt/ccxt)
 ```
 
-Algo-trading system with python.
+## Installing:
+
+```commandline
+$ git clone https://github.com/VladKochetov007/quick_trade.git
+$ pip3 install -r quick_trade/requirements.txt
+$ cd quick_trade
+$ python3 setup.py install
+$ cd ..
+```
+
+or
+
+```commandline
+$ pip3 install quick-trade
+```
 
 ## Customize your strategy!
 
@@ -144,22 +161,6 @@ params = {
             )
         ],
 }
-```
-
-## Installing:
-
-```commandline
-$ git clone https://github.com/VladKochetov007/quick_trade.git
-$ pip3 install -r quick_trade/requirements.txt
-$ cd quick_trade
-$ python3 setup.py install
-$ cd ..
-```
-
-or
-
-```commandline
-$ pip3 install quick-trade
 ```
 
 ## User's code example (backtest)
