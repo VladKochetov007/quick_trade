@@ -166,10 +166,12 @@ params = {
 ## User's code example (backtest)
 
 ```python
-import quick_trade.trading_sys as qtr
-import ccxt
 from quick_trade import brokers
-from quick_trade.plots import make_figure, QuickTradeGraph
+from quick_trade import trading_sys as qtr
+from quick_trade.plots import *
+import ccxt
+from numpy import inf
+
 
 client = brokers.TradingClient(ccxt.binance())
 df = client.get_data_historical('BTC/USDT', '15m', 1000)
@@ -177,7 +179,7 @@ trader = qtr.ExampleStrategies('BTC/USDT', df=df, interval='15m')
 trader.set_client(client)
 trader.connect_graph(QuickTradeGraph(make_figure(height=731, width=1440, row_heights=[10, 5, 2])))
 trader.strategy_2_sma(55, 21)
-trader.backtest(deposit=1000, commission=0.075, bet=qtr.utils.np.inf)  # backtest on one pair
+trader.backtest(deposit=1000, commission=0.075, bet=inf)  # backtest on one pair
 ```
 
 ## Output plotly chart:
@@ -186,12 +188,13 @@ trader.backtest(deposit=1000, commission=0.075, bet=qtr.utils.np.inf)  # backtes
 
 ## Output print
 
-```
-losses: 7
-trades: 16
-profits: 9
-mean year percentage profit: 541.9299012354617%
-winrate: 56.25%
+```commandline
+losses: 18
+trades: 25
+profits: 7
+mean year percentage profit: -8.471933037953615%
+winrate: 28.000000000000004%
+mean deviation: 1.3587506741755202%
 ```
 
 ## Run strategy

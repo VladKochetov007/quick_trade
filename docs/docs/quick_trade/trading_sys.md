@@ -13,7 +13,7 @@ A class in which you can trade and test strategies.
 |interval|str| timeframe:1m 2m 3m 5m 15m 30m 45m 1h 90m 2h 3h 4h 12h 1d 3d 1w 1M 3M 6M|
 
 ```python
-from quick_trade.trading_sys import Trader
+from quick_trade.trading_sys import Trader, ExampleStrategies
 from quick_trade.brokers import TradingClient
 import ccxt
 
@@ -155,7 +155,12 @@ and `self._credit_leverages`.
 ?> The commission does not reduce the trade itself, but decreases the deposit, but if the deposit becomes less than the desired trade, deal is immediately reduced to the level of the deposit.
 
 ```python
-trader.connect_graph()
+from quick_trade.plots import *
+
+
+fig = make_figure()
+graph = QuickTradeGraph(figure=fig)
+trader.connect_graph(graph)
 
 # At this point, you need to use the strategy
 
@@ -184,12 +189,20 @@ A method for testing a strategy on several symbols.
 ```python
 import numpy as np
 
+client = TradingClient(ccxt.binance())
+trader = ExampleStrategies(ticker='ETH/BTC',
+                           interval='5m')
+
+fig = make_figure()
+graph = QuickTradeGraph(figure=fig)
+trader.connect_graph(graph)
 trader.set_client(client)
+
 trader.multi_backtest(['BTC/USDT',
                        'ETH/USDT',
                        'LTC/USDT'],
                       strategy_name='strategy_supertrend',
-                      strategy_kwargs=dict(multiplier=2, length=1),
+                      strategy_kwargs=dict(multiplier=2, length=1, plot=False),
                       deposit=1700,
                       commission=0.075,
                       bet=np.inf,
@@ -198,12 +211,13 @@ trader.multi_backtest(['BTC/USDT',
 
 output:
 
-```
-losses: 90
-trades: 88
-profits: 88
-mean year percentage profit: 436.3006580276444%
-winrate: 49.9921984709003%
+```commandline
+losses: 146
+trades: 68
+profits: 68
+mean year percentage profit: -92.25033539138768%
+winrate: 31.566354534845413%
+mean deviation: 4.637481539757627%
 ```
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/multi_backtest.png?raw=true)

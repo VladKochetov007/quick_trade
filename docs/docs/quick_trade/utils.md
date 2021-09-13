@@ -151,10 +151,10 @@ get `pd.Series` with supertrend predictions
 
 get all supertrend data as `pd.DataFrame`:
 
-    - Supertrend
-    - strategy predictions
-    - lower
-    - upper
+- Supertrend
+- strategy predictions
+- lower
+- upper
 
 ## get_exponential_growth
 

@@ -136,11 +136,12 @@ trader.backtest(deposit=1000,
 Result:
 
 ```commandline
-losses: 39
-trades: 68
-profits: 26
-mean year percentage profit: -99.98989936325025%
-winrate: 38.23529411764706%
+losses: 64
+trades: 95
+profits: 25
+mean year percentage profit: -99.99999896786758%
+winrate: 26.31578947368421%
+mean deviation: 1.4569306356613254%
 ```
 
 ![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/simple_backtest_example.png)
@@ -174,11 +175,12 @@ trader.multi_backtest(tickers=['BTC/USDT',
 Result:
 
 ```commandline
-losses: 76
-trades: 40
-profits: 40
-mean year percentage profit: 585.9944401169377%
-winrate: 32.65594541910331%
+losses: 92
+trades: 36
+profits: 36
+mean year percentage profit: -99.75637914387364%
+winrate: 26.407268062042323%
+mean deviation: 5.669772760548183%
 ```
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/multi_backtest_example.png?raw=true)
