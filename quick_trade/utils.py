@@ -13,6 +13,7 @@ from warnings import warn
 import pandas as pd
 from numpy import array
 from numpy import nan
+from numpy import isnan
 from numpy import nan_to_num
 from numpy import ndarray
 from pandas import DataFrame
@@ -167,7 +168,7 @@ mean year percentage profit: {}%
 winrate: {}%
 mean deviation: {}%"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate, Trader.mean_deviation)
 
-__version__: str = "6.6.2"
+__version__: str = "6.6.3"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -462,11 +463,11 @@ def make_multi_trade_returns(converted_returns: CONVERTED_TYPE_LIST) -> Tuple[PR
     result_credlev: List[int] = []
     result_returns: PREDICT_TYPE_LIST = [BUY] * len(converted_returns)
     flag_lev: int = 0
-    if converted_returns[0] is nan:
+    if isnan(converted_returns[0]):
         converted_returns[0] = EXIT
     ret: CONVERTED_TYPE
     for ret in converted_returns:
-        if ret is not nan:
+        if not isnan(ret):
             if ret is BUY:
                 flag_lev += 1
             elif ret is SELL:

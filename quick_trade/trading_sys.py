@@ -32,6 +32,7 @@ import ta.volatility
 from math import prod
 from numpy import digitize
 from numpy import inf
+from numpy import isnan
 from numpy import mean
 from numpy import nan
 from numpy import nan_to_num
@@ -341,7 +342,7 @@ class Trader(object):
                                          data_high[1:],
                                          data_low[1:])):
 
-            if converted_element is not nan:
+            if not isnan(converted_element):
                 # count the number of profitable and unprofitable trades.
                 if prev_sig != utils.EXIT:
                     self.trades += 1
@@ -697,11 +698,11 @@ class Trader(object):
     def _collide_super(l1: utils.PREDICT_TYPE_LIST, l2: utils.PREDICT_TYPE_LIST) -> utils.PREDICT_TYPE_LIST:
         return_list: utils.PREDICT_TYPE_LIST = []
         for first, sec in zip(utils.convert(l1), utils.convert(l2)):
-            if first is not nan and sec is not nan and first is not sec:
+            if (not isnan(first)) and (not isnan(sec)) and first is not sec:
                 return_list.append(utils.EXIT)
             elif first is sec:
                 return_list.append(first)
-            elif first is nan:
+            elif isnan(first):
                 return_list.append(sec)
             else:
                 return_list.append(first)
@@ -739,7 +740,7 @@ class Trader(object):
 
         conv_cred_lev = utils.convert(self._credit_leverages)
 
-        if self._converted[-1] is not nan or conv_cred_lev[-1] is not nan:
+        if (not isnan(self._converted[-1])) or (not isnan(conv_cred_lev[-1])):
             utils.logger.info('open trade %s', predict)
             self.__exit_order__ = False
             if self.trading_on_client:
@@ -1018,7 +1019,7 @@ class Trader(object):
         converted: utils.CONVERTED_TYPE
         ts: Dict[str, float]
         for e, (sig, close, converted) in enumerate(zip(self.returns, closes, self._converted)):
-            if converted is not nan:
+            if not isnan(converted):
                 self._open_price = close
                 if sig != utils.EXIT:
                     if set_take or set_stop:

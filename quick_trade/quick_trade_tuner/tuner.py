@@ -7,7 +7,9 @@ from typing import Dict
 from typing import Iterable
 from typing import List
 
-from numpy import arange, linspace
+from numpy import arange
+from numpy import linspace
+from numpy import isnan
 from pandas import DataFrame
 from tqdm import tqdm
 
@@ -135,16 +137,23 @@ class QuickTradeTuner(object):
 
         return self.result_tunes
 
-    def sort_tunes(self, sort_by: str = 'percentage year profit', print_exc=True) -> dict:
+    def sort_tunes(self, sort_by: str = 'percentage year profit', drop_na: bool = True) -> dict:
         utils.logger.debug('sorting tunes')
-        filtered = {}
-        for ticker, tname in zip(self.result_tunes.values(), self.result_tunes):
+        not_filt = self.result_tunes
+        self.result_tunes = dict()
+        for ticker, tname in zip(not_filt.values(), self.result_tunes):
             for interval, iname in zip(ticker.values(), ticker):
                 for start, sname in zip(interval.values(), interval):
                     for strategy, stratname in zip(start.values(), start):
-                        filtered[
-                            f'ticker: {tname}, interval: {iname}, limit: {sname} :: {stratname}'] = strategy
-        self.result_tunes = {k: v for k, v in sorted(filtered.items(), key=lambda x: -x[1][sort_by])}
+                        self.result_tunes[f'ticker: {tname}, interval: {iname}, limit: {sname} :: {stratname}'] = strategy
+        return self.resorting(sort_by=sort_by, drop_na=drop_na)
+
+    def resorting(self, sort_by: str = 'percentage year profit', drop_na: bool = True):
+        if drop_na:
+            for key, data in self.result_tunes.copy().items():
+                if isnan(data[sort_by]):
+                    del self.result_tunes[key]
+        self.result_tunes = {k: v for k, v in sorted(self.result_tunes.items(), key=lambda x: -x[1][sort_by])}
         utils.logger.debug('tunes are sorted')
         return self.result_tunes
 
