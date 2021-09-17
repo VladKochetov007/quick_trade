@@ -1,3 +1,4 @@
+import re
 from functools import wraps
 from logging import basicConfig
 from logging import getLogger
@@ -93,7 +94,7 @@ TRADE_MARKER_EXIT_COLOR: str = '#0015ff'
 TRADE_MARKER_EXIT_WIDTH: float = 12.0
 TRADE_MARKER_EXIT_ALPHA: float = 1.0
 
-TICKER_PATTERN: str = r'[A-Z]+/[A-Z]+'
+TICKER_PATTERN: str = r'[A-Z0-9]+/[A-Z0-9]+'
 
 WAIT_SUCCESS_SLEEP: float = 1.0
 WAIT_SUCCESS_PRINT: bool = True
@@ -168,7 +169,7 @@ mean year percentage profit: {}%
 winrate: {}%
 mean deviation: {}%"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate, Trader.mean_deviation)
 
-__version__: str = "6.6.3"
+__version__: str = "6.6.4"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
