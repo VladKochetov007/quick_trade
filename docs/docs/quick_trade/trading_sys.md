@@ -175,7 +175,7 @@ A method for testing a strategy on several symbols.
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| test_data | Dict[str, Dict[str, Dict[str, Any]]] | Data for testing strategies. |
+| test_config | Dict[str, Dict[str, Dict[str, Any]]] | Data for testing strategies. |
 | deposit | float | Initial deposit for testing the strategy that you used before the test |
 | bet | float | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value `np.inf` |
 | commission | float | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
@@ -197,17 +197,17 @@ trader.connect_graph(graph)
 trader.set_client(client)
 
 strategy = {
-    'strategy_supertrend': 
+    'strategy_supertrend':
         dict(
-            multiplier=2, 
-            length=1, 
+            multiplier=2,
+            length=1,
             plot=False
         )
 }
 
-trader.multi_backtest(test_data={'BTC/USDT': strategy,
-                                 'LTC/USDT': strategy,
-                                 'ETH/USDT': strategy},
+trader.multi_backtest(test_config={'BTC/USDT': strategy,
+                                   'LTC/USDT': strategy,
+                                   'ETH/USDT': strategy},
                       deposit=1700,
                       commission=0.075,
                       bet=np.inf,

@@ -488,7 +488,7 @@ class Trader(object):
 
     @utils.assert_logger
     def multi_backtest(self,
-                       test_data: Dict[str, Dict[str, Dict[str, Any]]],
+                       test_config: Dict[str, Dict[str, Dict[str, Any]]],
                        limit: int = 1000,
                        deposit: Union[float, int] = 10_000.0,
                        bet: Union[float, int] = inf,
@@ -496,14 +496,14 @@ class Trader(object):
                        plot: bool = True,
                        print_out: bool = True,
                        show: bool = True) -> DataFrame:
-        for el in test_data.keys():
+        for el in test_config.keys():
             assert isinstance(el, str), 'tickers must be of type <Iterable[str]>'
             assert fullmatch(utils.TICKER_PATTERN, el), f'all tickers must match the pattern <{utils.TICKER_PATTERN}>'
-        for k in test_data.values():
+        for k in test_config.values():
             for strategy_name in k.keys():
                 assert isinstance(strategy_name, str), 'strategy parameter must be of type <str>'
                 assert strategy_name in self.__dir__(), 'There is no such strategy'
-        assert isinstance(test_data, dict)
+        assert isinstance(test_config, dict)
         assert isinstance(limit, int), 'limit must be of type <int>'
         assert limit > 0, 'limit can\'t be 0 or less'
         assert isinstance(deposit, (float, int)), 'deposit must be of type <int> or <float>'
@@ -525,7 +525,7 @@ class Trader(object):
         lens_dep: List[int] = []
         self.deposit_history = []
 
-        for ticker, strat in test_data.items():
+        for ticker, strat in test_config.items():
             for strategy_kwargs in strat.items():
                 df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
                 new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
@@ -535,7 +535,7 @@ class Trader(object):
                 except:
                     pass
                 new_trader._get_attr(strategy_kwargs[0])(**strategy_kwargs[1])
-                new_trader.backtest(deposit=deposit / len(test_data.keys()),
+                new_trader.backtest(deposit=deposit / len(test_config.keys()),
                                     bet=bet,
                                     commission=commission,
                                     plot=False,
@@ -870,9 +870,8 @@ class Trader(object):
 
     @utils.assert_logger
     def multi_realtime_trading(self,
-                               tickers: List[str],
+                               trade_config: Dict[str, Dict[str, Any]],
                                start_time: datetime,  # LOCAL TIME
-                               strategy_name: str,
                                print_out: bool = True,
                                bet_for_trading_on_client: Union[float, int] = inf,  # for 1 trade
                                coin_lotsize_division: bool = True,
@@ -882,8 +881,8 @@ class Trader(object):
                                limit: int = 1000,
                                strategy_in_sleep: bool = False,
                                deposit_part: Union[float, int] = 1.0,  # for all trades
-                               **strategy_kwargs):
-        assert isinstance(tickers, Iterable), 'tickers must be of type <Iterable[str]>'
+                               ):
+        tickers: List[str] = list(trade_config.keys())
         for el in tickers:
             assert isinstance(el, str), 'tickers must be of type <Iterable[str]>'
             assert fullmatch(utils.TICKER_PATTERN, el), f'all tickers must match the pattern <{utils.TICKER_PATTERN}>'
@@ -899,8 +898,10 @@ class Trader(object):
         assert isinstance(strategy_in_sleep, bool), 'strategy_in_sleep must be of type <bool>'
         assert isinstance(start_time, datetime), 'start_time must be of type <datetime.datetime>'
         assert start_time > datetime.now(), 'start_time cannot be earlier than the present time'
-        assert isinstance(strategy_name, str), 'strategy_name must be of type <str>'
-        assert strategy_name in self.__dir__(), 'There is no such strategy'
+        for k in trade_config.values():
+            for strat_name in k.keys():
+                assert isinstance(strat_name, str), 'strategy parameter must be of type <str>'
+                assert strat_name in self.__dir__(), 'There is no such strategy'
         assert isinstance(coin_lotsize_division, bool), 'coin_lotsize_division must be of type <bool>'
         assert isinstance(deposit_part, (int, float)), 'deposit_part must be of type <int> or <float>'
         assert 1 >= deposit_part > 0, 'deposit_part cannot be greater than 1 or less than 0(inclusively)'
@@ -921,8 +922,8 @@ class Trader(object):
                 return super().get_trading_predict(bet_for_trading_on_client=bet,
                                                    coin_lotsize_division=coin_lotsize_division)
 
-        def start_trading(pare):
-            trader = MultiRealTimeTrader(ticker=pare,
+        def start_trading(pair, strat):
+            trader = MultiRealTimeTrader(ticker=pair,
                                          interval=self.interval,
                                          trading_on_client=self.trading_on_client)
             trader.connect_graph(graph=self.fig)
@@ -931,19 +932,18 @@ class Trader(object):
             while True:
                 if datetime.now() >= start_time:
                     break
-            trader.realtime_trading(strategy=trader._get_attr(strategy_name),
-                                    ticker=pare,
+            trader.realtime_trading(strategy=trader._get_attr(strat[0])(**strat[1]),
+                                    ticker=pair,
                                     print_out=print_out,
                                     coin_lotsize_division=coin_lotsize_division,
                                     ignore_exceptions=ignore_exceptions,
                                     print_exc=print_exc,
                                     wait_sl_tp_checking=wait_sl_tp_checking,
                                     limit=limit,
-                                    strategy_in_sleep=strategy_in_sleep,
-                                    **strategy_kwargs)
+                                    strategy_in_sleep=strategy_in_sleep)
 
-        for ticker in tickers:
-            thread = Thread(target=start_trading, args=(ticker,))
+        for ticker, strat in trade_config.items():
+            thread = Thread(target=start_trading, args=(ticker, strat))
             thread.start()
 
     def log_data(self):

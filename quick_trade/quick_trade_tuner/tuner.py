@@ -93,7 +93,7 @@ class QuickTradeTuner(object):
                     kwargs_m = {}
                     for ticker_ in ticker:
                         kwargs_m[ticker_] = {strategy: kwargs}
-                    trader.multi_backtest(test_data=kwargs_m,
+                    trader.multi_backtest(test_config=kwargs_m,
                                           **backtest_kwargs)
                 else:
                     trader._get_attr(strategy)(**kwargs)

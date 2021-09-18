@@ -161,17 +161,17 @@ trader.set_client(client)
 
 # BACKTESTING
 strategy = dict(
-              new_macd_strategy=dict(
-                   slow=100,
-                   fast=30)
+  new_macd_strategy=dict(
+    slow=100,
+    fast=30)
 )
 
 trader.multi_backtest(tickers=['BTC/USDT',
                                'ETH/USDT',
                                'LINK/BTC'],
-                      test_data={
-                          'ETH/USDT': strategy,
-                          'BTC/USDT': strategy,
+                      test_config={
+                        'ETH/USDT': strategy,
+                        'BTC/USDT': strategy,
                       },
                       deposit=1000,
                       commission=0.075)
