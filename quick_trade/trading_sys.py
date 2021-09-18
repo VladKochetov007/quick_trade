@@ -870,7 +870,7 @@ class Trader(object):
 
     @utils.assert_logger
     def multi_realtime_trading(self,
-                               trade_config: Dict[str, Dict[str, Any]],
+                               trade_config: Dict[str, Dict[str, Dict[str, Any]]],
                                start_time: datetime,  # LOCAL TIME
                                print_out: bool = True,
                                bet_for_trading_on_client: Union[float, int] = inf,  # for 1 trade
@@ -882,6 +882,21 @@ class Trader(object):
                                strategy_in_sleep: bool = False,
                                deposit_part: Union[float, int] = 1.0,  # for all trades
                                ):
+        """
+
+        :param trade_config: Configurations to start trading. {ticker: {stategy: {parameter: value}}}
+        :param start_time:
+        :param print_out:
+        :param bet_for_trading_on_client:
+        :param coin_lotsize_division:
+        :param ignore_exceptions:
+        :param print_exc:
+        :param wait_sl_tp_checking:
+        :param limit:
+        :param strategy_in_sleep:
+        :param deposit_part:
+        :return:
+        """
         tickers: List[str] = list(trade_config.keys())
         for el in tickers:
             assert isinstance(el, str), 'tickers must be of type <Iterable[str]>'
@@ -932,15 +947,18 @@ class Trader(object):
             while True:
                 if datetime.now() >= start_time:
                     break
-            trader.realtime_trading(strategy=trader._get_attr(strat[0])(**strat[1]),
-                                    ticker=pair,
-                                    print_out=print_out,
-                                    coin_lotsize_division=coin_lotsize_division,
-                                    ignore_exceptions=ignore_exceptions,
-                                    print_exc=print_exc,
-                                    wait_sl_tp_checking=wait_sl_tp_checking,
-                                    limit=limit,
-                                    strategy_in_sleep=strategy_in_sleep)
+            items = tuple(strat.items())
+            for item in items:
+                trader.realtime_trading(strategy=trader._get_attr(item[0]),
+                                        ticker=pair,
+                                        print_out=print_out,
+                                        coin_lotsize_division=coin_lotsize_division,
+                                        ignore_exceptions=ignore_exceptions,
+                                        print_exc=print_exc,
+                                        wait_sl_tp_checking=wait_sl_tp_checking,
+                                        limit=limit,
+                                        strategy_in_sleep=strategy_in_sleep,
+                                        **item[1])
 
         for ticker, strat in trade_config.items():
             thread = Thread(target=start_trading, args=(ticker, strat))
@@ -948,17 +966,17 @@ class Trader(object):
 
     def log_data(self):
         self.fig.log_y(_row=self.fig.data_row,
-                       _col=self.fig.data_col)
+                      _col=self.fig.data_col)
         utils.logger.debug('trader log data')
 
     def log_deposit(self):
         self.fig.log_y(_row=self.fig.deposit_row,
-                       _col=self.fig.deposit_col)
+                      _col=self.fig.deposit_col)
         utils.logger.debug('trader log deposit')
 
     def log_returns(self):
         self.fig.log_y(_row=self.fig.returns_row,
-                       _col=self.fig.returns_col)
+                      _col=self.fig.returns_col)
         utils.logger.debug('trader log returns')
 
     @utils.assert_logger
