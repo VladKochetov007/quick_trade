@@ -8,7 +8,7 @@
 #   decimal
 #   add meta-data in tuner's returns
 #   add "tradingview backtest"
-#   update docs!!!!!!!!!!!
+#   multi-timeframe backtest
 
 from copy import copy
 from datetime import datetime
@@ -21,7 +21,6 @@ from typing import Any
 from typing import Dict
 from typing import Iterable
 from typing import List
-from typing import Sized
 from typing import Tuple
 from typing import Union
 from warnings import warn
@@ -489,9 +488,7 @@ class Trader(object):
 
     @utils.assert_logger
     def multi_backtest(self,
-                       tickers: Union[Sized, Iterable[str]],
-                       strategy_name: str = 'strategy_macd',
-                       strategy_kwargs: Dict[str, Any] = {},
+                       test_data: Dict[str, Dict[str, Dict[str, Any]]],
                        limit: int = 1000,
                        deposit: Union[float, int] = 10_000.0,
                        bet: Union[float, int] = inf,
@@ -499,13 +496,14 @@ class Trader(object):
                        plot: bool = True,
                        print_out: bool = True,
                        show: bool = True) -> DataFrame:
-        assert isinstance(tickers, Iterable), 'tickers must be of type <Iterable[str]>'
-        for el in tickers:
+        for el in test_data.keys():
             assert isinstance(el, str), 'tickers must be of type <Iterable[str]>'
             assert fullmatch(utils.TICKER_PATTERN, el), f'all tickers must match the pattern <{utils.TICKER_PATTERN}>'
-        assert isinstance(strategy_name, str), 'strategy_name must be of type <str>'
-        assert strategy_name in self.__dir__(), 'There is no such strategy'
-        assert isinstance(strategy_kwargs, dict)
+        for k in test_data.values():
+            for strategy_name in k.keys():
+                assert isinstance(strategy_name, str), 'strategy parameter must be of type <str>'
+                assert strategy_name in self.__dir__(), 'There is no such strategy'
+        assert isinstance(test_data, dict)
         assert isinstance(limit, int), 'limit must be of type <int>'
         assert limit > 0, 'limit can\'t be 0 or less'
         assert isinstance(deposit, (float, int)), 'deposit must be of type <int> or <float>'
@@ -527,28 +525,29 @@ class Trader(object):
         lens_dep: List[int] = []
         self.deposit_history = []
 
-        for ticker in tickers:
-            df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
-            new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
-            new_trader.set_client(your_client=self.client)
-            try:
-                new_trader.connect_graph(copy(self.fig))
-            except:
-                pass
-            new_trader._get_attr(strategy_name)(**strategy_kwargs)
-            new_trader.backtest(deposit=deposit / len(tickers),
-                                bet=bet,
-                                commission=commission,
-                                plot=False,
-                                print_out=False,
-                                show=False)
-            winrates.append(new_trader.winrate)
-            percentage_profits.append(new_trader.year_profit)
-            losses.append(new_trader.losses)
-            trades.append(new_trader.trades)
-            profits.append(new_trader.profits)
-            depos.append(Series(new_trader.deposit_history))
-            lens_dep.append(len(new_trader.deposit_history))
+        for ticker, strat in test_data.items():
+            for strategy_kwargs in strat.items():
+                df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
+                new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
+                new_trader.set_client(your_client=self.client)
+                try:
+                    new_trader.connect_graph(copy(self.fig))
+                except:
+                    pass
+                new_trader._get_attr(strategy_kwargs[0])(**strategy_kwargs[1])
+                new_trader.backtest(deposit=deposit / len(test_data.keys()),
+                                    bet=bet,
+                                    commission=commission,
+                                    plot=False,
+                                    print_out=False,
+                                    show=False)
+                winrates.append(new_trader.winrate)
+                percentage_profits.append(new_trader.year_profit)
+                losses.append(new_trader.losses)
+                trades.append(new_trader.trades)
+                profits.append(new_trader.profits)
+                depos.append(Series(new_trader.deposit_history))
+                lens_dep.append(len(new_trader.deposit_history))
         self.losses = sum(losses)
         self.trades = sum(profits)
         self.profits = sum(profits)

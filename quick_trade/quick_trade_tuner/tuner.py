@@ -30,7 +30,7 @@ class QuickTradeTuner(object):
         """
 
         :param client: trading client
-        :param tickers: ticker
+        :param tickers: tickers
         :param intervals: list of intervals -> ['1m', '4h'...]
         :param limits: limits for client.get_data_historical ([1000, 700...])
         :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choice, Linspace, Arange as argument's value and recourse it. You can also set rules for arranging arguments for each strategy by using _RULES_ and kwargs to access the values of the arguments.
@@ -90,9 +90,10 @@ class QuickTradeTuner(object):
 
                 if self.multi_test:
                     backtest_kwargs['limit'] = limit
-                    trader.multi_backtest(tickers=ticker,
-                                          strategy_name=strategy,
-                                          strategy_kwargs=kwargs,
+                    kwargs_m = {}
+                    for ticker_ in ticker:
+                        kwargs_m[ticker_] = {strategy: kwargs}
+                    trader.multi_backtest(test_data=kwargs_m,
                                           **backtest_kwargs)
                 else:
                     trader._get_attr(strategy)(**kwargs)
@@ -141,7 +142,7 @@ class QuickTradeTuner(object):
         utils.logger.debug('sorting tunes')
         not_filt = self.result_tunes
         self.result_tunes = dict()
-        for ticker, tname in zip(not_filt.values(), self.result_tunes):
+        for ticker, tname in zip(not_filt.values(), not_filt):
             for interval, iname in zip(ticker.values(), ticker):
                 for start, sname in zip(interval.values(), interval):
                     for strategy, stratname in zip(start.values(), start):
