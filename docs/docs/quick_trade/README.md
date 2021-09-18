@@ -166,12 +166,9 @@ strategy = dict(
     fast=30)
 )
 
-trader.multi_backtest(tickers=['BTC/USDT',
-                               'ETH/USDT',
-                               'LINK/BTC'],
-                      test_config={
-                        'ETH/USDT': strategy,
-                        'BTC/USDT': strategy,
+trader.multi_backtest(test_config={
+                        'ETH/USDT': [strategy],
+                        'BTC/USDT': [strategy],
                       },
                       deposit=1000,
                       commission=0.075)

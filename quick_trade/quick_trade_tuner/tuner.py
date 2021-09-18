@@ -92,7 +92,7 @@ class QuickTradeTuner(object):
                     backtest_kwargs['limit'] = limit
                     kwargs_m = {}
                     for ticker_ in ticker:
-                        kwargs_m[ticker_] = {strategy: kwargs}
+                        kwargs_m[ticker_] = [{strategy: kwargs}]
                     trader.multi_backtest(test_config=kwargs_m,
                                           **backtest_kwargs)
                 else:

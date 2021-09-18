@@ -205,9 +205,9 @@ strategy = {
         )
 }
 
-trader.multi_backtest(test_config={'BTC/USDT': strategy,
-                                   'LTC/USDT': strategy,
-                                   'ETH/USDT': strategy},
+trader.multi_backtest(test_config={'BTC/USDT': [strategy],
+                                   'LTC/USDT': [strategy],
+                                   'ETH/USDT': [strategy]},
                       deposit=1700,
                       commission=0.075,
                       bet=np.inf,
