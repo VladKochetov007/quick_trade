@@ -3,6 +3,7 @@
 !> All orders amounts must be quoted in quote currency.
 
 ### quick_trade development telegram channel
+
 ```
 @quick_trade_dev
 ```

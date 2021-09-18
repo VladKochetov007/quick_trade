@@ -115,7 +115,6 @@ from quick_trade.brokers import TradingClient
 from quick_trade.plots import QuickTradeGraph, make_figure
 from ccxt import ftx
 
-
 client = TradingClient(ftx())
 trader = MyTrader(ticker='ETH/BTC',
                   df=client.get_data_historical('ETH/BTC', interval='5m'),
@@ -146,8 +145,8 @@ mean deviation: 1.4569306356613254%
 
 ![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/simple_backtest_example.png)
 
-To use [`multi_backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_backtest), you do not need to apply the strategy before the test, you do not even need to set
-the `df` and `ticker` when [initializing the trader](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=trader).
+To use [`multi_backtest`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_backtest), you do not need to apply the strategy before the test, you do not even need to set the `df`
+and `ticker` when [initializing the trader](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=trader).
 
 ```python
 client = TradingClient(ftx())
@@ -161,17 +160,17 @@ trader.set_client(client)
 
 # BACKTESTING
 strategy = dict(
-  new_macd_strategy=dict(
-    slow=100,
-    fast=30)
+    new_macd_strategy=dict(
+        slow=100,
+        fast=30)
 )
 
 trader.multi_backtest(test_config={
-                        'ETH/USDT': [strategy],
-                        'BTC/USDT': [strategy],
-                      },
-                      deposit=1000,
-                      commission=0.075)
+    'ETH/USDT': [strategy],
+    'BTC/USDT': [strategy],
+},
+    deposit=1000,
+    commission=0.075)
 ```
 
 Result:
@@ -187,9 +186,8 @@ mean deviation: 5.669772760548183%
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/multi_backtest_example.png?raw=true)
 
-?> If your strategy does not provide for exit conditions or provides for the ability to enter several trades 
-at once, you can use [`multi_trades`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_trades).
-This method processes the strategist's prediction data and generates leverage.
+?> If your strategy does not provide for exit conditions or provides for the ability to enter several trades at once, you can
+use [`multi_trades`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=multi_trades). This method processes the strategist's prediction data and generates leverage.
 
 ## What if I combine the two strategies?
 

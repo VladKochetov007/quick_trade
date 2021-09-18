@@ -12,6 +12,7 @@
 
 from copy import copy
 from datetime import datetime
+from math import prod
 from re import fullmatch
 from threading import Thread
 from time import ctime
@@ -28,12 +29,10 @@ from warnings import warn
 import ta.momentum
 import ta.trend
 import ta.volatility
-from math import prod
 from numpy import digitize
 from numpy import inf
 from numpy import isnan
 from numpy import mean
-from numpy import nan
 from numpy import nan_to_num
 from numpy import ndarray
 from pandas import DataFrame
@@ -966,17 +965,17 @@ class Trader(object):
 
     def log_data(self):
         self.fig.log_y(_row=self.fig.data_row,
-                      _col=self.fig.data_col)
+                       _col=self.fig.data_col)
         utils.logger.debug('trader log data')
 
     def log_deposit(self):
         self.fig.log_y(_row=self.fig.deposit_row,
-                      _col=self.fig.deposit_col)
+                       _col=self.fig.deposit_col)
         utils.logger.debug('trader log deposit')
 
     def log_returns(self):
         self.fig.log_y(_row=self.fig.returns_row,
-                      _col=self.fig.returns_col)
+                       _col=self.fig.returns_col)
         utils.logger.debug('trader log returns')
 
     @utils.assert_logger
@@ -1106,8 +1105,8 @@ class ExampleStrategies(Trader):
         return utils.get_window(self.df[column].values, n)
 
     def find_pip_bar(self,
-                    min_diff_coef: float = 2.0,
-                    body_coef: float = 10.0) -> utils.PREDICT_TYPE_LIST:
+                     min_diff_coef: float = 2.0,
+                     body_coef: float = 10.0) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         flag = utils.EXIT
         e: int

@@ -1,4 +1,3 @@
-import re
 from functools import wraps
 from logging import basicConfig
 from logging import getLogger
@@ -12,17 +11,17 @@ from typing import Union
 from warnings import warn
 
 import pandas as pd
+from numpy import arange
 from numpy import array
-from numpy import nan
+from numpy import exp
 from numpy import isnan
+from numpy import log
+from numpy import nan
 from numpy import nan_to_num
 from numpy import ndarray
+from numpy import polyfit
 from pandas import DataFrame
 from pandas import Series
-from numpy import arange
-from numpy import polyfit
-from numpy import exp
-from numpy import log
 from ta.volatility import AverageTrueRange
 
 PREDICT_TYPE: type = int
@@ -328,9 +327,9 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
 
 
 def get_exponential_growth(dataset: Sequence[float]) -> ndarray:
-    x = arange(1, len(dataset)+1, 1)
+    x = arange(1, len(dataset) + 1, 1)
     b, a = polyfit(x, log(array(dataset)), 1)
-    regression = exp(a + b*x)
+    regression = exp(a + b * x)
     return array(regression)
 
 
@@ -485,11 +484,13 @@ def make_multi_trade_returns(converted_returns: CONVERTED_TYPE_LIST) -> Tuple[PR
             result_returns[e] = EXIT
     return result_returns, result_credlev
 
+
 def get_multipliers(df: pd.Series) -> pd.Series:
     df = df.reset_index(drop=True)
     ret: pd.Series = df / df.shift(1)
     ret[0] = 1
     return ret
+
 
 def mean_deviation(frame: Series, avg_grwth: ndarray) -> float:
     relative_diff = abs(frame.values - avg_grwth) / avg_grwth

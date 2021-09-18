@@ -67,11 +67,12 @@ trader.sl_tp_adder(add_stop_loss=50)  # The stop loss moved 50 pips away from th
 ```
 
 ### multi_trades
+
 This method is needed to process strategies with the ability to use several trades at once.
 
 ?> The method translates predictions that look like
 [converted](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=convert)
-data into [unconverted](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=anti_convert) 
+data into [unconverted](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=anti_convert)
 predictions and leverages.
 
 ```python
@@ -95,7 +96,7 @@ class MultiTrader(Trader):
         self.set_credit_leverages()
 ```
 
-!> Using [`set_credit_leverages`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=set_credit_leverages) 
+!> Using [`set_credit_leverages`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=set_credit_leverages)
 after [`multi_trades`](#multi_trades) is not advisable!
 
 ### get_heikin_ashi
@@ -156,7 +157,6 @@ and `self._credit_leverages`.
 
 ```python
 from quick_trade.plots import *
-
 
 fig = make_figure()
 graph = QuickTradeGraph(figure=fig)

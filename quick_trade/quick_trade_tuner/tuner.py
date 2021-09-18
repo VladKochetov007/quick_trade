@@ -8,8 +8,8 @@ from typing import Iterable
 from typing import List
 
 from numpy import arange
-from numpy import linspace
 from numpy import isnan
+from numpy import linspace
 from pandas import DataFrame
 from tqdm import tqdm
 
