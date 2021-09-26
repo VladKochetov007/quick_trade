@@ -26,8 +26,8 @@ setup(
         'plotly==5.3.1',
         'pandas==1.3.3',
         'ta==0.7.0',
-        'tqdm==4.62.2',
-        'ccxt==1.56.45',
+        'tqdm==4.62.3',
+        'ccxt==1.56.86',
     ],
     download_url=f'https://github.com/VladKochetov007/quick_trade/archive/{__version__}.tar.gz',
     keywords=[
