@@ -168,7 +168,7 @@ mean year percentage profit: {}%
 winrate: {}%
 mean deviation: {}%"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate, Trader.mean_deviation)
 
-__version__: str = "6.6.7"
+__version__: str = "6.6.8"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -192,10 +192,10 @@ logger.setLevel(10)
 
 basicConfig(level=0,
             filename='trading.log',
-            format='%(asctime)s [%(levelname)s]        %(message)s        '
+            format='%(asctime)s [%(levelname)s]\n%(message)s\n'
                    f'[QUICK_TRADE VERSION: {__version__}] [FUNCTION: %(funcName)s] [FILE "%(module)s", '
                    'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
-                   '[FILEPATH: %(pathname)s]')
+                   '[FILEPATH: %(pathname)s]\n')
 
 
 class SuperTrendIndicator(object):

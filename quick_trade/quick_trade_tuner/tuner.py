@@ -175,9 +175,9 @@ class Choise(TunableValue):
 
 class Arange(TunableValue):
     def __init__(self, min_value, max_value, step):
-        self.values = arange(min_value, max_value + step, step)
+        self.values = arange(min_value, max_value + step, step).astype('int').tolist()
 
 
 class Linspace(TunableValue):
     def __init__(self, start, stop, num):
-        self.values = linspace(start=start, stop=stop, num=num)
+        self.values = linspace(start=start, stop=stop, num=num).astype('float').tolist()

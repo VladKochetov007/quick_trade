@@ -457,7 +457,7 @@ class Trader(object):
                 self.winrate = 0
                 utils.logger.critical('0 trades in %s', self)
         self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate, self.mean_deviation)
-        utils.logger.info('trader info: %s', self._info)
+        utils.logger.info('(%s) trader info: %s', self, self._info)
         if print_out:
             print(self._info)
         self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
@@ -573,7 +573,7 @@ class Trader(object):
             ]).T
 
         self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate, self.mean_deviation)
-        utils.logger.info('trader multi info: %s', self._info)
+        utils.logger.info('(%s) trader multi info: %s', self, self._info)
         if print_out:
             print(self._info)
         if plot:
@@ -737,7 +737,7 @@ class Trader(object):
         conv_cred_lev = utils.convert(self._credit_leverages)
 
         if (not isnan(self._converted[-1])) or (not isnan(conv_cred_lev[-1])):
-            utils.logger.info('open trade %s', predict)
+            utils.logger.info('(%s) open trade %s', self, predict)
             self.__exit_order__ = False
             if self.trading_on_client:
 
@@ -761,7 +761,7 @@ class Trader(object):
                     self.client.order_create(predict,
                                              self.ticker,
                                              bet * self._credit_leverages[-1])
-        utils.logger.debug("returning prediction")
+        utils.logger.debug("(%s) returning prediction", self)
         return {
             'predict': predict,
             'open trade price': self._open_price,
@@ -817,36 +817,36 @@ class Trader(object):
         while True:
             try:
                 self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
-                utils.logger.debug("new dataframe loaded")
+                utils.logger.debug("(%s) new dataframe loaded", self)
 
                 strategy(*strategy_args, **strategy_kwargs)
-                utils.logger.debug("strategy used")
+                utils.logger.debug("(%s) strategy used", self)
 
                 prediction = self.get_trading_predict(
                     bet_for_trading_on_client=bet_for_trading_on_client,
                     coin_lotsize_division=coin_lotsize_division)
 
                 index = f'{self.ticker}, {ctime()}'
-                utils.logger.info("trading prediction at %s: %s", index, prediction)
+                utils.logger.info("(%s) trading prediction at %s: %s", self, index, prediction)
                 if print_out:
                     print(index, prediction)
                 while True:
                     if not self.__exit_order__:
                         if (open_time + self._sec_interval) - time() > wait_sl_tp_checking:
-                            utils.logger.debug("sleep %f seconds", wait_sl_tp_checking)
+                            utils.logger.debug("(%s) sleep %f seconds", self, wait_sl_tp_checking)
                             sleep(wait_sl_tp_checking)
 
                         price = self.client.get_ticker_price(ticker)
                         min_ = min(self.__last_stop_loss, self.__last_take_profit)
                         max_ = max(self.__last_stop_loss, self.__last_take_profit)
-                        utils.logger.debug('checking SL/TP')
+                        utils.logger.debug('(%s) checking SL/TP', self)
                         if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
                             self.__exit_order__ = True
-                            utils.logger.info('exit trade')
+                            utils.logger.info('(%s) exit trade', self)
                             index = f'{self.ticker}, {ctime()}'
-                            utils.logger.info("trading prediction exit in sleeping at %s: %s", index, prediction)
+                            utils.logger.info("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
                             if print_out:
-                                print("trading prediction exit in sleeping at %s: %s", index, prediction)
+                                print("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
                             if self.trading_on_client:
                                 self.client.exit_last_order()
                         elif strategy_in_sleep:
@@ -856,7 +856,7 @@ class Trader(object):
                         open_time += self._sec_interval
                         break
             except Exception as exc:
-                utils.logger.error(f'An error occurred: {exc}', exc_info=True)  # how to concatenate with error?
+                utils.logger.error(f'(%s) An error occurred: {exc}', self, exc_info=True)  # how to concatenate with error?
                 self.client.exit_last_order()
                 if ignore_exceptions:
                     if print_exc:
@@ -965,18 +965,18 @@ class Trader(object):
 
     def log_data(self):
         self.fig.log_y(_row=self.fig.data_row,
-                       _col=self.fig.data_col)
-        utils.logger.debug('trader log data')
+                      _col=self.fig.data_col)
+        utils.logger.debug('%s log data', self)
 
     def log_deposit(self):
         self.fig.log_y(_row=self.fig.deposit_row,
-                       _col=self.fig.deposit_col)
-        utils.logger.debug('trader log deposit')
+                      _col=self.fig.deposit_col)
+        utils.logger.debug('%s log deposit', self)
 
     def log_returns(self):
         self.fig.log_y(_row=self.fig.returns_row,
-                       _col=self.fig.returns_col)
-        utils.logger.debug('trader log returns')
+                      _col=self.fig.returns_col)
+        utils.logger.debug('%s log returns', self)
 
     @utils.assert_logger
     def set_client(self, your_client: TradingClient):
@@ -986,7 +986,7 @@ class Trader(object):
         assert isinstance(your_client, TradingClient), 'your_client must be of type <TradingClient>'
 
         self.client = your_client
-        utils.logger.debug('trader set client')
+        utils.logger.debug('%s set client', self)
 
     @utils.assert_logger
     def convert_signal(self,
@@ -1000,7 +1000,7 @@ class Trader(object):
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
-        utils.logger.debug("trader signals converted: %s >> %s", old, new)
+        utils.logger.debug("%s signals converted: %s >> %s", self, old, new)
         return self.returns
 
     @utils.assert_logger
@@ -1056,7 +1056,7 @@ class Trader(object):
                 self._stop_losses.append(stop_flag)
             elif sig == utils.EXIT:
                 self._stop_losses[e] = take_flag
-        utils.logger.debug('trader stop loss: %f pips, trader take profit: %f pips', stop_loss, take_profit)
+        utils.logger.debug('%s stop loss: %f pips, trader take profit: %f pips', self, stop_loss, take_profit)
 
     @utils.assert_logger
     def set_credit_leverages(self, credit_lev: Union[float, int] = 1.0):
@@ -1067,7 +1067,7 @@ class Trader(object):
         assert isinstance(credit_lev, (float, int)), 'credit_lev must be of type <float> or <int>'
 
         self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
-        utils.logger.debug('trader credit leverage: %f', credit_lev)
+        utils.logger.debug('%s credit leverage: %f', self, credit_lev)
 
     def get_support_resistance(self) -> Dict[str, Dict[int, float]]:
         lows = self.df['Low'].values
