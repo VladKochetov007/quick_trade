@@ -557,7 +557,7 @@ class Trader(object):
         for enum, elem in enumerate(depos):
             depos[enum] = utils.get_multipliers(Series(elem[-min(lens_dep):]))
 
-        multipliers: Series = prod(depos)
+        multipliers: Series = sum(depos) / len(depos)
         deposit_elem: float = deposit
         for multiplier in multipliers.values:
             deposit_elem *= multiplier
@@ -1532,12 +1532,15 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take()
         return self.returns
 
-    def strategy_supertrend(self, plot: bool = True, *st_args, **st_kwargs) -> utils.PREDICT_TYPE_LIST:
+    def strategy_supertrend(self,
+                            plot: bool = True,
+                            multiplier: float = 3.0,
+                            length: int = 10) -> utils.PREDICT_TYPE_LIST:
         st: utils.SuperTrendIndicator = utils.SuperTrendIndicator(self.df['Close'],
                                                                   self.df['High'],
                                                                   self.df['Low'],
-                                                                  *st_args,
-                                                                  **st_kwargs)
+                                                                  multiplier=multiplier,
+                                                                  length=length)
         if plot:
             self.fig.plot_line(line=st.get_supertrend_upper(),
                                width=utils.ST_UP_WIDTH,
@@ -1554,8 +1557,9 @@ class ExampleStrategies(Trader):
                                opacity=utils.ST_DOWN_ALPHA,
                                _row=self.fig.data_row,
                                _col=self.fig.data_col)
-        self._stop_losses = list(st.get_supertrend())
         self.returns = list(st.get_supertrend_strategy_returns())
+        self.returns[:length + 1] = [utils.EXIT] * (length + 1)
+        self._stop_losses = list(st.get_supertrend())
         self._stop_losses[0] = inf if self.returns[0] == utils.SELL else -inf
         self.set_open_stop_and_take(set_stop=False)
         self.set_credit_leverages()
@@ -1611,13 +1615,10 @@ class ExampleStrategies(Trader):
             if close >= up:
                 flag = utils.SELL
 
-            if to_mid:
-                if flag == utils.SELL and close <= mid:
-                    flag = utils.EXIT
-                if flag == utils.BUY and close >= mid:
-                    flag = utils.EXIT
             self.returns.append(flag)
         self.set_open_stop_and_take()
+        if to_mid:
+            self._take_profits = mid_.tolist()
         self.set_credit_leverages()
         return self.returns
 

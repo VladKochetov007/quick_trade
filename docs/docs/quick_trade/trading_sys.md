@@ -380,8 +380,8 @@ supertrend strategy. S/L - ST indicator
 | param  | type | description |
 | :---: | :---: | :---: |
 | plot | bool | plotting of SAR indicator |
-| **st_args | arguments | arguments for [`utils.SuperTrendIndicator`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=supertrendindicator) |
-| **st_kwargs | named arguments | named arguments for [`utils.SuperTrendIndicator`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=supertrendindicator) |
+| multiplier | float, int | multiplier parameterf for [`utils.SuperTrendIndicator`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=supertrendindicator) |
+| length | int | length parameter for [`utils.SuperTrendIndicator`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/utils?id=supertrendindicator) |
 | returns | `utils.PREDICT_TYPE_LIST` | returns |
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/supertrend.png?raw=true)
@@ -393,7 +393,7 @@ Bollinger bands strategy (not breakout)
 | param  | type | description |
 | :---: | :---: | :---: |
 | plot | bool | plotting of bollinger bands |
-| to_mid | bool | exit on mid line of `ta.volatility.BollingerBands` |
+| to_mid | bool | stop loss on mid line of `ta.volatility.BollingerBands` |
 | **bollinger_args | arguments | arguments for `ta.volatility.BollingerBands` |
 | **bollinger_kwargs | named arguments | named arguments for `ta.volatility.BollingerBands` |
 | returns | `utils.PREDICT_TYPE_LIST` | returns |

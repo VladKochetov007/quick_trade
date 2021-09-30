@@ -164,7 +164,7 @@ class QuickTradeTuner(object):
             dump(self.result_tunes, file)
 
     def load_tunes(self, path: str = 'returns.json'):
-        utils.logger.debug('loading tunes from %s', path)
+        utils.logger.debug('loading tunes from "%s"', path)
         with open(path, 'r') as file:
             self.result_tunes = load(file)
 
