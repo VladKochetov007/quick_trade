@@ -443,7 +443,8 @@ class Trader(object):
             self.deposit_history.append(deposit)
 
             no_order = exit_take_stop
-            prev_sig = sig
+            if self.returns[e+1] != sig:
+                prev_sig = sig
             ignore_breakout = False
 
         if not pass_math:
@@ -549,7 +550,7 @@ class Trader(object):
                     depos.append(Series(new_trader.deposit_history))
                     lens_dep.append(len(new_trader.deposit_history))
         self.losses = sum(losses)
-        self.trades = sum(profits)
+        self.trades = sum(trades)
         self.profits = sum(profits)
         self.year_profit = float(mean(percentage_profits))
         self.winrate = float(mean(winrates))
