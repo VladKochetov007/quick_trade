@@ -218,7 +218,7 @@ output:
 
 ```commandline
 losses: 146
-trades: 68
+trades: 214
 profits: 68
 mean year percentage profit: -92.25033539138768%
 winrate: 31.566354534845413%
