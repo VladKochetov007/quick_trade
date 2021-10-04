@@ -2,6 +2,7 @@
 
 [![Downloads](https://static.pepy.tech/personalized-badge/quick-trade?period=total&units=none&left_color=grey&right_color=brightgreen&left_text=PyPi%20downloads)](https://pepy.tech/project/quick-trade)
 [![Downloads](https://static.pepy.tech/personalized-badge/quick-trade?period=month&units=none&left_color=grey&right_color=brightgreen&left_text=PyPi%20downloads%20(month))](https://pepy.tech/project/quick-trade)
+[![wakatime](https://wakatime.com/badge/user/f1d9b860-df0e-4c67-ba94-ffb31bf60964/project/0863a96f-9be6-40b9-90e6-ccdf6249b1d1.svg)](https://wakatime.com/@VladKochetov007/projects/fzjjtxtpvb)
 
 View documentation: 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧 in process
 
@@ -15,7 +16,6 @@ old documentation (V3 doc): https://vladkochetov007.github.io/quick_trade.github
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/logo_with_slogan_v2_fixed.PNG?raw=true)
 
-Python algo-trading system.
 
 ```
 

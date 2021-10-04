@@ -47,7 +47,7 @@ class TradingClient(object):
                       ticker: str = None,
                       quantity: float = 0.0,
                       credit_leverage: float = 1.0):
-        self.order_create('Buy',
+        self.order_create(side='Buy',
                           ticker=ticker,
                           quantity=quantity * credit_leverage)
 
@@ -55,7 +55,7 @@ class TradingClient(object):
                        ticker: str = None,
                        quantity: float = 0.0,
                        credit_leverage: float = 1.0):
-        self.order_create('Sell',
+        self.order_create(side='Sell',
                           ticker=ticker,
                           quantity=quantity * credit_leverage)
 
