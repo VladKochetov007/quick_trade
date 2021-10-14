@@ -1,5 +1,3 @@
-from typing import Dict
-
 from ccxt import Exchange
 from pandas import DataFrame
 
@@ -11,20 +9,18 @@ class TradingClient(object):
     __side__: str
     ticker: str
     cls_open_orders: int = 0
-    start_balance: Dict[str, float]
     base: str
     quote: str
+    __quantity__: float
 
     def __init__(self, client: Exchange):
         self.client = client
-        self._update_balances()
 
     @utils.wait_success
     def order_create(self,
                      side: str,
                      ticker: str = 'None',
                      quantity: float = 0.0):
-        self._update_balances()
         utils.logger.info('quantity: %f, side: %s, ticker: %s', quantity, side,
                           ticker)
         if side == 'Buy':
@@ -33,6 +29,7 @@ class TradingClient(object):
             self.client.create_market_sell_order(symbol=ticker, amount=quantity)
         self.__side__ = side
         self.ticker = ticker
+        self.__quantity__ = quantity
         self.base = ticker.split('/')[0]
         self.quote = ticker.split('/')[1]
         self.ordered = True
@@ -76,8 +73,7 @@ class TradingClient(object):
     def exit_last_order(self):
         if self.ordered:
             utils.logger.info('client exit')
-            base_balance = self.get_balance(self.base)
-            bet = base_balance - self.start_balance[self.base]
+            bet = self.__quantity__
             if self.__side__ == 'Sell':
                 self.new_order_buy(self.ticker,
                                    bet)
@@ -101,10 +97,3 @@ class TradingClient(object):
     def _sub_order_count(cls):
         cls.cls_open_orders -= 1
         utils.logger.info('order closed')
-
-    @utils.wait_success
-    def _update_balances(self):
-        if len(self.client.apiKey):
-            self.start_balance = self.client.fetch_free_balance()
-        else:
-            utils.logger.warning("Client doesn't have an API key")
