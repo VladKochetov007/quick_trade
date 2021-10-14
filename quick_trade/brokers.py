@@ -76,7 +76,7 @@ class TradingClient(object):
     def exit_last_order(self):
         if self.ordered:
             utils.logger.info('client exit')
-            base_balance = self.get_balance_ticker(self.base)
+            base_balance = self.get_balance(self.base)
             bet = base_balance - self.start_balance[self.base]
             if self.__side__ == 'Sell':
                 self.new_order_buy(self.ticker,
@@ -89,8 +89,8 @@ class TradingClient(object):
             self._sub_order_count()
 
     @utils.wait_success
-    def get_balance_ticker(self, ticker: str) -> float:
-        return self.client.fetch_free_balance()[ticker]
+    def get_balance(self, currency: str) -> float:
+        return self.client.fetch_total_balance()[currency]
 
     @classmethod
     def _add_order_count(cls):
@@ -107,4 +107,4 @@ class TradingClient(object):
         if len(self.client.apiKey):
             self.start_balance = self.client.fetch_free_balance()
         else:
-            utils.logger.warning('Client doesn\'t have an API key')
+            utils.logger.warning("Client doesn't have an API key")

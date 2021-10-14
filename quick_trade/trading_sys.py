@@ -12,7 +12,6 @@
 
 from copy import copy
 from datetime import datetime
-from math import prod
 from re import fullmatch
 from threading import Thread
 from time import ctime
@@ -155,8 +154,9 @@ class Trader(object):
                 'take': take}
 
     @utils.assert_logger
-    def sl_tp_adder(self, add_stop_loss: Union[float, int] = 0.0, add_take_profit: Union[float, int] = 0.0) -> Tuple[
-        List[float], List[float]]:
+    def sl_tp_adder(self,
+                    add_stop_loss: Union[float, int] = 0.0,
+                    add_take_profit: Union[float, int] = 0.0) -> Tuple[List[float], List[float]]:
         """
 
         :param add_stop_loss: add stop loss points
@@ -397,7 +397,7 @@ class Trader(object):
                     if bet > deposit:
                         bet = deposit
 
-                    if self._multi_converted_ == True:
+                    if self._multi_converted_:
                         if prev_sig != utils.EXIT:
                             self.trades += 1
                             if deposit > moneys_open_bet:
@@ -443,7 +443,7 @@ class Trader(object):
             self.deposit_history.append(deposit)
 
             no_order = exit_take_stop
-            if self.returns[e+1] != sig:
+            if self.returns[e + 1] != sig:
                 prev_sig = sig
             ignore_breakout = False
 
@@ -533,7 +533,9 @@ class Trader(object):
                     new_trader.set_client(your_client=self.client)
                     try:
                         new_trader.connect_graph(copy(self.fig))
-                    except:
+                    except Exception as e:
+                        if isinstance(e, KeyboardInterrupt):
+                            raise e
                         pass
                     new_trader._get_attr(strategy_kwargs[0])(**strategy_kwargs[1])
                     new_trader.backtest(deposit=deposit / len(test_config.keys()),
@@ -714,12 +716,10 @@ class Trader(object):
 
     def get_trading_predict(self,
                             bet_for_trading_on_client: Union[float, int] = inf,
-                            coin_lotsize_division: bool = True
                             ) -> Dict[str, Union[str, float]]:
         """
         predict and trading.
 
-        :param coin_lotsize_division: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
         :param bet_for_trading_on_client: standard: all deposit
         :return: dict with prediction
         """
@@ -747,7 +747,7 @@ class Trader(object):
                     self.__exit_order__ = True
 
                 else:
-                    _moneys_ = self.client.get_balance_ticker(self.ticker.split('/')[1])
+                    _moneys_ = self.client.get_balance(self.ticker.split('/')[1])
                     ticker_price = self.client.get_ticker_price(self.ticker)
                     if bet_for_trading_on_client is not inf:
                         bet = bet_for_trading_on_client
@@ -755,8 +755,7 @@ class Trader(object):
                         bet = _moneys_
                     if bet > _moneys_:
                         bet = _moneys_
-                    if coin_lotsize_division:
-                        bet /= ticker_price
+                    bet /= ticker_price
 
                     self.client.exit_last_order()
                     self.client.order_create(predict,
@@ -768,7 +767,7 @@ class Trader(object):
             'open trade price': self._open_price,
             'stop loss': self.__last_stop_loss,
             'take profit': self.__last_take_profit,
-            'currency close': close[-1],
+            'ticker close': close[-1],
             'credit leverage': self._credit_leverages[-1]
         }
 
@@ -778,7 +777,6 @@ class Trader(object):
                          ticker: str = 'BTC/USDT',
                          print_out: bool = True,
                          bet_for_trading_on_client: Union[float, int] = inf,
-                         coin_lotsize_division: bool = True,
                          ignore_exceptions: bool = False,
                          print_exc: bool = True,
                          wait_sl_tp_checking: Union[float, int] = 5,
@@ -792,7 +790,6 @@ class Trader(object):
         :param wait_sl_tp_checking: sleeping time after stop-loss and take-profit checking (seconds)
         :param print_exc: print  exceptions in while loop
         :param ignore_exceptions: ignore binance exceptions in while loop
-        :param coin_lotsize_division: If for your api you specify the size of the bet in a coin, which is not in which you have a deposit, specify this parameter in the value: True. Otherwise: False, in Binance's case this is definitely the first case (True). If errors occur, try specifying the first ticker symbol instead of the second.
         :param ticker: ticker for trading.
         :param strategy: trading strategy.
         :param print_out: printing.
@@ -811,7 +808,6 @@ class Trader(object):
             'wait_sl_tp_checking cannot be greater than or equal to the timeframe'
         assert isinstance(limit, int), 'limit must be of type <int>'
         assert isinstance(strategy_in_sleep, bool), 'strategy_in_sleep must be of type <bool>'
-        assert isinstance(coin_lotsize_division, bool), 'coin_lotsize_division must be of type <bool>'
 
         self.ticker = ticker
         open_time = time()
@@ -824,8 +820,7 @@ class Trader(object):
                 utils.logger.debug("(%s) strategy used", self)
 
                 prediction = self.get_trading_predict(
-                    bet_for_trading_on_client=bet_for_trading_on_client,
-                    coin_lotsize_division=coin_lotsize_division)
+                    bet_for_trading_on_client=bet_for_trading_on_client)
 
                 index = f'{self.ticker}, {ctime()}'
                 utils.logger.info("(%s) trading prediction at %s: %s", self, index, prediction)
@@ -872,7 +867,6 @@ class Trader(object):
                                start_time: datetime,  # LOCAL TIME
                                print_out: bool = True,
                                bet_for_trading_on_client: Union[float, int] = inf,  # for 1 trade
-                               coin_lotsize_division: bool = True,
                                ignore_exceptions: bool = False,
                                print_exc: bool = True,
                                wait_sl_tp_checking: Union[float, int] = 5,
@@ -882,18 +876,7 @@ class Trader(object):
                                ):
         """
 
-        :param trade_config: Configurations to start trading. {ticker: {stategy: {parameter: value}}}
-        :param start_time:
-        :param print_out:
-        :param bet_for_trading_on_client:
-        :param coin_lotsize_division:
-        :param ignore_exceptions:
-        :param print_exc:
-        :param wait_sl_tp_checking:
-        :param limit:
-        :param strategy_in_sleep:
-        :param deposit_part:
-        :return:
+        :param trade_config: Configurations to start trading. {ticker: {strategy: {parameter: value}}}
         """
         tickers: List[str] = list(trade_config.keys())
         for el in tickers:
@@ -916,7 +899,6 @@ class Trader(object):
                 for strat_name in k.keys():
                     assert isinstance(strat_name, str), 'strategy parameter must be of type <str>'
                     assert strat_name in self.__dir__(), 'There is no such strategy'
-        assert isinstance(coin_lotsize_division, bool), 'coin_lotsize_division must be of type <bool>'
         assert isinstance(deposit_part, (int, float)), 'deposit_part must be of type <int> or <float>'
         assert 1 >= deposit_part > 0, 'deposit_part cannot be greater than 1 or less than 0(inclusively)'
 
@@ -926,15 +908,13 @@ class Trader(object):
         class MultiRealTimeTrader(self.__class__):
             def get_trading_predict(self,
                                     bet_for_trading_on_client: Union[float, int] = inf,
-                                    coin_lotsize_division: bool = True
                                     ) -> Dict[str, Union[str, float]]:
-                balance = self.client.get_balance_ticker(self.ticker.split('/')[1])
+                balance = self.client.get_balance(self.ticker.split('/')[1])
                 bet = (balance * 10) / (can_orders / deposit_part - TradingClient.cls_open_orders)
                 bet /= 10  # decimal analog
                 if bet > bet_for_trading_on_client_copy:
                     bet = bet_for_trading_on_client_copy
-                return super().get_trading_predict(bet_for_trading_on_client=bet,
-                                                   coin_lotsize_division=coin_lotsize_division)
+                return super().get_trading_predict(bet_for_trading_on_client=bet)
 
         def start_trading(pair, strat):
             trader = MultiRealTimeTrader(ticker=pair,
@@ -951,7 +931,6 @@ class Trader(object):
                 trader.realtime_trading(strategy=trader._get_attr(item[0]),
                                         ticker=pair,
                                         print_out=print_out,
-                                        coin_lotsize_division=coin_lotsize_division,
                                         ignore_exceptions=ignore_exceptions,
                                         print_exc=print_exc,
                                         wait_sl_tp_checking=wait_sl_tp_checking,
@@ -966,17 +945,17 @@ class Trader(object):
 
     def log_data(self):
         self.fig.log_y(_row=self.fig.data_row,
-                      _col=self.fig.data_col)
+                       _col=self.fig.data_col)
         utils.logger.debug('%s log data', self)
 
     def log_deposit(self):
         self.fig.log_y(_row=self.fig.deposit_row,
-                      _col=self.fig.deposit_col)
+                       _col=self.fig.deposit_col)
         utils.logger.debug('%s log deposit', self)
 
     def log_returns(self):
         self.fig.log_y(_row=self.fig.returns_row,
-                      _col=self.fig.returns_col)
+                       _col=self.fig.returns_col)
         utils.logger.debug('%s log returns', self)
 
     @utils.assert_logger
