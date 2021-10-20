@@ -902,7 +902,7 @@ class Trader(object):
         assert isinstance(deposit_part, (int, float)), 'deposit_part must be of type <int> or <float>'
         assert 1 >= deposit_part > 0, 'deposit_part cannot be greater than 1 or less than 0(inclusively)'
 
-        can_orders: int = len(tickers)
+        can_orders: int = sum([len(x) for x in trade_config.values()])
         bet_for_trading_on_client_copy: Union[float, int] = bet_for_trading_on_client
 
         class MultiRealTimeTrader(self.__class__):
