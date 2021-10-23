@@ -242,12 +242,9 @@ graph = QuickTradeGraph(figure=fig)
 trader.connect_graph(graph)
 trader.set_client(client)
 
-while True:
-    if datetime.datetime.now() >= start_time:
-        break
-
 trader.realtime_trading(
     strategy=trader.strategy,
+    start_time=start_time,
     ticker=ticker,
     coin_lotsize_division=True,
     limit=100,

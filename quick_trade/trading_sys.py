@@ -774,6 +774,7 @@ class Trader(object):
     @utils.assert_logger
     def realtime_trading(self,
                          strategy,
+                         start_time: datetime,
                          ticker: str = 'BTC/USDT',
                          print_out: bool = True,
                          bet_for_trading_on_client: Union[float, int] = inf,
@@ -785,6 +786,7 @@ class Trader(object):
                          *strategy_args,
                          **strategy_kwargs):
         """
+        :param start_time: time to start
         :param strategy_in_sleep: reuse strategy in one candle for new S/L, T/P or martingale
         :param limit: client.get_data_historical's limit argument
         :param wait_sl_tp_checking: sleeping time after stop-loss and take-profit checking (seconds)
@@ -811,6 +813,9 @@ class Trader(object):
 
         self.ticker = ticker
         open_time = time()
+        while True:
+            if datetime.now() >= start_time:
+                break
         while True:
             try:
                 self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
@@ -924,12 +929,10 @@ class Trader(object):
             trader.connect_graph(graph=self.fig)
             trader.set_client(copy(client))
 
-            while True:
-                if datetime.now() >= start_time:
-                    break
             items = tuple(strat.items())
             for item in items:
                 trader.realtime_trading(strategy=trader._get_attr(item[0]),
+                                        start_time=start_time,
                                         ticker=pair,
                                         print_out=print_out,
                                         ignore_exceptions=ignore_exceptions,
