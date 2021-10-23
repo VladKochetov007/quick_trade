@@ -106,10 +106,10 @@ class Trader(object):
         self.trading_on_client = trading_on_client
         self._profit_calculate_coef, self._sec_interval = utils.get_coef_sec(interval)
         self.__exit_order__ = False
-        utils.logger.info('new trader: %s', self)
+        utils.logger.info('new trader: %s. (trading_on_client: %s)', self, trading_on_client)
 
     def __repr__(self):
-        return f'{self.ticker} {self.interval} trader. Trading: {self.trading_on_client}'
+        return f'{self.ticker} {self.interval} trader'
 
     def _get_attr(self, attr: str):
         return getattr(self, attr)
@@ -876,7 +876,7 @@ class Trader(object):
                                ):
         """
 
-        :param trade_config: Configurations to start trading. {ticker: {strategy: {parameter: value}}}
+        :param trade_config: Configurations to start trading. {ticker: [{strategy: {parameter: value}}]}
         """
         tickers: List[str] = list(trade_config.keys())
         for el in tickers:
@@ -904,6 +904,7 @@ class Trader(object):
 
         can_orders: int = sum([len(x) for x in trade_config.values()])
         bet_for_trading_on_client_copy: Union[float, int] = bet_for_trading_on_client
+        client = self.client
 
         class MultiRealTimeTrader(self.__class__):
             def get_trading_predict(self,
@@ -921,7 +922,7 @@ class Trader(object):
                                          interval=self.interval,
                                          trading_on_client=self.trading_on_client)
             trader.connect_graph(graph=self.fig)
-            trader.set_client(copy(self.client))
+            trader.set_client(copy(client))
 
             while True:
                 if datetime.now() >= start_time:
@@ -946,17 +947,17 @@ class Trader(object):
     def log_data(self):
         self.fig.log_y(_row=self.fig.data_row,
                        _col=self.fig.data_col)
-        utils.logger.debug('%s log data', self)
+        utils.logger.debug('(%s) log data', self)
 
     def log_deposit(self):
         self.fig.log_y(_row=self.fig.deposit_row,
                        _col=self.fig.deposit_col)
-        utils.logger.debug('%s log deposit', self)
+        utils.logger.debug('(%s) log deposit', self)
 
     def log_returns(self):
         self.fig.log_y(_row=self.fig.returns_row,
                        _col=self.fig.returns_col)
-        utils.logger.debug('%s log returns', self)
+        utils.logger.debug('(%s) log returns', self)
 
     @utils.assert_logger
     def set_client(self, your_client: TradingClient):
@@ -966,7 +967,7 @@ class Trader(object):
         assert isinstance(your_client, TradingClient), 'your_client must be of type <TradingClient>'
 
         self.client = your_client
-        utils.logger.debug('%s set client', self)
+        utils.logger.debug('(%s) set client', self)
 
     @utils.assert_logger
     def convert_signal(self,
@@ -980,7 +981,7 @@ class Trader(object):
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
-        utils.logger.debug("%s signals converted: %s >> %s", self, old, new)
+        utils.logger.debug("(%s) signals converted: %s >> %s", self, old, new)
         return self.returns
 
     @utils.assert_logger
@@ -1036,7 +1037,7 @@ class Trader(object):
                 self._stop_losses.append(stop_flag)
             elif sig == utils.EXIT:
                 self._stop_losses[e] = take_flag
-        utils.logger.debug('%s stop loss: %f pips, trader take profit: %f pips', self, stop_loss, take_profit)
+        utils.logger.debug('(%s) stop loss: %f pips, trader take profit: %f pips', self, stop_loss, take_profit)
 
     @utils.assert_logger
     def set_credit_leverages(self, credit_lev: Union[float, int] = 1.0):
@@ -1047,7 +1048,7 @@ class Trader(object):
         assert isinstance(credit_lev, (float, int)), 'credit_lev must be of type <float> or <int>'
 
         self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
-        utils.logger.debug('%s credit leverage: %f', self, credit_lev)
+        utils.logger.debug('(%s) credit leverage: %f', self, credit_lev)
 
     def get_support_resistance(self) -> Dict[str, Dict[int, float]]:
         lows = self.df['Low'].values
