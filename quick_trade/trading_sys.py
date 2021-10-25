@@ -9,6 +9,7 @@
 #   add meta-data in tuner's returns
 #   add "tradingview backtest"
 #   multi-timeframe backtest
+#   Sharpe, Sortino and Calmar Ratios
 
 from copy import copy
 from datetime import datetime
@@ -25,6 +26,7 @@ from typing import Tuple
 from typing import Union
 from warnings import warn
 
+import numpy as np
 import ta.momentum
 import ta.trend
 import ta.volatility
