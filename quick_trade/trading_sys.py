@@ -874,8 +874,6 @@ class Trader(object):
         assert isinstance(print_out, bool), 'print_out must be of type <bool>'
         assert isinstance(bet_for_trading_on_client,
                           (float, int)), 'bet_for_trading_on_client must be of type <float> or <int>'
-        assert isinstance(ignore_exceptions, bool), 'ignore_exceptions must be of type <bool>'
-        assert isinstance(print_exc, bool), 'print_exc must be of type <bool>'
         assert isinstance(wait_sl_tp_checking, (float, int)), 'wait_sl_tp_checking must be of type <float> or <int>'
         assert wait_sl_tp_checking < self._sec_interval, \
             'wait_sl_tp_checking cannot be greater than or equal to the timeframe'
@@ -919,8 +917,6 @@ class Trader(object):
                                         start_time=start_time,
                                         ticker=pair,
                                         print_out=print_out,
-                                        ignore_exceptions=ignore_exceptions,
-                                        print_exc=print_exc,
                                         wait_sl_tp_checking=wait_sl_tp_checking,
                                         limit=limit,
                                         strategy_in_sleep=strategy_in_sleep,
