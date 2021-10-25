@@ -778,8 +778,6 @@ class Trader(object):
                          ticker: str = 'BTC/USDT',
                          print_out: bool = True,
                          bet_for_trading_on_client: Union[float, int] = inf,
-                         ignore_exceptions: bool = False,
-                         print_exc: bool = True,
                          wait_sl_tp_checking: Union[float, int] = 5,
                          limit: int = 1000,
                          strategy_in_sleep: bool = False,
@@ -790,8 +788,6 @@ class Trader(object):
         :param strategy_in_sleep: reuse strategy in one candle for new S/L, T/P or martingale
         :param limit: client.get_data_historical's limit argument
         :param wait_sl_tp_checking: sleeping time after stop-loss and take-profit checking (seconds)
-        :param print_exc: print  exceptions in while loop
-        :param ignore_exceptions: ignore binance exceptions in while loop
         :param ticker: ticker for trading.
         :param strategy: trading strategy.
         :param print_out: printing.
@@ -803,8 +799,6 @@ class Trader(object):
         assert isinstance(print_out, bool), 'print_out must be of type <bool>'
         assert isinstance(bet_for_trading_on_client,
                           (float, int)), 'bet_for_trading_on_client must be of type <float> or <int>'
-        assert isinstance(ignore_exceptions, bool), 'ignore_exceptions must be of type <bool>'
-        assert isinstance(print_exc, bool), 'print_exc must be of type <bool>'
         assert isinstance(wait_sl_tp_checking, (float, int)), 'wait_sl_tp_checking must be of type <float> or <int>'
         assert wait_sl_tp_checking < self._sec_interval, \
             'wait_sl_tp_checking cannot be greater than or equal to the timeframe'
@@ -817,54 +811,44 @@ class Trader(object):
             if datetime.now() >= start_time:
                 break
         while True:
-            try:
-                self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
-                utils.logger.debug("(%s) new dataframe loaded", self)
+            self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
+            utils.logger.debug("(%s) new dataframe loaded", self)
 
-                strategy(*strategy_args, **strategy_kwargs)
-                utils.logger.debug("(%s) strategy used", self)
+            strategy(*strategy_args, **strategy_kwargs)
+            utils.logger.debug("(%s) strategy used", self)
 
-                prediction = self.get_trading_predict(
-                    bet_for_trading_on_client=bet_for_trading_on_client)
+            prediction = self.get_trading_predict(
+                bet_for_trading_on_client=bet_for_trading_on_client)
 
-                index = f'{self.ticker}, {ctime()}'
-                utils.logger.info("(%s) trading prediction at %s: %s", self, index, prediction)
-                if print_out:
-                    print(index, prediction)
-                while True:
-                    if not self.__exit_order__:
-                        if (open_time + self._sec_interval) - time() > wait_sl_tp_checking:
-                            utils.logger.debug("(%s) sleep %f seconds", self, wait_sl_tp_checking)
-                            sleep(wait_sl_tp_checking)
+            index = f'{self.ticker}, {ctime()}'
+            utils.logger.info("(%s) trading prediction at %s: %s", self, index, prediction)
+            if print_out:
+                print(index, prediction)
+            while True:
+                if not self.__exit_order__:
+                    if (open_time + self._sec_interval) - time() > wait_sl_tp_checking:
+                        utils.logger.debug("(%s) sleep %f seconds", self, wait_sl_tp_checking)
+                        sleep(wait_sl_tp_checking)
 
-                        price = self.client.get_ticker_price(ticker)
-                        min_ = min(self.__last_stop_loss, self.__last_take_profit)
-                        max_ = max(self.__last_stop_loss, self.__last_take_profit)
-                        utils.logger.debug('(%s) checking SL/TP', self)
-                        if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
-                            self.__exit_order__ = True
-                            utils.logger.info('(%s) exit trade', self)
-                            index = f'{self.ticker}, {ctime()}'
-                            utils.logger.info("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
-                            if print_out:
-                                print("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
-                            if self.trading_on_client:
-                                self.client.exit_last_order()
-                        elif strategy_in_sleep:
-                            break
-                    if time() >= (open_time + self._sec_interval):
-                        self._prev_predict = utils.convert_signal_str(self.returns[-1])
-                        open_time += self._sec_interval
+                    price = self.client.get_ticker_price(ticker)
+                    min_ = min(self.__last_stop_loss, self.__last_take_profit)
+                    max_ = max(self.__last_stop_loss, self.__last_take_profit)
+                    utils.logger.debug('(%s) checking SL/TP', self)
+                    if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
+                        self.__exit_order__ = True
+                        utils.logger.info('(%s) exit trade', self)
+                        index = f'{self.ticker}, {ctime()}'
+                        utils.logger.info("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
+                        if print_out:
+                            print("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
+                        if self.trading_on_client:
+                            self.client.exit_last_order()
+                    elif strategy_in_sleep:
                         break
-            except Exception as exc:
-                utils.logger.error(f'(%s) An error occurred: {exc}', self, exc_info=True)  # how to concatenate with error?
-                self.client.exit_last_order()
-                if ignore_exceptions:
-                    if print_exc:
-                        print(exc)
-                    continue
-                else:
-                    raise exc
+                if time() >= (open_time + self._sec_interval):
+                    self._prev_predict = utils.convert_signal_str(self.returns[-1])
+                    open_time += self._sec_interval
+                    break
 
     @utils.assert_logger
     def multi_realtime_trading(self,

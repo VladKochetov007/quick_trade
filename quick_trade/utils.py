@@ -168,7 +168,7 @@ mean year percentage profit: {}%
 winrate: {}%
 mean deviation: {}%"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate, Trader.mean_deviation)
 
-__version__: str = "6.7.3"
+__version__: str = "6.7.4"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -410,7 +410,8 @@ def wait_success(func):
                 if not isinstance(e, KeyboardInterrupt):
                     if WAIT_SUCCESS_PRINT:
                         print(f'An error occurred: {e}, repeat request')
-                    logger.error(f'An error occurred: {e}', exc_info=True)
+                    logger.error(f'An error occurred: {e}, '
+                                 f'args: {args}, kwargs: {kwargs}', exc_info=True)
                     sleep(WAIT_SUCCESS_SLEEP)
                     continue
                 else:

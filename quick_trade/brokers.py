@@ -20,20 +20,26 @@ class TradingClient(object):
     def order_create(self,
                      side: str,
                      ticker: str = 'None',
-                     quantity: float = 0.0):
+                     quantity: float = 0.0,
+                     counting: bool = True):
         utils.logger.info('quantity: %f, side: %s, ticker: %s', quantity, side,
                           ticker)
+        side_flag = side
+        if quantity < 0:
+            side = 'Buy' if side == 'Sell' else 'Sell'
+            quantity = -quantity
         if side == 'Buy':
             self.client.create_market_buy_order(symbol=ticker, amount=quantity)
         elif side == 'Sell':
             self.client.create_market_sell_order(symbol=ticker, amount=quantity)
-        self.__side__ = side
+        self.__side__ = side_flag
         self.ticker = ticker
         self.__quantity__ = quantity
         self.base = ticker.split('/')[0]
         self.quote = ticker.split('/')[1]
         self.ordered = True
-        self._add_order_count()
+        if counting:
+            self._add_order_count()
 
     @utils.wait_success
     def get_ticker_price(self,
@@ -43,18 +49,22 @@ class TradingClient(object):
     def new_order_buy(self,
                       ticker: str = None,
                       quantity: float = 0.0,
-                      credit_leverage: float = 1.0):
+                      credit_leverage: float = 1.0,
+                      counting: bool = True):
         self.order_create(side='Buy',
                           ticker=ticker,
-                          quantity=quantity * credit_leverage)
+                          quantity=quantity * credit_leverage,
+                          counting=counting)
 
     def new_order_sell(self,
                        ticker: str = None,
                        quantity: float = 0.0,
-                       credit_leverage: float = 1.0):
+                       credit_leverage: float = 1.0,
+                       counting: bool = True):
         self.order_create(side='Sell',
                           ticker=ticker,
-                          quantity=quantity * credit_leverage)
+                          quantity=quantity * credit_leverage,
+                          counting=counting)
 
     @utils.wait_success
     def get_data_historical(self,
@@ -76,10 +86,12 @@ class TradingClient(object):
             bet = self.__quantity__
             if self.__side__ == 'Sell':
                 self.new_order_buy(self.ticker,
-                                   bet)
+                                   bet,
+                                   counting=False)
             elif self.__side__ == 'Buy':
                 self.new_order_sell(self.ticker,
-                                    bet)
+                                    bet,
+                                    counting=False)
             self.__side__ = 'Exit'
             self.ordered = False
             self._sub_order_count()
