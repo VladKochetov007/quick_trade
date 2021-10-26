@@ -167,9 +167,12 @@ profits: {}
 mean year percentage profit: {}%
 winrate: {}%
 mean deviation: {}%
-Sharpe ratio: {}"""  # .format(Trader.losses, Trader.trades, Trader.profits, Trader.year_profit, Trader.winrate, Trader.mean_deviation)
+Sharpe ratio: {}
+Sortino ratio: {}
+calmar ratio: {}
+max drawdown: {}%"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "6.7.7"
+__version__: str = "6.7.8"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -183,7 +186,10 @@ __credits__: List[str] = [
     "Igor Kroitor -- donate 0.5 ETH (~1320$)",
     "Igor Kroitor -- Helped to solve the problem with exception ConnectionError(10054).",
     "https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error",
-    "Pavel Fedotov (https://github.com/Pfed-prog) -- pull request https://github.com/VladKochetov007/quick_trade/pull/60"
+    "Pavel Fedotov (https://github.com/Pfed-prog) -- pull request https://github.com/VladKochetov007/quick_trade/pull/60",
+    "https://www.codearmo.com/blog/sharpe-sortino-and-calmar-ratios-python",
+    "https://towardsdatascience.com/sharpe-ratio-sorino-ratio-and-calmar-ratio-252b0cddc328",
+    "https://www.wallstreetmojo.com/calmar-ratio/"
 ]
 
 logger = getLogger(__name__)

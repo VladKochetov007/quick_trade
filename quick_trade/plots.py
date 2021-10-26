@@ -155,7 +155,7 @@ class QuickTradeGraph(BasePlotlyGraph):
                        _col=self.deposit_col)
 
     def plot_returns(self):
-        self.plot_line(line=self.trader.returns_strategy_diff,
+        self.plot_line(line=self.trader.recurrent_returns,
                        width=utils.RETURNS_WIDTH,
                        opacity=utils.RETURNS_ALPHA,
                        color=utils.RETURNS_COLOR,

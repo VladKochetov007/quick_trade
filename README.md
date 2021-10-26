@@ -217,7 +217,7 @@ start_time = datetime.datetime(2021,  # year
 
                                5,  # hour
                                16,  # minute
-                               57)  # second (Leave a few seconds to download data from the exchange and strategy.)
+                               57)  # second (Leave a few seconds to download data from the exchange)
 
 
 class MyTrade(ExampleStrategies):

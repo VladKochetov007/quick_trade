@@ -9,7 +9,6 @@
 #   add meta-data in tuner's returns
 #   add "tradingview backtest"
 #   multi-timeframe backtest
-#   Sortino and Calmar Ratios
 
 from copy import copy
 from datetime import datetime
@@ -29,16 +28,8 @@ from warnings import warn
 import ta.momentum
 import ta.trend
 import ta.volatility
-from numpy import digitize
-from numpy import inf
-from numpy import isnan
-from numpy import mean
-from numpy import nan_to_num
-from numpy import ndarray
-from numpy import sqrt
-from numpy import std
-from pandas import DataFrame
-from pandas import Series
+import numpy as np
+import pandas as pd
 
 from . import utils
 from .brokers import TradingClient
@@ -48,7 +39,7 @@ from .plots import QuickTradeGraph
 class Trader(object):
     _profit_calculate_coef: Union[float, int]
     returns: utils.PREDICT_TYPE_LIST = []
-    df: DataFrame
+    df: pd.DataFrame
     ticker: str
     interval: str
     __exit_order__: bool = False
@@ -65,12 +56,12 @@ class Trader(object):
     deposit_history: List[Union[float, int]]
     year_profit: float
     _info: str
-    backtest_out: DataFrame
+    backtest_out: pd.DataFrame
     _open_lot_prices: List[float]
     client: TradingClient
     __last_stop_loss: float
     __last_take_profit: float
-    returns_strategy_diff: List[float]
+    recurrent_returns: pd.Series
     _sec_interval: int
     supports: Dict[int, float]
     resistances: Dict[int, float]
@@ -84,16 +75,40 @@ class Trader(object):
 
     @property
     def mean_deviation(self) -> float:
-        return utils.mean_deviation(Series(self.deposit_history), self.average_growth) * 100
+        return utils.mean_deviation(pd.Series(self.deposit_history), self.average_growth) * 100
+
+    @property
+    def cumulative_returns(self) -> pd.Series:
+        dh = pd.Series(self.deposit_history)
+        returns = (dh / dh.shift(1) - 1.0)[1:]
+        return pd.Series(np.cumprod(returns + 1))
 
     @property
     def sharpe_ratio(self) -> float:
-        mean_ = mean(self.returns_strategy_diff) * self._profit_calculate_coef
-        sigma = std(self.returns_strategy_diff) * sqrt(self._profit_calculate_coef)
+        returns = self.recurrent_returns
+        mean_ = returns.mean() * self._profit_calculate_coef
+        sigma = returns.std() * np.sqrt(self._profit_calculate_coef)
         return mean_ / sigma
 
     @property
-    def average_growth(self) -> ndarray:
+    def sortino_ratio(self) -> float:
+        returns = self.recurrent_returns
+        mean_ = returns.mean() * self._profit_calculate_coef
+        sigma = returns[returns < 0].std() * np.sqrt(self._profit_calculate_coef)
+        return mean_ / sigma
+
+    @property
+    def max_drawdown(self):
+        max_returns = np.fmax.accumulate(self.cumulative_returns)
+        res = self.cumulative_returns / max_returns - 1
+        return abs(min(res) * 100)
+
+    @property
+    def calmar_ratio(self):
+        return self.year_profit / self.max_drawdown
+
+    @property
+    def average_growth(self) -> np.ndarray:
         return utils.get_exponential_growth(self.deposit_history)
 
     @property
@@ -104,18 +119,21 @@ class Trader(object):
                                       self.year_profit,
                                       self.winrate,
                                       self.mean_deviation,
-                                      self.sharpe_ratio)
+                                      self.sharpe_ratio,
+                                      self.sortino_ratio,
+                                      self.calmar_ratio,
+                                      self.max_drawdown)
 
     @utils.assert_logger
     def __init__(self,
                  ticker: str = 'BTC/USDT',
-                 df: DataFrame = DataFrame(),
+                 df: pd.DataFrame = pd.DataFrame(),
                  interval: str = '1d',
                  trading_on_client: bool = True):
         ticker = ticker.upper()
         assert isinstance(ticker, str), 'The ticker can only be of type <str>.'
         assert fullmatch(utils.TICKER_PATTERN, ticker), f'Ticker must match the pattern <{utils.TICKER_PATTERN}>'
-        assert isinstance(df, DataFrame), 'Dataframe can only be of type <DataFrame>.'
+        assert isinstance(df, pd.DataFrame), 'Dataframe can only be of type <DataFrame>.'
         assert isinstance(interval, str), 'interval can only be of the <str> type.'
         assert isinstance(trading_on_client, bool), 'trading_on_client can only be True or False (<bool>).'
 
@@ -148,14 +166,14 @@ class Trader(object):
 
         _stop_loss: float
         take: float
-        if self._stop_loss is not inf:
+        if self._stop_loss is not np.inf:
             _stop_loss = self._stop_loss / 10_000 * self._open_price
         else:
-            _stop_loss = inf
-        if self._take_profit is not inf:
+            _stop_loss = np.inf
+        if self._take_profit is not np.inf:
             take = self._take_profit / 10_000 * self._open_price
         else:
-            take = inf
+            take = np.inf
 
         if sig == utils.BUY:
             _stop_loss = self._open_price - _stop_loss
@@ -164,9 +182,9 @@ class Trader(object):
             take = self._open_price - take
             _stop_loss = self._open_price + _stop_loss
         else:
-            if self._take_profit is not inf:
+            if self._take_profit is not np.inf:
                 take = self._open_price
-            if self._stop_loss is not inf:
+            if self._stop_loss is not np.inf:
                 _stop_loss = self._open_price
 
         return {'stop': _stop_loss,
@@ -213,13 +231,13 @@ class Trader(object):
         self.returns, self._credit_leverages = utils.make_multi_trade_returns(self.returns)
         self._multi_converted_ = True
 
-    def get_heikin_ashi(self, df: DataFrame = DataFrame()) -> DataFrame:
+    def get_heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()) -> pd.DataFrame:
         """
         :param df: dataframe, standard: self.df
         :return: heikin ashi
         """
         if 'Close' not in df.columns:
-            df: DataFrame = self.df.copy()
+            df: pd.DataFrame = self.df.copy()
         df['HA_Close'] = (df['Open'] + df['High'] + df['Low'] + df['Close']) / 4
         df['HA_Open'] = (df['Open'].shift(1) + df['Open'].shift(1)) / 2
         df.iloc[0, df.columns.get_loc("HA_Open")] = (df.iloc[0]['Open'] + df.iloc[0]['Close']) / 2
@@ -279,20 +297,20 @@ class Trader(object):
     @utils.assert_logger
     def backtest(self,
                  deposit: Union[float, int] = 10_000.0,
-                 bet: Union[float, int] = inf,
+                 bet: Union[float, int] = np.inf,
                  commission: Union[float, int] = 0.0,
                  plot: bool = True,
                  print_out: bool = True,
-                 show: bool = True) -> DataFrame:
+                 show: bool = True) -> pd.DataFrame:
         """
         testing the strategy.
         :param deposit: start deposit.
-        :param bet: fixed bet to quick_trade. inf = all moneys.
+        :param bet: fixed bet to quick_trade. np.inf = all moneys.
         :param commission: percentage commission (0 -- 100).
         :param plot: plotting.
         :param print_out: printing.
         :param show: show the graph
-        returns: DataFrame with data of test
+        returns: pd.DataFrame with data of test
         """
         assert isinstance(deposit, (float, int)), 'deposit must be of type <int> or <float>'
         assert deposit > 0, 'deposit can\'t be 0 or less'
@@ -310,15 +328,15 @@ class Trader(object):
         take_profit: float
         converted_element: utils.CONVERTED_TYPE
         diff: float
-        lin_calc_df: DataFrame
+        lin_calc_df: pd.DataFrame
         high: float
         low: float
         credit_lev: Union[float, int]
 
         start_bet: Union[float, int] = bet
-        data_column: Series = self.df['Close']
-        data_high: Series = self.df['High']
-        data_low: Series = self.df['Low']
+        data_column: pd.Series = self.df['Close']
+        data_high: pd.Series = self.df['High']
+        data_low: pd.Series = self.df['Low']
         self.deposit_history = [deposit]
         self.trades = 0
         self.profits = 0
@@ -359,7 +377,7 @@ class Trader(object):
                                          data_high[1:],
                                          data_low[1:])):
 
-            if not isnan(converted_element):
+            if not np.isnan(converted_element):
                 # count the number of profitable and unprofitable trades.
                 if prev_sig != utils.EXIT:
                     self.trades += 1
@@ -466,8 +484,8 @@ class Trader(object):
                 prev_sig = sig
             ignore_breakout = False
 
-        self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
-        self.returns_strategy_diff[0] = 0
+        self.recurrent_returns = pd.Series(self.deposit_history).diff()
+        self.recurrent_returns[0] = 0
         if not pass_math:
             self.year_profit = utils.profit_factor(self.average_growth) ** (self._profit_calculate_coef - 1)
             #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
@@ -481,14 +499,14 @@ class Trader(object):
         utils.logger.info('(%s) trader info: %s', self, self._info)
         if print_out:
             print(self._info)
-        self.backtest_out = DataFrame(
+        self.backtest_out = pd.DataFrame(
             (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
-             self._open_lot_prices, data_column, self.average_growth, self.returns_strategy_diff),
+             self._open_lot_prices, data_column, self.average_growth, self.recurrent_returns, self.cumulative_returns),
             index=[
-                f'deposit', 'stop loss', 'take profit',
+                'deposit', 'stop loss', 'take profit',
                 'predictions', 'open trade', 'Close',
-                f"average growth deposit data",
-                "returns"
+                "average growth deposit data",
+                "returns", 'cumulative returns'
             ]).T
         if plot:
             self.fig.plot_candlestick()
@@ -509,11 +527,11 @@ class Trader(object):
                        test_config: Dict[str, List[Dict[str, Dict[str, Any]]]],
                        limit: int = 1000,
                        deposit: Union[float, int] = 10_000.0,
-                       bet: Union[float, int] = inf,
+                       bet: Union[float, int] = np.inf,
                        commission: Union[float, int] = 0.0,
                        plot: bool = True,
                        print_out: bool = True,
-                       show: bool = True) -> DataFrame:
+                       show: bool = True) -> pd.DataFrame:
         for el in test_config.keys():
             assert isinstance(el, str), 'tickers must be of type <Iterable[str]>'
             assert fullmatch(utils.TICKER_PATTERN, el), f'all tickers must match the pattern <{utils.TICKER_PATTERN}>'
@@ -539,7 +557,7 @@ class Trader(object):
         losses: List[int] = []
         trades: List[int] = []
         profits: List[int] = []
-        depos: List[Series] = []
+        depos: List[pd.Series] = []
         lens_dep: List[int] = []
         self.deposit_history = []
 
@@ -567,30 +585,29 @@ class Trader(object):
                     losses.append(new_trader.losses)
                     trades.append(new_trader.trades)
                     profits.append(new_trader.profits)
-                    depos.append(Series(new_trader.deposit_history))
+                    depos.append(pd.Series(new_trader.deposit_history))
                     lens_dep.append(len(new_trader.deposit_history))
         self.losses = sum(losses)
         self.trades = sum(trades)
         self.profits = sum(profits)
-        self.year_profit = float(mean(percentage_profits))
-        self.winrate = float(mean(winrates))
+        self.year_profit = float(np.mean(percentage_profits))
+        self.winrate = float(np.mean(winrates))
 
         for enum, elem in enumerate(depos):
-            depos[enum] = utils.get_multipliers(Series(elem[-min(lens_dep):]))
+            depos[enum] = utils.get_multipliers(pd.Series(elem[-min(lens_dep):]))
 
-        multipliers: Series = sum(depos) / len(depos)
-        deposit_elem: float = deposit
-        for multiplier in multipliers.values:
-            deposit_elem *= multiplier
-            self.deposit_history.append(deposit_elem)
-        self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
-        self.returns_strategy_diff[0] = 0
-        self.backtest_out = DataFrame(
-            (self.deposit_history, self.average_growth, self.returns_strategy_diff),
+        multipliers: pd.Series = sum(depos) / len(depos)
+        multipliers[0] = deposit
+        self.deposit_history = list(np.cumprod(multipliers.values))
+        self.recurrent_returns = pd.Series(self.deposit_history).diff()
+        self.recurrent_returns[0] = 0
+        self.backtest_out = pd.DataFrame(
+            (self.deposit_history, self.average_growth, self.recurrent_returns, self.cumulative_returns),
             index=[
-                f'deposit',
-                f"average growth deposit data",
-                "returns"
+                'deposit',
+                "average growth deposit data",
+                "returns",
+                'cumulative returns'
             ]).T
 
         utils.logger.info('(%s) trader multi info: %s', self, self._info)
@@ -714,11 +731,11 @@ class Trader(object):
     def _collide_super(l1: utils.PREDICT_TYPE_LIST, l2: utils.PREDICT_TYPE_LIST) -> utils.PREDICT_TYPE_LIST:
         return_list: utils.PREDICT_TYPE_LIST = []
         for first, sec in zip(utils.convert(l1), utils.convert(l2)):
-            if (not isnan(first)) and (not isnan(sec)) and first is not sec:
+            if (not np.isnan(first)) and (not np.isnan(sec)) and first is not sec:
                 return_list.append(utils.EXIT)
             elif first is sec:
                 return_list.append(first)
-            elif isnan(first):
+            elif np.isnan(first):
                 return_list.append(sec)
             else:
                 return_list.append(first)
@@ -732,7 +749,7 @@ class Trader(object):
         return self.returns
 
     def get_trading_predict(self,
-                            bet_for_trading_on_client: Union[float, int] = inf,
+                            bet_for_trading_on_client: Union[float, int] = np.inf,
                             ) -> Dict[str, Union[str, float]]:
         """
         predict and trading.
@@ -743,7 +760,7 @@ class Trader(object):
 
         _moneys_: float
         bet: Union[float, int]
-        close: ndarray = self.df["Close"].values
+        close: np.ndarray = self.df["Close"].values
 
         # get prediction
         predict = utils.convert_signal_str(self.returns[-1])
@@ -754,7 +771,7 @@ class Trader(object):
 
         conv_cred_lev = utils.convert(self._credit_leverages)
 
-        if (not isnan(self._converted[-1])) or (not isnan(conv_cred_lev[-1])):
+        if (not np.isnan(self._converted[-1])) or (not np.isnan(conv_cred_lev[-1])):
             utils.logger.info('(%s) open trade %s', self, predict)
             self.__exit_order__ = False
             if self.trading_on_client:
@@ -766,7 +783,7 @@ class Trader(object):
                 else:
                     _moneys_ = self.client.get_balance(self.ticker.split('/')[1])
                     ticker_price = self.client.get_ticker_price(self.ticker)
-                    if bet_for_trading_on_client is not inf:
+                    if bet_for_trading_on_client is not np.inf:
                         bet = bet_for_trading_on_client
                     else:
                         bet = _moneys_
@@ -794,7 +811,7 @@ class Trader(object):
                          start_time: datetime,
                          ticker: str = 'BTC/USDT',
                          print_out: bool = True,
-                         bet_for_trading_on_client: Union[float, int] = inf,
+                         bet_for_trading_on_client: Union[float, int] = np.inf,
                          wait_sl_tp_checking: Union[float, int] = 5,
                          limit: int = 1000,
                          strategy_in_sleep: bool = False,
@@ -869,9 +886,7 @@ class Trader(object):
                                trade_config: Dict[str, List[Dict[str, Dict[str, Any]]]],
                                start_time: datetime,  # LOCAL TIME
                                print_out: bool = True,
-                               bet_for_trading_on_client: Union[float, int] = inf,  # for 1 trade
-                               ignore_exceptions: bool = False,
-                               print_exc: bool = True,
+                               bet_for_trading_on_client: Union[float, int] = np.inf,  # for 1 trade
                                wait_sl_tp_checking: Union[float, int] = 5,
                                limit: int = 1000,
                                strategy_in_sleep: bool = False,
@@ -909,7 +924,7 @@ class Trader(object):
 
         class MultiRealTimeTrader(self.__class__):
             def get_trading_predict(self,
-                                    bet_for_trading_on_client: Union[float, int] = inf,
+                                    bet_for_trading_on_client: Union[float, int] = np.inf,
                                     ) -> Dict[str, Union[str, float]]:
                 balance = self.client.get_balance(self.ticker.split('/')[1])
                 bet = (balance * 10) / (can_orders / deposit_part - TradingClient.cls_open_orders)
@@ -983,8 +998,8 @@ class Trader(object):
 
     @utils.assert_logger
     def set_open_stop_and_take(self,
-                               take_profit: Union[float, int] = inf,
-                               stop_loss: Union[float, int] = inf,
+                               take_profit: Union[float, int] = np.inf,
+                               stop_loss: Union[float, int] = np.inf,
                                set_stop: bool = True,
                                set_take: bool = True):
         """
@@ -1000,20 +1015,20 @@ class Trader(object):
 
         self._take_profit = take_profit
         self._stop_loss = stop_loss
-        take_flag: float = inf
-        stop_flag: float = inf
+        take_flag: float = np.inf
+        stop_flag: float = np.inf
         self._open_lot_prices = []
         if set_stop:
             self._stop_losses = []
         if set_take:
             self._take_profits = []
-        closes: ndarray = self.df['Close'].values
+        closes: np.ndarray = self.df['Close'].values
         sig: utils.PREDICT_TYPE
         close: float
         converted: utils.CONVERTED_TYPE
         ts: Dict[str, float]
         for e, (sig, close, converted) in enumerate(zip(self.returns, closes, self._converted)):
-            if not isnan(converted):
+            if not np.isnan(converted):
                 self._open_price = close
                 if sig != utils.EXIT:
                     if set_take or set_stop:
@@ -1059,13 +1074,13 @@ class Trader(object):
                 'supports': self.supports}
 
     @utils.assert_logger
-    def strategy_diff(self, frame_to_diff: Series) -> utils.PREDICT_TYPE_LIST:
+    def strategy_diff(self, frame_to_diff: pd.Series) -> utils.PREDICT_TYPE_LIST:
         """
-        frame_to_diff:  |   pd.Series  |  example:  Trader.df['Close']
+        frame_to_diff:  |   pd.pd.Series  |  example:  Trader.df['Close']
         """
-        assert isinstance(frame_to_diff, Series), 'frame_to_diff must be of type <pd.Series>'
+        assert isinstance(frame_to_diff, pd.Series), 'frame_to_diff must be of type <pd.pd.Series>'
 
-        self.returns = list(digitize(frame_to_diff.diff(), bins=[0]))
+        self.returns = list(np.digitize(frame_to_diff.diff(), bins=[0]))
         self.convert_signal(1, utils.BUY)
         self.convert_signal(0, utils.SELL)
         self.set_open_stop_and_take()
@@ -1118,7 +1133,7 @@ class ExampleStrategies(Trader):
         self.returns = [utils.EXIT]
         flag: utils.PREDICT_TYPE = utils.EXIT
 
-        flag_stop_loss: float = inf
+        flag_stop_loss: float = np.inf
         self._stop_losses = [flag_stop_loss]
         high: List[float]
         low: List[float]
@@ -1201,18 +1216,18 @@ class ExampleStrategies(Trader):
                                            senkouspan,
                                            visual=True,
                                            fillna=True)
-        tenkan_sen: ndarray = cloud.ichimoku_conversion_line().values
-        kinjun_sen: ndarray = cloud.ichimoku_base_line().values
-        senkou_span_a: ndarray = cloud.ichimoku_a().values
-        senkou_span_b: ndarray = cloud.ichimoku_b().values
-        prices: Series = self.df['Close']
-        chinkou_span: ndarray = prices.shift(-chinkouspan).values
+        tenkan_sen: np.ndarray = cloud.ichimoku_conversion_line().values
+        kinjun_sen: np.ndarray = cloud.ichimoku_base_line().values
+        senkou_span_a: np.ndarray = cloud.ichimoku_a().values
+        senkou_span_b: np.ndarray = cloud.ichimoku_b().values
+        prices: pd.Series = self.df['Close']
+        chinkou_span: np.ndarray = prices.shift(-chinkouspan).values
         flag1: utils.PREDICT_TYPE = utils.EXIT
         flag2: utils.PREDICT_TYPE = utils.EXIT
         flag3: utils.PREDICT_TYPE = utils.EXIT
         trade: utils.PREDICT_TYPE = utils.EXIT
         name: str
-        data: ndarray
+        data: np.ndarray
         e: int
         close: float
         tenkan: float
@@ -1455,8 +1470,8 @@ class ExampleStrategies(Trader):
         self.returns = []
         sar: ta.trend.PSARIndicator = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
                                                              self.df['Close'], **sar_kwargs)
-        sardown: ndarray = sar.psar_down().values
-        sarup: ndarray = sar.psar_up().values
+        sardown: np.ndarray = sar.psar_down().values
+        sarup: np.ndarray = sar.psar_up().values
         self._stop_losses = list(sar.psar().values)
 
         if plot:
@@ -1479,8 +1494,8 @@ class ExampleStrategies(Trader):
 
         for price, up, down in zip(
                 list(self.df['Close'].values), list(sarup), list(sardown)):
-            numup = nan_to_num(up, nan=-9999.0)
-            numdown = nan_to_num(down, nan=-9999.0)
+            numup = np.nan_to_num(up, nan=-9999)
+            numdown = np.nan_to_num(down, nan=-9999)
             if numup != -9999:
                 self.returns.append(utils.BUY)
             elif numdown != -9999:
@@ -1498,7 +1513,7 @@ class ExampleStrategies(Trader):
         _MACD_ = ta.trend.MACD(self.df['Close'], slow, fast, **macd_kwargs)
         signal_ = _MACD_.macd_signal()
         macd_ = _MACD_.macd()
-        histogram: DataFrame = DataFrame(macd_.values - signal_.values)
+        histogram: pd.DataFrame = pd.DataFrame(macd_.values - signal_.values)
         for element in histogram.diff().values:
             if element == 0:
                 self.returns.append(utils.EXIT)
@@ -1538,7 +1553,7 @@ class ExampleStrategies(Trader):
         self.returns = list(st.get_supertrend_strategy_returns())
         self.returns[:length + 1] = [utils.EXIT] * (length + 1)
         self._stop_losses = list(st.get_supertrend())
-        self._stop_losses[0] = inf if self.returns[0] == utils.SELL else -inf
+        self._stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
         self.set_open_stop_and_take(set_stop=False)
         self.set_credit_leverages()
         return self.returns
@@ -1555,9 +1570,9 @@ class ExampleStrategies(Trader):
                                                                                *bollinger_args,
                                                                                **bollinger_kwargs)
 
-        mid_: Series = bollinger.bollinger_mavg()
-        upper: Series = bollinger.bollinger_hband()
-        lower: Series = bollinger.bollinger_lband()
+        mid_: pd.Series = bollinger.bollinger_mavg()
+        upper: pd.Series = bollinger.bollinger_hband()
+        lower: pd.Series = bollinger.bollinger_lband()
         if plot:
             self.fig.plot_line(line=upper.values,
                                width=utils.UPPER_BB_WIDTH,
@@ -1601,8 +1616,8 @@ class ExampleStrategies(Trader):
         return self.returns
 
     def strategy_idris(self, points=20):
-        self._stop_losses = [inf] * 2
-        self._take_profits = [inf] * 2
+        self._stop_losses = [np.inf] * 2
+        self._take_profits = [np.inf] * 2
         flag = utils.EXIT
         self.returns = [flag] * 2
         for e in range(len(self.df) - 2):
