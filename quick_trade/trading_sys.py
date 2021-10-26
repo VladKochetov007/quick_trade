@@ -9,7 +9,7 @@
 #   add meta-data in tuner's returns
 #   add "tradingview backtest"
 #   multi-timeframe backtest
-#   Sharpe, Sortino and Calmar Ratios
+#   Sortino and Calmar Ratios
 
 from copy import copy
 from datetime import datetime
@@ -26,7 +26,6 @@ from typing import Tuple
 from typing import Union
 from warnings import warn
 
-import numpy as np
 import ta.momentum
 import ta.trend
 import ta.volatility
@@ -86,8 +85,22 @@ class Trader(object):
         return utils.mean_deviation(Series(self.deposit_history), self.average_growth) * 100
 
     @property
+    def sharpe_ratio(self) -> float:
+        return self.year_profit / (self.mean_deviation / 100)
+
+    @property
     def average_growth(self) -> ndarray:
         return utils.get_exponential_growth(self.deposit_history)
+
+    @property
+    def _info(self):
+        return utils.INFO_TEXT.format(self.losses,
+                                      self.trades,
+                                      self.profits,
+                                      self.year_profit,
+                                      self.winrate,
+                                      self.mean_deviation,
+                                      self.sharpe_ratio)
 
     @utils.assert_logger
     def __init__(self,
@@ -459,7 +472,6 @@ class Trader(object):
             else:
                 self.winrate = 0
                 utils.logger.critical('0 trades in %s', self)
-        self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate, self.mean_deviation)
         utils.logger.info('(%s) trader info: %s', self, self._info)
         if print_out:
             print(self._info)
@@ -577,7 +589,6 @@ class Trader(object):
                 "returns"
             ]).T
 
-        self._info = utils.INFO_TEXT.format(self.losses, self.trades, self.profits, self.year_profit, self.winrate, self.mean_deviation)
         utils.logger.info('(%s) trader multi info: %s', self, self._info)
         if print_out:
             print(self._info)
