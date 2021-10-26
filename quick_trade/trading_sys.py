@@ -35,6 +35,8 @@ from numpy import isnan
 from numpy import mean
 from numpy import nan_to_num
 from numpy import ndarray
+from numpy import sqrt
+from numpy import std
 from pandas import DataFrame
 from pandas import Series
 
@@ -86,7 +88,9 @@ class Trader(object):
 
     @property
     def sharpe_ratio(self) -> float:
-        return self.year_profit / (self.mean_deviation / 100)
+        mean_ = mean(self.returns_strategy_diff) * self._profit_calculate_coef
+        sigma = std(self.returns_strategy_diff) * sqrt(self._profit_calculate_coef)
+        return mean_ / sigma
 
     @property
     def average_growth(self) -> ndarray:
@@ -462,6 +466,8 @@ class Trader(object):
                 prev_sig = sig
             ignore_breakout = False
 
+        self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
+        self.returns_strategy_diff[0] = 0
         if not pass_math:
             self.year_profit = utils.profit_factor(self.average_growth) ** (self._profit_calculate_coef - 1)
             #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
@@ -475,8 +481,6 @@ class Trader(object):
         utils.logger.info('(%s) trader info: %s', self, self._info)
         if print_out:
             print(self._info)
-        self.returns_strategy_diff = list(Series(self.deposit_history).diff().values)
-        self.returns_strategy_diff[0] = 0
         self.backtest_out = DataFrame(
             (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
              self._open_lot_prices, data_column, self.average_growth, self.returns_strategy_diff),
