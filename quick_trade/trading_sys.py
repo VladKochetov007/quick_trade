@@ -840,10 +840,10 @@ class Trader(object):
         assert isinstance(strategy_in_sleep, bool), 'strategy_in_sleep must be of type <bool>'
 
         self.ticker = ticker
-        open_time = time()
         while True:
             if datetime.now() >= start_time:
                 break
+        open_time = time()
         while True:
             self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
             utils.logger.debug("(%s) new dataframe loaded", self)
@@ -859,7 +859,7 @@ class Trader(object):
             if print_out:
                 print(index, prediction)
             while True:
-                if not self.__exit_order__:
+                if not self.__exit_order__ and time() + wait_sl_tp_checking <= open_time + self._sec_interval:
                     sleep(wait_sl_tp_checking)
                     price = self.client.get_ticker_price(ticker)
                     min_ = min(self.__last_stop_loss, self.__last_take_profit)
@@ -874,7 +874,7 @@ class Trader(object):
                             print("(%s) trading prediction exit in sleeping at %s: %s" % (self, index, prediction))
                         if self.trading_on_client:
                             self.client.exit_last_order()
-                if time() + wait_sl_tp_checking >= (open_time + self._sec_interval):
+                if time() >= (open_time + self._sec_interval):
                     self._prev_predict = utils.convert_signal_str(self.returns[-1])
                     open_time += self._sec_interval
                     break
