@@ -798,7 +798,7 @@ class Trader(object):
                          **strategy_kwargs):
         """
         :param start_time: time to start
-        :param strategy_in_sleep: reuse strategy in one candle for new S/L, T/P or martingale
+        :param strategy_in_sleep: reuse strategy in one candle for new S/L, T/P or leverage
         :param limit: client.get_data_historical's limit argument
         :param wait_sl_tp_checking: sleeping time after stop-loss and take-profit checking (seconds)
         :param ticker: ticker for trading.
@@ -839,10 +839,7 @@ class Trader(object):
                 print(index, prediction)
             while True:
                 if not self.__exit_order__:
-                    if (open_time + self._sec_interval) - time() > wait_sl_tp_checking:
-                        utils.logger.debug("(%s) sleep %f seconds", self, wait_sl_tp_checking)
-                        sleep(wait_sl_tp_checking)
-
+                    sleep(wait_sl_tp_checking)
                     price = self.client.get_ticker_price(ticker)
                     min_ = min(self.__last_stop_loss, self.__last_take_profit)
                     max_ = max(self.__last_stop_loss, self.__last_take_profit)
@@ -853,14 +850,14 @@ class Trader(object):
                         index = f'{self.ticker}, {ctime()}'
                         utils.logger.info("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
                         if print_out:
-                            print("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
+                            print("(%s) trading prediction exit in sleeping at %s: %s" % (self, index, prediction))
                         if self.trading_on_client:
                             self.client.exit_last_order()
-                    elif strategy_in_sleep:
-                        break
-                if time() >= (open_time + self._sec_interval):
+                if time() + wait_sl_tp_checking >= (open_time + self._sec_interval):
                     self._prev_predict = utils.convert_signal_str(self.returns[-1])
                     open_time += self._sec_interval
+                    break
+                elif strategy_in_sleep:
                     break
 
     @utils.assert_logger
