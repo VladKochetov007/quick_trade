@@ -841,7 +841,7 @@ class Trader(object):
         while True:
             if datetime.now() >= start_time:
                 break
-        open_time = start_time
+        open_time = time()
         while True:
             self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
             utils.logger.debug("(%s) new dataframe loaded", self)
