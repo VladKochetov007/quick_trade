@@ -8,12 +8,6 @@ View documentation: 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧 i
 
 old documentation (V3 doc): https://vladkochetov007.github.io/quick_trade.github.io
 
-### quick_trade development telegram channel
-
-```
-@quick_trade_dev
-```
-
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/logo_with_slogan_v2_fixed.PNG?raw=true)
 
 
