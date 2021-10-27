@@ -61,7 +61,7 @@ class Trader(object):
     client: TradingClient
     __last_stop_loss: float
     __last_take_profit: float
-    recurrent_returns: pd.Series
+    net_returns: pd.Series
     _sec_interval: int
     supports: Dict[int, float]
     resistances: Dict[int, float]
@@ -79,20 +79,18 @@ class Trader(object):
 
     @property
     def cumulative_returns(self) -> pd.Series:
-        dh = pd.Series(self.deposit_history)
-        returns = (dh / dh.shift(1) - 1.0)[1:]
-        return pd.Series(np.cumprod(returns + 1))
+        return pd.Series(self.deposit_history) / self.deposit_history[0]
 
     @property
     def sharpe_ratio(self) -> float:
-        returns = self.recurrent_returns
+        returns = utils.get_multipliers(pd.Series(self.deposit_history)) - 1
         mean_ = returns.mean() * self._profit_calculate_coef
         sigma = returns.std() * np.sqrt(self._profit_calculate_coef)
         return mean_ / sigma
 
     @property
     def sortino_ratio(self) -> float:
-        returns = self.recurrent_returns
+        returns = utils.get_multipliers(pd.Series(self.deposit_history)) - 1
         mean_ = returns.mean() * self._profit_calculate_coef
         sigma = returns[returns < 0].std() * np.sqrt(self._profit_calculate_coef)
         return mean_ / sigma
@@ -484,8 +482,8 @@ class Trader(object):
                 prev_sig = sig
             ignore_breakout = False
 
-        self.recurrent_returns = pd.Series(self.deposit_history).diff()
-        self.recurrent_returns[0] = 0
+        self.net_returns = pd.Series(self.deposit_history).diff()
+        self.net_returns[0] = 0
         if not pass_math:
             self.year_profit = utils.profit_factor(self.average_growth) ** (self._profit_calculate_coef - 1)
             #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
@@ -501,7 +499,7 @@ class Trader(object):
             print(self._info)
         self.backtest_out = pd.DataFrame(
             (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
-             self._open_lot_prices, data_column, self.average_growth, self.recurrent_returns, self.cumulative_returns),
+             self._open_lot_prices, data_column, self.average_growth, self.net_returns, self.cumulative_returns),
             index=[
                 'deposit', 'stop loss', 'take profit',
                 'predictions', 'open trade', 'Close',
@@ -599,10 +597,10 @@ class Trader(object):
         multipliers: pd.Series = sum(depos) / len(depos)
         multipliers[0] = deposit
         self.deposit_history = list(np.cumprod(multipliers.values))
-        self.recurrent_returns = pd.Series(self.deposit_history).diff()
-        self.recurrent_returns[0] = 0
+        self.net_returns = pd.Series(self.deposit_history).diff()
+        self.net_returns[0] = 0
         self.backtest_out = pd.DataFrame(
-            (self.deposit_history, self.average_growth, self.recurrent_returns, self.cumulative_returns),
+            (self.deposit_history, self.average_growth, self.net_returns, self.cumulative_returns),
             index=[
                 'deposit',
                 "average growth deposit data",
@@ -843,7 +841,7 @@ class Trader(object):
         while True:
             if datetime.now() >= start_time:
                 break
-        open_time = time()
+        open_time = start_time
         while True:
             self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
             utils.logger.debug("(%s) new dataframe loaded", self)
