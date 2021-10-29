@@ -217,12 +217,16 @@ trader.multi_backtest(test_config={'BTC/USDT': [strategy],
 output:
 
 ```commandline
-losses: 146
-trades: 214
-profits: 68
-mean year percentage profit: -92.25033539138768%
-winrate: 31.566354534845413%
-mean deviation: 4.637481539757627%
+losses: 131
+trades: 187
+profits: 56
+mean year percentage profit: -99.98292595327236%
+winrate: 30.352119656186698%
+mean deviation: 1.3564893692018003%
+Sharpe ratio: -11.951556929509964
+Sortino ratio: -18.561188937509858
+calmar ratio: -8.002808500501935
+max drawdown: 12.493479751140047%
 ```
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/multi_backtest.png?raw=true)

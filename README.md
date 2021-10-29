@@ -184,12 +184,16 @@ trader.backtest(deposit=1000, commission=0.075, bet=inf)  # backtest on one pair
 ## Output print
 
 ```commandline
-losses: 18
-trades: 25
-profits: 7
-mean year percentage profit: -8.471933037953615%
-winrate: 28.000000000000004%
-mean deviation: 1.3587506741755202%
+losses: 12
+trades: 20
+profits: 8
+mean year percentage profit: 215.1878652911773%
+winrate: 40.0%
+mean deviation: 2.917382949881604%
+Sharpe ratio: 0.02203412259055281
+Sortino ratio: 0.02774402450236864
+calmar ratio: 21.321078596349782
+max drawdown: 10.092728860725552%
 ```
 
 ## Run strategy
@@ -240,9 +244,7 @@ trader.realtime_trading(
     strategy=trader.strategy,
     start_time=start_time,
     ticker=ticker,
-    coin_lotsize_division=True,
     limit=100,
-    ignore_exceptions=False,
     wait_sl_tp_checking=5
 )
 

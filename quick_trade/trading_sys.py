@@ -470,11 +470,11 @@ class Trader(object):
                                               signal=sig)
             else:
                 diff = 0.0
-            if sig == utils.SELL:
-                diff = -diff
-
             if not no_order:
-                deposit += bet * credit_lev * diff / open_price
+                if sig == utils.BUY:
+                    deposit += bet * credit_lev * diff / open_price
+                elif sig == utils.SELL:
+                    deposit *= 1/((data_column[e] + diff)/data_column[e])
             self.deposit_history.append(deposit)
 
             no_order = exit_take_stop

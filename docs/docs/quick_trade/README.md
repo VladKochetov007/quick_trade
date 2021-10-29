@@ -136,11 +136,15 @@ Result:
 
 ```commandline
 losses: 64
-trades: 95
-profits: 25
-mean year percentage profit: -99.99999896786758%
-winrate: 26.31578947368421%
-mean deviation: 1.4569306356613254%
+trades: 97
+profits: 27
+mean year percentage profit: -99.99999998327092%
+winrate: 27.835051546391753%
+mean deviation: 2.624118103674615%
+Sharpe ratio: -44.291604314886655
+Sortino ratio: -52.11339011671788
+calmar ratio: -4.920697866228742
+max drawdown: 20.322320675199602%
 ```
 
 ![image](https://raw.githubusercontent.com/VladKochetov007/quick_trade/master/img/simple_backtest_example.png)
@@ -176,12 +180,16 @@ trader.multi_backtest(test_config={
 Result:
 
 ```commandline
-losses: 92
-trades: 36
-profits: 36
-mean year percentage profit: -99.75637914387364%
-winrate: 26.407268062042323%
-mean deviation: 5.669772760548183%
+losses: 54
+trades: 80
+profits: 22
+mean year percentage profit: -93.08433705679062%
+winrate: 27.5%
+mean deviation: 1.6403124394477397%
+Sharpe ratio: -0.599092330855509
+Sortino ratio: -0.9589200009261966
+calmar ratio: -9.081044783748151
+max drawdown: 10.250399516075348%
 ```
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/multi_backtest_example.png?raw=true)

@@ -158,7 +158,7 @@ get all supertrend data as `pd.DataFrame`:
 
 ## get_exponential_growth
 
-Function for calculating [Compound interest](https://investmentu.com/simple-interest-vs-compound-interest/)
+Function for calculating [compound interest](https://investmentu.com/simple-interest-vs-compound-interest/)
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -207,7 +207,7 @@ Decorator. If AssertionError was called, then first the error is written to the 
 
 ## get_diff
 
-Function for getting the price movement from the current one to TP or SL. Mainly SL
+Function for getting the price movement from the current one to TP or SL.
 
 | param  | type | description |
 | :---: | :---: | :---: |

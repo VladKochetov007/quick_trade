@@ -50,7 +50,7 @@ RETURNS_WIDTH: float = 2.0
 RETURNS_ALPHA: float = 1.0
 
 DATA_TITLE: str = 'D A T A'
-DATA_NAME: str = '{0} {1}'  # '{} {}'.format(Trader.ticker, Trader.interval)
+DATA_NAME: str = '{0} {1}'  # .format(Trader.ticker, Trader.interval)
 DATA_UP_COLOR = 'green'
 DATA_DOWN_COLOR = 'red'
 DATA_ALPHA: float = 1.0
@@ -172,14 +172,14 @@ Sortino ratio: {}
 calmar ratio: {}
 max drawdown: {}%"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "6.8.1"
+__version__: str = "6.9.0"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
     "hpaulj -- Stack overflow",
     "furas -- Stack overflow",
     "Devin Jeanpierre (edit: wjandrea) -- Stack overflow",
-    "Войтенко Миколай Полікарпович (Vojtenko Nikolay Polikarpovich) -- helped me test the system of interaction with the binance crypto exchange",
+    "Войтенко Миколай Полікарпович (Vojtenko Mykolay Polikarpovich) -- helped me test the system of interaction with the binance crypto exchange",
     "https://fxgears.com/index.php?threads/how-to-acquire-free-historical-tick-and-bar-data-for-algo-trading-and-backtesting-in-2020-stocks-forex-and-crypto-currency.1229/#post-19305 -- binance get historical data method",
     "https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/ and https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
     "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests -- IEX token",
@@ -237,20 +237,12 @@ class SuperTrendIndicator(object):
         return self._all['ST_lower']
 
     def get_supertrend_strategy_returns(self) -> Series:
-        """
-
-        :return: pd.Series with 1 or -1 (buy, sell)
-        """
         return self._all['ST_strategy']
 
     def get_all_ST(self) -> DataFrame:
         return self._all
 
     def _get_all_ST(self) -> DataFrame:
-        """
-
-        ST Indicator, trading predictions, ST high/low
-        """
         m = self.close.size
         dir_, trend = [1] * m, [0] * m
         long, short = [nan] * m, [nan] * m
@@ -279,7 +271,6 @@ class SuperTrendIndicator(object):
             else:
                 trend[i] = short[i] = upperband.iloc[i]
 
-        # Prepare DataFrame to return
         df = DataFrame(
             {
                 f"ST": trend,
@@ -417,8 +408,7 @@ def wait_success(func):
                 if not isinstance(e, KeyboardInterrupt):
                     if WAIT_SUCCESS_PRINT:
                         print(f'An error occurred: {e}, repeat request')
-                    logger.error(f'An error occurred: {e}, '
-                                 f'args: {args}, kwargs: {kwargs}', exc_info=True)
+                    logger.error(f'An error occurred. args: {args}, kwargs: {kwargs}', exc_info=True)
                     sleep(WAIT_SUCCESS_SLEEP)
                     continue
                 else:
