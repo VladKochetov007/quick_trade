@@ -424,7 +424,7 @@ class Trader(object):
                 # haha))) no)
                 now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit)
 
-                normal = (ignore_breakout or now_not_breakout) and next_not_breakout
+                normal = ignore_breakout or (not now_not_breakout and not next_not_breakout)
 
                 if credit_lev != self._credit_leverages[e - 1] and not ignore_breakout:
                     deposit -= bet * (commission / 100) * abs(self._credit_leverages[e - 1] - credit_lev)
@@ -470,11 +470,10 @@ class Trader(object):
                                               signal=sig)
             else:
                 diff = 0.0
+            if sig == utils.SELL:
+                diff = -diff
             if not no_order:
-                if sig == utils.BUY:
-                    deposit += bet * credit_lev * diff / open_price
-                elif sig == utils.SELL:
-                    deposit *= 1/((data_column[e] + diff)/data_column[e])
+                deposit += bet * credit_lev * diff / open_price
             self.deposit_history.append(deposit)
 
             no_order = exit_take_stop
