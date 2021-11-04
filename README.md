@@ -3,6 +3,7 @@
 [![Downloads](https://static.pepy.tech/personalized-badge/quick-trade?period=total&units=none&left_color=grey&right_color=brightgreen&left_text=PyPi%20downloads)](https://pepy.tech/project/quick-trade)
 [![Downloads](https://static.pepy.tech/personalized-badge/quick-trade?period=month&units=none&left_color=grey&right_color=brightgreen&left_text=PyPi%20downloads%20(month))](https://pepy.tech/project/quick-trade)
 [![wakatime](https://wakatime.com/badge/user/f1d9b860-df0e-4c67-ba94-ffb31bf60964/project/0863a96f-9be6-40b9-90e6-ccdf6249b1d1.svg)](https://wakatime.com/@VladKochetov007/projects/fzjjtxtpvb)
+[![gitcoin](https://gitcoin.co/funding/embed?repo=https://github.com/VladKochetov007/quick_trade&badge=1)](https://gitcoin.co/grants/3876/quick_trade)
 
 View documentation: 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧 in process
 

@@ -57,8 +57,8 @@ A method for adding a number of points to the current S/L and T/P values.
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| add_stop_loss | Union\[float, int] | points for addition to sl |
-| add_take_profit | Union\[float, int] | points for addition to tp |
+| add_stop_loss | float, int | points for addition to sl |
+| add_take_profit | float, int | points for addition to tp |
 | returns | Tuple\[stop_losses, take_profits] | sl, tp |
 
 ```python
@@ -145,9 +145,9 @@ and `self._credit_leverages`.
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| deposit | Union\[float, int] | Initial deposit for testing the strategy that you used before the test |
-| bet | Union\[float, int] | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value `np.inf` |
-| commission | Union\[float, int] | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
+| deposit | float, int | Initial deposit for testing the strategy that you used before the test |
+| bet | float, int | The amount of money in one deal. If you want to enter the deal on the entire deposit, enter the value `np.inf` |
+| commission | float, int | Commission for opening a deal in percentage. If you need to exit the previous one to enter a trade, the commission is deducted 2 times. |
 | plot | bool | Plotting data about candles, deposits and trades on the chart. |
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
@@ -299,7 +299,30 @@ trader.strategy_collider(trader.strategy_2_sma(50, 20),
 
 This method is needed to get the result of the strategy and open an order on the exchange.
 
+| param  | type | description |
+| :---: | :---: | :---: |
+| bet_for_trading_on_client | float, int | The amount of money in the possible trade. Indicated in the quoted currency. |
+| returns | Dict[str, Union[str, float]] | Open trade data. |
+
 ### realtime_trading
+A method for running one strategy at real-time on the exchange. You will not be able to monitor the terminal by monitoring trades.
+
+| param  | type | description |
+| :---: | :---: | :---: |
+| strategy | method(function) | The method of an instance of the trader class, it will be called to getting a trading signal. |
+| start_time | `datetime.datetime` |  |
+| ticker | str |  |
+| print_out | bool |  |
+| bet_for_trading_on_client | float, int |  |
+| wait_sl_tp_checking | float, int |  |
+| limit | int |  |
+| strategy_in_sleep | bool |  |
+| strategy_args | arguments |  |
+| strategy_kwargs | named arguments |  |
+
+```python
+
+```
 
 ### multi_realtime_trading
 

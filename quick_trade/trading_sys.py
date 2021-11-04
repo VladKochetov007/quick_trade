@@ -798,7 +798,7 @@ class Trader(object):
             'open trade price': self._open_price,
             'stop loss': self.__last_stop_loss,
             'take profit': self.__last_take_profit,
-            'ticker close': close[-1],
+            'close price': close[-1],
             'credit leverage': self._credit_leverages[-1]
         }
 
