@@ -309,6 +309,7 @@ A method for running one strategy at real-time on the exchange. You will not be 
 
 | param  | type | description |
 | :---: | :---: | :---: |
+| entry_start_trade | bool | Entering a trade at the first new candlestick. If False - enter when a new signal appears. |
 | strategy | method(function) | The method of an instance of the trader class, it will be called to getting a trading signal. |
 | start_time | `datetime.datetime` |  |
 | ticker | str |  |

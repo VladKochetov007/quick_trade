@@ -68,6 +68,7 @@ class Trader(object):
     trading_on_client: bool
     fig: QuickTradeGraph
     _multi_converted_: bool = False
+    entry_start_trade: bool
 
     @property
     def _converted(self) -> utils.CONVERTED_TYPE_LIST:
@@ -758,9 +759,10 @@ class Trader(object):
         _moneys_: float
         bet: Union[float, int]
         close: np.ndarray = self.df["Close"].values
+        open_new_order: bool
 
         # get prediction
-        predict = utils.convert_signal_str(self.returns[-1])
+        predict: str = utils.convert_signal_str(self.returns[-1])
 
         # trading
         self.__last_stop_loss = self._stop_losses[-1]
@@ -768,7 +770,12 @@ class Trader(object):
 
         conv_cred_lev = utils.convert(self._credit_leverages)
 
-        if (not np.isnan(self._converted[-1])) or (not np.isnan(conv_cred_lev[-1])):
+        if self.entry_start_trade:
+            open_new_order = not predict == self._prev_predict
+        else:
+            open_new_order = not np.isnan(self._converted[-1])
+
+        if open_new_order or (not np.isnan(conv_cred_lev[-1])):
             utils.logger.info('(%s) open trade %s', self, predict)
             self.__exit_order__ = False
             if self.trading_on_client:
@@ -812,9 +819,11 @@ class Trader(object):
                          wait_sl_tp_checking: Union[float, int] = 5,
                          limit: int = 1000,
                          strategy_in_sleep: bool = False,
+                         entry_start_trade: bool = False,
                          *strategy_args,
                          **strategy_kwargs):
         """
+        :param entry_start_trade: Entering a trade at the first new candlestick. If False - enter when a new signal appears.
         :param start_time: time to start
         :param strategy_in_sleep: reuse strategy in one candle for new S/L, T/P or leverage
         :param limit: client.get_data_historical's limit argument
@@ -826,7 +835,7 @@ class Trader(object):
         :param strategy_kwargs: named arguments to -strategy.
         :param strategy_args: arguments to -strategy.
         """
-        assert fullmatch(utils.TICKER_PATTERN, ticker), f'Ticker must match the pattern <{utils.TICKER_PATTERN}>'
+        assert fullmatch(utils.TICKER_PATTERN, ticker), f'ticker must match the pattern <{utils.TICKER_PATTERN}>'
         assert isinstance(print_out, bool), 'print_out must be of type <bool>'
         assert isinstance(bet_for_trading_on_client,
                           (float, int)), 'bet_for_trading_on_client must be of type <float> or <int>'
@@ -835,8 +844,10 @@ class Trader(object):
             'wait_sl_tp_checking cannot be greater than or equal to the timeframe'
         assert isinstance(limit, int), 'limit must be of type <int>'
         assert isinstance(strategy_in_sleep, bool), 'strategy_in_sleep must be of type <bool>'
+        assert isinstance(entry_start_trade, bool), 'entry_start_trade must be of type <bool>'
 
         self.ticker = ticker
+        self.entry_start_trade = entry_start_trade
         while True:
             if datetime.now() >= start_time:
                 break
@@ -887,8 +898,8 @@ class Trader(object):
                                wait_sl_tp_checking: Union[float, int] = 5,
                                limit: int = 1000,
                                strategy_in_sleep: bool = False,
-                               deposit_part: Union[float, int] = 1.0,  # for all trades
-                               ):
+                               deposit_part: Union[float, int] = 1.0,  # for all trades,
+                               entry_start_trade: bool = False):
         """
 
         :param trade_config: Configurations to start trading. {ticker: [{strategy: {parameter: value}}]}
@@ -946,6 +957,7 @@ class Trader(object):
                                         wait_sl_tp_checking=wait_sl_tp_checking,
                                         limit=limit,
                                         strategy_in_sleep=strategy_in_sleep,
+                                        entry_start_trade=entry_start_trade,
                                         **item[1])
 
         for ticker, strats in trade_config.items():
