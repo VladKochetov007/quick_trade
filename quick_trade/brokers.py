@@ -98,7 +98,7 @@ class TradingClient(object):
 
     @utils.wait_success
     def get_balance(self, currency: str) -> float:
-        return self.client.fetch_total_balance()[currency]
+        return self.client.fetch_free_balance()[currency]
 
     @classmethod
     def _add_order_count(cls):

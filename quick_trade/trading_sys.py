@@ -968,17 +968,17 @@ class Trader(object):
     def log_data(self):
         self.fig.log_y(_row=self.fig.data_row,
                        _col=self.fig.data_col)
-        utils.logger.debug('(%s) log data', self)
+        utils.logger.info('(%s) log data', self)
 
     def log_deposit(self):
         self.fig.log_y(_row=self.fig.deposit_row,
                        _col=self.fig.deposit_col)
-        utils.logger.debug('(%s) log deposit', self)
+        utils.logger.info('(%s) log deposit', self)
 
     def log_returns(self):
         self.fig.log_y(_row=self.fig.returns_row,
                        _col=self.fig.returns_col)
-        utils.logger.debug('(%s) log returns', self)
+        utils.logger.info('(%s) log returns', self)
 
     @utils.assert_logger
     def set_client(self, your_client: TradingClient):
@@ -988,7 +988,7 @@ class Trader(object):
         assert isinstance(your_client, TradingClient), 'your_client must be of type <TradingClient>'
 
         self.client = your_client
-        utils.logger.debug('(%s) set client', self)
+        utils.logger.info('(%s) set client', self)
 
     @utils.assert_logger
     def convert_signal(self,
@@ -1002,7 +1002,7 @@ class Trader(object):
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
-        utils.logger.debug("(%s) signals converted: %s >> %s", self, old, new)
+        utils.logger.info("(%s) signals converted: %s >> %s", self, old, new)
         return self.returns
 
     @utils.assert_logger
