@@ -5,16 +5,11 @@
 [![wakatime](https://wakatime.com/badge/user/f1d9b860-df0e-4c67-ba94-ffb31bf60964/project/0863a96f-9be6-40b9-90e6-ccdf6249b1d1.svg)](https://wakatime.com/@VladKochetov007/projects/fzjjtxtpvb)
 [![gitcoin](https://gitcoin.co/funding/embed?repo=https://github.com/VladKochetov007/quick_trade&badge=1)](https://gitcoin.co/grants/3876/quick_trade)
 
-View documentation: 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧 in process
-
-old documentation (V3 doc): https://vladkochetov007.github.io/quick_trade.github.io
-
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/logo_with_slogan_v2_fixed.PNG?raw=true)
 
 
 ```
-
-used:
+Dependencies:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
  ├──plotly (https://github.com/plotly/plotly.py)
  ├──pandas (https://github.com/pandas-dev/pandas)
@@ -22,8 +17,17 @@ used:
  ├──tqdm (https://github.com/tqdm/tqdm)
  └──ccxt (https://github.com/ccxt/ccxt)
 ```
+* **Documentation:** 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧
 
-## Installing:
+## Installation:
+
+Quick install:
+
+```commandline
+$ pip3 install quick-trade
+```
+
+For development:
 
 ```commandline
 $ git clone https://github.com/VladKochetov007/quick_trade.git
@@ -31,12 +35,6 @@ $ pip3 install -r quick_trade/requirements.txt
 $ cd quick_trade
 $ python3 setup.py install
 $ cd ..
-```
-
-or
-
-```commandline
-$ pip3 install quick-trade
 ```
 
 ## Customize your strategy!
@@ -252,6 +250,10 @@ trader.realtime_trading(
 ```
 
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/realtime_example.png?raw=true)
+
+## Additional Resources
+
+Old documentation (V3 doc): https://vladkochetov007.github.io/quick_trade.github.io
 
 # License
 
