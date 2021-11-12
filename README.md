@@ -4,7 +4,6 @@
 [![Downloads](https://static.pepy.tech/personalized-badge/quick-trade?period=month&units=none&left_color=grey&right_color=brightgreen&left_text=PyPi%20downloads%20(month))](https://pepy.tech/project/quick-trade)
 [![wakatime](https://wakatime.com/badge/user/f1d9b860-df0e-4c67-ba94-ffb31bf60964/project/0863a96f-9be6-40b9-90e6-ccdf6249b1d1.svg)](https://wakatime.com/@VladKochetov007/projects/fzjjtxtpvb)
 
-
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/logo_with_slogan_v2_fixed.PNG?raw=true)
 
 
@@ -18,6 +17,8 @@ Dependencies:
  └──ccxt (https://github.com/ccxt/ccxt)
 ```
 * **Documentation:** 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧
+* **Twitter:** [@quick_trade_tw](https://twitter.com/quick_trade_tw)
+* **Discord**: [quick_trade](https://discord.gg/SkRg9mzuB5)
 
 # Gitcoin Grant
 
