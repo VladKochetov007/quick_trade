@@ -68,7 +68,7 @@ class Trader(object):
     trading_on_client: bool
     fig: QuickTradeGraph
     _multi_converted_: bool = False
-    entry_start_trade: bool
+    _entry_start_trade: bool
 
     @property
     def _converted(self) -> utils.CONVERTED_TYPE_LIST:
@@ -473,6 +473,8 @@ class Trader(object):
                 diff = 0.0
             if sig == utils.SELL:
                 diff = -diff
+            if moneys_open_bet < 0:
+                diff = -diff
             if not no_order:
                 deposit += bet * credit_lev * diff / open_price
             self.deposit_history.append(deposit)
@@ -770,7 +772,7 @@ class Trader(object):
 
         conv_cred_lev = utils.convert(self._credit_leverages)
 
-        if self.entry_start_trade:
+        if self._entry_start_trade:
             open_new_order = not predict == self._prev_predict
         else:
             open_new_order = not np.isnan(self._converted[-1])
@@ -847,7 +849,7 @@ class Trader(object):
         assert isinstance(entry_start_trade, bool), 'entry_start_trade must be of type <bool>'
 
         self.ticker = ticker
-        self.entry_start_trade = entry_start_trade
+        self._entry_start_trade = entry_start_trade
         while True:
             if datetime.now() >= start_time:
                 break
@@ -1695,8 +1697,8 @@ class ExampleStrategies(Trader):
                                     stop_loss=sl)
         return self.returns
 
-    def strategy_kst(self):
-        KST = ta.trend.KSTIndicator(close=self.df['Close'])
+    def strategy_kst(self, **kst_kwargs):
+        KST = ta.trend.KSTIndicator(close=self.df['Close'], **kst_kwargs)
         fast = KST.kst()
         slow = KST.kst_sig()
         self.returns = []
@@ -1709,12 +1711,12 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take(stop_loss=5000)
         return self.returns
 
-    def strategy_cci(self):
+    def strategy_cci(self, **cci_kwargs):
         self.returns = []
         CCI = ta.trend.CCIIndicator(self.df['High'],
                                     self.df['Low'],
                                     self.df['Close'],
-                                    window=20)
+                                    **cci_kwargs)
         RSI = ta.momentum.RSIIndicator(self.df['Close'])
         for price, cci, rsi in zip(self.df['Close'].values, CCI.cci(), RSI.rsi()):
             if cci < 10 and rsi < 43:
