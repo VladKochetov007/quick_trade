@@ -84,14 +84,15 @@ class TradingClient(object):
         if self.ordered:
             utils.logger.info('client exit')
             bet = self.__quantity__
-            if self.__side__ == 'Sell':
-                self.new_order_buy(self.ticker,
-                                   bet,
-                                   counting=False)
-            elif self.__side__ == 'Buy':
-                self.new_order_sell(self.ticker,
-                                    bet,
-                                    counting=False)
+            if bet != 0:
+                if self.__side__ == 'Sell':
+                    self.new_order_buy(self.ticker,
+                                       bet,
+                                       counting=False)
+                elif self.__side__ == 'Buy':
+                    self.new_order_sell(self.ticker,
+                                        bet,
+                                        counting=False)
             self.__side__ = 'Exit'
             self.ordered = False
             self._sub_order_count()
