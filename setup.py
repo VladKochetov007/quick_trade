@@ -6,7 +6,7 @@ from setuptools import find_packages
 with open('README.md') as file:
     long_desc = file.read()
 
-__version__ = "6.9.5"
+__version__ = "6.9.6"
 
 setup(
     name='quick_trade',
@@ -20,6 +20,8 @@ setup(
     project_urls={
         'Documentation': 'https://vladkochetov007.github.io/quick_trade/#/',
         'Source': 'https://github.com/VladKochetov007/quick_trade',
+        'Twitter': 'https://twitter.com/quick_trade_tw',
+        'Bug Tracker': 'https://github.com/VladKochetov007/quick_trade/issues'
     },
     install_requires=[
         'numpy==1.21.4',
