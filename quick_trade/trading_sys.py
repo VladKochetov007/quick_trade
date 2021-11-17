@@ -937,10 +937,14 @@ class Trader(object):
                                     bet_for_trading_on_client: Union[float, int] = np.inf,
                                     ) -> Dict[str, Union[str, float]]:
                 balance = self.client.get_balance(self.ticker.split('/')[1])
-                bet = (balance * 10) / (can_orders / deposit_part - TradingClient.cls_open_orders)
-                bet /= 10  # decimal analog
-                if bet > bet_for_trading_on_client_copy:
-                    bet = bet_for_trading_on_client_copy
+                bet = bet_for_trading_on_client_copy
+                if bet_for_trading_on_client is not np.inf:
+                    if TradingClient.cls_open_orders != can_orders:
+                        bet = (balance * 10) / (can_orders / deposit_part - TradingClient.cls_open_orders)
+                        bet /= 10  # decimal analog
+                        self.__prev_bet = bet
+                    else:
+                        bet = self.__prev_bet
                 return super().get_trading_predict(bet_for_trading_on_client=bet)
 
         def start_trading(pair, strat):
