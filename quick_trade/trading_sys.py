@@ -938,7 +938,7 @@ class Trader(object):
                                     ) -> Dict[str, Union[str, float]]:
                 balance = self.client.get_balance(self.ticker.split('/')[1])
                 bet = bet_for_trading_on_client_copy
-                if bet_for_trading_on_client is not np.inf:
+                if bet_for_trading_on_client is np.inf:
                     if TradingClient.cls_open_orders != can_orders:
                         bet = (balance * 10) / (can_orders / deposit_part - TradingClient.cls_open_orders)
                         bet /= 10  # decimal analog
