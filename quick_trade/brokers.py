@@ -104,9 +104,9 @@ class TradingClient(object):
     @classmethod
     def _add_order_count(cls):
         cls.cls_open_orders += 1
-        utils.logger.info('new order')
+        utils.logger.info('new order (total: %d)', cls.cls_open_orders)
 
     @classmethod
     def _sub_order_count(cls):
         cls.cls_open_orders -= 1
-        utils.logger.info('order closed')
+        utils.logger.info('order closed (total: %d)', cls.cls_open_orders)

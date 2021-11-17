@@ -773,11 +773,11 @@ class Trader(object):
         conv_cred_lev = utils.convert(self._credit_leverages)
 
         if self._entry_start_trade:
-            open_new_order = not predict == self._prev_predict
+            open_new_order = predict != self._prev_predict
         else:
-            open_new_order = not np.isnan(self._converted[-1])
+            open_new_order = (not np.isnan(self._converted[-1])) or (not np.isnan(conv_cred_lev[-1]))
 
-        if open_new_order or (not np.isnan(conv_cred_lev[-1])):
+        if open_new_order:
             utils.logger.info('(%s) open trade %s', self, predict)
             self.__exit_order__ = False
             if self.trading_on_client:
