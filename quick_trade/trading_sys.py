@@ -763,7 +763,7 @@ class Trader(object):
         close: np.ndarray = self.df["Close"].values
         open_new_order: bool
 
-        # get prediction
+        # getting prediction
         predict: str = utils.convert_signal_str(self.returns[-1])
 
         # trading
@@ -779,7 +779,6 @@ class Trader(object):
 
         if open_new_order:
             utils.logger.info('(%s) open trade %s', self, predict)
-            self.__exit_order__ = False
             if self.trading_on_client:
 
                 if predict == 'Exit':
@@ -797,10 +796,11 @@ class Trader(object):
                         bet = _moneys_
                     bet /= ticker_price
 
-                    self.client.exit_last_order()
+                    self.client.exit_last_order()  # exit from previous trade (signal)
                     self.client.order_create(predict,
                                              self.ticker,
-                                             bet * self._credit_leverages[-1])
+                                             bet * self._credit_leverages[-1])  # entry new position
+                    self.__exit_order__ = False
         utils.logger.debug("(%s) returning prediction", self)
         return {
             'predict': predict,

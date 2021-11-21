@@ -24,22 +24,24 @@ class TradingClient(object):
                      counting: bool = True):
         utils.logger.info('quantity: %f, side: %s, ticker: %s', quantity, side,
                           ticker)
-        side_flag = side
-        if quantity < 0:
-            side = 'Buy' if side == 'Sell' else 'Sell'
-            quantity = -quantity
-        if side == 'Buy':
-            self.client.create_market_buy_order(symbol=ticker, amount=quantity)
-        elif side == 'Sell':
-            self.client.create_market_sell_order(symbol=ticker, amount=quantity)
-        self.__side__ = side_flag
-        self.ticker = ticker
-        self.__quantity__ = quantity
-        self.base = ticker.split('/')[0]
-        self.quote = ticker.split('/')[1]
-        self.ordered = True
-        if counting:
-            self._add_order_count()
+        if quantity != 0:
+            if quantity < 0:
+                side = 'Buy' if side == 'Sell' else 'Sell'
+                quantity = -quantity
+            if side == 'Buy':
+                self.client.create_market_buy_order(symbol=ticker, amount=quantity)
+            elif side == 'Sell':
+                self.client.create_market_sell_order(symbol=ticker, amount=quantity)
+            self.__side__ = side
+            self.ticker = ticker
+            self.__quantity__ = quantity
+            self.base = ticker.split('/')[0]
+            self.quote = ticker.split('/')[1]
+            self.ordered = True
+            if counting:
+                self._add_order_count()
+        else:
+            utils.logger.error('The trade was not opened due to the zero value of "quantity"')
 
     @utils.wait_success
     def get_ticker_price(self,
