@@ -172,7 +172,7 @@ Sortino ratio: {}
 calmar ratio: {}
 max drawdown: {}%"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.0.0indev1"
+__version__: str = "7.0.0"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",

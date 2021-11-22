@@ -6,7 +6,7 @@ from setuptools import find_packages
 with open('README.md') as file:
     long_desc = file.read()
 
-__version__ = "7.0.0indev1"
+__version__ = "7.0.0"
 
 setup(
     name='quick_trade',
