@@ -758,7 +758,7 @@ class Trader(object):
         :return: dict with prediction
         """
 
-        _moneys_: float
+        moneys: float
         bet: Union[float, int]
         close: np.ndarray = self.df["Close"].values
         open_new_order: bool
@@ -773,7 +773,7 @@ class Trader(object):
         conv_cred_lev = utils.convert(self._credit_leverages)
 
         if self._entry_start_trade:
-            open_new_order = predict != self._prev_predict
+            open_new_order = predict != self._prev_predict or not np.isnan(conv_cred_lev[-1])
         else:
             open_new_order = (not np.isnan(self._converted[-1])) or (not np.isnan(conv_cred_lev[-1]))
 
@@ -786,14 +786,14 @@ class Trader(object):
                     self.__exit_order__ = True
 
                 else:
-                    _moneys_ = self.client.get_balance(self.ticker.split('/')[1])
+                    moneys = self.client.get_balance(self.ticker.split('/')[1])
                     ticker_price = self.client.get_ticker_price(self.ticker)
                     if bet_for_trading_on_client is not np.inf:
                         bet = bet_for_trading_on_client
                     else:
-                        bet = _moneys_
-                    if bet > _moneys_:
-                        bet = _moneys_
+                        bet = moneys
+                    if bet > moneys:
+                        bet = moneys
                     bet /= ticker_price
 
                     self.client.exit_last_order()  # exit from previous trade (signal)

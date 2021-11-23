@@ -22,8 +22,16 @@ class TradingClient(object):
                      ticker: str = 'None',
                      quantity: float = 0.0,
                      counting: bool = True):
-        utils.logger.info('quantity: %f, side: %s, ticker: %s', quantity, side,
-                          ticker)
+        quote = ticker.split('/')[1]
+        base = ticker.split('/')[0]
+        utils.logger.info('quantity: %f, side: %s, ticker: %s, balance: %f%s (%f%s)',
+                          quantity,
+                          side,
+                          ticker,
+                          self.get_balance(quote),
+                          quote,
+                          self.get_balance(quote)/self.get_ticker_price(ticker),
+                          base)
         if quantity != 0:
             if quantity < 0:
                 side = 'Buy' if side == 'Sell' else 'Sell'
@@ -35,8 +43,8 @@ class TradingClient(object):
             self.__side__ = side
             self.ticker = ticker
             self.__quantity__ = quantity
-            self.base = ticker.split('/')[0]
-            self.quote = ticker.split('/')[1]
+            self.base = base
+            self.quote = quote
             self.ordered = True
             if counting:
                 self._add_order_count()
