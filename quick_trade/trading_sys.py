@@ -795,6 +795,7 @@ class Trader(object):
                     if bet > moneys:
                         bet = moneys
                     bet /= ticker_price
+                    bet *= utils.RESERVE  # reserve to avoid exchange error
 
                     self.client.exit_last_order()  # exit from previous trade (signal)
                     self.client.order_create(predict,

@@ -161,6 +161,8 @@ LOWER_BB_COLOR: str = '#ff0000'
 LOWER_BB_WIDTH: float = 2
 LOWER_BB_ALPHA: float = 1.0
 
+RESERVE: float = 0.98
+
 INFO_TEXT: str = """losses: {}
 trades: {}
 profits: {}
@@ -172,7 +174,7 @@ Sortino ratio: {}
 calmar ratio: {}
 max drawdown: {}%"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.0.1"
+__version__: str = "7.0.2"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
