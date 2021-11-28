@@ -407,7 +407,7 @@ class Trader(object):
 
                 if sig != utils.EXIT and not min(stop_loss, take_profit) <= open_price <= max(stop_loss, take_profit) and e > 0:
                     warn('The deal was opened out of range!')
-                    utils.logger.error('The deal was opened out of range!')
+                    utils.logger.error('(%s) The deal was opened out of range! (candle=%d)', self, e)
                     self.winrate = 0.0
                     self.year_profit = 0.0
                     self.losses = 0
@@ -1103,6 +1103,20 @@ class Trader(object):
         self.set_credit_leverages()
         return self.returns
 
+    def correct_sl_tp(self,
+                      sl_correction: Union[float, int] = 50,
+                      tp_correction: Union[float, int] = 50):  # TODO: make documentation for this method   <-----------------------------------------------------------------------------------------------------------------
+        for e, (sl, tp, p, sig) in enumerate(zip(self._stop_losses, self._take_profits, self.df['Close'], self.returns)):
+            if sig == utils.BUY and sl > p:
+                self._stop_losses[e] = p * sl_correction / 10_000
+            if sig == utils.SELL and sl < p:
+                self._stop_losses[e] = p * 1.005 * sl_correction / 10_000
+
+            if sig == utils.SELL and tp > p:
+                self._stop_losses[e] = p * tp_correction / 10_000
+            if sig == utils.BUY and tp < p:
+                self._stop_losses[e] = p * 1.005 * tp_correction / 10_000
+
 
 class ExampleStrategies(Trader):
 
@@ -1488,25 +1502,23 @@ class ExampleStrategies(Trader):
                                                              self.df['Close'], **sar_kwargs)
         sardown: np.ndarray = sar.psar_down().values
         sarup: np.ndarray = sar.psar_up().values
-        self._stop_losses = list(sar.psar().values)
-
+        self._stop_losses = sar.psar().values.tolist()
         if plot:
-            for SAR_ in (sarup, sardown):
-                self.fig.plot_line(line=sarup,
-                                   width=utils.SAR_UP_WIDTH,
-                                   color=utils.SAR_UP_COLOR,
-                                   name=utils.SAR_UP_NAME,
-                                   opacity=utils.SAR_UP_ALPHA,
-                                   _row=self.fig.data_row,
-                                   _col=self.fig.data_col)
+            self.fig.plot_line(line=sarup,
+                               width=utils.SAR_UP_WIDTH,
+                               color=utils.SAR_UP_COLOR,
+                               name=utils.SAR_UP_NAME,
+                               opacity=utils.SAR_UP_ALPHA,
+                               _row=self.fig.data_row,
+                               _col=self.fig.data_col)
 
-                self.fig.plot_line(line=sardown,
-                                   width=utils.SAR_DOWN_WIDTH,
-                                   color=utils.SAR_DOWN_COLOR,
-                                   name=utils.SAR_DOWN_NAME,
-                                   opacity=utils.SAR_DOWN_ALPHA,
-                                   _row=self.fig.data_row,
-                                   _col=self.fig.data_col)
+            self.fig.plot_line(line=sardown,
+                               width=utils.SAR_DOWN_WIDTH,
+                               color=utils.SAR_DOWN_COLOR,
+                               name=utils.SAR_DOWN_NAME,
+                               opacity=utils.SAR_DOWN_ALPHA,
+                               _row=self.fig.data_row,
+                               _col=self.fig.data_col)
 
         for price, up, down in zip(
                 list(self.df['Close'].values), list(sarup), list(sardown)):
@@ -1520,6 +1532,7 @@ class ExampleStrategies(Trader):
                 self.returns.append(utils.EXIT)
         self.set_credit_leverages()
         self.set_open_stop_and_take(set_stop=False)
+        self.correct_sl_tp()
         return self.returns
 
     def strategy_macd_histogram_diff(self,
