@@ -1108,14 +1108,14 @@ class Trader(object):
                       tp_correction: Union[float, int] = 50):  # TODO: make documentation for this method   <-----------------------------------------------------------------------------------------------------------------
         for e, (sl, tp, p, sig) in enumerate(zip(self._stop_losses, self._take_profits, self.df['Close'], self.returns)):
             if sig == utils.BUY and sl > p:
-                self._stop_losses[e] = p * sl_correction / 10_000
+                self._stop_losses[e] = p * (1 - sl_correction / 10_000)
             if sig == utils.SELL and sl < p:
-                self._stop_losses[e] = p * 1.005 * sl_correction / 10_000
+                self._stop_losses[e] = p * (1 + sl_correction / 10_000)
 
             if sig == utils.SELL and tp > p:
-                self._stop_losses[e] = p * tp_correction / 10_000
+                self._stop_losses[e] = p * (1 - tp_correction / 10_000)
             if sig == utils.BUY and tp < p:
-                self._stop_losses[e] = p * 1.005 * tp_correction / 10_000
+                self._stop_losses[e] = p * (1 + tp_correction / 10_000)
 
 
 class ExampleStrategies(Trader):
