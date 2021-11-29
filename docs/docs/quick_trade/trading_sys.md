@@ -305,96 +305,35 @@ This method is needed to get the result of the strategy and open an order on the
 | returns | Dict[str, Union[str, float]] | Open trade data. |
 
 ### realtime_trading
-Метод для запуска одной стратегии в автоматическом режиме. 
-Этот метод позволяет освободить трейдеру время тем, что торгует за него абсолютно автоматически.
-Для этого функционала не страшны кратковременные перебои с интернетом или проблемы с бижей.
+A method for running one strategy at real-time on the exchange. You will not be able to monitor the terminal by monitoring trades.
 
 | param  | type | description |
 | :---: | :---: | :---: |
 | entry_start_trade | bool | Entering a trade at the first new candlestick. If False - enter when a new signal appears. |
 | strategy | method(function) | The method of an instance of the trader class, it will be called to getting a trading signal. |
-| start_time | `datetime.datetime` | Время для начала трейдинга. Должно быть на несколько секунд раньше окончания свечи на вашей бирже (для того, чтобы успеть скачать датафрейм) |
-| ticker | str | Валютная пара, которой будет торговать бот |
-| print_out | bool | Вывод данных о сигнале в терминал |
-| bet_for_trading_on_client | float, int | количество денег для сделки в котируемой валюте (перевести как quote currency). Стандартно - весть депозит. |
-| wait_sl_tp_checking | float, int | Промежуток через который будет проверяться, не вышла ли цена за пределы SL или TP. (секунды)|
-| limit | int | Количество свечей для скачивания с биржи |
-| strategy_in_sleep | bool | использование стратегии внутри одной свечи. Может использоваться для обновления SL, TP или кредитного плеча |
-| strategy_args | arguments | Аргументы стратегии |
-| strategy_kwargs | named arguments | kwargs для стратегии |
-
-?> Если вы хотите заходить в сделку не на весь депозит, но и не на фиксированную ставку - указывайте в стратегии `self.set_credit_leverages(<часть депозита (от еденицы)>)`
+| start_time | `datetime.datetime` |  |
+| ticker | str |  |
+| print_out | bool |  |
+| bet_for_trading_on_client | float, int |  |
+| wait_sl_tp_checking | float, int |  |
+| limit | int |  |
+| strategy_in_sleep | bool |  |
+| strategy_args | arguments |  |
+| strategy_kwargs | named arguments |  |
 
 ```python
-import datetime
 
-trader.realtime_trading(trader.strategy_supertrend,
-                        entry_start_trade=True,
-                        start_time=datetime.datetime(2021, 11, 11, 5, 59, 57),
-                        limit=300,
-                        wait_sl_tp_checking=15,
-                        multiplier=2,
-                        length=40,
-                        plot=False)
 ```
 
 ### multi_realtime_trading
-realtime_trading для нескольких пар и стратегий. Этот метод позволит запустить бота одновременно на несколько пар/стратегий/настроект стратегий используя конфиг.
-
-| param  | type | description |
-| :---: | :---: | :---: |
-| entry_start_trade | bool | Entering a trade at the first new candlestick. If False - enter when a new signal appears. |
-| start_time | `datetime.datetime` | Время для начала трейдинга. Должно быть на несколько секунд раньше окончания свечи на вашей бирже (для того, чтобы успеть скачать датафрейм) |
-| print_out | bool | Вывод данных о сигнале в терминал |
-| bet_for_trading_on_client | float, int | количество денег для сделки в котируемой валюте (перевести как quote currency). Стандартно - весть депозит. |
-| wait_sl_tp_checking | float, int | Промежуток через который будет проверяться, не вышла ли цена за пределы SL или TP. (секунды)|
-| limit | int | Количество свечей для скачивания с биржи |
-| strategy_in_sleep | bool | использование стратегии внутри одной свечи. Может использоваться для обновления SL, TP или кредитного плеча |
-| deposit_part | float | (от 0 до 1) Часть депозита которая будет использоваться для трейдинга ботом. Бот не сможет задействовать в сделках больше депозита, чем указано (при плече 1) |
-| trade_config | Dict[str, List[Dict[str, Dict[str, Any]]]] | Конфигурации для бота. Ключами в этом словаре могут быть валютные пары, а значениями - списки из других словарей (ключ - имя метода-стратегии, значение - словарь настроек к этой самой стратегии) |
-
-Примеры конфигов:
-```python
-config = {
-    'BTC/USDT': [
-        {'strategy_3_ema': {'slow': 200, 'fast': 30, 'mid': 50, 'plot': False}},
-        {'strategy_3_ema': {'slow': 300, 'fast': 80, 'mid': 288, 'plot': False}},
-        {'strategy_ichimoku': {'plot': False}},
-    ],
-    'ETH/USDT': [
-        {'strategy_kst': {}},
-    ]
-}
-```
-
-```python
-config = {
-    'ADA/BTC': [
-        {'strategy_macd': {'slow': 10, 'fast': 3}},
-        {'strategy_bollinger': {'plot': False, }},
-    ],
-    'LTC/BTC': [
-        {'strategy_cci': dict(window=30, fillna=True)},
-        {'strategy_macd': {'slow': 200, 'fast': 60}},
-    ]
-}
-```
 
 ### log_data
-Логарифмирование шкалы графика по вашей валютной паре 
 
 ### log_deposit
-Логарифмирование шкалы графика с историей депозита
 
 ### log_returns
-Логарифмирование шкалы графика с изменениями депозита
 
 ### set_client
-Метод для подключения клиента к трейдеру
-
-| param  | type | description |
-| :---: | :---: | :---: |
-| your_client | `brpkers.TradingClient` | Клиент для трейдинга. Используется для скачивания датафрейма, получения цены, получения баланса, открытия/закрытия сделок и тп |
 
 ### convert_signal
 
@@ -477,7 +416,7 @@ supertrend strategy. S/L - ST indicator
 
 ### strategy_bollinger
 
-Bollinger bands strategy
+Bollinger bands strategy (not breakout)
 
 | param  | type | description |
 | :---: | :---: | :---: |

@@ -1,13 +1,15 @@
 # utils:
-Это вспомогательный файл quick_trade, в котором собран относительно низкоуровневый код проекта для упрощения работы с данными.
+
 ## convert
 
-if the element is equal to the previous one, then it becomes np.nan.
+This function performs an operation on the data
 
 | param  | type | description |
 | :---: | :---: | :---: |
 | data    | `utils.PREDICT_TYPE_LIST` | Data for processing |
 | returns   | `utils.CONVERTED_TYPE_LIST` | data in which repeating elements are replaced `np.nan` |
+
+if the element is equal to the previous one, then it becomes np.nan.
 
 ```
 [0,    [0
@@ -125,29 +127,29 @@ supertrend indicator class
 | :---: | :---: | :---: |
 | close | `pd.Series` | close data|
 | high | `pd.Series` | high data|
-| low | `pd.Series` | low daa|
+| low |`pd.Series`| low daa|
 | multiplier |float| ATR multiplier |
 | length |int| ATR length (period) |
 
 ### get_supertrend
 
-gets `pd.Series` with supertrend indicator's data
+get `pd.Series` with supertrend indicator's data
 
 ### get_supertrend_upper
 
-gets `pd.Series` with supertrend upper indicator's data
+get `pd.Series` with supertrend upper indicator's data
 
 ### get_supertrend_lower
 
-gets `pd.Series` with supertrend lower indicator's data
+get `pd.Series` with supertrend lower indicator's data
 
 ### get_supertrend_strategy_returns
 
-gets `pd.Series` with supertrend predictions
+get `pd.Series` with supertrend predictions
 
 ### get_all_ST
 
-gets all supertrend data as `pd.DataFrame`:
+get all supertrend data as `pd.DataFrame`:
 
 - Supertrend
 - strategy predictions
@@ -185,7 +187,7 @@ Out[16]: (105120, 300)
 
 ## wait_success
 
-Decorator. If a traceback is received during the execution of the function, the action is repeated after `utils.WAIT_SUCCESS_SLEEP` seconds.
+Decorator. If a traceback was received during the execution of the function, then the action is repeated after `utils.WAIT_SUCCESS_SLEEP` seconds.
 
 The main purpose is to avoid ConnectionError when trading in real time.
 [see this page](https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error)
@@ -201,11 +203,11 @@ Function for calculating the coefficient of exponential growth of a deposit when
 
 ## assert_logger
 
-Decorator. If an AssertionError has been called, first the error is logged with the "critical" level and then the program stops.
+Decorator. If AssertionError was called, then first the error is written to the log with the "critical" level, and then the program stops.
 
 ## get_diff
 
-Function for getting the price movement from the current price to TP or SL.
+Function for getting the price movement from the current one to TP or SL.
 
 | param  | type | description |
 | :---: | :---: | :---: |
