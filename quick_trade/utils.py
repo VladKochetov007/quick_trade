@@ -1,3 +1,4 @@
+import threading
 from functools import wraps
 from logging import basicConfig
 from logging import getLogger
@@ -174,14 +175,14 @@ Sortino ratio: {}
 calmar ratio: {}
 max drawdown: {}%"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.0.3"
+__version__: str = "7.0.4"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
     "hpaulj -- Stack overflow",
     "furas -- Stack overflow",
     "Devin Jeanpierre (edit: wjandrea) -- Stack overflow",
-    "Войтенко Миколай Полікарпович (Vojtenko Mykolay Polikarpovich) -- helped me test the system of interaction with the binance crypto exchange",
+    "Войтенко Микола Полікарпович (Vojtenko Mykola Polikarpovich) -- helped me test the system of interaction with the binance crypto exchange",
     "https://fxgears.com/index.php?threads/how-to-acquire-free-historical-tick-and-bar-data-for-algo-trading-and-backtesting-in-2020-stocks-forex-and-crypto-currency.1229/#post-19305 -- binance get historical data method",
     "https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/ and https://teletype.in/@cozy_codespace/Hk70-Ntl4 -- heroku and threading problems",
     "https://stackoverflow.com/questions/57838939/handling-exceptions-with-bulk-api-requests -- IEX token",
@@ -205,6 +206,8 @@ basicConfig(level=0,
                    f'[QUICK_TRADE VERSION: {__version__}] [FUNCTION: %(funcName)s] [FILE "%(module)s", '
                    'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
                    '[FILEPATH: %(pathname)s]\n')
+
+locker = threading.Lock()
 
 
 class SuperTrendIndicator(object):

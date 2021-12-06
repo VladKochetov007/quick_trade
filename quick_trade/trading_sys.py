@@ -780,28 +780,28 @@ class Trader(object):
         if open_new_order:
             utils.logger.info('(%s) open trade %s', self, predict)
             if self.trading_on_client:
+                with utils.locker:
+                    if predict == 'Exit':
+                        self.client.exit_last_order()
+                        self.__exit_order__ = True
 
-                if predict == 'Exit':
-                    self.client.exit_last_order()
-                    self.__exit_order__ = True
-
-                else:
-                    moneys = self.client.get_balance(self.ticker.split('/')[1])
-                    ticker_price = self.client.get_ticker_price(self.ticker)
-                    if bet_for_trading_on_client is not np.inf:
-                        bet = bet_for_trading_on_client
                     else:
-                        bet = moneys
-                    if bet > moneys:
-                        bet = moneys
-                    bet /= ticker_price
-                    bet *= utils.RESERVE  # reserve to avoid exchange error
+                        moneys = self.client.get_balance(self.ticker.split('/')[1])
+                        ticker_price = self.client.get_ticker_price(self.ticker)
+                        if bet_for_trading_on_client is not np.inf:
+                            bet = bet_for_trading_on_client
+                        else:
+                            bet = moneys
+                        if bet > moneys:
+                            bet = moneys
+                        bet /= ticker_price
+                        bet *= utils.RESERVE  # reserve to avoid exchange error
 
-                    self.client.exit_last_order()  # exit from previous trade (signal)
-                    self.client.order_create(predict,
-                                             self.ticker,
-                                             bet * self._credit_leverages[-1])  # entry new position
-                    self.__exit_order__ = False
+                        self.client.exit_last_order()  # exit from previous trade (signal)
+                        self.client.order_create(predict,
+                                                 self.ticker,
+                                                 bet * self._credit_leverages[-1])  # entry new position
+                        self.__exit_order__ = False
         utils.logger.debug("(%s) returning prediction", self)
         return {
             'predict': predict,
@@ -872,19 +872,20 @@ class Trader(object):
             while True:
                 if not self.__exit_order__ and time() + wait_sl_tp_checking <= open_time + self._sec_interval:
                     sleep(wait_sl_tp_checking)
-                    price = self.client.get_ticker_price(ticker)
-                    min_ = min(self.__last_stop_loss, self.__last_take_profit)
-                    max_ = max(self.__last_stop_loss, self.__last_take_profit)
-                    utils.logger.debug('(%s) checking SL/TP', self)
-                    if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
-                        self.__exit_order__ = True
-                        utils.logger.info('(%s) exit trade', self)
-                        index = f'{self.ticker}, {ctime()}'
-                        utils.logger.info("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
-                        if print_out:
-                            print("(%s) trading prediction exit in sleeping at %s: %s" % (self, index, prediction))
-                        if self.trading_on_client:
-                            self.client.exit_last_order()
+                    with utils.locker:
+                        price = self.client.get_ticker_price(ticker)
+                        min_ = min(self.__last_stop_loss, self.__last_take_profit)
+                        max_ = max(self.__last_stop_loss, self.__last_take_profit)
+                        utils.logger.debug('(%s) checking SL/TP', self)
+                        if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
+                            self.__exit_order__ = True
+                            utils.logger.info('(%s) exit trade', self)
+                            index = f'{self.ticker}, {ctime()}'
+                            utils.logger.info("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
+                            if print_out:
+                                print("(%s) trading prediction exit in sleeping at %s: %s" % (self, index, prediction))
+                            if self.trading_on_client:
+                                self.client.exit_last_order()
                 if time() >= (open_time + self._sec_interval):
                     self._prev_predict = utils.convert_signal_str(self.returns[-1])
                     open_time += self._sec_interval
@@ -937,7 +938,8 @@ class Trader(object):
             def get_trading_predict(self,
                                     bet_for_trading_on_client: Union[float, int] = np.inf,
                                     ) -> Dict[str, Union[str, float]]:
-                balance = self.client.get_balance(self.ticker.split('/')[1])
+                with utils.locker:
+                    balance = self.client.get_balance(self.ticker.split('/')[1])
                 bet = bet_for_trading_on_client_copy
                 if bet_for_trading_on_client is np.inf:
                     if TradingClient.cls_open_orders != can_orders:
