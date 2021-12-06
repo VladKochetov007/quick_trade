@@ -1644,6 +1644,37 @@ class ExampleStrategies(Trader):
         self.set_credit_leverages()
         return self.returns
 
+    def strategy_bollinger_breakout(self,
+                                    plot: bool = True,
+                                    to_mid: bool = False,
+                                    to_opposite: bool = False,
+                                    *bollinger_args,
+                                    **bollinger_kwargs):
+        self.strategy_bollinger(plot=plot,
+                                to_mid=to_mid,
+                                *bollinger_args,
+                                **bollinger_kwargs)
+        self.inverse_strategy()
+        if to_opposite:
+            bollinger: ta.volatility.BollingerBands = ta.volatility.BollingerBands(self.df['Close'],
+                                                                                   fillna=True,
+                                                                                   *bollinger_args,
+                                                                                   **bollinger_kwargs)
+
+            mid_: pd.Series = bollinger.bollinger_mavg()
+            upper: pd.Series = bollinger.bollinger_hband()
+            lower: pd.Series = bollinger.bollinger_lband()
+            self._stop_losses = []
+            for sig, high, low in zip(self.returns,
+                                      upper,
+                                      lower):
+                if sig == utils.BUY:
+                    self._stop_losses.append(low)
+                else:
+                    self._stop_losses.append(high)
+        self.correct_sl_tp()
+        return self.returns
+
     def strategy_idris(self, points=20):
         self._stop_losses = [np.inf] * 2
         self._take_profits = [np.inf] * 2
