@@ -65,7 +65,6 @@ class Trader(object):
     _sec_interval: int
     supports: Dict[int, float]
     resistances: Dict[int, float]
-    trading_on_client: bool
     fig: QuickTradeGraph
     _multi_converted_: bool = False
     _entry_start_trade: bool
@@ -127,22 +126,19 @@ class Trader(object):
     def __init__(self,
                  ticker: str = 'BTC/USDT',
                  df: pd.DataFrame = pd.DataFrame(),
-                 interval: str = '1d',
-                 trading_on_client: bool = True):
+                 interval: str = '1d'):
         ticker = ticker.upper()
         assert isinstance(ticker, str), 'The ticker can only be of type <str>.'
         assert fullmatch(utils.TICKER_PATTERN, ticker), f'Ticker must match the pattern <{utils.TICKER_PATTERN}>'
         assert isinstance(df, pd.DataFrame), 'Dataframe can only be of type <DataFrame>.'
         assert isinstance(interval, str), 'interval can only be of the <str> type.'
-        assert isinstance(trading_on_client, bool), 'trading_on_client can only be True or False (<bool>).'
 
         self.df = df.reset_index(drop=True)
         self.ticker = ticker
         self.interval = interval
-        self.trading_on_client = trading_on_client
         self._profit_calculate_coef, self._sec_interval = utils.get_coef_sec(interval)
         self.__exit_order__ = False
-        utils.logger.info('new trader: %s. (trading_on_client: %s)', self, trading_on_client)
+        utils.logger.info('new trader: %s', self)
 
     def __repr__(self):
         return f'{self.ticker} {self.interval} trader'
@@ -779,10 +775,11 @@ class Trader(object):
 
         if open_new_order:
             utils.logger.info('(%s) open trade %s', self, predict)
-            if self.trading_on_client:
+            if self.client.trading:
                 with utils.locker:
                     if predict == 'Exit':
-                        self.client.exit_last_order()
+                        if not self.__exit_order__:
+                            self.client.exit_last_order()
                         self.__exit_order__ = True
 
                     else:
@@ -797,7 +794,8 @@ class Trader(object):
                         bet /= ticker_price
                         bet *= utils.RESERVE  # reserve to avoid exchange error
 
-                        self.client.exit_last_order()  # exit from previous trade (signal)
+                        if not self.__exit_order__:
+                            self.client.exit_last_order()  # exit from previous trade (signal)
                         self.client.order_create(predict,
                                                  self.ticker,
                                                  bet * self._credit_leverages[-1])  # entry new position
@@ -884,7 +882,7 @@ class Trader(object):
                             utils.logger.info("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
                             if print_out:
                                 print("(%s) trading prediction exit in sleeping at %s: %s" % (self, index, prediction))
-                            if self.trading_on_client:
+                            if self.client.trading:
                                 self.client.exit_last_order()
                 if time() >= (open_time + self._sec_interval):
                     self._prev_predict = utils.convert_signal_str(self.returns[-1])
@@ -940,25 +938,25 @@ class Trader(object):
                                     ) -> Dict[str, Union[str, float]]:
                 with utils.locker:
                     balance = self.client.get_balance(self.ticker.split('/')[1])
-                bet = bet_for_trading_on_client_copy
-                if bet_for_trading_on_client is np.inf:
-                    if TradingClient.cls_open_orders != can_orders:
-                        bet = (balance * 10) / (can_orders / deposit_part - TradingClient.cls_open_orders)
-                        bet /= 10  # decimal analog
-                        self.__prev_bet = bet
-                    else:
-                        bet = self.__prev_bet
+                    bet = bet_for_trading_on_client_copy
+                    if bet_for_trading_on_client is np.inf:
+                        if TradingClient.cls_open_orders != can_orders:
+                            bet = (balance * 10) / (can_orders / deposit_part - TradingClient.cls_open_orders)
+                            bet /= 10  # decimal analog
+                            self.__prev_bet = bet
+                        else:
+                            bet = self.__prev_bet
                 return super().get_trading_predict(bet_for_trading_on_client=bet)
 
         def start_trading(pair, strat):
             trader = MultiRealTimeTrader(ticker=pair,
-                                         interval=self.interval,
-                                         trading_on_client=self.trading_on_client)
+                                         interval=self.interval)
             trader.connect_graph(graph=self.fig)
             trader.set_client(copy(client))
 
             items = tuple(strat.items())
             for item in items:
+                print(item)
                 trader.realtime_trading(strategy=trader._get_attr(item[0]),
                                         start_time=start_time,
                                         ticker=pair,
@@ -968,6 +966,7 @@ class Trader(object):
                                         strategy_in_sleep=strategy_in_sleep,
                                         entry_start_trade=entry_start_trade,
                                         **item[1])
+            print('\n')
 
         for ticker, strats in trade_config.items():
             for strat in strats:

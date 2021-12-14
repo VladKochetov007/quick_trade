@@ -186,6 +186,7 @@ class Linspace(TunableValue):
     def __init__(self, start, stop, num):
         self.values = linspace(start=start, stop=stop, num=num).astype('float').tolist()
 
+
 class GeometricProgression(TunableValue):
     def __init__(self, start, stop, multiplier):
         val = start

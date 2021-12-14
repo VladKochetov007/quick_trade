@@ -12,9 +12,11 @@ class TradingClient(object):
     base: str
     quote: str
     __quantity__: float
+    trading: bool
 
-    def __init__(self, client: Exchange):
+    def __init__(self, client: Exchange, trading: bool = True):
         self.client = client
+        self.trading = trading
 
     @utils.wait_success
     def order_create(self,
@@ -36,10 +38,11 @@ class TradingClient(object):
             if quantity < 0:
                 side = 'Buy' if side == 'Sell' else 'Sell'
                 quantity = -quantity
-            if side == 'Buy':
-                self.client.create_market_buy_order(symbol=ticker, amount=quantity)
-            elif side == 'Sell':
-                self.client.create_market_sell_order(symbol=ticker, amount=quantity)
+            if self.trading:
+                if side == 'Buy':
+                    self.client.create_market_buy_order(symbol=ticker, amount=quantity)
+                elif side == 'Sell':
+                    self.client.create_market_sell_order(symbol=ticker, amount=quantity)
             self.__side__ = side
             self.ticker = ticker
             self.__quantity__ = quantity
@@ -103,6 +106,7 @@ class TradingClient(object):
                     self.new_order_sell(self.ticker,
                                         bet,
                                         counting=False)
+            self.__quantity__ = 0
             self.__side__ = 'Exit'
             self.ordered = False
             self._sub_order_count()

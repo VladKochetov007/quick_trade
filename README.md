@@ -243,8 +243,7 @@ client = TradingClient(ccxt.binance(config=keys))  # or any other exchange
 
 trader = MyTrade(ticker=ticker,
                  interval='1m',
-                 df=client.get_data_historical(ticker, limit=10),
-                 trading_on_client=True)
+                 df=client.get_data_historical(ticker, limit=10))
 fig = make_figure()
 graph = QuickTradeGraph(figure=fig)
 trader.connect_graph(graph)
