@@ -956,7 +956,6 @@ class Trader(object):
 
             items = tuple(strat.items())
             for item in items:
-                print(item)
                 trader.realtime_trading(strategy=trader._get_attr(item[0]),
                                         start_time=start_time,
                                         ticker=pair,
@@ -966,7 +965,6 @@ class Trader(object):
                                         strategy_in_sleep=strategy_in_sleep,
                                         entry_start_trade=entry_start_trade,
                                         **item[1])
-            print('\n')
 
         for ticker, strats in trade_config.items():
             for strat in strats:
