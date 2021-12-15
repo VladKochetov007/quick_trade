@@ -955,16 +955,17 @@ class Trader(object):
             trader.set_client(copy(client))
 
             items = tuple(strat.items())
-            for item in items:
-                trader.realtime_trading(strategy=trader._get_attr(item[0]),
-                                        start_time=start_time,
-                                        ticker=pair,
-                                        print_out=print_out,
-                                        wait_sl_tp_checking=wait_sl_tp_checking,
-                                        limit=limit,
-                                        strategy_in_sleep=strategy_in_sleep,
-                                        entry_start_trade=entry_start_trade,
-                                        **item[1])
+            item = items[0]
+
+            trader.realtime_trading(strategy=trader._get_attr(item[0]),
+                                    start_time=start_time,
+                                    ticker=pair,
+                                    print_out=print_out,
+                                    wait_sl_tp_checking=wait_sl_tp_checking,
+                                    limit=limit,
+                                    strategy_in_sleep=strategy_in_sleep,
+                                    entry_start_trade=entry_start_trade,
+                                    **item[1])
 
         for ticker, strats in trade_config.items():
             for strat in strats:
