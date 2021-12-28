@@ -783,6 +783,10 @@ class Trader(object):
                         self.__exit_order__ = True
 
                     else:
+
+                        if not self.__exit_order__:
+                            self.client.exit_last_order()  # exit from previous trade (signal)
+
                         moneys = self.client.get_balance(self.ticker.split('/')[1])
                         ticker_price = self.client.get_ticker_price(self.ticker)
                         if bet_for_trading_on_client is not np.inf:
@@ -794,8 +798,6 @@ class Trader(object):
                         bet /= ticker_price
                         bet *= utils.RESERVE  # reserve to avoid exchange error
 
-                        if not self.__exit_order__:
-                            self.client.exit_last_order()  # exit from previous trade (signal)
                         self.client.order_create(predict,
                                                  self.ticker,
                                                  bet * self._credit_leverages[-1])  # entry new position
@@ -951,7 +953,7 @@ class Trader(object):
         def start_trading(pair, strat):
             trader = MultiRealTimeTrader(ticker=pair,
                                          interval=self.interval)
-            trader.connect_graph(graph=self.fig)
+            trader.connect_graph(graph=copy(self.fig))
             trader.set_client(copy(client))
 
             items = tuple(strat.items())
