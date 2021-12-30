@@ -7,6 +7,7 @@ from typing import Dict
 from typing import Iterable
 from typing import List
 
+import numpy as np
 from numpy import arange
 from numpy import isnan
 from numpy import linspace
@@ -172,6 +173,19 @@ class QuickTradeTuner(object):
         utils.logger.debug('loading tunes from "%s"', path)
         with open(path, 'r') as file:
             self.result_tunes = load(file)
+
+
+class Combinations(object):
+    source: list = []
+    matrix: np.array
+
+    def __init__(self,
+                 config: Dict[str, List[Dict[str, Dict[str, Any]]]],
+                 timeframe: str = '1h'):
+        for ticker, strats in config.items():
+            for strat in strats:
+                self.source.append((ticker, strat))
+        self.matrix = np.array(list(product(*[[True, False]] * len(self.source))))
 
 
 class Choise(TunableValue):
