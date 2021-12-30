@@ -176,7 +176,7 @@ calmar ratio: {}
 max drawdown: {}%
 profit/deviation ratio: {}"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.0.9"
+__version__: str = "7.1.0dev"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -193,7 +193,8 @@ __credits__: List[str] = [
     "Pavel Fedotov (https://github.com/Pfed-prog) -- pull request https://github.com/VladKochetov007/quick_trade/pull/60",
     "https://www.codearmo.com/blog/sharpe-sortino-and-calmar-ratios-python",
     "https://towardsdatascience.com/sharpe-ratio-sorino-ratio-and-calmar-ratio-252b0cddc328",
-    "https://www.wallstreetmojo.com/calmar-ratio/"
+    "https://www.wallstreetmojo.com/calmar-ratio/",
+    "Iliuschenko Nikita Andreevich -- translator"
 ]
 
 logger = getLogger(__name__)
