@@ -116,6 +116,7 @@ class QuickTradeTuner(object):
                 self.result_tunes[ticker][interval][limit][strat_kw]['Sortino ratio'] = trader.sortino_ratio
                 self.result_tunes[ticker][interval][limit][strat_kw]['calmar ratio'] = trader.calmar_ratio
                 self.result_tunes[ticker][interval][limit][strat_kw]['max drawdown'] = trader.max_drawdown
+                self.result_tunes[ticker][interval][limit][strat_kw]['profit/deviation ratio'] = trader.profit_deviation_ratio
                 if self.multi_test:
                     ticker = old_tick
                 if use_tqdm:

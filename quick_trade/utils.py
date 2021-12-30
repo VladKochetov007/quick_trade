@@ -162,7 +162,7 @@ LOWER_BB_COLOR: str = '#ff0000'
 LOWER_BB_WIDTH: float = 2
 LOWER_BB_ALPHA: float = 1.0
 
-RESERVE: float = 0.98
+RESERVE: float = 0.99  # squeeze-protect
 
 INFO_TEXT: str = """losses: {}
 trades: {}
@@ -173,9 +173,10 @@ mean deviation: {}%
 Sharpe ratio: {}
 Sortino ratio: {}
 calmar ratio: {}
-max drawdown: {}%"""  # .format(Trader.losses, Trader.trades, ...)
+max drawdown: {}%
+profit/deviation ratio: {}"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.0.8"
+__version__: str = "7.0.9"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
