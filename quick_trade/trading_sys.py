@@ -60,7 +60,6 @@ class Trader(object):
     client: TradingClient
     __last_stop_loss: float
     __last_take_profit: float
-    net_returns: pd.Series
     _sec_interval: int
     supports: Dict[int, float]
     resistances: Dict[int, float]
@@ -107,6 +106,12 @@ class Trader(object):
     @property
     def average_growth(self) -> np.ndarray:
         return utils.get_exponential_growth(self.deposit_history)
+
+    @property
+    def net_returns(self):
+        netret = pd.Series(self.deposit_history).diff()
+        netret[0] = 0
+        return netret
 
     @property
     def profit_deviation_ratio(self):
@@ -483,13 +488,8 @@ class Trader(object):
                 prev_sig = sig
             ignore_breakout = False
 
-        self.net_returns = pd.Series(self.deposit_history).diff()
-        self.net_returns[0] = 0
         if not pass_math:
-            self.year_profit = utils.profit_factor(self.average_growth) ** (self._profit_calculate_coef - 1)
-            #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
-            self.year_profit -= 1  # The initial deposit does not count as profit
-            self.year_profit *= 100  # Percentage
+            self.year_profit = utils.year_profit(self.average_growth, self._profit_calculate_coef)
             if self.trades != 0:
                 self.winrate = (self.profits / self.trades) * 100
             else:
@@ -598,8 +598,6 @@ class Trader(object):
         multipliers: pd.Series = sum(depos) / len(depos)
         multipliers[0] = deposit
         self.deposit_history = list(np.cumprod(multipliers.values))
-        self.net_returns = pd.Series(self.deposit_history).diff()
-        self.net_returns[0] = 0
         self.backtest_out = pd.DataFrame(
             (self.deposit_history, self.average_growth, self.net_returns, self.cumulative_returns),
             index=[

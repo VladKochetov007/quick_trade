@@ -224,3 +224,5 @@ Function for getting the price movement from the current one to TP or SL.
 ## get_multipliers
 
 ## mean_deviation
+
+## year_profit
