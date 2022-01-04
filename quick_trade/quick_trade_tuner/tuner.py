@@ -18,6 +18,7 @@ from .core import TunableValue
 from .core import transform_all_tunable_values
 from .. import utils
 from ..brokers import TradingClient
+from .. import _saving
 
 
 class QuickTradeTuner(object):
@@ -107,17 +108,8 @@ class QuickTradeTuner(object):
                     old_tick = ticker
                     ticker = 'ALL'
                 utils.logger.debug('testing %s ... :', strat_kw)
-                self.result_tunes[ticker][interval][limit][strat_kw]['winrate'] = trader.winrate
-                self.result_tunes[ticker][interval][limit][strat_kw]['trades'] = trader.trades
-                self.result_tunes[ticker][interval][limit][strat_kw]['losses'] = trader.losses
-                self.result_tunes[ticker][interval][limit][strat_kw]['profits'] = trader.profits
-                self.result_tunes[ticker][interval][limit][strat_kw]['percentage year profit'] = trader.year_profit
-                self.result_tunes[ticker][interval][limit][strat_kw]['mean deviation'] = trader.mean_deviation
-                self.result_tunes[ticker][interval][limit][strat_kw]['Sharpe ratio'] = trader.sharpe_ratio
-                self.result_tunes[ticker][interval][limit][strat_kw]['Sortino ratio'] = trader.sortino_ratio
-                self.result_tunes[ticker][interval][limit][strat_kw]['calmar ratio'] = trader.calmar_ratio
-                self.result_tunes[ticker][interval][limit][strat_kw]['max drawdown'] = trader.max_drawdown
-                self.result_tunes[ticker][interval][limit][strat_kw]['profit/deviation ratio'] = trader.profit_deviation_ratio
+                for filter_name, filter_attr in utils.TUNER_CODECONF:
+                    self.result_tunes[ticker][interval][limit][strat_kw][filter_name] = trader._get_attr(filter_attr)
                 if self.multi_test:
                     ticker = old_tick
                 if use_tqdm:
@@ -166,13 +158,11 @@ class QuickTradeTuner(object):
 
     def save_tunes(self, path: str = 'returns.json'):
         utils.logger.debug('saving tunes in "%s"', path)
-        with open(path, 'w') as file:
-            dump(self.result_tunes, file)
+        _saving.write_json(data=self.result_tunes, path=path)
 
     def load_tunes(self, path: str = 'returns.json'):
         utils.logger.debug('loading tunes from "%s"', path)
-        with open(path, 'r') as file:
-            self.result_tunes = load(file)
+        self.result_tunes = _saving.read_json(path=path)
 
 
 class Combinations(object):

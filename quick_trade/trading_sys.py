@@ -30,6 +30,7 @@ import ta.trend
 import ta.volatility
 import numpy as np
 import pandas as pd
+import indicators
 
 from . import utils
 from .brokers import TradingClient
@@ -1555,7 +1556,7 @@ class ExampleStrategies(Trader):
                             plot: bool = True,
                             multiplier: float = 3.0,
                             length: int = 10) -> utils.PREDICT_TYPE_LIST:
-        st: utils.SuperTrendIndicator = utils.SuperTrendIndicator(self.df['Close'],
+        st: indicators.SuperTrendIndicator = indicators.SuperTrendIndicator(self.df['Close'],
                                                                   self.df['High'],
                                                                   self.df['Low'],
                                                                   multiplier=multiplier,
