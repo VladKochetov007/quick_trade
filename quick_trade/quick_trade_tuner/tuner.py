@@ -108,8 +108,10 @@ class QuickTradeTuner(object):
                     old_tick = ticker
                     ticker = 'ALL'
                 utils.logger.debug('testing %s ... :', strat_kw)
+
                 for filter_name, filter_attr in utils.TUNER_CODECONF:
                     self.result_tunes[ticker][interval][limit][strat_kw][filter_name] = trader._get_attr(filter_attr)
+
                 if self.multi_test:
                     ticker = old_tick
                 if use_tqdm:
@@ -165,7 +167,7 @@ class QuickTradeTuner(object):
         self.result_tunes = _saving.read_json(path=path)
 
 
-class Combinations(object):
+class Combinations(object):  # TODO: .
     source: list = []
     matrix: np.array
 

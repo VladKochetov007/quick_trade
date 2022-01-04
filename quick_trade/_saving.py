@@ -21,3 +21,7 @@ def read_json(path: str):
 
 def write_json(path: str, data):
     return JSON(filepath=path).write(data=data)
+
+
+class SaveTrader(object)
+    pass # TODO: .
