@@ -23,5 +23,5 @@ def write_json(path: str, data):
     return JSON(filepath=path).write(data=data)
 
 
-class SaveTrader(object)
+class SaveTrader(object):
     pass # TODO: .
