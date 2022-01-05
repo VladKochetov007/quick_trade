@@ -160,7 +160,7 @@ class QuickTradeTuner(object):
 
     def save_tunes(self, path: str = 'returns.json'):
         utils.logger.debug('saving tunes in "%s"', path)
-        _saving.write_json(data=self.result_tunes, path=path)
+        _saving.write_json(data=self.result_tunes, path=path, indent=utils.TUNER_INDENT)
 
     def load_tunes(self, path: str = 'returns.json'):
         utils.logger.debug('loading tunes from "%s"', path)

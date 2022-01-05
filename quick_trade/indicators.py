@@ -2,7 +2,7 @@ from numpy import nan
 from pandas import DataFrame
 from pandas import Series
 from ta.volatility import AverageTrueRange
-from utils import BUY, SELL
+from .utils import BUY, SELL
 
 class SuperTrendIndicator(object):
     """

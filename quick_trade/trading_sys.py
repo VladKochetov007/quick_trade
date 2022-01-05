@@ -30,8 +30,8 @@ import ta.trend
 import ta.volatility
 import numpy as np
 import pandas as pd
-import indicators
 
+from . import indicators
 from . import utils
 from .brokers import TradingClient
 from .plots import QuickTradeGraph
@@ -131,6 +131,9 @@ class Trader(object):
                                       self.calmar_ratio,
                                       self.max_drawdown,
                                       self.profit_deviation_ratio)
+
+    def to_dict(self) -> Dict[str, Dict[str, Any]]:
+        return {'eth 1h ...': {'testk': 1}}
 
     @utils.assert_logger
     def __init__(self,
@@ -496,9 +499,9 @@ class Trader(object):
             else:
                 self.winrate = 0
                 utils.logger.critical('0 trades in %s', self)
-        utils.logger.info('(%s) trader info: %s', self, self._info)
         if print_out:
             print(self._info)
+        utils.logger.info('(%s) trader info: %s', self, self._info)
         self.backtest_out = pd.DataFrame(
             (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
              self._open_lot_prices, data_column, self.average_growth, self.net_returns, self.cumulative_returns),
@@ -1103,7 +1106,8 @@ class Trader(object):
 
     def correct_sl_tp(self,
                       sl_correction: Union[float, int] = 50,
-                      tp_correction: Union[float, int] = 50):  # TODO: make documentation for this method   <-----------------------------------------------------------------------------------------------------------------
+                      tp_correction: Union[
+                          float, int] = 50):  # TODO: make documentation for this method   <--------------------------------------------------------------------------------------------------------------------------------------
         for e, (sl, tp, p, sig) in enumerate(zip(self._stop_losses, self._take_profits, self.df['Close'], self.returns)):
             if sig == utils.BUY and sl > p:
                 self._stop_losses[e] = p * (1 - sl_correction / 10_000)
@@ -1557,10 +1561,10 @@ class ExampleStrategies(Trader):
                             multiplier: float = 3.0,
                             length: int = 10) -> utils.PREDICT_TYPE_LIST:
         st: indicators.SuperTrendIndicator = indicators.SuperTrendIndicator(self.df['Close'],
-                                                                  self.df['High'],
-                                                                  self.df['Low'],
-                                                                  multiplier=multiplier,
-                                                                  length=length)
+                                                                            self.df['High'],
+                                                                            self.df['Low'],
+                                                                            multiplier=multiplier,
+                                                                            length=length)
         if plot:
             self.fig.plot_line(line=st.get_supertrend_upper(),
                                width=utils.ST_UP_WIDTH,

@@ -194,7 +194,8 @@ __credits__: List[str] = [
     "https://www.codearmo.com/blog/sharpe-sortino-and-calmar-ratios-python",
     "https://towardsdatascience.com/sharpe-ratio-sorino-ratio-and-calmar-ratio-252b0cddc328",
     "https://www.wallstreetmojo.com/calmar-ratio/",
-    "Iliuschenko Nikita Andreevich -- translator"
+    "Iliuschenko Nikita Andreevich -- translator",
+    "https://www.geeksforgeeks.org/append-to-json-file-using-python/"
 ]
 
 logger = getLogger(__name__)
@@ -209,7 +210,9 @@ basicConfig(level=0,
                    'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
                    '[FILEPATH: %(pathname)s]\n')
 
-BUFFER_PATH: str = './trading_buffer'
+BUFFER_PATH: str = 'trading_buffer.json'
+TUNER_INDENT: int = 2
+BUFFER_INDENT: int = 2
 
 TUNER_CODECONF: Dict[str, str] = {
     'winrate': 'winrate',
@@ -439,7 +442,8 @@ def mean_deviation(frame: Series, avg_grwth: ndarray) -> float:
     return relative_diff.mean()
 
 def year_profit(average_growth: np.ndarray, coef: Union[float, int]):
-    yp = utils.profit_factor(average_growth) ** (coef - 1)
+    yp = profit_factor(average_growth) ** (coef - 1)
     #  Compound interest. View https://www.investopedia.com/terms/c/compoundinterest.asp
     yp -= 1  # The initial deposit does not count as profit
     yp *= 100  # Percentage
+    return yp
