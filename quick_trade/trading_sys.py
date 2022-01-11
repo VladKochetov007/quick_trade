@@ -35,6 +35,7 @@ from . import indicators
 from . import utils
 from .brokers import TradingClient
 from .plots import QuickTradeGraph
+from ._identifier import get_identifier
 
 
 class Trader(object):
@@ -67,6 +68,7 @@ class Trader(object):
     fig: QuickTradeGraph
     _multi_converted_: bool = False
     _entry_start_trade: bool
+    identifier: str
 
     @property
     def _converted(self) -> utils.CONVERTED_TYPE_LIST:
@@ -132,8 +134,18 @@ class Trader(object):
                                       self.max_drawdown,
                                       self.profit_deviation_ratio)
 
-    def to_dict(self) -> Dict[str, Dict[str, Any]]:
-        return {'eth 1h ...': {'testk': 1}}
+    def update_identifier(self) -> str:
+        self.identifier = get_identifier(self.df)
+        return self.identifier
+
+    def to_dict(self, verbose: bool = True) -> Dict[str, Dict[str, Any]]:
+        return {
+            self.identifier:
+                {
+                    'deposit_history': self.deposit_history,  # TODO: todo
+
+                }
+        }
 
     @utils.assert_logger
     def __init__(self,
@@ -150,6 +162,7 @@ class Trader(object):
         self.ticker = ticker
         self.interval = interval
         self._profit_calculate_coef, self._sec_interval = utils.get_coef_sec(interval)
+        self.update_identifier()
         utils.logger.info('new trader: %s', self)
 
     def __repr__(self):

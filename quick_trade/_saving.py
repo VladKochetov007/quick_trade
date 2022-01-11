@@ -26,14 +26,9 @@ def read_json(path: str):
 def write_json(path: str, data, indent: int = 2):
     return JSON(filepath=path).write(data=data, indent=indent)
 
-
-class SaveTrader(object):
-    def __init__(self):
-        pass
-
-def append(trader):
+def save_trader(trader):
     file = JSON(filepath=BUFFER_PATH)
-    trader_short: dict = trader.to_dict()
+    trader_short: dict = trader.to_dict(verbose=False)
     trader_key = list(trader_short.keys())[0]
     trader_val = list(trader_short.values())[0]
     data: dict = file.read()

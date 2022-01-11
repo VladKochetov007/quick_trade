@@ -23,7 +23,8 @@ class TradingClient(object):
                      side: str,
                      ticker: str = 'None',
                      quantity: float = 0.0,
-                     counting: bool = True):
+                     counting: bool = True,
+                     reduce_only: bool = False):
         quote = ticker.split('/')[1]
         base = ticker.split('/')[0]
         utils.logger.info('quantity: %f, side: %s, ticker: %s, balance: %f%s (%f%s)',
@@ -32,7 +33,7 @@ class TradingClient(object):
                           ticker,
                           self.get_balance(quote),
                           quote,
-                          self.get_balance(quote)/self.get_ticker_price(ticker),
+                          self.get_balance(quote) / self.get_ticker_price(ticker),
                           base)
         if quantity != 0:
             if quantity < 0:
@@ -40,9 +41,9 @@ class TradingClient(object):
                 quantity = -quantity
             if self.trading:
                 if side == 'Buy':
-                    self.client.create_market_buy_order(symbol=ticker, amount=quantity)
+                    self.client.create_market_buy_order(symbol=ticker, amount=quantity, params={'reduce_only': reduce_only})  # TODO: add reduceOnly (not reduce_only)
                 elif side == 'Sell':
-                    self.client.create_market_sell_order(symbol=ticker, amount=quantity)
+                    self.client.create_market_sell_order(symbol=ticker, amount=quantity, params={'reduce_only': reduce_only})
             self.__side__ = side
             self.ticker = ticker
             self.__quantity__ = quantity
@@ -63,21 +64,25 @@ class TradingClient(object):
                       ticker: str = None,
                       quantity: float = 0.0,
                       credit_leverage: float = 1.0,
-                      counting: bool = True):
+                      counting: bool = True,
+                      reduce_only: bool = False):
         self.order_create(side='Buy',
                           ticker=ticker,
                           quantity=quantity * credit_leverage,
-                          counting=counting)
+                          counting=counting,
+                          reduce_only=reduce_only)
 
     def new_order_sell(self,
                        ticker: str = None,
                        quantity: float = 0.0,
                        credit_leverage: float = 1.0,
-                       counting: bool = True):
+                       counting: bool = True,
+                       reduce_only: bool = False):
         self.order_create(side='Sell',
                           ticker=ticker,
                           quantity=quantity * credit_leverage,
-                          counting=counting)
+                          counting=counting,
+                          reduce_only=reduce_only)
 
     @utils.wait_success
     def get_data_historical(self,
@@ -101,11 +106,13 @@ class TradingClient(object):
                 if self.__side__ == 'Sell':
                     self.new_order_buy(self.ticker,
                                        bet,
-                                       counting=False)
+                                       counting=False,
+                                       reduce_only=True)
                 elif self.__side__ == 'Buy':
                     self.new_order_sell(self.ticker,
                                         bet,
-                                        counting=False)
+                                        counting=False,
+                                        reduce_only=True)
             self.__quantity__ = 0
             self.__side__ = 'Exit'
             self.ordered = False
