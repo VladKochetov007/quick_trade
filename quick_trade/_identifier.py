@@ -1,5 +1,5 @@
 import pandas as pd
-from utils import BUFFER_PERCISION_POINTER, INT_ALPHABET
+from .utils import BUFFER_PERCISION_POINTER, INT_ALPHABET
 
 
 def convert_base(num, to_base=128, from_base=10):
@@ -21,11 +21,12 @@ class Identifier(object):
         self.df = pd.DataFrame({'Open': df['Open'],
                                 'High': df['High'],
                                 'Low': df['Low'],
-                                'Close': df['Close']})
-        self.df /= df.min(0)
+                                'Close': df['Close']}).dropna()
+        min_df = self.df.min(0)
+        self.df = self.df*BUFFER_PERCISION_POINTER/min_df
 
     def _format_candle(self, num: int = 0) -> str:
-        candle = self.df.T[num].T * BUFFER_PERCISION_POINTER
+        candle = self.df.T[num].T
         candle = candle.values.astype(int)
         return f'{candle[0]}{candle[1]}{candle[2]}{candle[3]}'
 
@@ -47,19 +48,3 @@ class Identifier(object):
 def get_identifier(df: pd.DataFrame):
     identifier = Identifier(df)
     return identifier.get()
-
-
-if __name__ == '__main__':
-
-    from quick_trade.quick_trade.brokers import TradingClient
-    from ccxt import binance
-
-    b = binance()
-    client = TradingClient(b)
-    data = client.get_data_historical('ETH/BTC')
-    from time import time
-    t1 = time()
-    n=1000
-    for i in range(n):
-        get_identifier(data)
-    print((time()-t1)/n)
