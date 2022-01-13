@@ -1,6 +1,8 @@
-from .utils import BUFFER_PATH, BUFFER_INDENT
+from .utils import BUFFER_PATH, BUFFER_INDENT, recursive_dict
 from json import dump, load
 from os.path import isfile
+from collections import defaultdict
+
 
 class JSON(object):
     path: str
@@ -12,13 +14,13 @@ class JSON(object):
 
     def read(self):
 
-        with open(self.path, 'r') as file:
+        with open(self.path, 'r', encoding='utf-8') as file:
             data = load(file)
         return data
 
     def write(self, data, indent: int = 2):
-        with open(self.path, 'w') as file:
-            dump(data, file, indent=indent)
+        with open(self.path, 'w', encoding='utf-8') as file:
+            dump(data, file, indent=indent, ensure_ascii=False)
 
 def read_json(path: str):
     return JSON(filepath=path).read()
