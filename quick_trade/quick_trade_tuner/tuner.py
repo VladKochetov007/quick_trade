@@ -1,7 +1,4 @@
-from collections import defaultdict
 from itertools import product
-from json import dump
-from json import load
 from typing import Any
 from typing import Dict
 from typing import Iterable
@@ -72,10 +69,7 @@ class QuickTradeTuner(object):
                 total=len(self._strategies) * len(self._frames_data)
             )
 
-        def get_dict():
-            return defaultdict(get_dict)
-
-        self.result_tunes = get_dict()
+        self.result_tunes = utils.recursive_dict()
         for data in self._frames_data:
             ticker = data[0]
             interval = data[1]

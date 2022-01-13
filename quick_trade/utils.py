@@ -24,6 +24,7 @@ from numpy import nan_to_num
 from numpy import ndarray
 from numpy import polyfit
 from pandas import Series
+from collections import defaultdict
 
 PREDICT_TYPE: type = int
 PREDICT_TYPE_LIST: type = List[PREDICT_TYPE]
@@ -450,3 +451,6 @@ def year_profit(average_growth: np.ndarray, coef: Union[float, int]):
     yp -= 1  # The initial deposit does not count as profit
     yp *= 100  # Percentage
     return yp
+
+def recursive_dict(base={}):
+    return defaultdict(recursive_dict, base)
