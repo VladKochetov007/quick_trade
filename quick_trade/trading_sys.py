@@ -41,7 +41,7 @@ from ._identifier import get_identifier
 class Trader(object):
     _profit_calculate_coef: Union[float, int]
     returns: utils.PREDICT_TYPE_LIST = []
-    df: pd.DataFrame
+    _df: pd.DataFrame
     ticker: str
     interval: str
     _prev_predict: str = 'Exit'
@@ -51,14 +51,14 @@ class Trader(object):
     trades: int = 0
     profits: int = 0
     losses: int = 0
-    _stop_losses: List[float]
-    _take_profits: List[float]
-    _credit_leverages: List[Union[float, int]]
-    deposit_history: List[Union[float, int]]
+    _stop_losses: List[float] = []
+    _take_profits: List[float] = []
+    _credit_leverages: List[Union[float, int]] = []
+    deposit_history: List[Union[float, int]] = []
     year_profit: float
     _info: str
     backtest_out: pd.DataFrame
-    _open_lot_prices: List[float]
+    _open_lot_prices: List[float] = []
     client: TradingClient
     __last_stop_loss: float
     __last_take_profit: float
@@ -69,6 +69,16 @@ class Trader(object):
     _multi_converted_: bool = False
     _entry_start_trade: bool
     identifier: str
+
+    @property
+    def df(self) -> pd.DataFrame:
+        return self._df
+
+    @df.setter
+    def df(self, frame: pd.DataFrame):
+        self._df = frame
+        if 'Close' in self.df.columns:
+            self.update_identifier()
 
     @property
     def _converted(self) -> utils.CONVERTED_TYPE_LIST:
@@ -138,15 +148,6 @@ class Trader(object):
         self.identifier = get_identifier(self.df)
         return self.identifier
 
-    def to_dict(self, verbose: bool = True) -> Dict[str, Dict[str, Any]]:
-        return {
-            self.identifier:
-                {
-                    'deposit_history': self.deposit_history,  # TODO: todo
-
-                }
-        }
-
     @utils.assert_logger
     def __init__(self,
                  ticker: str = 'BTC/USDT',
@@ -162,7 +163,6 @@ class Trader(object):
         self.ticker = ticker
         self.interval = interval
         self._profit_calculate_coef, self._sec_interval = utils.get_coef_sec(interval)
-        self.update_identifier()
         utils.logger.info('new trader: %s', self)
 
     def __repr__(self):
@@ -253,7 +253,7 @@ class Trader(object):
 
     def get_heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()) -> pd.DataFrame:
         """
-        :param df: dataframe, standard: self.df
+        :param df: dataframe, default: self.df
         :return: heikin ashi
         """
         if 'Close' not in df.columns:
