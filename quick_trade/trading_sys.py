@@ -40,7 +40,7 @@ from ._identifier import get_identifier
 
 class Trader(object):
     _profit_calculate_coef: Union[float, int]
-    returns: utils.PREDICT_TYPE_LIST = []
+    _returns: utils.PREDICT_TYPE_LIST = []
     _df: pd.DataFrame
     ticker: str
     interval: str
@@ -54,7 +54,7 @@ class Trader(object):
     _stop_losses: List[float] = []
     _take_profits: List[float] = []
     _credit_leverages: List[Union[float, int]] = []
-    deposit_history: List[Union[float, int]] = []
+    _deposit_history: List[Union[float, int]] = []
     year_profit: float
     _info: str
     backtest_out: pd.DataFrame
@@ -69,6 +69,52 @@ class Trader(object):
     _multi_converted_: bool = False
     _entry_start_trade: bool
     identifier: str
+    average_growth: np.ndarray
+    _converted: utils.CONVERTED_TYPE_LIST
+    mean_deviation: float
+    sharpe_ratio: float
+    sortino_ratio: float
+    max_drawdown: float
+
+    @property
+    def returns(self):
+        return self._returns
+
+    @returns.setter
+    def returns(self, value):
+        self._returns = value
+        self._converted = utils.convert(value)
+
+    @property
+    def deposit_history(self):
+        return self._deposit_history
+
+    @deposit_history.setter
+    def deposit_history(self, value):
+        self._deposit_history = value
+        self.average_growth = utils.get_exponential_growth(self.deposit_history)
+        self.mean_deviation = utils.mean_deviation(pd.Series(self.deposit_history), self.average_growth) * 100
+
+        # Sharpe ratio
+        returns = utils.get_multipliers(pd.Series(value)) - 1
+        mean_ = returns.mean() * self._profit_calculate_coef
+        sigma = returns.std() * np.sqrt(self._profit_calculate_coef)
+        self.sharpe_ratio = mean_ / sigma
+
+        # Sortino ratio
+        sigma = returns[returns < 0].std() * np.sqrt(self._profit_calculate_coef)
+        self.sortino_ratio = mean_ / sigma
+
+        # max drawdown
+
+        max_returns = np.fmax.accumulate(self.deposit_history)
+        res = self.deposit_history / max_returns - 1
+        self.max_drawdown = abs(min(res) * 100)  #TODO
+
+
+
+
+
 
     @property
     def df(self) -> pd.DataFrame:
@@ -81,44 +127,8 @@ class Trader(object):
             self.update_identifier()
 
     @property
-    def _converted(self) -> utils.CONVERTED_TYPE_LIST:
-        return utils.convert(self.returns)
-
-    @property
-    def mean_deviation(self) -> float:
-        return utils.mean_deviation(pd.Series(self.deposit_history), self.average_growth) * 100
-
-    @property
-    def cumulative_returns(self) -> pd.Series:
-        return pd.Series(self.deposit_history) / self.deposit_history[0]
-
-    @property
-    def sharpe_ratio(self) -> float:
-        returns = utils.get_multipliers(pd.Series(self.deposit_history)) - 1
-        mean_ = returns.mean() * self._profit_calculate_coef
-        sigma = returns.std() * np.sqrt(self._profit_calculate_coef)
-        return mean_ / sigma
-
-    @property
-    def sortino_ratio(self) -> float:
-        returns = utils.get_multipliers(pd.Series(self.deposit_history)) - 1
-        mean_ = returns.mean() * self._profit_calculate_coef
-        sigma = returns[returns < 0].std() * np.sqrt(self._profit_calculate_coef)
-        return mean_ / sigma
-
-    @property
-    def max_drawdown(self):
-        max_returns = np.fmax.accumulate(self.cumulative_returns)
-        res = self.cumulative_returns / max_returns - 1
-        return abs(min(res) * 100)
-
-    @property
     def calmar_ratio(self):
         return self.year_profit / self.max_drawdown
-
-    @property
-    def average_growth(self) -> np.ndarray:
-        return utils.get_exponential_growth(self.deposit_history)
 
     @property
     def net_returns(self):
@@ -517,12 +527,12 @@ class Trader(object):
         utils.logger.info('(%s) trader info: %s', self, self._info)
         self.backtest_out = pd.DataFrame(
             (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
-             self._open_lot_prices, data_column, self.average_growth, self.net_returns, self.cumulative_returns),
+             self._open_lot_prices, data_column, self.average_growth, self.net_returns),
             index=[
                 'deposit', 'stop loss', 'take profit',
                 'predictions', 'open trade', 'Close',
                 "average growth deposit data",
-                "returns", 'cumulative returns'
+                "returns"
             ]).T
         if plot:
             self.fig.plot_candlestick()
@@ -616,12 +626,11 @@ class Trader(object):
         multipliers[0] = deposit
         self.deposit_history = list(np.cumprod(multipliers.values))
         self.backtest_out = pd.DataFrame(
-            (self.deposit_history, self.average_growth, self.net_returns, self.cumulative_returns),
+            (self.deposit_history, self.average_growth, self.net_returns),
             index=[
                 'deposit',
                 "average growth deposit data",
                 "returns",
-                'cumulative returns'
             ]).T
 
         utils.logger.info('(%s) trader multi info: %s', self, self._info)

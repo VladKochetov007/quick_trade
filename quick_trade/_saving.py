@@ -30,9 +30,6 @@ def write_json(path: str, data, indent: int = 2):
 
 def save_trader(trader):
     file = JSON(filepath=BUFFER_PATH)
-    trader_short: dict = trader.to_dict(verbose=False)
-    trader_key = list(trader_short.keys())[0]
-    trader_val = list(trader_short.values())[0]
-    data: dict = file.read()
-    data[trader_key] = trader_val
+    data: defaultdict = recursive_dict(base=file.read())
+    #data[trader.ticker][trader.interval][trader.identifier][] = {} TODO
     file.write(data, indent=BUFFER_INDENT)

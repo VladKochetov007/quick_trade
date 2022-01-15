@@ -182,7 +182,7 @@ A method for testing a strategy on several symbols.
 | plot | bool | Plotting data about candles, deposits and trades on the chart. |
 | print_out | bool | Displaying data on the number of profitable and unprofitable trades and annual income to the console. |
 | show | bool | Show testing schedule. Includes candles, deposit, `.diff()` of deposit and other.|
-| returns | `pd.DataFrame` | Dataframe with information about the deposit, average growth of deposit, `.diff()` of deposit, returns and cumulative returns |
+| returns | `pd.DataFrame` | Dataframe with information about the deposit, average growth of deposit, `.diff()` of deposit and returns |
 
 ```python
 import numpy as np
