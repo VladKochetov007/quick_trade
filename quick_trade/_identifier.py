@@ -33,8 +33,8 @@ class Identifier(object):
     def get(self) -> str:
         length: int = len(self.df)
         first: str = self._format_candle(0)
-        mid: str = self._format_candle(len(self.df)//2)
-        last: str = self._format_candle(len(self.df)-1)
+        mid: str = self._format_candle(length//2)
+        last: str = self._format_candle(length-1)
         identifier10: str = first+mid+last+str(length)
         self.identifier = convert_base(identifier10, to_base=128, from_base=10)
         return self.identifier
