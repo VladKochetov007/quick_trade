@@ -231,6 +231,7 @@ TUNER_CODECONF: Dict[str, str] = {
 
 BUFFER_PERCISION_POINTER: Union[float, int] = 2**12
 INT_ALPHABET: str = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZбёгджйлпфхцчшщъыьэюяЁБГДЖЙЛПФХЦЧШЩЪЫЬЭЮЯїЇ!#$%&()*+,.:;<>?@^_`{}~-'
+MIN_DEPOSIT_LENGTH: int = 3
 
 locker = threading.Lock()
 

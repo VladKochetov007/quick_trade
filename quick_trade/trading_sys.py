@@ -75,15 +75,18 @@ class Trader(object):
     sharpe_ratio: float
     sortino_ratio: float
     max_drawdown: float
+    calmar_ratio: float
+    net_returns: pd.Series
+    profit_deviation_ratio: float
 
     @property
     def returns(self):
         return self._returns
 
     @returns.setter
-    def returns(self, value):
+    def returns(self, value):  #TODO: make decorator for strategies
         self._returns = value
-        self._converted = utils.convert(value)
+        self._converted = utils.convert(self._returns)
 
     @property
     def deposit_history(self):
@@ -92,29 +95,41 @@ class Trader(object):
     @deposit_history.setter
     def deposit_history(self, value):
         self._deposit_history = value
-        self.average_growth = utils.get_exponential_growth(self.deposit_history)
-        self.mean_deviation = utils.mean_deviation(pd.Series(self.deposit_history), self.average_growth) * 100
+        if len(value) > utils.MIN_DEPOSIT_LENGTH:
+            self.average_growth = utils.get_exponential_growth(self.deposit_history)
+            self.mean_deviation = utils.mean_deviation(pd.Series(self.deposit_history), self.average_growth) * 100
 
-        # Sharpe ratio
-        returns = utils.get_multipliers(pd.Series(value)) - 1
-        mean_ = returns.mean() * self._profit_calculate_coef
-        sigma = returns.std() * np.sqrt(self._profit_calculate_coef)
-        self.sharpe_ratio = mean_ / sigma
+            # Sharpe ratio
+            returns = utils.get_multipliers(pd.Series(value)) - 1
+            mean_ = returns.mean() * self._profit_calculate_coef
+            sigma = returns.std() * np.sqrt(self._profit_calculate_coef)
+            self.sharpe_ratio = mean_ / sigma
 
-        # Sortino ratio
-        sigma = returns[returns < 0].std() * np.sqrt(self._profit_calculate_coef)
-        self.sortino_ratio = mean_ / sigma
+            # Sortino ratio
+            sigma = returns[returns < 0].std() * np.sqrt(self._profit_calculate_coef)
+            self.sortino_ratio = mean_ / sigma
 
-        # max drawdown
+            # max drawdown
+            max_returns = np.fmax.accumulate(self.deposit_history)
+            res = self.deposit_history / max_returns - 1
+            self.max_drawdown = abs(min(res) * 100)
 
-        max_returns = np.fmax.accumulate(self.deposit_history)
-        res = self.deposit_history / max_returns - 1
-        self.max_drawdown = abs(min(res) * 100)  #TODO
+            # average year profit
+            self.year_profit = utils.year_profit(self.average_growth, self._profit_calculate_coef)
 
+            if self.trades != 0:
+                self.winrate = (self.profits / self.trades) * 100
+            else:
+                self.winrate = 0
+                utils.logger.critical('0 trades in %s', self)
 
+            self.calmar_ratio = self.year_profit / self.max_drawdown
 
+            # net returns
+            self.net_returns = pd.Series(self.deposit_history).diff()
+            self.net_returns[0] = 0.0
 
-
+            self.profit_deviation_ratio = self.year_profit / self.mean_deviation
 
     @property
     def df(self) -> pd.DataFrame:
@@ -125,20 +140,6 @@ class Trader(object):
         self._df = frame
         if 'Close' in self.df.columns:
             self.update_identifier()
-
-    @property
-    def calmar_ratio(self):
-        return self.year_profit / self.max_drawdown
-
-    @property
-    def net_returns(self):
-        netret = pd.Series(self.deposit_history).diff()
-        netret[0] = 0
-        return netret
-
-    @property
-    def profit_deviation_ratio(self):
-        return self.year_profit / self.mean_deviation
 
     @property
     def _info(self):
@@ -437,13 +438,6 @@ class Trader(object):
                 ignore_breakout = True
 
                 if sig != utils.EXIT and not min(stop_loss, take_profit) <= open_price <= max(stop_loss, take_profit) and e > 0:
-                    warn('The deal was opened out of range!')
-                    utils.logger.error('(%s) The deal was opened out of range! (candle=%d)', self, e)
-                    self.winrate = 0.0
-                    self.year_profit = 0.0
-                    self.losses = 0
-                    self.profits = 0
-                    self.trades = 0
                     pass_math = True
                     break
 
@@ -515,13 +509,16 @@ class Trader(object):
                 prev_sig = sig
             ignore_breakout = False
 
-        if not pass_math:
-            self.year_profit = utils.year_profit(self.average_growth, self._profit_calculate_coef)
-            if self.trades != 0:
-                self.winrate = (self.profits / self.trades) * 100
-            else:
-                self.winrate = 0
-                utils.logger.critical('0 trades in %s', self)
+        self.deposit_history = self.deposit_history
+        if pass_math:
+            warn('The deal was opened out of range!')
+            utils.logger.error('(%s) The deal was opened out of range! (candle=%d)', self, e)
+            self.winrate = 0.0
+            self.year_profit = 0.0
+            self.losses = 0
+            self.profits = 0
+            self.trades = 0
+
         if print_out:
             print(self._info)
         utils.logger.info('(%s) trader info: %s', self, self._info)
@@ -579,7 +576,6 @@ class Trader(object):
         assert isinstance(show, bool), 'show must be of type <bool>'
 
         winrates: List[float] = []
-        percentage_profits: List[float] = []
         losses: List[int] = []
         trades: List[int] = []
         profits: List[int] = []
@@ -607,7 +603,6 @@ class Trader(object):
                                         print_out=False,
                                         show=False)
                     winrates.append(new_trader.winrate)
-                    percentage_profits.append(new_trader.year_profit)
                     losses.append(new_trader.losses)
                     trades.append(new_trader.trades)
                     profits.append(new_trader.profits)
@@ -616,7 +611,6 @@ class Trader(object):
         self.losses = sum(losses)
         self.trades = sum(trades)
         self.profits = sum(profits)
-        self.year_profit = float(np.mean(percentage_profits))
         self.winrate = float(np.mean(winrates))
 
         for enum, elem in enumerate(depos):
@@ -1491,6 +1485,7 @@ class ExampleStrategies(Trader):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
+        self.returns = self.returns
         self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
