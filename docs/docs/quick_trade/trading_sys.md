@@ -93,10 +93,10 @@ class MultiTrader(Trader):
                 self.returns.append(np.nan)  # <------
         self.multi_trades()  # <----------------------
         self.set_open_stop_and_take()
-        self.set_credit_leverages()
+        self.setcredit_leverages()
 ```
 
-!> Using [`set_credit_leverages`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=set_credit_leverages)
+!> Using [`setcredit_leverages`](https://vladkochetov007.github.io/quick_trade/#/docs/quick_trade/trading_sys?id=setcredit_leverages)
 after [`multi_trades`](#multi_trades) is not advisable!
 
 ### get_heikin_ashi
@@ -140,8 +140,8 @@ trader.inverse_strategy()
 
 ### backtest
 
-A method with the functionality of testing a strategy on historical data. For it to work, you need to use a strategy that will assign values to `self.returns`,` self._stop_losses`, `self._take_profits`
-and `self._credit_leverages`.
+A method with the functionality of testing a strategy on historical data. For it to work, you need to use a strategy that will assign values to `self.returns`,` self.stop_losses`, `self.take_profits`
+and `self.credit_leverages`.
 
 | param  | type | description |
 | :---: | :---: | :---: |
@@ -339,7 +339,7 @@ A method for running one strategy at real-time on the exchange. You will not be 
 
 ### set_open_stop_and_take
 
-### set_credit_leverages
+### setcredit_leverages
 
 ### get_support_resistance
 

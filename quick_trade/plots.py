@@ -164,7 +164,7 @@ class QuickTradeGraph(BasePlotlyGraph):
                        _col=self.returns_col)
 
     def plot_SL_TP_OPN(self):
-        self.plot_line(line=self.trader._stop_losses,
+        self.plot_line(line=self.trader.stop_losses,
                        width=utils.STOP_LOSS_WIDTH,
                        opacity=utils.STOP_LOSS_ALPHA,
                        color=utils.STOP_LOSS_COLOR,
@@ -172,7 +172,7 @@ class QuickTradeGraph(BasePlotlyGraph):
                        _row=self.data_row,
                        _col=self.data_col)
 
-        self.plot_line(line=self.trader._take_profits,
+        self.plot_line(line=self.trader.take_profits,
                        width=utils.TAKE_PROFIT_WIDTH,
                        opacity=utils.TAKE_PROFIT_ALPHA,
                        color=utils.TAKE_PROFIT_COLOR,
@@ -180,7 +180,7 @@ class QuickTradeGraph(BasePlotlyGraph):
                        _row=self.data_row,
                        _col=self.data_col)
 
-        self.plot_line(line=self.trader._open_lot_prices,
+        self.plot_line(line=self.trader.open_lot_prices,
                        width=utils.OPEN_TRADE_WIDTH,
                        opacity=utils.OPEN_TRADE_ALPHA,
                        color=utils.OPEN_TRADE_COLOR,
@@ -200,10 +200,10 @@ class QuickTradeGraph(BasePlotlyGraph):
         }
         for e, (pred, conv, crlev) in enumerate(zip(self.trader.returns,
                                                     self.trader._converted,
-                                                    utils.convert(self.trader._credit_leverages))):
+                                                    utils.convert(self.trader.credit_leverages))):
             if e != 0:
-                credlev_up = self.trader._credit_leverages[e - 1] < self.trader._credit_leverages[e]
-                credlev_down = self.trader._credit_leverages[e - 1] > self.trader._credit_leverages[e]
+                credlev_up = self.trader.credit_leverages[e - 1] < self.trader.credit_leverages[e]
+                credlev_down = self.trader.credit_leverages[e - 1] > self.trader.credit_leverages[e]
                 sell = (credlev_down and pred == utils.BUY) or (credlev_up and pred == utils.SELL)
                 buy = (credlev_down and pred == utils.SELL) or (credlev_up and pred == utils.BUY)
             else:

@@ -64,7 +64,7 @@ class MyTrader(qtr.Trader):
         for i in self.df['Close'].values:
             ret.append(qtr.utils.SELL)
         self.returns = ret
-        self.set_credit_leverages(1.0)
+        self.setcredit_leverages(1.0)
         self.set_open_stop_and_take()
         return ret
 
@@ -88,7 +88,7 @@ from quick_trade.brokers import TradingClient
 class Test(qtr.ExampleStrategies):  # examples of strategies
     def strategy_supertrend1(self, plot: bool = False, *st_args, **st_kwargs):
         self.strategy_supertrend(plot=plot, *st_args, **st_kwargs)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.convert_signal()
         return self.returns
 
@@ -97,13 +97,13 @@ class Test(qtr.ExampleStrategies):  # examples of strategies
             self.strategy_macd(**kwargs)
         else:
             self.strategy_macd_histogram_diff(**kwargs)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.convert_signal()
         return self.returns
 
     def psar(self, **kwargs):
         self.strategy_parabolic_SAR(plot=False, **kwargs)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.convert_signal()
         return self.returns
 
@@ -232,7 +232,7 @@ class MyTrade(ExampleStrategies):
     def strategy(self):
         self.strategy_supertrend(multiplier=2, length=1, plot=False)
         self.convert_signal()
-        self.set_credit_leverages(1)
+        self.setcredit_leverages(1)
         self.sl_tp_adder(10)
         return self.returns
 

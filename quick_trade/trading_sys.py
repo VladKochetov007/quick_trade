@@ -51,14 +51,14 @@ class Trader(object):
     trades: int = 0
     profits: int = 0
     losses: int = 0
-    _stop_losses: List[float] = []
-    _take_profits: List[float] = []
-    _credit_leverages: List[Union[float, int]] = []
+    stop_losses: List[float] = []
+    take_profits: List[float] = []
+    credit_leverages: List[Union[float, int]] = []
     _deposit_history: List[Union[float, int]] = []
     year_profit: float
     _info: str
     backtest_out: pd.DataFrame
-    _open_lot_prices: List[float] = []
+    open_lot_prices: List[float] = []
     client: TradingClient
     __last_stop_loss: float
     __last_take_profit: float
@@ -84,7 +84,7 @@ class Trader(object):
         return self._returns
 
     @returns.setter
-    def returns(self, value):  #TODO: make decorator for strategies
+    def returns(self, value):
         self._returns = value
         self._converted = utils.convert(self._returns)
 
@@ -237,9 +237,9 @@ class Trader(object):
         utils.logger.debug('add stop-loss: %f pips, take-profit: %s pips', add_stop_loss, add_take_profit)
         stop_losses = []
         take_profits = []
-        for stop_loss_price, take_profit_price, price, sig in zip(self._stop_losses,
-                                                                  self._take_profits,
-                                                                  self._open_lot_prices,
+        for stop_loss_price, take_profit_price, price, sig in zip(self.stop_losses,
+                                                                  self.take_profits,
+                                                                  self.open_lot_prices,
                                                                   self.returns):
             add_sl = (price / 10_000) * add_stop_loss
             add_tp = (price / 10_000) * add_take_profit
@@ -254,12 +254,12 @@ class Trader(object):
                 stop_losses.append(stop_loss_price)
                 take_profits.append(take_profit_price)
 
-        self._stop_losses = stop_losses
-        self._take_profits = take_profits
-        return self._stop_losses, self._take_profits
+        self.stop_losses = stop_losses
+        self.take_profits = take_profits
+        return self.stop_losses, self.take_profits
 
     def multi_trades(self):
-        self.returns, self._credit_leverages = utils.make_multi_trade_returns(self.returns)
+        self.returns, self.credit_leverages = utils.make_multi_trade_returns(self.returns)
         self._multi_converted_ = True
 
     def get_heikin_ashi(self, df: pd.DataFrame = pd.DataFrame()) -> pd.DataFrame:
@@ -296,7 +296,7 @@ class Trader(object):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -322,7 +322,7 @@ class Trader(object):
             returns.append(flag)
         self.returns = returns
         if swap_stop_take:
-            self._stop_losses, self._take_profits = self._take_profits, self._stop_losses
+            self.stop_losses, self.take_profits = self.take_profits, self.stop_losses
         return self.returns
 
     @utils.assert_logger
@@ -399,10 +399,10 @@ class Trader(object):
                 low,
                 next_h,
                 next_l) in enumerate(zip(self.returns[:-1],
-                                         self._stop_losses[:-1],
-                                         self._take_profits[:-1],
+                                         self.stop_losses[:-1],
+                                         self.take_profits[:-1],
                                          self._converted[:-1],
-                                         self._credit_leverages[:-1],
+                                         self.credit_leverages[:-1],
                                          data_high[:-1],
                                          data_low[:-1],
                                          data_high[1:],
@@ -444,16 +444,16 @@ class Trader(object):
             if sig != utils.EXIT:
                 next_not_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
 
-                stop_loss = self._stop_losses[e - 1]
-                take_profit = self._take_profits[e - 1]
+                stop_loss = self.stop_losses[e - 1]
+                take_profit = self.take_profits[e - 1]
                 # be careful with e=0
                 # haha))) no)
                 now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit)
 
                 normal = ignore_breakout or (now_not_breakout and next_not_breakout)
 
-                if credit_lev != self._credit_leverages[e - 1] and not ignore_breakout:
-                    deposit -= bet * (commission / 100) * abs(self._credit_leverages[e - 1] - credit_lev)
+                if credit_lev != self.credit_leverages[e - 1] and not ignore_breakout:
+                    deposit -= bet * (commission / 100) * abs(self.credit_leverages[e - 1] - credit_lev)
                     # Commission when changing the leverage.
                     if bet > deposit:
                         bet = deposit
@@ -476,8 +476,8 @@ class Trader(object):
                     exit_take_stop = True
 
                     if (not now_not_breakout) and not ignore_breakout:
-                        stop_loss = self._stop_losses[e - 1]
-                        take_profit = self._take_profits[e - 1]
+                        stop_loss = self.stop_losses[e - 1]
+                        take_profit = self.take_profits[e - 1]
                         diff = utils.get_diff(price=data_column[e],
                                               low=low,
                                               high=high,
@@ -486,8 +486,8 @@ class Trader(object):
                                               signal=sig)
 
                     elif not next_not_breakout:
-                        stop_loss = self._stop_losses[e]
-                        take_profit = self._take_profits[e]
+                        stop_loss = self.stop_losses[e]
+                        take_profit = self.take_profits[e]
                         diff = utils.get_diff(price=data_column[e],
                                               low=next_l,
                                               high=next_h,
@@ -523,8 +523,8 @@ class Trader(object):
             print(self._info)
         utils.logger.info('(%s) trader info: %s', self, self._info)
         self.backtest_out = pd.DataFrame(
-            (self.deposit_history, self._stop_losses, self._take_profits, self.returns,
-             self._open_lot_prices, data_column, self.average_growth, self.net_returns),
+            (self.deposit_history, self.stop_losses, self.take_profits, self.returns,
+             self.open_lot_prices, data_column, self.average_growth, self.net_returns),
             index=[
                 'deposit', 'stop loss', 'take profit',
                 'predictions', 'open trade', 'Close',
@@ -784,10 +784,10 @@ class Trader(object):
         predict: str = utils.convert_signal_str(self.returns[-1])
 
         # trading
-        self.__last_stop_loss = self._stop_losses[-1]
-        self.__last_take_profit = self._take_profits[-1]
+        self.__last_stop_loss = self.stop_losses[-1]
+        self.__last_take_profit = self.take_profits[-1]
 
-        conv_cred_lev = utils.convert(self._credit_leverages)
+        conv_cred_lev = utils.convert(self.credit_leverages)
 
         if self._entry_start_trade:
             open_new_order = predict != self._prev_predict or not np.isnan(conv_cred_lev[-1])
@@ -817,7 +817,7 @@ class Trader(object):
 
                         self.client.order_create(predict,
                                                  self.ticker,
-                                                 bet * self._credit_leverages[-1])  # entry new position
+                                                 bet * self.credit_leverages[-1])  # entry new position
         utils.logger.debug("(%s) returning prediction", self)
         return {
             'predict': predict,
@@ -825,7 +825,7 @@ class Trader(object):
             'stop loss': self.__last_stop_loss,
             'take profit': self.__last_take_profit,
             'close price': close[-1],
-            'credit leverage': self._credit_leverages[-1]
+            'credit leverage': self.credit_leverages[-1]
         }
 
     @utils.assert_logger
@@ -1050,11 +1050,11 @@ class Trader(object):
         self._stop_loss = stop_loss
         take_flag: float = np.inf
         stop_flag: float = np.inf
-        self._open_lot_prices = []
+        self.open_lot_prices = []
         if set_stop:
-            self._stop_losses = []
+            self.stop_losses = []
         if set_take:
-            self._take_profits = []
+            self.take_profits = []
         closes: np.ndarray = self.df['Close'].values
         sig: utils.PREDICT_TYPE
         close: float
@@ -1073,26 +1073,26 @@ class Trader(object):
                 else:
                     take_flag = stop_flag = self._open_price
 
-            self._open_lot_prices.append(self._open_price)
+            self.open_lot_prices.append(self._open_price)
             if set_take:
-                self._take_profits.append(take_flag)
+                self.take_profits.append(take_flag)
             elif sig == utils.EXIT:
-                self._take_profits[e] = take_flag
+                self.take_profits[e] = take_flag
             if set_stop:
-                self._stop_losses.append(stop_flag)
+                self.stop_losses.append(stop_flag)
             elif sig == utils.EXIT:
-                self._stop_losses[e] = take_flag
+                self.stop_losses[e] = take_flag
         utils.logger.debug('(%s) stop loss: %f pips, trader take profit: %f pips', self, stop_loss, take_profit)
 
     @utils.assert_logger
-    def set_credit_leverages(self, credit_lev: Union[float, int] = 1.0):
+    def setcredit_leverages(self, credit_lev: Union[float, int] = 1.0):
         """
         Sets the leverage for bets.
         :param credit_lev: leverage in points
         """
         assert isinstance(credit_lev, (float, int)), 'credit_lev must be of type <float> or <int>'
 
-        self._credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
+        self.credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
         utils.logger.debug('(%s) credit leverage: %f', self, credit_lev)
 
     def get_support_resistance(self) -> Dict[str, Dict[int, float]]:
@@ -1117,23 +1117,23 @@ class Trader(object):
         self.convert_signal(1, utils.BUY)
         self.convert_signal(0, utils.SELL)
         self.set_open_stop_and_take()
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         return self.returns
 
     def correct_sl_tp(self,
                       sl_correction: Union[float, int] = 50,
                       tp_correction: Union[
                           float, int] = 50):  # TODO: make documentation for this method   <--------------------------------------------------------------------------------------------------------------------------------------
-        for e, (sl, tp, p, sig) in enumerate(zip(self._stop_losses, self._take_profits, self.df['Close'], self.returns)):
+        for e, (sl, tp, p, sig) in enumerate(zip(self.stop_losses, self.take_profits, self.df['Close'], self.returns)):
             if sig == utils.BUY and sl > p:
-                self._stop_losses[e] = p * (1 - sl_correction / 10_000)
+                self.stop_losses[e] = p * (1 - sl_correction / 10_000)
             if sig == utils.SELL and sl < p:
-                self._stop_losses[e] = p * (1 + sl_correction / 10_000)
+                self.stop_losses[e] = p * (1 + sl_correction / 10_000)
 
             if sig == utils.SELL and tp > p:
-                self._stop_losses[e] = p * (1 - tp_correction / 10_000)
+                self.stop_losses[e] = p * (1 - tp_correction / 10_000)
             if sig == utils.BUY and tp < p:
-                self._stop_losses[e] = p * (1 + tp_correction / 10_000)
+                self.stop_losses[e] = p * (1 + tp_correction / 10_000)
 
 
 class ExampleStrategies(Trader):
@@ -1173,7 +1173,7 @@ class ExampleStrategies(Trader):
                 self.returns.append(flag)
             else:
                 self.returns.append(flag)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1182,7 +1182,7 @@ class ExampleStrategies(Trader):
         flag: utils.PREDICT_TYPE = utils.EXIT
 
         flag_stop_loss: float = np.inf
-        self._stop_losses = [flag_stop_loss]
+        self.stop_losses = [flag_stop_loss]
         high: List[float]
         low: List[float]
         open_pr: List[float]
@@ -1202,8 +1202,8 @@ class ExampleStrategies(Trader):
                 flag_stop_loss = max(high[0], high[1])
 
             self.returns.append(flag)
-            self._stop_losses.append(flag_stop_loss)
-        self.set_credit_leverages()
+            self.stop_losses.append(flag_stop_loss)
+        self.setcredit_leverages()
         self.set_open_stop_and_take(set_stop=False)
         return self.returns
 
@@ -1225,7 +1225,7 @@ class ExampleStrategies(Trader):
             elif low[0] == low[1]:
                 flag = utils.SELL
             self.returns.append(flag)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1246,7 +1246,7 @@ class ExampleStrategies(Trader):
                      ) == high[1] and close[2] < close[1] and low[2] > low[0]:
                 flag = utils.SELL
             self.returns.append(flag)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1309,7 +1309,7 @@ class ExampleStrategies(Trader):
                                name_slow=utils.SENKOU_SPAN_B_NAME)
 
             self.returns = [utils.EXIT for i in range(chinkouspan)]
-            self._stop_losses = [self.df['Close'].values[0]] * chinkouspan
+            self.stop_losses = [self.df['Close'].values[0]] * chinkouspan
             for e, (close, tenkan, kijun, A, B) in enumerate(zip(
                     prices.values[chinkouspan:],
                     tenkan_sen[chinkouspan:],
@@ -1345,22 +1345,22 @@ class ExampleStrategies(Trader):
                 min_cloud_now = min(senkou_span_a[e], senkou_span_b[e])
                 max_cloud_now = max(senkou_span_a[e], senkou_span_b[e])
                 if trade == utils.BUY:
-                    self._stop_losses.append(min_cloud_now)
+                    self.stop_losses.append(min_cloud_now)
                 elif trade == utils.SELL:
-                    self._stop_losses.append(max_cloud_now)
+                    self.stop_losses.append(max_cloud_now)
                 elif trade == utils.EXIT:
-                    self._stop_losses.append(0.0)
+                    self.stop_losses.append(0.0)
                 else:
                     raise ValueError('What???')
 
         self.set_open_stop_and_take(set_stop=False)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.sl_tp_adder(add_stop_loss=stop_loss_plus)
         return self.returns
 
     def strategy_buy_hold(self) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.BUY for _ in range(len(self.df))]
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1396,7 +1396,7 @@ class ExampleStrategies(Trader):
             else:
                 self.returns.append(utils.EXIT)
         self.set_open_stop_and_take()
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         return self.returns
 
     def strategy_3_sma(self,
@@ -1432,7 +1432,7 @@ class ExampleStrategies(Trader):
             else:
                 self.returns.append(utils.EXIT)
 
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1468,7 +1468,7 @@ class ExampleStrategies(Trader):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1485,8 +1485,7 @@ class ExampleStrategies(Trader):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
-        self.returns = self.returns
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1511,7 +1510,7 @@ class ExampleStrategies(Trader):
                 flag = utils.EXIT
             self.returns.append(flag)
 
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1521,7 +1520,7 @@ class ExampleStrategies(Trader):
                                                              self.df['Close'], **sar_kwargs)
         sardown: np.ndarray = sar.psar_down().values
         sarup: np.ndarray = sar.psar_up().values
-        self._stop_losses = sar.psar().values.tolist()
+        self.stop_losses = sar.psar().values.tolist()
         if plot:
             self.fig.plot_line(line=sarup,
                                width=utils.SAR_UP_WIDTH,
@@ -1549,7 +1548,7 @@ class ExampleStrategies(Trader):
                 self.returns.append(utils.SELL)
             else:
                 self.returns.append(utils.EXIT)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take(set_stop=False)
         self.correct_sl_tp()
         return self.returns
@@ -1569,7 +1568,7 @@ class ExampleStrategies(Trader):
                 self.returns.append(utils.BUY)
             else:
                 self.returns.append(utils.SELL)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
@@ -1600,10 +1599,10 @@ class ExampleStrategies(Trader):
                                _col=self.fig.data_col)
         self.returns = list(st.get_supertrend_strategy_returns())
         self.returns[:length + 1] = [utils.EXIT] * (length + 1)
-        self._stop_losses = list(st.get_supertrend())
-        self._stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
+        self.stop_losses = list(st.get_supertrend())
+        self.stop_losses[0] = np.inf if self.returns[0] == utils.SELL else -np.inf
         self.set_open_stop_and_take(set_stop=False)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         return self.returns
 
     def strategy_bollinger(self,
@@ -1659,8 +1658,8 @@ class ExampleStrategies(Trader):
             self.returns.append(flag)
         self.set_open_stop_and_take()
         if to_mid:
-            self._take_profits = mid_.tolist()
-        self.set_credit_leverages()
+            self.take_profits = mid_.tolist()
+        self.setcredit_leverages()
         return self.returns
 
     def strategy_bollinger_breakout(self,
@@ -1683,20 +1682,20 @@ class ExampleStrategies(Trader):
             mid_: pd.Series = bollinger.bollinger_mavg()
             upper: pd.Series = bollinger.bollinger_hband()
             lower: pd.Series = bollinger.bollinger_lband()
-            self._stop_losses = []
+            self.stop_losses = []
             for sig, high, low in zip(self.returns,
                                       upper,
                                       lower):
                 if sig == utils.BUY:
-                    self._stop_losses.append(low)
+                    self.stop_losses.append(low)
                 else:
-                    self._stop_losses.append(high)
+                    self.stop_losses.append(high)
         self.correct_sl_tp()
         return self.returns
 
     def strategy_idris(self, points=20):
-        self._stop_losses = [np.inf] * 2
-        self._take_profits = [np.inf] * 2
+        self.stop_losses = [np.inf] * 2
+        self.take_profits = [np.inf] * 2
         flag = utils.EXIT
         self.returns = [flag] * 2
         for e in range(len(self.df) - 2):
@@ -1708,7 +1707,7 @@ class ExampleStrategies(Trader):
                 flag = utils.BUY
             self.returns.append(flag)
         self.set_open_stop_and_take(stop_loss=points * 2, take_profit=points * 20)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         return self.returns
 
     def DP_strategy(self,
@@ -1730,7 +1729,7 @@ class ExampleStrategies(Trader):
             if fast < 20 and slow < 20:
                 flag = utils.BUY
             self.returns.append(flag)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take(take_profit=tp,
                                     stop_loss=sl)
         return self.returns
@@ -1760,7 +1759,7 @@ class ExampleStrategies(Trader):
             if max(a, b) < 20 and c < 20:
                 flag = utils.BUY
             self.returns.append(flag)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take(take_profit=tp,
                                     stop_loss=sl)
         return self.returns
@@ -1775,7 +1774,7 @@ class ExampleStrategies(Trader):
                 self.returns.append(utils.BUY)
             else:
                 self.returns.append(utils.SELL)
-        self.set_credit_leverages(1)
+        self.setcredit_leverages(1)
         self.set_open_stop_and_take(stop_loss=5000)
         return self.returns
 
@@ -1789,11 +1788,11 @@ class ExampleStrategies(Trader):
         for price, cci, rsi in zip(self.df['Close'].values, CCI.cci(), RSI.rsi()):
             if cci < 10 and rsi < 43:
                 self.returns.append(utils.BUY)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         self.set_open_stop_and_take()
 
     def new_macd_strategy(self, slow=21, fast=12, ATR_win=14, ATR_multiplier=5):
-        self._stop_losses = []
+        self.stop_losses = []
         self.returns = []
 
         macd_indicator = ta.trend.MACD(close=self.df['Close'],
@@ -1815,11 +1814,11 @@ class ExampleStrategies(Trader):
 
             if diff > 0:
                 self.returns.append(utils.BUY)
-                self._stop_losses.append(price - stop_indicator)
+                self.stop_losses.append(price - stop_indicator)
             else:
                 self.returns.append(utils.SELL)
-                self._stop_losses.append(price + stop_indicator)
+                self.stop_losses.append(price + stop_indicator)
 
         self.set_open_stop_and_take(set_stop=False)
-        self.set_credit_leverages()
+        self.setcredit_leverages()
         return self.returns

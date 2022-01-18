@@ -196,7 +196,8 @@ __credits__: List[str] = [
     "https://towardsdatascience.com/sharpe-ratio-sorino-ratio-and-calmar-ratio-252b0cddc328",
     "https://www.wallstreetmojo.com/calmar-ratio/",
     "Iliuschenko Nikita Andreevich -- translator",
-    "https://www.geeksforgeeks.org/append-to-json-file-using-python/"
+    "https://www.geeksforgeeks.org/append-to-json-file-using-python/",
+    "https://stackoverflow.com/questions/900392/getting-the-caller-function-name-inside-another-function-in-python"
 ]
 
 logger = getLogger(__name__)
@@ -442,8 +443,8 @@ def get_multipliers(df: pd.Series) -> pd.Series:
     return ret
 
 
-def mean_deviation(frame: Series, avg_grwth: ndarray) -> float:
-    relative_diff = abs(frame.values - avg_grwth) / avg_grwth
+def mean_deviation(frame: Series, avg_growth: ndarray) -> float:
+    relative_diff = abs(frame.values - avg_growth) / avg_growth
     return relative_diff.mean()
 
 def year_profit(average_growth: np.ndarray, coef: Union[float, int]):
