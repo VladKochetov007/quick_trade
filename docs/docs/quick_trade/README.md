@@ -41,11 +41,11 @@ If you want to enter a trade not for the entire deposit, but for a part or more 
 method. It places the same `self.credit_leverages` for all candles.
 
 ```python
-self.setcredit_leverages(credit_lev=0.25)  # 1/4 of deposit for trade
+self.set_credit_leverages(credit_lev=0.25)  # 1/4 of deposit for trade
 ```
 
 ```python
-self.setcredit_leverages(credit_lev=5)  # 5X credit leverage
+self.set_credit_leverages(credit_lev=5)  # 5X credit leverage
 ```
 
 The 3 variables from utils.py should be used as the strategy results:
