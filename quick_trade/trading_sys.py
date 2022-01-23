@@ -9,6 +9,7 @@
 #   add meta-data in tuner's returns
 #   add "tradingview backtest"
 #   multi-timeframe backtest
+#   telegram bot
 
 from copy import copy
 from datetime import datetime
@@ -36,12 +37,11 @@ from . import utils
 from .brokers import TradingClient
 from .plots import QuickTradeGraph
 from ._identifier import get_identifier
-from functools import wraps
 
 
 class Trader(object):
     _profit_calculate_coef: Union[float, int]
-    _returns: utils.PREDICT_TYPE_LIST = []
+    returns: utils.PREDICT_TYPE_LIST = []
     _df: pd.DataFrame
     ticker: str
     interval: str
@@ -55,7 +55,7 @@ class Trader(object):
     stop_losses: List[float] = []
     take_profits: List[float] = []
     credit_leverages: List[Union[float, int]] = []
-    _deposit_history: List[Union[float, int]] = []
+    deposit_history: List[Union[float, int]] = []
     year_profit: float
     _info: str
     backtest_out: pd.DataFrame
@@ -80,57 +80,44 @@ class Trader(object):
     net_returns: pd.Series
     profit_deviation_ratio: float
 
-    @property
-    def returns(self):
-        return self._returns
+    def returns_update(self):
+        self._converted = utils.convert(self.returns)
 
-    @returns.setter
-    def returns(self, value):
-        self._returns = value
-        self._converted = utils.convert(self._returns)
+    def deposit_history_update(self):
+        self.average_growth = utils.get_exponential_growth(self.deposit_history)
+        self.mean_deviation = utils.mean_deviation(pd.Series(self.deposit_history), self.average_growth) * 100
 
-    @property
-    def deposit_history(self):
-        return self._deposit_history
+        # Sharpe ratio
+        returns = utils.get_multipliers(pd.Series(self.deposit_history)) - 1
+        mean_ = returns.mean() * self._profit_calculate_coef
+        sigma = returns.std() * np.sqrt(self._profit_calculate_coef)
+        self.sharpe_ratio = mean_ / sigma
 
-    @deposit_history.setter
-    def deposit_history(self, value):
-        self._deposit_history = value
-        if len(value) > utils.MIN_DEPOSIT_LENGTH:
-            self.average_growth = utils.get_exponential_growth(self.deposit_history)
-            self.mean_deviation = utils.mean_deviation(pd.Series(self.deposit_history), self.average_growth) * 100
+        # Sortino ratio
+        sigma = returns[returns < 0].std() * np.sqrt(self._profit_calculate_coef)
+        self.sortino_ratio = mean_ / sigma
 
-            # Sharpe ratio
-            returns = utils.get_multipliers(pd.Series(value)) - 1
-            mean_ = returns.mean() * self._profit_calculate_coef
-            sigma = returns.std() * np.sqrt(self._profit_calculate_coef)
-            self.sharpe_ratio = mean_ / sigma
+        # max drawdown
+        max_returns = np.fmax.accumulate(self.deposit_history)
+        res = self.deposit_history / max_returns - 1
+        self.max_drawdown = abs(min(res) * 100)
 
-            # Sortino ratio
-            sigma = returns[returns < 0].std() * np.sqrt(self._profit_calculate_coef)
-            self.sortino_ratio = mean_ / sigma
+        # average year profit
+        self.year_profit = utils.year_profit(self.average_growth, self._profit_calculate_coef)
 
-            # max drawdown
-            max_returns = np.fmax.accumulate(self.deposit_history)
-            res = self.deposit_history / max_returns - 1
-            self.max_drawdown = abs(min(res) * 100)
+        if self.trades != 0:
+            self.winrate = (self.profits / self.trades) * 100
+        else:
+            self.winrate = 0
+            utils.logger.critical('0 trades in %s', self)
 
-            # average year profit
-            self.year_profit = utils.year_profit(self.average_growth, self._profit_calculate_coef)
+        self.calmar_ratio = self.year_profit / self.max_drawdown
 
-            if self.trades != 0:
-                self.winrate = (self.profits / self.trades) * 100
-            else:
-                self.winrate = 0
-                utils.logger.critical('0 trades in %s', self)
+        # net returns
+        self.net_returns = pd.Series(self.deposit_history).diff()
+        self.net_returns[0] = 0.0
 
-            self.calmar_ratio = self.year_profit / self.max_drawdown
-
-            # net returns
-            self.net_returns = pd.Series(self.deposit_history).diff()
-            self.net_returns[0] = 0.0
-
-            self.profit_deviation_ratio = self.year_profit / self.mean_deviation
+        self.profit_deviation_ratio = self.year_profit / self.mean_deviation
 
     @property
     def df(self) -> pd.DataFrame:
@@ -322,6 +309,7 @@ class Trader(object):
                 flag = utils.EXIT
             returns.append(flag)
         self.returns = returns
+        self.returns_update()
         if swap_stop_take:
             self.stop_losses, self.take_profits = self.take_profits, self.stop_losses
         return self.returns
@@ -510,7 +498,7 @@ class Trader(object):
                 prev_sig = sig
             ignore_breakout = False
 
-        self.deposit_history = self.deposit_history
+        self.deposit_history_update()
         if pass_math:
             warn('The deal was opened out of range!')
             utils.logger.error('(%s) The deal was opened out of range! (candle=%d)', self, e)
@@ -620,6 +608,7 @@ class Trader(object):
         multipliers: pd.Series = sum(depos) / len(depos)
         multipliers[0] = deposit
         self.deposit_history = list(np.cumprod(multipliers.values))
+        self.deposit_history_update()
         self.backtest_out = pd.DataFrame(
             (self.deposit_history, self.average_growth, self.net_returns),
             index=[
@@ -1047,6 +1036,7 @@ class Trader(object):
         assert isinstance(set_stop, bool), 'set_stop must be of type <bool>'
         assert isinstance(set_take, bool), 'set_stop must be of type <bool>'
 
+        self.returns_update()
         self._take_profit = take_profit
         self._stop_loss = stop_loss
         take_flag: float = np.inf
