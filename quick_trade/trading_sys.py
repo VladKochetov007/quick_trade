@@ -80,10 +80,10 @@ class Trader(object):
     net_returns: pd.Series
     profit_deviation_ratio: float
 
-    def returns_update(self):
+    def returns_update(self):  # TODO: docs
         self._converted = utils.convert(self.returns)
 
-    def deposit_history_update(self):
+    def deposit_history_update(self):  # TODO: docs
         self.average_growth = utils.get_exponential_growth(self.deposit_history)
         self.mean_deviation = utils.mean_deviation(pd.Series(self.deposit_history), self.average_growth) * 100
 
@@ -143,7 +143,7 @@ class Trader(object):
                                       self.max_drawdown,
                                       self.profit_deviation_ratio)
 
-    def update_identifier(self) -> str:
+    def update_identifier(self) -> str:   # TODO: docs
         self.identifier = get_identifier(self.df)
         return self.identifier
 
@@ -341,6 +341,8 @@ class Trader(object):
         assert isinstance(plot, bool), 'plot must be of type <bool>'
         assert isinstance(print_out, bool), 'print_out must be of type <bool>'
         assert isinstance(show, bool), 'show must be of type <bool>'
+
+        self.returns_update()
 
         exit_take_stop: bool
         no_order: bool
