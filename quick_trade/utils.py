@@ -177,7 +177,7 @@ calmar ratio: {}
 max drawdown: {}%
 profit/deviation ratio: {}"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.1.0dev"
+__version__: str = "7.5.5dev"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -197,7 +197,8 @@ __credits__: List[str] = [
     "https://www.wallstreetmojo.com/calmar-ratio/",
     "Iliuschenko Nikita Andreevich -- translator",
     "https://www.geeksforgeeks.org/append-to-json-file-using-python/",
-    "https://stackoverflow.com/questions/900392/getting-the-caller-function-name-inside-another-function-in-python"
+    "https://stackoverflow.com/questions/900392/getting-the-caller-function-name-inside-another-function-in-python",
+    "https://stackoverflow.com/questions/1263451/python-decorators-in-classes"
 ]
 
 logger = getLogger(__name__)
@@ -230,8 +231,9 @@ TUNER_CODECONF: Dict[str, str] = {
     'profit/deviation ratio': 'profit_deviation_ratio',
 }
 
-BUFFER_PERCISION_POINTER: Union[float, int] = 2**12
+BUFFER_PRECISION_POINTER: Union[float, int] = 2 ** 12
 INT_ALPHABET: str = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZбёгджйлпфхцчшщъыьэюяЁБГДЖЙЛПФХЦЧШЩЪЫЬЭЮЯїЇ!#$%&()*+,.:;<>?@^_`{}~-'
+IDENTIFIER_INT_BASE: int = 128
 MIN_DEPOSIT_LENGTH: int = 3
 
 locker = threading.Lock()

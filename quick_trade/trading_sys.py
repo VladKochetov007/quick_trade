@@ -25,6 +25,7 @@ from typing import List
 from typing import Tuple
 from typing import Union
 from warnings import warn
+from functools import wraps
 
 import ta.momentum
 import ta.trend
@@ -37,6 +38,7 @@ from . import utils
 from .brokers import TradingClient
 from .plots import QuickTradeGraph
 from ._identifier import get_identifier
+from ._code_inspect import format_arguments
 
 
 class Trader(object):
@@ -79,11 +81,12 @@ class Trader(object):
     calmar_ratio: float
     net_returns: pd.Series
     profit_deviation_ratio: float
+    _registered_strategy: str
 
-    def returns_update(self):  # TODO: docs
+    def returns_update(self):
         self._converted = utils.convert(self.returns)
 
-    def deposit_history_update(self):  # TODO: docs
+    def deposit_history_update(self):
         self.average_growth = utils.get_exponential_growth(self.deposit_history)
         self.mean_deviation = utils.mean_deviation(pd.Series(self.deposit_history), self.average_growth) * 100
 
@@ -143,9 +146,21 @@ class Trader(object):
                                       self.max_drawdown,
                                       self.profit_deviation_ratio)
 
-    def update_identifier(self) -> str:   # TODO: docs
+    def update_identifier(self) -> str:
         self.identifier = get_identifier(self.df)
         return self.identifier
+
+    def strategy_registering(strategy):
+        wraps(strategy)
+        def wrapped(self, *args, **kwargs):
+            self.returns = []
+            self._converted = []
+            self.deposit_history = []
+            strategy_output = strategy(self, *args, **kwargs)
+            self.returns_update()
+            self._registered_strategy = format_arguments(func=strategy, args=args, kwargs=kwargs)
+            return strategy_output
+        return wrapped
 
     @utils.assert_logger
     def __init__(self,

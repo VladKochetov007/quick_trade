@@ -13,7 +13,6 @@ class JSON(object):
             self.write(data={})
 
     def read(self):
-
         with open(self.path, 'r', encoding='utf-8') as file:
             data = load(file)
         return data
@@ -31,5 +30,18 @@ def write_json(path: str, data, indent: int = 2):
 def save_trader(trader):
     file = JSON(filepath=BUFFER_PATH)
     data: defaultdict = recursive_dict(base=file.read())
-    #data[trader.ticker][trader.interval][trader.identifier][] = {} TODO
+    data[trader.ticker][trader.interval][trader.identifier][trader._registered_strategy] = {
+        'deposit_history': trader.deposit_history,
+        'winrate': trader.winrate,
+        'trades': trader.trades,
+        'losses': trader.losses,
+        'profits': trader.profits,
+        'year_profit': trader.year_profit,
+        'mean_deviation': trader.mean_deviation,
+        'sharpe_ratio': trader.sharpe_ratio,
+        'sortino_ratio': trader.sortino_ratio,
+        'calmar_ratio': trader.calmar_ratio,
+        'max_drawdown': trader.max_drawdown,
+        'profit_deviation_ratio': trader.profit_deviation_ratio,
+    }
     file.write(data, indent=BUFFER_INDENT)

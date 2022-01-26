@@ -352,6 +352,14 @@ The strategy issues its verdict based on the last change to the dataframe. If yo
 | frame_to_diff | pd.Series | series of dataframe |
 | returns | `utils.PREDICT_TYPE_LIST` | returns |
 
+### returns_update
+
+### deposit_history_update
+
+### update_identifier
+
+### strategy_registering
+
 ## ExampleStrategies
 
 Class with examples of strategies, inherited from the [`Trader`](#Trader) class

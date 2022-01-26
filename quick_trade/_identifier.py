@@ -1,5 +1,5 @@
 import pandas as pd
-from .utils import BUFFER_PERCISION_POINTER, INT_ALPHABET
+from .utils import BUFFER_PRECISION_POINTER, INT_ALPHABET, IDENTIFIER_INT_BASE
 
 
 def convert_base(num, to_base=128, from_base=10):
@@ -23,7 +23,7 @@ class Identifier(object):
                                 'Low': df['Low'],
                                 'Close': df['Close']}).dropna()
         min_df = self.df.min(0)
-        self.df = self.df*BUFFER_PERCISION_POINTER/min_df
+        self.df = self.df * BUFFER_PRECISION_POINTER / min_df
 
     def _format_candle(self, num: int = 0) -> str:
         candle = self.df.T[num].T
@@ -36,7 +36,7 @@ class Identifier(object):
         mid: str = self._format_candle(length//2)
         last: str = self._format_candle(length-1)
         identifier10: str = first+mid+last+str(length)
-        self.identifier = convert_base(identifier10, to_base=128, from_base=10)
+        self.identifier = convert_base(identifier10, to_base=IDENTIFIER_INT_BASE, from_base=10)
         return self.identifier
 
     def __repr__(self):

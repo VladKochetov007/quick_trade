@@ -16,6 +16,7 @@ from .core import transform_all_tunable_values
 from .. import utils
 from ..brokers import TradingClient
 from .. import _saving
+from .. import _code_inspect
 
 
 class QuickTradeTuner(object):
@@ -55,7 +56,7 @@ class QuickTradeTuner(object):
 
     def tune(
             self,
-            your_trading_class,
+            trading_class,
             use_tqdm: bool = True,
             update_json: bool = True,
             update_json_path: str = 'returns.json',
@@ -81,7 +82,7 @@ class QuickTradeTuner(object):
             else:
                 df = DataFrame()
             for strategy, kwargs in self._strategies:
-                trader = your_trading_class(ticker='ALL/ALL' if self.multi_test else ticker, df=df, interval=interval)
+                trader = trading_class(ticker='ALL/ALL' if self.multi_test else ticker, df=df, interval=interval)
                 trader.set_client(self.client)
 
                 if self.multi_test:
@@ -95,15 +96,15 @@ class QuickTradeTuner(object):
                     trader._get_attr(strategy)(**kwargs)
                     trader.backtest(**backtest_kwargs)
 
-                arguments = str(kwargs).replace(": ", "=").replace("'", "").strip("{").strip("}")
-                strat_kw = f'{strategy}({arguments})'
+                strat_kw = _code_inspect.format_arguments(func=strategy,
+                                                          kwargs=kwargs)
                 self.strategies_and_kwargs.append(strat_kw)
                 if self.multi_test:
                     old_tick = ticker
                     ticker = 'ALL'
                 utils.logger.debug('testing %s ... :', strat_kw)
 
-                for filter_name, filter_attr in utils.TUNER_CODECONF:
+                for filter_name, filter_attr in utils.TUNER_CODECONF.items():
                     self.result_tunes[ticker][interval][limit][strat_kw][filter_name] = trader._get_attr(filter_attr)
 
                 if self.multi_test:
