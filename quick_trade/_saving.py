@@ -2,6 +2,7 @@ from .utils import BUFFER_PATH, BUFFER_INDENT, recursive_dict
 from json import dump, load
 from os.path import isfile
 from collections import defaultdict
+import numpy as np
 
 
 class JSON(object):
@@ -30,8 +31,9 @@ def write_json(path: str, data, indent: int = 2):
 def save_trader(trader):
     file = JSON(filepath=BUFFER_PATH)
     data: defaultdict = recursive_dict(base=file.read())
+    xprofit = np.array(trader.deposit_history) / trader.deposit_history[0]
     data[trader.ticker][trader.interval][trader.identifier][trader._registered_strategy] = {
-        'deposit_history': trader.deposit_history,
+        'net_returns': xprofit.tolist(),
         'winrate': trader.winrate,
         'trades': trader.trades,
         'losses': trader.losses,

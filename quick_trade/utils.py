@@ -215,7 +215,7 @@ basicConfig(level=0,
 
 BUFFER_PATH: str = 'trading_buffer.json'
 TUNER_INDENT: int = 2
-BUFFER_INDENT: int = 2
+BUFFER_INDENT = None
 
 TUNER_CODECONF: Dict[str, str] = {
     'winrate': 'winrate',
@@ -456,5 +456,16 @@ def year_profit(average_growth: np.ndarray, coef: Union[float, int]):
     yp *= 100  # Percentage
     return yp
 
+def map_dict(func, data):
+    if isinstance(data, dict):
+        for key, val in data.items():
+            if isinstance(val, dict):
+                data[key] = func(val)
+                data[key] = map_dict(func, data[key])
+    return data
+
+
 def recursive_dict(base={}):
-    return defaultdict(recursive_dict, base)
+    get_dd = lambda: defaultdict(get_dd)
+    get_dd_base = lambda b: defaultdict(get_dd, b)
+    return map_dict(get_dd_base, base)

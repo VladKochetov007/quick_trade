@@ -189,3 +189,7 @@ Function for getting the price movement from the current one to TP or SL.
 ## mean_deviation
 
 ## year_profit
+
+## map_dict
+
+## recursive_dict
