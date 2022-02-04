@@ -29,7 +29,7 @@ setup(
         'pandas==1.4.0',
         'ta==0.9.0',
         'tqdm==4.62.3',
-        'ccxt==1.71.97',
+        'ccxt==1.72.21',
     ],
     download_url=f'https://github.com/VladKochetov007/quick_trade/archive/{__version__}.tar.gz',
     keywords=[
