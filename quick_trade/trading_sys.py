@@ -151,7 +151,7 @@ class Trader(object):
         return self.identifier
 
     def strategy_registering(strategy):
-        wraps(strategy)
+        @wraps(strategy)
         def wrapped(self, *args, **kwargs):
             self.returns = []
             self._converted = []
@@ -160,6 +160,7 @@ class Trader(object):
             self.returns_update()
             self._registered_strategy = format_arguments(func=strategy, args=args, kwargs=kwargs)
             return strategy_output
+
         return wrapped
 
     @utils.assert_logger
