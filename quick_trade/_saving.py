@@ -29,11 +29,11 @@ def write_json(path: str, data, indent: int = 2):
     return JSON(filepath=path).write(data=data, indent=indent)
 
 def save_trader(trader):
-    file = JSON(filepath=BUFFER_PATH)
-    data: defaultdict = recursive_dict(base=file.read())
-    xprofit = np.array(trader.deposit_history) / trader.deposit_history[0]
+    json = JSON(filepath=BUFFER_PATH)
+    data: defaultdict = recursive_dict(base=json.read())
+    profit = np.array(trader.deposit_history) / trader.deposit_history[0]
     data[trader.ticker][trader.interval][trader.identifier][trader._registered_strategy] = {
-        'net_returns': xprofit.tolist(),
+        'net_returns': profit.tolist(),
         'winrate': trader.winrate,
         'trades': trader.trades,
         'losses': trader.losses,
@@ -46,4 +46,4 @@ def save_trader(trader):
         'max_drawdown': trader.max_drawdown,
         'profit_deviation_ratio': trader.profit_deviation_ratio,
     }
-    file.write(data, indent=BUFFER_INDENT)
+    json.write(data, indent=BUFFER_INDENT)

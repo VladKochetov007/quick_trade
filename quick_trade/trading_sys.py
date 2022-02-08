@@ -10,6 +10,8 @@
 #   add "tradingview backtest"
 #   multi-timeframe backtest
 #   telegram bot
+#   https://smart-lab.ru/company/www-marketstat-ru/blog/502764.php
+#   hashlib
 
 from copy import copy
 from datetime import datetime
@@ -150,14 +152,21 @@ class Trader(object):
         self.identifier = get_identifier(self.df)
         return self.identifier
 
-    def strategy_registering(strategy):
+    def strategy_reg(strategy):
         @wraps(strategy)
         def wrapped(self, *args, **kwargs):
             self.returns = []
             self._converted = []
             self.deposit_history = []
+            self.stop_losses = []
+            self.take_profits = []
+            self.open_lot_prices = []
             strategy_output = strategy(self, *args, **kwargs)
             self.returns_update()
+            if not len(self.stop_losses):
+                self.set_open_stop_and_take(set_take=False)
+            if not len(self.take_profits):
+                self.set_open_stop_and_take(set_stop=False)
             self._registered_strategy = format_arguments(func=strategy, args=args, kwargs=kwargs)
             return strategy_output
 
