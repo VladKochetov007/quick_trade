@@ -462,7 +462,7 @@ def map_dict(func, data):
             if isinstance(val, dict):
                 data[key] = func(val)
                 data[key] = map_dict(func, data[key])
-    return data
+    return func(data)
 
 
 def recursive_dict(base={}):
