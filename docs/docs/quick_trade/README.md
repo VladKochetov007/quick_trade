@@ -56,14 +56,18 @@ The 3 variables from utils.py should be used as the strategy results:
 
 #### Example:
 
+?> Keep in mind: use `strategy` decorator to strategies, it can fixes some minor bugs.
+
 ```python
 import quick_trade.trading_sys as qtr
 from quick_trade import utils
 from ta.trend import MACD
 from ta.volatility import AverageTrueRange
+from quick_trade import strategy
 
 
 class MyTrader(qtr.Trader):
+    @strategy
     def new_macd_strategy(self, slow=21, fast=12, ATR_win=14, ATR_multiplier=5):
         self.stop_losses = []
         self.returns = []

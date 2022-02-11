@@ -78,9 +78,11 @@ predictions and leverages.
 ```python
 from quick_trade.utils import EXIT, BUY, SELL
 import numpy as np
+from quick_trade import strategy
 
 
 class MultiTrader(Trader):
+    @strategy
     def multi_trade_strategy(self):
         ...
         for i in range(len(self.df)):
@@ -339,7 +341,7 @@ A method for running one strategy at real-time on the exchange. You will not be 
 
 ### set_open_stop_and_take
 
-### setcredit_leverages
+### set_credit_leverages
 
 ### get_support_resistance
 
@@ -358,7 +360,9 @@ The strategy issues its verdict based on the last change to the dataframe. If yo
 
 ### update_identifier
 
-### strategy_registering
+### correct_sl_tp
+
+### save
 
 ## ExampleStrategies
 

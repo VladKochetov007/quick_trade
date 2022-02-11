@@ -33,7 +33,7 @@ def save_trader(trader):
     data: defaultdict = recursive_dict(base=json.read())
     profit = np.array(trader.deposit_history) / trader.deposit_history[0]
     data[trader.ticker][trader.interval][trader.identifier][trader._registered_strategy] = {
-        'net_returns': profit.tolist(),
+        'deposit_history': profit.tolist(),
         'winrate': trader.winrate,
         'trades': trader.trades,
         'losses': trader.losses,

@@ -11,7 +11,6 @@
 #   multi-timeframe backtest
 #   telegram bot
 #   https://smart-lab.ru/company/www-marketstat-ru/blog/502764.php
-#   hashlib
 
 from copy import copy
 from datetime import datetime
@@ -27,20 +26,19 @@ from typing import List
 from typing import Tuple
 from typing import Union
 from warnings import warn
-from functools import wraps
 
+import numpy as np
+import pandas as pd
 import ta.momentum
 import ta.trend
 import ta.volatility
-import numpy as np
-import pandas as pd
 
 from . import indicators
 from . import utils
+from ._identifier import get_identifier
 from .brokers import TradingClient
 from .plots import QuickTradeGraph
-from ._identifier import get_identifier
-from ._code_inspect import format_arguments
+from . import strategy
 
 
 class Trader(object):
@@ -151,26 +149,6 @@ class Trader(object):
     def update_identifier(self) -> str:
         self.identifier = get_identifier(self.df)
         return self.identifier
-
-    def strategy_reg(strategy):
-        @wraps(strategy)
-        def wrapped(self, *args, **kwargs):
-            self.returns = []
-            self._converted = []
-            self.deposit_history = []
-            self.stop_losses = []
-            self.take_profits = []
-            self.open_lot_prices = []
-            strategy_output = strategy(self, *args, **kwargs)
-            self.returns_update()
-            if not len(self.stop_losses):
-                self.set_open_stop_and_take(set_take=False)
-            if not len(self.take_profits):
-                self.set_open_stop_and_take(set_stop=False)
-            self._registered_strategy = format_arguments(func=strategy, args=args, kwargs=kwargs)
-            return strategy_output
-
-        return wrapped
 
     @utils.assert_logger
     def __init__(self,
@@ -1140,7 +1118,7 @@ class Trader(object):
 
     def correct_sl_tp(self,
                       sl_correction: Union[float, int] = 50,
-                      tp_correction: Union[float, int] = 50):  # TODO: make documentation for this method   <--------------------------------------------------------------------------------------------------------------------------------------
+                      tp_correction: Union[float, int] = 50):
         for e, (sl, tp, p, sig) in enumerate(zip(self.stop_losses, self.take_profits, self.df['Close'], self.returns)):
             if sig == utils.BUY and sl > p:
                 self.stop_losses[e] = p * (1 - sl_correction / 10_000)
@@ -1153,6 +1131,7 @@ class Trader(object):
                 self.stop_losses[e] = p * (1 + tp_correction / 10_000)
 
 
+
 class ExampleStrategies(Trader):
 
     def _window_(self,
@@ -1162,6 +1141,7 @@ class ExampleStrategies(Trader):
                  **kwargs) -> List[Any]:
         return utils.get_window(self.df[column].values, n)
 
+    @strategy
     def find_pip_bar(self,
                      min_diff_coef: float = 2.0,
                      body_coef: float = 10.0) -> utils.PREDICT_TYPE_LIST:
@@ -1194,6 +1174,7 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take()
         return self.returns
 
+    @strategy
     def find_DBLHC_DBHLC(self) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.EXIT]
         flag: utils.PREDICT_TYPE = utils.EXIT
@@ -1224,6 +1205,7 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take(set_stop=False)
         return self.returns
 
+    @strategy
     def find_TBH_TBL(self) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.EXIT]
         flag: utils.PREDICT_TYPE = utils.EXIT
@@ -1246,6 +1228,7 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take()
         return self.returns
 
+    @strategy
     def find_PPR(self) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.EXIT] * 2
         flag: utils.PREDICT_TYPE = utils.EXIT
@@ -1267,6 +1250,7 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take()
         return self.returns
 
+    @strategy
     def strategy_ichimoku(self,
                           tenkansen: int = 9,
                           kijunsen: int = 26,
@@ -1375,12 +1359,14 @@ class ExampleStrategies(Trader):
         self.sl_tp_adder(add_stop_loss=stop_loss_plus)
         return self.returns
 
+    @strategy
     def strategy_buy_hold(self) -> utils.PREDICT_TYPE_LIST:
         self.returns = [utils.BUY for _ in range(len(self.df))]
         self.set_credit_leverages()
         self.set_open_stop_and_take()
         return self.returns
 
+    @strategy
     def strategy_2_sma(self,
                        slow: int = 100,
                        fast: int = 30,
@@ -1416,6 +1402,7 @@ class ExampleStrategies(Trader):
         self.set_credit_leverages()
         return self.returns
 
+    @strategy
     def strategy_3_sma(self,
                        slow: int = 100,
                        mid: int = 26,
@@ -1453,6 +1440,7 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take()
         return self.returns
 
+    @strategy
     def strategy_3_ema(self,
                        slow: int = 46,
                        mid: int = 21,
@@ -1489,6 +1477,7 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take()
         return self.returns
 
+    @strategy
     def strategy_macd(self,
                       slow: int = 100,
                       fast: int = 30) -> utils.PREDICT_TYPE_LIST:
@@ -1505,6 +1494,7 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take()
         return self.returns
 
+    @strategy
     def strategy_rsi(self,
                      minimum: Union[float, int] = 13,
                      maximum: Union[float, int] = 87,
@@ -1530,6 +1520,7 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take()
         return self.returns
 
+    @strategy
     def strategy_parabolic_SAR(self, plot: bool = True, **sar_kwargs) -> utils.PREDICT_TYPE_LIST:
         self.returns = []
         sar: ta.trend.PSARIndicator = ta.trend.PSARIndicator(self.df['High'], self.df['Low'],
@@ -1569,6 +1560,7 @@ class ExampleStrategies(Trader):
         self.correct_sl_tp()
         return self.returns
 
+    @strategy
     def strategy_macd_histogram_diff(self,
                                      slow: int = 23,
                                      fast: int = 12,
@@ -1588,6 +1580,7 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take()
         return self.returns
 
+    @strategy
     def strategy_supertrend(self,
                             plot: bool = True,
                             multiplier: float = 3.0,
@@ -1621,6 +1614,7 @@ class ExampleStrategies(Trader):
         self.set_credit_leverages()
         return self.returns
 
+    @strategy
     def strategy_bollinger(self,
                            plot: bool = True,
                            to_mid: bool = False,
@@ -1678,6 +1672,7 @@ class ExampleStrategies(Trader):
         self.set_credit_leverages()
         return self.returns
 
+    @strategy
     def strategy_bollinger_breakout(self,
                                     plot: bool = True,
                                     to_mid: bool = False,
@@ -1709,6 +1704,7 @@ class ExampleStrategies(Trader):
         self.correct_sl_tp()
         return self.returns
 
+    @strategy
     def strategy_idris(self, points=20):
         self.stop_losses = [np.inf] * 2
         self.take_profits = [np.inf] * 2
@@ -1726,6 +1722,7 @@ class ExampleStrategies(Trader):
         self.set_credit_leverages()
         return self.returns
 
+    @strategy
     def DP_strategy(self,
                     length: int = 14,
                     s1: int = 3,
@@ -1750,6 +1747,7 @@ class ExampleStrategies(Trader):
                                     stop_loss=sl)
         return self.returns
 
+    @strategy
     def DP_2_strategy(self,
                       RSI_length: int = 14,
                       STOCH_length: int = 14,
@@ -1780,6 +1778,7 @@ class ExampleStrategies(Trader):
                                     stop_loss=sl)
         return self.returns
 
+    @strategy
     def strategy_kst(self, **kst_kwargs):
         KST = ta.trend.KSTIndicator(close=self.df['Close'], **kst_kwargs)
         fast = KST.kst()
@@ -1794,6 +1793,7 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take(stop_loss=5000)
         return self.returns
 
+    @strategy
     def strategy_cci(self, **cci_kwargs):
         self.returns = []
         CCI = ta.trend.CCIIndicator(self.df['High'],
@@ -1807,6 +1807,7 @@ class ExampleStrategies(Trader):
         self.set_credit_leverages()
         self.set_open_stop_and_take()
 
+    @strategy
     def new_macd_strategy(self, slow=21, fast=12, ATR_win=14, ATR_multiplier=5):
         self.stop_losses = []
         self.returns = []
