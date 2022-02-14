@@ -1131,7 +1131,6 @@ class Trader(object):
                 self.stop_losses[e] = p * (1 + tp_correction / 10_000)
 
 
-
 class ExampleStrategies(Trader):
 
     def _window_(self,

@@ -1,5 +1,6 @@
 from ._code_inspect import format_arguments
 from functools import wraps
+from numpy import inf
 
 
 def strategy(strat):
@@ -17,6 +18,8 @@ def strategy(strat):
             self.set_open_stop_and_take(set_take=False)
         if not len(self.take_profits):
             self.set_open_stop_and_take(set_stop=False)
+        self.correct_sl_tp(sl_correction=inf,
+                           tp_correction=inf)
         self._registered_strategy = format_arguments(func=strat, args=args, kwargs=kwargs)
         return strategy_output
 
