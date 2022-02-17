@@ -39,6 +39,7 @@ from ._identifier import get_identifier
 from .brokers import TradingClient
 from .plots import QuickTradeGraph
 from . import strategy
+from . import _saving
 
 
 class Trader(object):
@@ -72,7 +73,7 @@ class Trader(object):
     _multi_converted_: bool = False
     _entry_start_trade: bool
     identifier: str
-    average_growth: np.ndarray
+    average_growth: Union[np.ndarray, List]
     _converted: utils.CONVERTED_TYPE_LIST
     mean_deviation: float
     sharpe_ratio: float
@@ -82,6 +83,8 @@ class Trader(object):
     net_returns: pd.Series
     profit_deviation_ratio: float
     _registered_strategy: str
+    _use_buffer: bool
+    _successful_load: bool = False
 
     def returns_update(self):
         self._converted = utils.convert(self.returns)
@@ -154,13 +157,16 @@ class Trader(object):
     def __init__(self,
                  ticker: str = 'BTC/USDT',
                  df: pd.DataFrame = pd.DataFrame(),
-                 interval: str = '1d'):
+                 interval: str = '1d',
+                 use_buffer: bool = False):
         ticker = ticker.upper()
         assert isinstance(ticker, str), 'The ticker can only be of type <str>.'
         assert fullmatch(utils.TICKER_PATTERN, ticker), f'Ticker must match the pattern <{utils.TICKER_PATTERN}>'
         assert isinstance(df, pd.DataFrame), 'Dataframe can only be of type <DataFrame>.'
         assert isinstance(interval, str), 'interval can only be of the <str> type.'
+        assert isinstance(use_buffer, bool), 'use_buffer can only be of the <bool> type.'
 
+        self._use_buffer = use_buffer
         self.df = df.reset_index(drop=True)
         self.ticker = ticker
         self.interval = interval
@@ -346,165 +352,169 @@ class Trader(object):
         assert isinstance(show, bool), 'show must be of type <bool>'
 
         self.returns_update()
-
-        exit_take_stop: bool
-        no_order: bool
-        stop_loss: float
-        take_profit: float
-        converted_element: utils.CONVERTED_TYPE
-        diff: float
-        lin_calc_df: pd.DataFrame
-        high: float
-        low: float
-        credit_lev: Union[float, int]
-
-        start_bet: Union[float, int] = bet
-        data_column: pd.Series = self.df['Close']
-        data_high: pd.Series = self.df['High']
-        data_low: pd.Series = self.df['Low']
-        self.deposit_history = [deposit]
-        self.trades = 0
-        self.profits = 0
-        self.losses = 0
-        moneys_open_bet: Union[float, int] = deposit
-        money_start: Union[float, int] = deposit
-        prev_sig = utils.EXIT
-
-        ignore_breakout: bool = False
-        next_not_breakout: bool
-        e: int
-        sig: utils.PREDICT_TYPE
-        stop_loss: float
-        take_profit: float
-        converted_element: utils.CONVERTED_TYPE
-        credit_lev: Union[float, int]
-        high: float
-        low: float
-        next_h: float
-        next_l: float
         pass_math: bool = False
-        normal: bool
-        for e, (sig,
-                stop_loss,
-                take_profit,
-                converted_element,
-                credit_lev,
-                high,
-                low,
-                next_h,
-                next_l) in enumerate(zip(self.returns[:-1],
-                                         self.stop_losses[:-1],
-                                         self.take_profits[:-1],
-                                         self._converted[:-1],
-                                         self.credit_leverages[:-1],
-                                         data_high[:-1],
-                                         data_low[:-1],
-                                         data_high[1:],
-                                         data_low[1:])):
+        data_column: pd.Series = self.df['Close']
+        if self._successful_load:
+            self.net_returns = (np.array(self.net_returns)*deposit).tolist()
+            self.deposit_history = (np.array(self.deposit_history)*deposit).tolist()
+        else:
+            exit_take_stop: bool
+            no_order: bool
+            stop_loss: float
+            take_profit: float
+            converted_element: utils.CONVERTED_TYPE
+            diff: float
+            lin_calc_df: pd.DataFrame
+            high: float
+            low: float
+            credit_lev: Union[float, int]
 
-            if not np.isnan(converted_element):
-                # count the number of profitable and unprofitable trades.
-                if prev_sig != utils.EXIT:
-                    self.trades += 1
-                    if deposit > moneys_open_bet:
-                        self.profits += 1
-                    elif deposit < moneys_open_bet:
-                        self.losses += 1
+            start_bet: Union[float, int] = bet
+            data_high: pd.Series = self.df['High']
+            data_low: pd.Series = self.df['Low']
+            self.deposit_history = [deposit]
+            self.trades = 0
+            self.profits = 0
+            self.losses = 0
+            moneys_open_bet: Union[float, int] = deposit
+            money_start: Union[float, int] = deposit
+            prev_sig = utils.EXIT
 
-                # calculating commission
-                if prev_sig != utils.EXIT:
-                    commission_reuse = 2
-                else:
-                    commission_reuse = 1
-                bet = start_bet
-                if bet > deposit:
-                    bet = deposit
-                for i in range(commission_reuse):
-                    deposit -= bet * (commission / 100) * credit_lev
+            ignore_breakout: bool = False
+            next_not_breakout: bool
+            e: int
+            sig: utils.PREDICT_TYPE
+            stop_loss: float
+            take_profit: float
+            converted_element: utils.CONVERTED_TYPE
+            credit_lev: Union[float, int]
+            high: float
+            low: float
+            next_h: float
+            next_l: float
+            normal: bool
+            for e, (sig,
+                    stop_loss,
+                    take_profit,
+                    converted_element,
+                    credit_lev,
+                    high,
+                    low,
+                    next_h,
+                    next_l) in enumerate(zip(self.returns[:-1],
+                                             self.stop_losses[:-1],
+                                             self.take_profits[:-1],
+                                             self._converted[:-1],
+                                             self.credit_leverages[:-1],
+                                             data_high[:-1],
+                                             data_low[:-1],
+                                             data_high[1:],
+                                             data_low[1:])):
+
+                if not np.isnan(converted_element):
+                    # count the number of profitable and unprofitable trades.
+                    if prev_sig != utils.EXIT:
+                        self.trades += 1
+                        if deposit > moneys_open_bet:
+                            self.profits += 1
+                        elif deposit < moneys_open_bet:
+                            self.losses += 1
+
+                    # calculating commission
+                    if prev_sig != utils.EXIT:
+                        commission_reuse = 2
+                    else:
+                        commission_reuse = 1
+                    bet = start_bet
                     if bet > deposit:
                         bet = deposit
+                    for i in range(commission_reuse):
+                        deposit -= bet * (commission / 100) * credit_lev
+                        if bet > deposit:
+                            bet = deposit
 
-                # reset service variables
-                open_price = data_column[e]
-                moneys_open_bet = deposit
-                no_order = False
-                exit_take_stop = False
-                ignore_breakout = True
+                    # reset service variables
+                    open_price = data_column[e]
+                    moneys_open_bet = deposit
+                    no_order = False
+                    exit_take_stop = False
+                    ignore_breakout = True
 
-                if sig != utils.EXIT and not min(stop_loss, take_profit) <= open_price <= max(stop_loss, take_profit) and e > 0:
-                    pass_math = True
-                    break
+                    if sig != utils.EXIT and not min(stop_loss, take_profit) <= open_price <= max(stop_loss, take_profit) and e > 0:
+                        pass_math = True
+                        break
 
-            if sig != utils.EXIT:
-                next_not_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
+                if sig != utils.EXIT:
+                    next_not_breakout = min(stop_loss, take_profit) < next_l <= next_h < max(stop_loss, take_profit)
 
-                stop_loss = self.stop_losses[e - 1]
-                take_profit = self.take_profits[e - 1]
-                # be careful with e=0
-                # haha))) no)
-                now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit)
+                    stop_loss = self.stop_losses[e - 1]
+                    take_profit = self.take_profits[e - 1]
+                    # be careful with e=0
+                    # haha))) no)
+                    now_not_breakout = min(stop_loss, take_profit) < low <= high < max(stop_loss, take_profit)
 
-                normal = ignore_breakout or (now_not_breakout and next_not_breakout)
+                    normal = ignore_breakout or (now_not_breakout and next_not_breakout)
 
-                if credit_lev != self.credit_leverages[e - 1] and not ignore_breakout:
-                    deposit -= bet * (commission / 100) * abs(self.credit_leverages[e - 1] - credit_lev)
-                    # Commission when changing the leverage.
-                    if bet > deposit:
-                        bet = deposit
+                    if credit_lev != self.credit_leverages[e - 1] and not ignore_breakout:
+                        deposit -= bet * (commission / 100) * abs(self.credit_leverages[e - 1] - credit_lev)
+                        # Commission when changing the leverage.
+                        if bet > deposit:
+                            bet = deposit
 
-                    if self._multi_converted_:
-                        if prev_sig != utils.EXIT:
-                            self.trades += 1
-                            if deposit > moneys_open_bet:
-                                self.profits += 1
-                            elif deposit < moneys_open_bet:
-                                self.losses += 1
-                        moneys_open_bet = deposit
+                        if self._multi_converted_:
+                            if prev_sig != utils.EXIT:
+                                self.trades += 1
+                                if deposit > moneys_open_bet:
+                                    self.profits += 1
+                                elif deposit < moneys_open_bet:
+                                    self.losses += 1
+                            moneys_open_bet = deposit
 
-                if normal:
-                    diff = data_column[e + 1] - data_column[e]
+                    if normal:
+                        diff = data_column[e + 1] - data_column[e]
+                    else:
+                        # Here I am using the previous value,
+                        # because we do not know the value at this point
+                        # (it is generated only when the candle is closed).
+                        exit_take_stop = True
+
+                        if (not now_not_breakout) and not ignore_breakout:
+                            stop_loss = self.stop_losses[e - 1]
+                            take_profit = self.take_profits[e - 1]
+                            diff = utils.get_diff(price=data_column[e],
+                                                  low=low,
+                                                  high=high,
+                                                  stop_loss=stop_loss,
+                                                  take_profit=take_profit,
+                                                  signal=sig)
+
+                        elif not next_not_breakout:
+                            stop_loss = self.stop_losses[e]
+                            take_profit = self.take_profits[e]
+                            diff = utils.get_diff(price=data_column[e],
+                                                  low=next_l,
+                                                  high=next_h,
+                                                  stop_loss=stop_loss,
+                                                  take_profit=take_profit,
+                                                  signal=sig)
                 else:
-                    # Here I am using the previous value,
-                    # because we do not know the value at this point
-                    # (it is generated only when the candle is closed).
-                    exit_take_stop = True
+                    diff = 0.0
+                if sig == utils.SELL:
+                    diff = -diff
+                if moneys_open_bet < 0:
+                    diff = -diff
+                if not no_order:
+                    deposit += bet * credit_lev * diff / open_price
+                self.deposit_history.append(deposit)
 
-                    if (not now_not_breakout) and not ignore_breakout:
-                        stop_loss = self.stop_losses[e - 1]
-                        take_profit = self.take_profits[e - 1]
-                        diff = utils.get_diff(price=data_column[e],
-                                              low=low,
-                                              high=high,
-                                              stop_loss=stop_loss,
-                                              take_profit=take_profit,
-                                              signal=sig)
+                no_order = exit_take_stop
+                if self.returns[e + 1] != sig:
+                    prev_sig = sig
+                ignore_breakout = False
 
-                    elif not next_not_breakout:
-                        stop_loss = self.stop_losses[e]
-                        take_profit = self.take_profits[e]
-                        diff = utils.get_diff(price=data_column[e],
-                                              low=next_l,
-                                              high=next_h,
-                                              stop_loss=stop_loss,
-                                              take_profit=take_profit,
-                                              signal=sig)
-            else:
-                diff = 0.0
-            if sig == utils.SELL:
-                diff = -diff
-            if moneys_open_bet < 0:
-                diff = -diff
-            if not no_order:
-                deposit += bet * credit_lev * diff / open_price
-            self.deposit_history.append(deposit)
+            self.deposit_history_update()
 
-            no_order = exit_take_stop
-            if self.returns[e + 1] != sig:
-                prev_sig = sig
-            ignore_breakout = False
-
-        self.deposit_history_update()
-        if pass_math:
+        if (self.year_profit == 0.0 and self.trades == 0) or pass_math:  # we check profit and number of trades because data can be loaded from buffer
             warn('The deal was opened out of range!')
             utils.logger.error('(%s) The deal was opened out of range! (candle=%d)', self, e)
             self.winrate = 0.0
@@ -536,6 +546,8 @@ class Trader(object):
         if show:
             self.fig.show()
 
+        if self._use_buffer:
+            self.save()
         self._multi_converted_ = False
         return self.backtest_out
 
@@ -581,7 +593,7 @@ class Trader(object):
             for strat in strat_l:
                 for strategy_kwargs in strat.items():
                     df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
-                    new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
+                    new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker, use_buffer=self._use_buffer)
                     new_trader.set_client(your_client=self.client)
                     try:
                         new_trader.connect_graph(copy(self.fig))
@@ -1129,6 +1141,22 @@ class Trader(object):
                 self.stop_losses[e] = p * (1 - tp_correction / 10_000)
             if sig == utils.BUY and tp < p:
                 self.stop_losses[e] = p * (1 + tp_correction / 10_000)
+
+    def save(self):
+        _saving.save_trader(self)
+
+    def load(self):
+        buffer = _saving.read_json(utils.BUFFER_PATH)
+        try:
+            trader: dict = buffer[self.ticker][self.interval][self.identifier][self._registered_strategy]
+        except KeyError:
+            self._successful_load = False
+            return None
+        for key, val in trader.items():
+            setattr(self, key, val)
+        self.average_growth = np.array(self.average_growth)
+        self.returns_update()
+        self._successful_load = True
 
 
 class ExampleStrategies(Trader):

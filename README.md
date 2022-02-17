@@ -56,9 +56,11 @@ from quick_trade import brokers
 from quick_trade.plots import QuickTradeGraph, make_figure
 import yfinance as yf
 import ccxt
+from quick_trade import strategy
 
 
 class MyTrader(qtr.Trader):
+    @strategy
     def strategy_sell_and_hold(self):
         ret = []
         for i in self.df['Close'].values:
@@ -86,12 +88,14 @@ from quick_trade.brokers import TradingClient
 
 
 class Test(qtr.ExampleStrategies):  # examples of strategies
+    @strategy
     def strategy_supertrend1(self, plot: bool = False, *st_args, **st_kwargs):
         self.strategy_supertrend(plot=plot, *st_args, **st_kwargs)
         self.setcredit_leverages()
         self.convert_signal()
         return self.returns
-
+    
+    @strategy
     def macd(self, histogram=False, **kwargs):
         if not histogram:
             self.strategy_macd(**kwargs)
@@ -101,6 +105,7 @@ class Test(qtr.ExampleStrategies):  # examples of strategies
         self.convert_signal()
         return self.returns
 
+    @strategy
     def psar(self, **kwargs):
         self.strategy_parabolic_SAR(plot=False, **kwargs)
         self.setcredit_leverages()
@@ -229,6 +234,7 @@ start_time = datetime.datetime(2021,  # year
 
 
 class MyTrade(ExampleStrategies):
+    @strategy
     def strategy(self):
         self.strategy_supertrend(multiplier=2, length=1, plot=False)
         self.convert_signal()
