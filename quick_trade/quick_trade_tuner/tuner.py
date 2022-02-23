@@ -3,6 +3,7 @@ from typing import Any
 from typing import Dict
 from typing import Iterable
 from typing import List
+from typing import Tuple
 
 import numpy as np
 from numpy import arange
@@ -160,6 +161,9 @@ class QuickTradeTuner(object):
     def load_tunes(self, path: str = 'returns.json'):
         utils.logger.debug('loading tunes from "%s"', path)
         self.result_tunes = _saving.read_json(path=path)
+
+    def get_best(self, num: int = 1) -> List[Tuple[str, Dict[str, Any]]]:
+        return list(self.result_tunes.items())[:num+1]
 
 
 class Combinations(object):  # TODO: .
