@@ -133,6 +133,13 @@ class BasePlotlyGraph(BaseGraph):
                        fill_color=utils.ICHIMOKU_CLOUD_COLOR,
                        opacity=utils.SENKOU_SPAN_B_ALPHA)
 
+    def log_y(self,
+              _row: int = 1,
+              _col: int = 1):
+        self._figure.update_yaxes(row=_row,
+                                  col=_col,
+                                  type='log')
+
 
 class QuickTradeGraph(BasePlotlyGraph):
 
@@ -258,10 +265,3 @@ class QuickTradeGraph(BasePlotlyGraph):
                 marker=triangle_type,
                 width=width,
                 opacity=alpha)
-
-    def log_y(self,
-              _row: int = 1,
-              _col: int = 1):
-        self._figure.update_yaxes(row=_row,
-                                  col=_col,
-                                  type='log')

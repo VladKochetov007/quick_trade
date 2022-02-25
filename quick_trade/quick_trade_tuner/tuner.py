@@ -17,7 +17,6 @@ from .core import transform_all_tunable_values
 from .. import utils
 from ..brokers import TradingClient
 from .. import _saving
-from .. import _code_inspect
 
 
 class QuickTradeTuner(object):
@@ -25,7 +24,7 @@ class QuickTradeTuner(object):
                  client: TradingClient,
                  tickers: Iterable[str],
                  intervals: Iterable[str],
-                 limits: Iterable[int],
+                 limits: Iterable,
                  strategies_kwargs: Dict[str, List[Dict[str, Any]]] = None,
                  multi_backtest: bool = True):
         """
@@ -55,6 +54,11 @@ class QuickTradeTuner(object):
                         without_rules.pop('_RULES_')
                     self._strategies.append([strategy, without_rules])
 
+    def _get_df(self, ticker: str, interval: str, limit):
+        return self.client.get_data_historical(ticker=ticker,
+                                               interval=interval,
+                                               limit=limit)
+
     def tune(
             self,
             trading_class,
@@ -77,9 +81,9 @@ class QuickTradeTuner(object):
             interval = data[1]
             limit = data[2]
             if not self.multi_test:
-                df = self.client.get_data_historical(ticker=ticker,
-                                                     interval=interval,
-                                                     limit=limit)
+                df = self._get_df(ticker=ticker,
+                                  interval=interval,
+                                  limit=limit)
             else:
                 df = DataFrame()
             for strategy, kwargs in self._strategies:
@@ -97,8 +101,7 @@ class QuickTradeTuner(object):
                     trader._get_attr(strategy)(**kwargs)
                     trader.backtest(**backtest_kwargs)
 
-                strat_kw = _code_inspect.format_arguments(func=strategy,
-                                                          kwargs=kwargs)
+                strat_kw = trader._registered_strategy
                 self.strategies_and_kwargs.append(strat_kw)
                 if self.multi_test:
                     old_tick = ticker
