@@ -53,7 +53,7 @@ $ cd ..
 ```python
 import quick_trade.trading_sys as qtr
 from quick_trade import brokers
-from quick_trade.plots import QuickTradeGraph, make_figure
+from quick_trade.plots import QuickTradeGraph, make_trader_figure
 import yfinance as yf
 import ccxt
 from quick_trade import strategy
@@ -72,7 +72,7 @@ class MyTrader(qtr.Trader):
 
 
 a = MyTrader('MSFT/USD', df=yf.download('MSFT', start='2019-01-01'))
-a.connect_graph(QuickTradeGraph(make_figure()))
+a.connect_graph(QuickTradeGraph(make_trader_figure()))
 a.set_client(brokers.TradingClient(ccxt.ftx()))
 a.strategy_sell_and_hold()
 a.backtest()
@@ -187,7 +187,7 @@ client = brokers.TradingClient(ccxt.binance())
 df = client.get_data_historical('BTC/USDT', '15m', 1000)
 trader = qtr.ExampleStrategies('BTC/USDT', df=df, interval='15m')
 trader.set_client(client)
-trader.connect_graph(QuickTradeGraph(make_figure(height=731, width=1440, row_heights=[10, 5, 2])))
+trader.connect_graph(QuickTradeGraph(make_trader_figure(height=731, width=1440, row_heights=[10, 5, 2])))
 trader.strategy_2_sma(55, 21)
 trader.backtest(deposit=1000, commission=0.075, bet=inf)  # backtest on one pair
 ```
@@ -250,7 +250,7 @@ client = TradingClient(ccxt.binance(config=keys))  # or any other exchange
 trader = MyTrade(ticker=ticker,
                  interval='1m',
                  df=client.get_data_historical(ticker, limit=10))
-fig = make_figure()
+fig = make_trader_figure()
 graph = QuickTradeGraph(figure=fig)
 trader.connect_graph(graph)
 trader.set_client(client)

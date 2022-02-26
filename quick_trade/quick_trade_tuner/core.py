@@ -1,6 +1,8 @@
 from typing import Any
 from typing import Dict
 from typing import List
+from numpy import isnan
+from ..utils import logger
 
 
 def transform_tunable_param(param_and_value: Dict[str, Any]):
@@ -34,6 +36,15 @@ def transform_all_tunable_values(strategies_kwargs: Dict[str, List[Dict[str, Any
                 if isinstance(value, TunableValue):
                     return transform_all_tunable_values(strategies_kwargs)
     return strategies_kwargs
+
+def resort_tunes(tunes: dict, sort_by: str = 'percentage year profit', drop_na: bool = True):
+    if drop_na:
+        for key, data in tunes.copy().items():
+            if isnan(data[sort_by]):
+                del tunes[key]
+    tunes = {k: v for k, v in sorted(tunes.items(), key=lambda x: -x[1][sort_by])}
+    logger.debug('tunes are sorted')
+    return tunes
 
 
 class TunableValue(object):

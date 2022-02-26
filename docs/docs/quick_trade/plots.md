@@ -2,7 +2,7 @@
 
 File for creating quick-trade charts.
 
-## make_figure
+## make_trader_figure
 
 Method for creating standard figure for plotly.
 

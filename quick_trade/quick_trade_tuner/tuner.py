@@ -13,7 +13,7 @@ from pandas import DataFrame
 from tqdm import tqdm
 
 from .core import TunableValue
-from .core import transform_all_tunable_values
+from .core import transform_all_tunable_values, resort_tunes
 from .. import utils
 from ..brokers import TradingClient
 from .. import _saving
@@ -149,21 +149,20 @@ class QuickTradeTuner(object):
         return self.resorting(sort_by=sort_by, drop_na=drop_na)
 
     def resorting(self, sort_by: str = 'percentage year profit', drop_na: bool = True):
-        if drop_na:
-            for key, data in self.result_tunes.copy().items():
-                if isnan(data[sort_by]):
-                    del self.result_tunes[key]
-        self.result_tunes = {k: v for k, v in sorted(self.result_tunes.items(), key=lambda x: -x[1][sort_by])}
-        utils.logger.debug('tunes are sorted')
+        self.result_tunes = resort_tunes(tunes=self.result_tunes, sort_by=sort_by, drop_na=drop_na)
         return self.result_tunes
 
     def save_tunes(self, path: str = 'returns.json'):
         utils.logger.debug('saving tunes in "%s"', path)
         _saving.write_json(data=self.result_tunes, path=path, indent=utils.TUNER_INDENT)
 
-    def load_tunes(self, path: str = 'returns.json'):
-        utils.logger.debug('loading tunes from "%s"', path)
-        self.result_tunes = _saving.read_json(path=path)
+    def load_tunes(self, path: str = 'returns.json', data: dict = {}):
+        not_empty_dict = len(data.items())
+        utils.logger.debug('loading tunes from "%s"', path if not_empty_dict else 'dict')
+        if not_empty_dict:
+            self.result_tunes = data
+        else:
+            self.result_tunes = _saving.read_json(path=path)
 
     def get_best(self, num: int = 1) -> List[Tuple[str, Dict[str, Any]]]:
         return list(self.result_tunes.items())[:num+1]

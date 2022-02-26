@@ -161,7 +161,7 @@ and `self.credit_leverages`.
 ```python
 from quick_trade.plots import *
 
-fig = make_figure()
+fig = make_trader_figure()
 graph = QuickTradeGraph(figure=fig)
 trader.connect_graph(graph)
 
@@ -194,7 +194,7 @@ client = TradingClient(ccxt.binance())
 trader = ExampleStrategies(ticker='ETH/BTC',
                            interval='5m')
 
-fig = make_figure()
+fig = make_trader_figure()
 graph = QuickTradeGraph(figure=fig)
 trader.connect_graph(graph)
 trader.set_client(client)
@@ -243,9 +243,9 @@ The method sets the plotly figure for graphs
 | graph | `plots.QuickTradeGraph` | QuickTradeGraph figure |
 
 ```python
-from quick_trade.plots import QuickTradeGraph, make_figure
+from quick_trade.plots import QuickTradeGraph, make_trader_figure
 
-figure = make_figure()
+figure = make_trader_figure()
 graph = QuickTradeGraph(figure=figure)
 ```
 
