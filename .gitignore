@@ -12,3 +12,5 @@ quick_trade.egg-info
 /quick_trade/quick_trade_tuner/__pycache__
 .DS_Store
 *.dat
+/__pycache__
+/*__pycache__
