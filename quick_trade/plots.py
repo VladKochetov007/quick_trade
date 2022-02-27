@@ -14,15 +14,12 @@ from . import utils
 def make_figure(height: Union[int, float] = 900,
                width: Union[int, float] = 1300,
                template: str = 'plotly_dark',
-               row_heights: List[Union[int, float]] = [10, 16, 7],
+               row_heights=None,
                rows: int = 3,
                cols: int = 1) -> Figure:
     assert isinstance(height, (int, float)), 'height must be of type <int> or <float>'
     assert isinstance(width, (int, float)), 'width must be of type <int> or <float>'
     assert isinstance(template, str), 'template must be of type <str>'
-    assert isinstance(row_heights, list), 'row_heights must be of type <List[int, float]>'
-    for el in row_heights:
-        assert isinstance(el, (int, float)), 'row_heights must be of type <List[int, float]>'
 
     fig = make_subplots(rows, cols, row_heights=row_heights)
     fig.update_layout(
@@ -56,20 +53,9 @@ def make_trader_figure(height: Union[int, float] = 900,
 
 class BaseGraph(object):
     _figure: Figure
-    data_row: int = 1
-    data_col: int = 1
-    deposit_row: int = 2
-    deposit_col: int = 1
-    returns_row: int = 3
-    returns_col: int = 1
 
     def __init__(self, figure: Figure):
         self._figure = figure
-
-    def connect_trader(self, trader):
-        self.trader = trader
-        self.trader.fig = self
-        utils.logger.info('new %s graph', self.trader)
 
     def show(self, **kwargs):
         self._figure.show(**kwargs)
@@ -157,6 +143,17 @@ class BasePlotlyGraph(BaseGraph):
 
 
 class QuickTradeGraph(BasePlotlyGraph):
+    data_row: int = 1
+    data_col: int = 1
+    deposit_row: int = 2
+    deposit_col: int = 1
+    returns_row: int = 3
+    returns_col: int = 1
+
+    def connect_trader(self, trader):
+        self.trader = trader
+        self.trader.fig = self
+        utils.logger.info('new %s graph', self.trader)
 
     def plot_deposit(self):
         deposit_start = self.trader.deposit_history[0]
@@ -280,3 +277,33 @@ class QuickTradeGraph(BasePlotlyGraph):
                 marker=triangle_type,
                 width=width,
                 opacity=alpha)
+
+class StopBeforeGraph(BasePlotlyGraph):
+    test_row: int = 1
+    test_col: int = 1
+
+    def connect_analyzer(self, analyzer):
+        self.analyzer = analyzer
+
+    def plot_frame(self):
+        if utils.STOP_BEFORE_INTEGER_AS_INDEX:
+            index = None
+        else:
+            index = self.analyzer.profit_keys
+        self.plot_line(line=self.analyzer.frame['train'],
+                       index=index,
+                       width=utils.STOP_BEFORE_TRAIN_WIDTH,
+                       opacity=utils.STOP_BEFORE_TRAIN_ALPHA,
+                       color=utils.STOP_BEFORE_TRAIN_COLOR,
+                       name=utils.STOP_BEFORE_TRAIN_NAME,
+                       _row=self.test_row,
+                       _col=self.test_col)
+
+        self.plot_line(line=self.analyzer.frame['validation'],
+                       index=index,
+                       width=utils.STOP_BEFORE_VAL_WIDTH,
+                       opacity=utils.STOP_BEFORE_VAL_ALPHA,
+                       color=utils.STOP_BEFORE_VAL_COLOR,
+                       name=utils.STOP_BEFORE_VAL_NAME,
+                       _row=self.test_row,
+                       _col=self.test_col)

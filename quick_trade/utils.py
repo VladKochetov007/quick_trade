@@ -163,6 +163,18 @@ LOWER_BB_COLOR: str = '#ff0000'
 LOWER_BB_WIDTH: float = 2
 LOWER_BB_ALPHA: float = 1.0
 
+STOP_BEFORE_TRAIN_NAME: str = 'train'
+STOP_BEFORE_TRAIN_COLOR: str = 'red'
+STOP_BEFORE_TRAIN_WIDTH: float = 1.0
+STOP_BEFORE_TRAIN_ALPHA: float = 1.0
+
+STOP_BEFORE_VAL_NAME: str = 'validation'
+STOP_BEFORE_VAL_COLOR: str = 'green'
+STOP_BEFORE_VAL_WIDTH: float = 1.0
+STOP_BEFORE_VAL_ALPHA: float = 1.0
+
+STOP_BEFORE_INTEGER_AS_INDEX: bool = True
+
 RESERVE: float = 0.99  # squeeze-protect
 
 INFO_TEXT: str = """losses: {}
