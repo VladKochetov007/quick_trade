@@ -1,10 +1,5 @@
-from .utils import BUFFER_PATH, BUFFER_INDENT, recursive_dict
 from json import dump, load
 from os.path import isfile
-from collections import defaultdict
-import numpy as np
-
-
 class JSON(object):
     path: str
 
@@ -27,29 +22,3 @@ def read_json(path: str):
 
 def write_json(path: str, data, indent: int = 2):
     return JSON(filepath=path).write(data=data, indent=indent)
-
-def save_trader(trader):
-    json = JSON(filepath=BUFFER_PATH)
-    data: defaultdict = recursive_dict(base=json.read())
-    start = trader.deposit_history[0]
-    profit = np.array(trader.deposit_history) / start
-    net_returns = np.array(trader.net_returns) / start
-    data[trader.ticker][trader.interval][trader.identifier][trader._registered_strategy] = {
-        'deposit_history': profit.tolist(),
-        'returns': trader.returns,
-        'winrate': trader.winrate,
-        'trades': trader.trades,
-        'losses': trader.losses,
-        'profits': trader.profits,
-        'year_profit': trader.year_profit,
-        'mean_deviation': trader.mean_deviation,
-        'sharpe_ratio': trader.sharpe_ratio,
-        'sortino_ratio': trader.sortino_ratio,
-        'calmar_ratio': trader.calmar_ratio,
-        'max_drawdown': trader.max_drawdown,
-        'profit_deviation_ratio': trader.profit_deviation_ratio,
-        'net_returns': net_returns.tolist(),
-        '_multi_converted_': trader._multi_converted_,
-        'average_growth': (trader.average_growth/start).tolist()
-    }
-    json.write(data, indent=BUFFER_INDENT)

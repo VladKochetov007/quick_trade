@@ -189,7 +189,7 @@ calmar ratio: {}
 max drawdown: {}%
 profit/deviation ratio: {}"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.5.6dev"
+__version__: str = "7.6.0dev"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -225,9 +225,7 @@ basicConfig(level=0,
                    'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
                    '[FILEPATH: %(pathname)s]\n')
 
-BUFFER_PATH: str = 'trading_buffer.json'
 TUNER_INDENT: int = 2
-BUFFER_INDENT = None
 
 TUNER_CODECONF: Dict[str, str] = {
     'winrate': 'winrate',
