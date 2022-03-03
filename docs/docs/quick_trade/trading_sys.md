@@ -11,7 +11,6 @@ A class in which you can trade and test strategies.
 | ticker | str | symbol for CCXT (with "/" between base and quote) |
 | df | `pd.DataFrame` |dataframe with columns: Close, Open, High, Low, Volume |
 | interval | str | timeframe:1m 2m 3m 5m 15m 30m 45m 1h 90m 2h 3h 4h 12h 1d 3d 1w 1M 3M 6M |
-| use_buffer | bool | save and load data from buffer |
 
 ```python
 from quick_trade.trading_sys import Trader, ExampleStrategies
