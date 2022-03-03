@@ -21,6 +21,8 @@ def strategy(strat):
             self.set_open_stop_and_take(set_take=False)
         if not len(self.take_profits):
             self.set_open_stop_and_take(set_stop=False)
+        if not len(self.credit_leverages):
+            self.set_credit_leverages()
         self.correct_sl_tp(sl_correction=inf,
                            tp_correction=inf)
 

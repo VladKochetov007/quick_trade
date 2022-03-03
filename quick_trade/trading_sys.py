@@ -1122,7 +1122,6 @@ class Trader(object):
         stop_losses_before = self.stop_losses
         take_profits_before = self.take_profits
         for e, (sl, tp, p, sig, conv) in enumerate(zip(stop_losses_before, take_profits_before, self.df['Close'], self.returns, self._converted)):
-            print(conv, sig)
             if sig == utils.SELL:
                 if not np.isnan(conv):
                     correct_sl = p * (1 + sl_correction / 10_000)
