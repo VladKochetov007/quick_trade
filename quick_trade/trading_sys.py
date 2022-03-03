@@ -1119,16 +1119,43 @@ class Trader(object):
     def correct_sl_tp(self,
                       sl_correction: Union[float, int] = 50,
                       tp_correction: Union[float, int] = 50):
-        for e, (sl, tp, p, sig) in enumerate(zip(self.stop_losses, self.take_profits, self.df['Close'], self.returns)):
-            if sig == utils.BUY and sl > p:
-                self.stop_losses[e] = p * (1 - sl_correction / 10_000)
-            if sig == utils.SELL and sl < p:
-                self.stop_losses[e] = p * (1 + sl_correction / 10_000)
+        stop_losses_before = self.stop_losses
+        take_profits_before = self.take_profits
+        for e, (sl, tp, p, sig, conv) in enumerate(zip(stop_losses_before, take_profits_before, self.df['Close'], self.returns, self._converted)):
+            print(conv, sig)
+            if sig == utils.SELL:
+                if not np.isnan(conv):
+                    correct_sl = p * (1 + sl_correction / 10_000)
+                    correct_tp = p * (1 - tp_correction / 10_000)
+                    correct_sl_use = False
+                    correct_tp_use = False
 
-            if sig == utils.SELL and tp > p:
-                self.stop_losses[e] = p * (1 - tp_correction / 10_000)
-            if sig == utils.BUY and tp < p:
-                self.stop_losses[e] = p * (1 + tp_correction / 10_000)
+                if p < sl:
+                    correct_sl_use = True
+                if p > tp:
+                    correct_tp_use = True
+
+                if correct_sl_use:
+                    self.stop_losses[e] = sl
+                else:
+                    self.stop_losses[e] = correct_sl
+            elif sig == utils.BUY:
+                if not np.isnan(conv):
+                    correct_sl = p * (1 - sl_correction / 10_000)
+                    correct_tp = p * (1 + tp_correction / 10_000)
+                    correct_sl_use = False
+                    correct_tp_use = False
+
+                if p > sl:
+                    correct_sl_use = True
+                if p < tp:
+                    correct_tp_use = True
+
+                if correct_sl_use:
+                    self.stop_losses[e] = sl
+                else:
+                    self.stop_losses[e] = correct_sl
+
 
 
 class ExampleStrategies(Trader):
