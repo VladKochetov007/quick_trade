@@ -71,6 +71,9 @@ class _Tuner(QuickTradeTuner):
 
 
 class ValidationTuner(object):
+    sort_by: str
+    analyzer: Analyzer
+
     def __init__(self,
                  client: TradingClient,
                  tickers: Iterable[str],
@@ -95,7 +98,9 @@ class ValidationTuner(object):
              update_json: bool = True,
              val_json_path: str = 'val_returns.json',
              train_json_path: str = 'train_returns.json',
+             sort_by: str = 'profit/deviation ratio',
              **backtest_kwargs):
+        self.sort_by = sort_by
         tune_kwargs_train = dict(trading_class=trading_class,
                                  use_tqdm=use_tqdm,
                                  update_json=update_json,
@@ -108,5 +113,14 @@ class ValidationTuner(object):
         self.train_tuner.tune(**tune_kwargs_train)
         self.val_tuner.tune(**tune_kwargs_val)
 
+        self.train_tuner.sort_tunes(sort_by=sort_by)
+        self.val_tuner.sort_tunes(sort_by=sort_by)
+
         self.val_tuner.save_tunes(val_json_path)
         self.train_tuner.save_tunes(train_json_path)
+
+    def make_analyzer(self) -> Analyzer:
+        self.analyzer = Analyzer(train=self.train_tuner,
+                                 val=self.train_tuner,
+                                 sort_by=self.sort_by)
+        return self.analyzer
