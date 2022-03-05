@@ -12,19 +12,12 @@
 #   telegram bot
 #   https://smart-lab.ru/company/www-marketstat-ru/blog/502764.php
 
-from copy import copy
+from copy import deepcopy
 from datetime import datetime
 from re import fullmatch
 from threading import Thread
-from time import ctime
-from time import sleep
-from time import time
-from typing import Any
-from typing import Dict
-from typing import Iterable
-from typing import List
-from typing import Tuple
-from typing import Union
+from time import ctime, sleep, time
+from typing import Any, Union, List, Iterable, Tuple, Dict
 from warnings import warn
 
 import numpy as np
@@ -584,7 +577,7 @@ class Trader(object):
                     new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
                     new_trader.set_client(your_client=self.client)
                     try:
-                        new_trader.connect_graph(copy(self.fig))
+                        new_trader.connect_graph(deepcopy(self.fig))
                     except Exception as e:
                         if isinstance(e, KeyboardInterrupt):
                             raise e
@@ -963,8 +956,8 @@ class Trader(object):
         def start_trading(pair, strat):
             trader = MultiRealTimeTrader(ticker=pair,
                                          interval=self.interval)
-            trader.connect_graph(graph=copy(self.fig))
-            trader.set_client(copy(client))
+            trader.connect_graph(graph=deepcopy(self.fig))
+            trader.set_client(deepcopy(client))
 
             items = tuple(strat.items())
             item = items[0]
