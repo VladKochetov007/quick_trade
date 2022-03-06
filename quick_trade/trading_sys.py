@@ -575,7 +575,7 @@ class Trader(object):
                 for strategy_kwargs in strat.items():
                     df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
                     new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
-                    new_trader.set_client(your_client=self.client)
+                    new_trader.set_client(client=self.client)
                     try:
                         new_trader.connect_graph(deepcopy(self.fig))
                     except Exception as e:
@@ -993,13 +993,13 @@ class Trader(object):
         utils.logger.info('(%s) log returns', self)
 
     @utils.assert_logger
-    def set_client(self, your_client: TradingClient):
+    def set_client(self, client: TradingClient):
         """
-        :param your_client: trading client
+        :param client: trading client
         """
-        assert isinstance(your_client, TradingClient), 'your_client must be of type <TradingClient>'
+        assert isinstance(client, TradingClient), 'client must be of type <TradingClient>'
 
-        self.client = your_client
+        self.client = client
         utils.logger.info('(%s) set client', self)
 
     @utils.assert_logger
