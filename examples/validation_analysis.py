@@ -1,13 +1,13 @@
-from quick_trade.quick_trade.quick_trade_tuner.solve_overfitting.validation_analysis import ValidationTuner, Analyzer
-from quick_trade.quick_trade.quick_trade_tuner.tuner import Arange
+from quick_trade.quick_trade_tuner.solve_overfitting.validation_analysis import ValidationTuner, Analyzer
+from quick_trade.quick_trade_tuner.tuner import Arange
 import pandas as pd
 import datetime
-from quick_trade.quick_trade import brokers
+from quick_trade import brokers
 from binance.client import Client  # pip3 install python-binance
-from quick_trade.quick_trade import utils
-from quick_trade.quick_trade.trading_sys import ExampleStrategies
-from quick_trade.quick_trade import strategy
-from quick_trade.quick_trade.plots import ValidationAnalysisGraph
+from quick_trade import utils
+from quick_trade.trading_sys import ExampleStrategies
+from quick_trade import strategy
+from quick_trade.plots import ValidationAnalysisGraph
 
 
 class MyTrader(ExampleStrategies):
