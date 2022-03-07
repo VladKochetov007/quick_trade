@@ -18,7 +18,6 @@ from numpy import arange
 from numpy import array
 from numpy import exp
 from numpy import isnan
-from numpy import log
 from numpy import nan
 from numpy import nan_to_num
 from numpy import ndarray
@@ -189,7 +188,7 @@ calmar ratio: {}
 max drawdown: {}%
 profit/deviation ratio: {}"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.6.0dev"
+__version__: str = "7.6.5dev"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -288,10 +287,18 @@ def convert_signal_str(predict: PREDICT_TYPE) -> str:
     elif predict == EXIT:
         return 'Exit'
 
+def log_list(values):
+    log_ret = []
+    for value in values:
+        if value >= 0:
+            log_ret.append(np.log(value))
+        else:
+            log_ret.append(-np.log(-value))
+    return array(log_ret)
 
 def get_exponential_growth(dataset: Sequence[float]) -> ndarray:
     x = arange(1, len(dataset) + 1, 1)
-    b, a = polyfit(x, log(array(dataset)), 1)
+    b, a = polyfit(x, log_list(array(dataset)), 1)
     regression = exp(a + b * x)
     return array(regression)
 

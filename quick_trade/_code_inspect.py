@@ -1,13 +1,6 @@
-import inspect
-
-
-def get_caller_name(level: int = 1):
-    return inspect.stack()[level + 1].function  # +1 because this function is a part of project file
-
-
 def format_arguments(func,
                      args: tuple = (),
-                     kwargs: dict = {}):
+                     kwargs: dict = dict()):
     if isinstance(func, str):
         f_name = func
     else:

@@ -541,7 +541,8 @@ class Trader(object):
                        commission: Union[float, int] = 0.0,
                        plot: bool = True,
                        print_out: bool = True,
-                       show: bool = True) -> pd.DataFrame:
+                       show: bool = True,
+                       _dataframes=None) -> pd.DataFrame:
         for el in test_config.keys():
             assert isinstance(el, str), 'tickers must be of type <Iterable[str]>'
             assert fullmatch(utils.TICKER_PATTERN, el), f'all tickers must match the pattern <{utils.TICKER_PATTERN}>'
@@ -573,7 +574,10 @@ class Trader(object):
         for ticker, strat_l in test_config.items():
             for strat in strat_l:
                 for strategy_kwargs in strat.items():
-                    df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
+                    if _dataframes is None:
+                        df = self.client.get_data_historical(ticker=ticker, limit=limit, interval=self.interval)
+                    else:
+                        df = _dataframes[ticker]
                     new_trader = self._get_this_instance(interval=self.interval, df=df, ticker=ticker)
                     new_trader.set_client(client=self.client)
                     try:
@@ -595,6 +599,7 @@ class Trader(object):
                     profits.append(new_trader.profits)
                     depos.append(pd.Series(new_trader.deposit_history))
                     lens_dep.append(len(new_trader.deposit_history))
+        self._registered_strategy = str(test_config)
         self.losses = sum(losses)
         self.trades = sum(trades)
         self.profits = sum(profits)

@@ -7,7 +7,6 @@ from typing import Tuple
 
 import numpy as np
 from numpy import arange
-from numpy import isnan
 from numpy import linspace
 from pandas import DataFrame
 from tqdm import tqdm
@@ -17,6 +16,7 @@ from .core import transform_all_tunable_values, resort_tunes
 from .. import utils
 from ..brokers import TradingClient
 from .. import _saving
+from .._code_inspect import format_arguments
 
 
 class QuickTradeTuner(object):
@@ -86,6 +86,7 @@ class QuickTradeTuner(object):
                                   limit=limit)
             else:
                 df = DataFrame()
+                frames = {t: self._get_df(ticker=t, interval=interval, limit=limit) for t in ticker}
             for strategy, kwargs in self._strategies:
                 trader = trading_class(ticker='ALL/ALL' if self.multi_test else ticker, df=df, interval=interval)
                 trader.set_client(self.client)
@@ -96,16 +97,20 @@ class QuickTradeTuner(object):
                     for ticker_ in ticker:
                         kwargs_m[ticker_] = [{strategy: kwargs}]
                     trader.multi_backtest(test_config=kwargs_m,
+                                          _dataframes=frames,
                                           **backtest_kwargs)
                 else:
                     trader._get_attr(strategy)(**kwargs)
                     trader.backtest(**backtest_kwargs)
 
-                strat_kw = trader._registered_strategy
-                self.strategies_and_kwargs.append(strat_kw)
                 if self.multi_test:
                     old_tick = ticker
                     ticker = 'ALL'
+                    strat_kw = format_arguments(strategy, kwargs=kwargs)
+                else:
+                    strat_kw = trader._registered_strategy
+                self.strategies_and_kwargs.append(strat_kw)
+
                 utils.logger.debug('testing %s ... :', strat_kw)
 
                 for filter_name, filter_attr in utils.TUNER_CODECONF.items():

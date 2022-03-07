@@ -52,9 +52,7 @@ def make_trader_figure(height: Union[int, float] = 900,
 
 
 class BaseGraph(object):
-    _figure: Figure
-
-    def __init__(self, figure: Figure):
+    def __init__(self, figure):
         self._figure = figure
 
     def show(self, **kwargs):
@@ -138,8 +136,8 @@ class BasePlotlyGraph(BaseGraph):
               _row: int = 1,
               _col: int = 1):
         self._figure.update_yaxes(row=_row,
-                                  col=_col,
-                                  type='log')
+                                 col=_col,
+                                 type='log')
 
 
 class QuickTradeGraph(BasePlotlyGraph):
@@ -149,6 +147,10 @@ class QuickTradeGraph(BasePlotlyGraph):
     deposit_col: int = 1
     returns_row: int = 3
     returns_col: int = 1
+
+    def __init__(self, figure=None):
+        if figure is None:
+            self._figure = make_figure(rows=3, cols=1)
 
     def connect_trader(self, trader):
         self.trader = trader
@@ -278,12 +280,18 @@ class QuickTradeGraph(BasePlotlyGraph):
                 width=width,
                 opacity=alpha)
 
-class StopBeforeGraph(BasePlotlyGraph):
+
+class ValidationAnalysisGraph(BasePlotlyGraph):
     test_row: int = 1
     test_col: int = 1
 
+    def __init__(self, figure=None):
+        if figure is None:
+            self._figure = make_figure(rows=1, cols=1)
+
     def connect_analyzer(self, analyzer):
         self.analyzer = analyzer
+        self.analyzer.fig = self
 
     def plot_frame(self):
         if utils.STOP_BEFORE_INTEGER_AS_INDEX:

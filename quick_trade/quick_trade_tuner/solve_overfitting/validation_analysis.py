@@ -3,7 +3,7 @@ from ..tuner import QuickTradeTuner
 from typing import Union
 from ..._saving import read_json
 from ..core import resort_tunes
-from ...plots import StopBeforeGraph
+from ...plots import ValidationAnalysisGraph
 from typing import Dict, Iterable, List, Any
 from ...brokers import TradingClient
 from copy import deepcopy
@@ -11,7 +11,7 @@ from copy import deepcopy
 
 class Analyzer(object):
     train_tunes: dict
-    fig: StopBeforeGraph
+    fig: ValidationAnalysisGraph
     frame: pd.DataFrame
 
     def __init__(self,
@@ -25,11 +25,11 @@ class Analyzer(object):
         elif isinstance(train, dict):
             self.train_tunes = train
 
-        if isinstance(train, QuickTradeTuner):
+        if isinstance(val, QuickTradeTuner):
             self.validation_tunes = val.result_tunes
-        elif isinstance(train, str):
+        elif isinstance(val, str):
             self.validation_tunes = read_json(val)
-        elif isinstance(train, dict):
+        elif isinstance(val, dict):
             self.validation_tunes = val
 
         self.resort(sort_by=sort_by)
@@ -44,8 +44,7 @@ class Analyzer(object):
         self.frame['train'] = [self.train_tunes[key][self.sorted_by] for key in self.profit_keys]
         self.frame['validation'] = [self.validation_tunes[key][self.sorted_by] for key in self.profit_keys]
 
-    def connect_graph(self, figure: StopBeforeGraph):
-        self.fig = figure
+    def connect_graph(self, figure: ValidationAnalysisGraph):
         self.fig.connect_analyzer(self)
 
     def plot_frame(self):
@@ -121,6 +120,6 @@ class ValidationTuner(object):
 
     def make_analyzer(self) -> Analyzer:
         self.analyzer = Analyzer(train=self.train_tuner,
-                                 val=self.train_tuner,
+                                 val=self.val_tuner,
                                  sort_by=self.sort_by)
         return self.analyzer
