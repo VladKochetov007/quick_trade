@@ -52,7 +52,9 @@ def make_trader_figure(height: Union[int, float] = 900,
 
 
 class BaseGraph(object):
-    def __init__(self, figure):
+    def __init__(self, figure=None):
+        if figure is None:
+            figure = make_figure(rows=1, cols=1)
         self._figure = figure
 
     def show(self, **kwargs):
@@ -150,7 +152,8 @@ class QuickTradeGraph(BasePlotlyGraph):
 
     def __init__(self, figure=None):
         if figure is None:
-            self._figure = make_figure(rows=3, cols=1)
+            figure = make_figure(rows=3, cols=1)
+        self._figure = figure
 
     def connect_trader(self, trader):
         self.trader = trader
@@ -287,7 +290,8 @@ class ValidationAnalysisGraph(BasePlotlyGraph):
 
     def __init__(self, figure=None):
         if figure is None:
-            self._figure = make_figure(rows=1, cols=1)
+            figure = make_figure(rows=1, cols=1)
+        self._figure = figure
 
     def connect_analyzer(self, analyzer):
         self.analyzer = analyzer
