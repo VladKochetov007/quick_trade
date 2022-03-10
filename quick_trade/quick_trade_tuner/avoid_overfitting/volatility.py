@@ -1,6 +1,20 @@
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
+def prepare_frame(df):
+    df = pd.DataFrame(
+        {
+            'Open': df['Open'],
+            'High': df['High'],
+            'Low': df['Low'],
+            'Close': df['Close'],
+        }
+    )
+    return df
+
+def get_daily(client, ticker):
+    df = client.get_data_historical(ticker=ticker, interval='1d')
+    return prepare_frame(df)
 
 def get_volatility(df, period):
     roll = df.rolling(period)
@@ -20,11 +34,19 @@ def volatility_by_period(df, start=1, stop=100, step=5):
         volatility_correlation.append(get_mean_volatility(df, period=period))
     return pd.Series(volatility_correlation, index=range(start, stop, step))
 
-def scale_volatility(df: pd.DataFrame):
+def scale_volatility(volatility: pd.DataFrame):
     scaler = MinMaxScaler()
-    scaler.fit(df.T.values)
-    scaled = scaler.fit_transform(df.T.values).T
-    return pd.DataFrame(scaled, columns=df.columns, index=df.index)
+    scaler.fit(volatility.T.values)
+    scaled = scaler.fit_transform(volatility.T.values).T
+    return pd.DataFrame(scaled, columns=volatility.columns, index=volatility.index)
+
+def get_scaled_analysis(client, tickers, start=1, stop=90, step=2):
+    volatility = pd.DataFrame()
+    for ticker in tickers:
+        df = get_daily(client, ticker)
+        df = prepare_frame(df)
+        volatility[ticker] = volatility_by_period(df=df, start=start, stop=stop, step=step)
+    return scale_volatility(volatility)
 
 
 if __name__ == '__main__':
@@ -63,30 +85,10 @@ if __name__ == '__main__':
             return df
 
 
-    def get_df(ticker, timeframe, client):
-        df = client.get_data_historical(ticker, timeframe)
-        df = pd.DataFrame(
-            {
-                'Open': df['Open'],
-                'High': df['High'],
-                'Low': df['Low'],
-                'Close': df['Close'],
-            }
-        )
-        return df
-
     client = BinanceTradingClient()
-
-    def add_volatility(ticker, key=55, result=pd.DataFrame()):
-        frame = get_df(ticker, '1d', client)
-        result[ticker] = volatility_by_period(frame, key, key+1)
-        return result
-
-    for ticker in ['BTC/USDT', 'MANA/USDT', 'ETH/USDT', 'LTC/USDT', 'LUNA/USDT', 'GALA/USDT', 'BNB/USDT', 'XRP/USDT', 'ADA/USDT', 'SOL/USDT', 'AVAX/USDT', 'BCH/USDT', 'EUR/USDT', 'USDT/UAH', 'DOGE/USDT', 'XMR/USDT', 'SLP/USDT', 'CELO/USDT', 'BAT/USDT', 'BAT/BTC', 'FTM/USDT']:
-        volatility = add_volatility(ticker)
-
+    tickers =['BTC/USDT', 'MANA/USDT', 'ETH/USDT', 'LTC/USDT', 'LUNA/USDT', 'GALA/USDT', 'BNB/USDT', 'XRP/USDT', 'ADA/USDT', 'SOL/USDT', 'AVAX/USDT', 'BCH/USDT', 'EUR/USDT', 'USDT/UAH', 'DOGE/USDT', 'XMR/USDT', 'SLP/USDT', 'CELO/USDT', 'BAT/USDT', 'BAT/BTC', 'FTM/USDT']
+    volatility = get_scaled_analysis(client, tickers)
     g = ValidationAnalysisGraph(make_figure(width=1400, height=700))
-    volatility = scale_volatility(volatility)
     for ticker_vol in volatility.items():
         g.plot_line(ticker_vol[1], name=ticker_vol[0], width=20, index=ticker_vol[1].index, mode='markers')
     g.show()
