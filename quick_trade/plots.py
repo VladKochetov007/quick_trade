@@ -15,7 +15,7 @@ def make_figure(height: Union[int, float] = 900,
                width: Union[int, float] = 1300,
                template: str = 'plotly_dark',
                row_heights=None,
-               rows: int = 3,
+               rows: int = 1,
                cols: int = 1) -> Figure:
     assert isinstance(height, (int, float)), 'height must be of type <int> or <float>'
     assert isinstance(width, (int, float)), 'width must be of type <int> or <float>'

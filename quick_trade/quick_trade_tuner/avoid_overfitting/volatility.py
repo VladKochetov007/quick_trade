@@ -1,5 +1,10 @@
+import pprint
+import typing
+
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.cluster import AffinityPropagation
+
 
 def prepare_frame(df):
     df = pd.DataFrame(
@@ -28,7 +33,7 @@ def get_volatility(df, period):
 def get_mean_volatility(df, period):
     return pd.Series(get_volatility(df, period)).mean()
 
-def volatility_by_period(df, start=1, stop=100, step=5):
+def volatility_by_period(df, start=20, stop=30, step=2):
     volatility_correlation = []
     for period in range(start, stop, step):
         volatility_correlation.append(get_mean_volatility(df, period=period))
@@ -40,13 +45,36 @@ def scale_volatility(volatility: pd.DataFrame):
     scaled = scaler.fit_transform(volatility.T.values).T
     return pd.DataFrame(scaled, columns=volatility.columns, index=volatility.index)
 
-def get_scaled_analysis(client, tickers, start=1, stop=90, step=2):
+def get_scaled_analysis(client, tickers, start=20, stop=30, step=2):
     volatility = pd.DataFrame()
     for ticker in tickers:
         df = get_daily(client, ticker)
         df = prepare_frame(df)
         volatility[ticker] = volatility_by_period(df=df, start=start, stop=stop, step=step)
     return scale_volatility(volatility)
+
+def mean_analysis(scaled):
+    return scaled.mean(skipna=True)
+
+def pairs_clustering(analysis: pd.Series, aprop_kwargs=None):
+    if aprop_kwargs is None:
+        aprop_kwargs = dict(preference=-0.02, random_state=0)
+    aprop = AffinityPropagation(**aprop_kwargs)
+
+    tickers = list(analysis.index)
+    X = [(0, x) for x in analysis.values]
+
+    fit = aprop.fit(X)
+    cluster_centers_indices = fit.cluster_centers_indices_
+    labels = fit.labels_
+    n_clusters = len(cluster_centers_indices)
+
+    clusters = [[]]*n_clusters
+    tickers = analysis.index
+    for ticker, cluster in zip(tickers, labels):
+        clusters[cluster] = clusters[cluster] + [ticker]
+
+    return clusters
 
 
 if __name__ == '__main__':
@@ -86,9 +114,12 @@ if __name__ == '__main__':
 
 
     client = BinanceTradingClient()
-    tickers =['BTC/USDT', 'MANA/USDT', 'ETH/USDT', 'LTC/USDT', 'LUNA/USDT', 'GALA/USDT', 'BNB/USDT', 'XRP/USDT', 'ADA/USDT', 'SOL/USDT', 'AVAX/USDT', 'BCH/USDT', 'EUR/USDT', 'USDT/UAH', 'DOGE/USDT', 'XMR/USDT', 'SLP/USDT', 'CELO/USDT', 'BAT/USDT', 'BAT/BTC', 'FTM/USDT']
-    volatility = get_scaled_analysis(client, tickers)
+    tickers =['BTC/USDT', 'MANA/USDT', 'ETH/USDT', 'LTC/USDT', 'LUNA/USDT', 'GALA/USDT', 'BNB/USDT', 'XRP/USDT', 'ADA/USDT', 'SOL/USDT', 'AVAX/USDT', 'BCH/USDT', 'EUR/USDT', 'USDT/UAH', 'DOGE/USDT', 'XMR/USDT', 'SLP/USDT', 'CELO/USDT', 'BAT/USDT', 'BAT/BTC', 'FTM/USDT', 'SHIB/USDT']
+    volatility = get_scaled_analysis(client, tickers, stop=30, start=20)
+    volatility = mean_analysis(volatility)
     g = ValidationAnalysisGraph(make_figure(width=1400, height=700))
+    pprint.pprint(pairs_clustering(volatility))
     for ticker_vol in volatility.items():
-        g.plot_line(ticker_vol[1], name=ticker_vol[0], width=20, index=ticker_vol[1].index, mode='markers')
+        g.plot_line([ticker_vol[1]], name=ticker_vol[0], width=20, index=[0], mode='markers')
+        #print(ticker_vol[1], ', #', ticker_vol[0])
     g.show()
