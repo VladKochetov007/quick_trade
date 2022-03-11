@@ -66,7 +66,7 @@ class VolatilityHandler:
         return pd.Series(volatility, index=self._span)
 
     def multipair_volatility(self, tickers: typing.Iterable[str]):
-        analysis = pd.DataFrame
+        analysis = pd.DataFrame()
         for ticker in tickers:
             analysis[ticker] = self.period_volatility(ticker)
         return analysis
@@ -76,71 +76,44 @@ class VolatilityScaler:
     def __init__(self, volatility: pd.DataFrame):
         self._scaler: MinMaxScaler = MinMaxScaler()
         self._volatility = volatility
+        self.__fit()
 
     def __fit(self):
-        self._scaler.fit(volatility.T.values)
+        self._scaler.fit(self._volatility.T.values)
 
     def scaled_analysis(self):
-        return self._scaler.fit_transform(self._volatility.T.values).T
+        scaled = self._scaler.fit_transform(self._volatility.T.values).T
+        self.scaled_volatility = pd.DataFrame(scaled,
+                                              columns=self._volatility.columns,
+                                              index=self._volatility.index)
+        return self.scaled_volatility
 
+    def mean_scaled_analysis(self):
+        self.mean_scaled_volatility = self.scaled_analysis().mean(skipna=True)
+        return self.mean_scaled_volatility
 
+class Clusterizer:
+    def __init__(self, afprop_kwargs=None):
+        clusterer_kwargs = afprop_kwargs
+        if afprop_kwargs is None:
+            clusterer_kwargs = dict(preference=-0.012, random_state=0)
+        self.__clusterer = AffinityPropagation(**clusterer_kwargs)
 
+    def make_clusters(self, scaled_volatility: pd.DataFrame):
+        pairs = [(0, volatility) for volatility in scaled_volatility.values]
 
+        self.__fit = self.__clusterer.fit(pairs)
+        self._clusters_centers = self.__fit.cluster_centers_indices_
+        labels = self.__fit.labels_
+        n_clusters = len(self._clusters_centers)
 
+        self.clusters = [[]] * n_clusters
+        tickers = scaled_volatility.index
 
-"""def get_volatility(df, period):##################
-    roll = df.rolling(period)
-    mini = roll.min()['Low'].values
-    maxi = roll.max()['High'].values
-    mean = roll.mean()
-    mean = mean.mean(axis=1).values
+        for ticker, cluster in zip(tickers, labels):
+            self.clusters[cluster] = self.clusters[cluster] + [ticker]
 
-def get_mean_volatility(df, period):###################
-    return pd.Series(get_volatility(df, period)).mean()
-
-def volatility_by_period(df, start=20, stop=30, step=2):###############
-    volatility_correlation = []
-    for period in range(start, stop, step):
-        volatility_correlation.append(get_mean_volatility(df, period=period))
-    return pd.Series(volatility_correlation, index=range(start, stop, step))
-def scale_volatility(volatility: pd.DataFrame):################
-    scaler = MinMaxScaler()
-    scaler.fit(volatility.T.values)
-    scaled = scaler.fit_transform(volatility.T.values).T
-    return pd.DataFrame(scaled, columns=volatility.columns, index=volatility.index)
-
-"""
-
-def get_scaled_analysis(data_handler: DataFrameHandler, tickers: typing.List[str], start=20, stop=30, step=2):
-    volatility = pd.DataFrame()
-    for ticker in tickers:
-        df = data_handler.download(ticker)
-        volatility[ticker] = volatility_by_period(df=df, start=start, stop=stop, step=step)
-    return scale_volatility(volatility)
-
-def mean_analysis(scaled):
-    return scaled.mean(skipna=True)
-
-def pairs_clustering(analysis: pd.Series, aprop_kwargs=None):
-    if aprop_kwargs is None:
-        aprop_kwargs = dict(preference=-0.012, random_state=0)
-    aprop = AffinityPropagation(**aprop_kwargs)
-
-    tickers = list(analysis.index)
-    X = [(0, x) for x in analysis.values]
-
-    fit = aprop.fit(X)
-    cluster_centers_indices = fit.cluster_centers_indices_
-    labels = fit.labels_
-    n_clusters = len(cluster_centers_indices)
-
-    clusters = [[]]*n_clusters
-    tickers = analysis.index
-    for ticker, cluster in zip(tickers, labels):
-        clusters[cluster] = clusters[cluster] + [ticker]
-
-    return clusters
-
+        return self.clusters
 
 if __name__ == '__main__':
     from binance import Client
@@ -179,12 +152,6 @@ if __name__ == '__main__':
 
 
     client = BinanceTradingClient()
-    frame_handler = DataFrameHandler(client)
-    vol_handler = VolatilityHandler(data_handler=frame_handler)
-    volatility = vol_handler.period_volatility('BTC/USDT')
-    print(volatility, type(volatility))
-    exit()
-
     tickers =['BTC/USDT',
               'MANA/USDT',
               'ETH/USDT',
@@ -232,11 +199,14 @@ if __name__ == '__main__':
               'DOT/USDT',
               'LINK/USDT',
               ]
-    volatility = get_scaled_analysis(DataFrameHandler(client), tickers, stop=30, start=20)
-    volatility = mean_analysis(volatility)
-    g = ValidationAnalysisGraph(make_figure(width=1400, height=700))
-    clusters = pairs_clustering(volatility)
+    data_handler = DataFrameHandler(client)
+    vol_handler = VolatilityHandler(data_handler)
+    vol_scaler = VolatilityScaler(vol_handler.multipair_volatility(tickers))
+    volatility = vol_scaler.mean_scaled_analysis()
+    clusterer = Clusterizer()
+    clusters = clusterer.make_clusters(volatility)
     print(clusters)
+    g = ValidationAnalysisGraph(make_figure(width=1400, height=700))
     colors = [
         'red', 'green', 'blue', 'yellow', '#7800FF', '#F700FF', '#FFFFFF', '#18D1B5', '#3E5EDF'
     ]
