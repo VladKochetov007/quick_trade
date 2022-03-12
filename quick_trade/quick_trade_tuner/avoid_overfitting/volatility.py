@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import AffinityPropagation
 import ccxt
-from quick_trade.quick_trade._saving import Buffer  # "...saving"
+from ..._saving import Buffer
 
 
 class DataFrameHandler:
