@@ -1,5 +1,5 @@
 import numpy as np
-import typing
+from typing import Dict, Iterable, Any, List
 
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
@@ -7,6 +7,7 @@ from sklearn.cluster import AffinityPropagation
 import ccxt
 from ..._saving import Buffer
 from ...brokers import TradingClient
+from copy import deepcopy
 
 
 class DataFrameHandler:
@@ -66,7 +67,7 @@ class VolatilityHandler:
             )
         return pd.Series(volatility, index=self._span)
 
-    def multipair_volatility(self, tickers: typing.Iterable[str]):
+    def multipair_volatility(self, tickers: Iterable[str]):
         analysis = pd.DataFrame()
         for ticker in tickers:
             analysis[ticker] = self.period_volatility(ticker)
@@ -115,3 +116,41 @@ class Clusterizer:
             self.clusters[cluster] = self.clusters[cluster] + [ticker]
 
         return self.clusters
+
+class Tuner:  # TODO
+    def __init__(self,
+                 tuner_instance,
+                 client: TradingClient,
+                 clusters: List[List[str]],
+                 intervals: Iterable[str],
+                 limits: Iterable,
+                 strategies_kwargs: Dict[str, List[Dict[str, Any]]] = None):
+        self._tuners = []
+        for cluster in clusters:
+            if len(cluster) > 1:
+                self._tuners.append(
+                    tuner_instance(
+                        client=deepcopy(client),
+                        tickers=cluster,
+                        intervals=intervals,
+                        limits=limits,
+                        strategies_kwargs=strategies_kwargs,
+                        multi_backtest=True
+                    )
+                )
+
+def split_tickers_volatility(tickers: List[str],
+                             client=None,
+                             timeframe: str = '1d',
+                             span_start: int = 20,
+                             span_end: int = 30,
+                             span_step: int = 2,
+                             afprop_kwargs=None):
+    df_handler = DataFrameHandler(client=client)
+    volatility_handler = VolatilityHandler(data_handler=df_handler,
+                                           span_start=span_start,
+                                           span_end=span_end,
+                                           span_step=span_step)
+    scaler = VolatilityScaler(volatility_handler.multipair_volatility(tickers=tickers))
+    clusrerizer = Clusterizer(afprop_kwargs=afprop_kwargs)
+    return clusrerizer.make_clusters(scaler.mean_scaled_volatility())
