@@ -6,6 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import AffinityPropagation
 import ccxt
 from ..._saving import Buffer
+from ...brokers import TradingClient
 
 
 class DataFrameHandler:
