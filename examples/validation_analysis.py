@@ -1,4 +1,4 @@
-from quick_trade.quick_trade_tuner.solve_overfitting.validation_analysis import ValidationTuner, Analyzer
+from quick_trade.quick_trade_tuner.avoid_overfitting.validation_analysis import ValidationTuner, Analyzer
 from quick_trade.quick_trade_tuner.tuner import Arange
 import pandas as pd
 import datetime

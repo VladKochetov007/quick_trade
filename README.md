@@ -14,6 +14,7 @@ Dependencies:
  ├──pandas (https://github.com/pandas-dev/pandas)
  ├──numpy (https://github.com/numpy/numpy)
  ├──tqdm (https://github.com/tqdm/tqdm)
+ ├──scikit-learn (https://github.com/scikit-learn/scikit-learn)
  └──ccxt (https://github.com/ccxt/ccxt)
 ```
 * **Documentation:** 🚧 https://vladkochetov007.github.io/quick_trade/#/ 🚧

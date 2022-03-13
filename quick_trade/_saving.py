@@ -1,5 +1,6 @@
 from json import dump, load
-from os.path import isfile
+import os
+import re
 
 
 class JSON(object):
@@ -7,7 +8,7 @@ class JSON(object):
 
     def __init__(self, filepath: str):
         self.path = filepath
-        if not isfile(path=filepath):
+        if not os.path.isfile(path=filepath):
             self.write(data={})
 
     def read(self):
@@ -35,8 +36,22 @@ class Buffer:
     def read(self, key):
         return self._buffer[key]
 
+    def load_from_json(self, path):
+        self._buffer = read_json(path=path)
+
+    def save_to_json(self, path):
+        write_json(path=path,
+                   data=self._buffer)
+
 def read_json(path: str):
     return JSON(filepath=path).read()
 
 def write_json(path: str, data, indent: int = 2):
     return JSON(filepath=path).write(data=data, indent=indent)
+
+def check_make_dir(filepath, split_pattern=r"/[^\s/]*$"):
+    filename = str(re.findall(split_pattern, filepath)[-1])
+    dirpath = filepath[:-len(filename)]
+    if not os.path.isdir(dirpath):
+        os.makedirs(dirpath, exist_ok=True)
+    return dirpath

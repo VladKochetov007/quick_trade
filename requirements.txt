@@ -4,3 +4,4 @@ pandas==1.3.5
 ta==0.8.0
 tqdm==4.62.3
 ccxt==1.65.65
+scikit-learn

@@ -6,7 +6,7 @@ from setuptools import find_packages
 with open('README.md') as file:
     long_desc = file.read()
 
-__version__ = "7.7.0dev"
+__version__ = "7.7.5dev"
 
 setup(
     name='quick_trade',
@@ -30,6 +30,7 @@ setup(
         'ta==0.8.0',
         'tqdm==4.62.3',
         'ccxt==1.65.65',
+        'scikit-learn',
     ],
     download_url=f'https://github.com/VladKochetov007/quick_trade/archive/{__version__}.tar.gz',
     keywords=[

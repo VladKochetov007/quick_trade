@@ -5,9 +5,10 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import AffinityPropagation
 import ccxt
-from ..._saving import Buffer
+from ..._saving import Buffer, check_make_dir
 from ...brokers import TradingClient
 from copy import deepcopy
+from ..tuner import QuickTradeTuner
 
 
 class DataFrameHandler:
@@ -91,8 +92,8 @@ class VolatilityScaler:
         return self.scaled_volatility
 
     def mean_scaled_analysis(self):
-        self.mean_scaled_volatility = self.scaled_analysis().mean(skipna=True)
-        return self.mean_scaled_volatility
+        self._mean_scaled_volatility = self.scaled_analysis().mean(skipna=True)
+        return self._mean_scaled_volatility
 
 class Clusterizer:
     def __init__(self, afprop_kwargs=None):
@@ -117,15 +118,17 @@ class Clusterizer:
 
         return self.clusters
 
-class Tuner:  # TODO
+class Tuner:
     def __init__(self,
-                 tuner_instance,
                  client: TradingClient,
                  clusters: List[List[str]],
                  intervals: Iterable[str],
                  limits: Iterable,
+                 tuner_instance=QuickTradeTuner,
                  strategies_kwargs: Dict[str, List[Dict[str, Any]]] = None):
         self._tuners = []
+        self._buffer = Buffer()
+        self._tuner_instance_ = tuner_instance
         for cluster in clusters:
             if len(cluster) > 1:
                 self._tuners.append(
@@ -138,6 +141,41 @@ class Tuner:  # TODO
                         multi_backtest=True
                     )
                 )
+        self.n_groups = len(self._tuners)
+
+    def __run_task(self, task, kwargs, kwargs_dynamic=None):
+        if kwargs_dynamic is None:
+            kwargs_dynamic = [{}] * self.n_groups
+        for cluster, tuner in enumerate(self._tuners):
+            task(tuner, **kwargs, **kwargs_dynamic[cluster])
+            self._buffer.write(cluster, tuner.result_tunes)
+        self._buffer.save_to_json(self.__dir_path + "/volatility_tuner_global.json")
+
+    def tune(self,
+             trading_class,
+             use_tqdm: bool = True,
+             update_json: bool = True,
+             update_json_path: str = 'volatility_tuner/returns-{}.json',
+             **backtest_kwargs):
+
+        dynamic = []
+        for cluster in range(self.n_groups):
+            dynamic.append({'update_json_path': update_json_path.format(cluster)})
+        self.__run_task(self._tuner_instance_.tune,
+                        dict(trading_class=trading_class,
+                             use_tqdm=use_tqdm,
+                             update_json=update_json,
+                             **backtest_kwargs),
+                        kwargs_dynamic=dynamic)
+
+
+
+    def resorting(self, sort_by: str = 'percentage year profit', drop_na: bool = True):
+        for cluster, tuner in enumerate(self._tuners):
+            tuner.resorting(sort_by=sort_by,
+                            drop_na=drop_na)
+            self._buffer.write(cluster, tuner.result_tunes)
+        self._buffer.save_to_json(self.__dir_path + "/volatility_tuner_global.json")
 
 def split_tickers_volatility(tickers: List[str],
                              client=None,
@@ -153,4 +191,4 @@ def split_tickers_volatility(tickers: List[str],
                                            span_step=span_step)
     scaler = VolatilityScaler(volatility_handler.multipair_volatility(tickers=tickers))
     clusrerizer = Clusterizer(afprop_kwargs=afprop_kwargs)
-    return clusrerizer.make_clusters(scaler.mean_scaled_volatility())
+    return clusrerizer.make_clusters(scaler.mean_scaled_analysis())
