@@ -28,8 +28,8 @@ params = {
     'strategy_parabolic_SAR':
         [
             {
-                'step': GeometricProgression(0.01, 0.2, 1.1),
-                'max_step': GeometricProgression(0.1, 2.0, 1.1),
+                'step': GeometricProgression(0.01, 0.2, 4),
+                'max_step': GeometricProgression(0.1, 2.0, 4),
                 'plot': False
             }
         ],

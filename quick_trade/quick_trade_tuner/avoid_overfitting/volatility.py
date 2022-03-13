@@ -151,6 +151,9 @@ class Tuner:
             self._buffer.write(cluster, tuner.result_tunes)
         self._buffer.save_to_json(self.__dir_path + "/volatility_tuner_global.json")
 
+    def _update_path(self, filepath):
+        self.__dir_path = check_make_dir(filepath)
+
     def tune(self,
              trading_class,
              use_tqdm: bool = True,
@@ -161,6 +164,7 @@ class Tuner:
         dynamic = []
         for cluster in range(self.n_groups):
             dynamic.append({'update_json_path': update_json_path.format(cluster)})
+        self._update_path(update_json_path)
         self.__run_task(self._tuner_instance_.tune,
                         dict(trading_class=trading_class,
                              use_tqdm=use_tqdm,
@@ -168,14 +172,10 @@ class Tuner:
                              **backtest_kwargs),
                         kwargs_dynamic=dynamic)
 
-
-
     def resorting(self, sort_by: str = 'percentage year profit', drop_na: bool = True):
-        for cluster, tuner in enumerate(self._tuners):
-            tuner.resorting(sort_by=sort_by,
-                            drop_na=drop_na)
-            self._buffer.write(cluster, tuner.result_tunes)
-        self._buffer.save_to_json(self.__dir_path + "/volatility_tuner_global.json")
+        self.__run_task(self._tuner_instance_.resorting,
+                        kwargs=dict(sort_by=sort_by,
+                                    drop_na=drop_na))
 
 def split_tickers_volatility(tickers: List[str],
                              client=None,
