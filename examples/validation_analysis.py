@@ -71,7 +71,7 @@ t = ValidationTuner(BinanceTradingClient(),
                     limits=[1000],
                     strategies_kwargs=params,
                     multi_backtest=True,
-                    validation_split=1 / 3)
+                    validation_split=1/3)
 t.tune(MyTrader, commission=0.075, val_json_path='val.json', train_json_path='train.json')
 validator = Analyzer(train='train.json',
                      val='val.json',

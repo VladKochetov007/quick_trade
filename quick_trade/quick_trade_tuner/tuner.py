@@ -20,11 +20,12 @@ from .._code_inspect import format_arguments
 
 
 class QuickTradeTuner(object):
+    _frames_data: tuple
     def __init__(self,
                  client: TradingClient,
-                 tickers: Iterable[str],
-                 intervals: Iterable[str],
-                 limits: Iterable,
+                 tickers: Iterable[str] = None,
+                 intervals: Iterable[str] = None,
+                 limits: Iterable = None,
                  strategies_kwargs: Dict[str, List[Dict[str, Any]]] = None,
                  multi_backtest: bool = True):
         """
@@ -36,16 +37,24 @@ class QuickTradeTuner(object):
         :param strategies_kwargs: kwargs for strategies: {'strategy_supertrend': [{'multiplier': 10}]}, you can use Choice, Linspace, Arange as argument's value and recourse it. You can also set rules for arranging arguments for each strategy by using _RULES_ and kwargs to access the values of the arguments.
 
         """
-        strategies_kwargs = transform_all_tunable_values(strategies_kwargs)
-        strategies = list(strategies_kwargs.keys())
         self.strategies_and_kwargs: List[str] = []
         self._strategies = []
         self.tickers = tickers
         self.multi_test: bool = multi_backtest
         if multi_backtest:
             tickers = [tickers]
-        self._frames_data: tuple = tuple(product(tickers, intervals, limits))
         self.client = client
+        if strategies_kwargs is None:
+            strategies_kwargs = dict()
+        if intervals is None:
+            intervals = ['1h']
+        if limits is None:
+            limits = [1000]
+        if tickers is None:
+            tickers = []
+        self._frames_data = tuple(product(tickers, intervals, limits))
+        strategies_kwargs = transform_all_tunable_values(strategies_kwargs)
+        strategies = list(strategies_kwargs.keys())
         for strategy in strategies:
             for kwargs in strategies_kwargs[strategy]:
                 if eval(kwargs.get('_RULES_', 'True')):
@@ -170,7 +179,7 @@ class QuickTradeTuner(object):
             self.result_tunes = _saving.read_json(path=path)
 
     def get_best(self, num: int = 1) -> List[Tuple[str, Dict[str, Any]]]:
-        return list(self.result_tunes.items())[:num+1]
+        return list(self.result_tunes.items())[:num]
 
 
 class Combinations(object):  # TODO: .
@@ -191,8 +200,8 @@ class Choise(TunableValue):
 
 
 class Arange(TunableValue):
-    def __init__(self, min_value, max_value, step):
-        self.values = arange(min_value, max_value + step, step).astype('int').tolist()
+    def __init__(self, start, stop, step):
+        self.values = arange(start, stop + step, step).astype('int').tolist()
 
 
 class Linspace(TunableValue):

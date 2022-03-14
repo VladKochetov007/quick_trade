@@ -21,6 +21,7 @@ class JSON(object):
             dump(data, file, indent=indent, ensure_ascii=False)
 
 class Buffer:
+    _buffer: dict
     def __init__(self, buffer_data=None):
         if buffer_data is None:
             self._buffer = {}
@@ -42,6 +43,15 @@ class Buffer:
     def save_to_json(self, path):
         write_json(path=path,
                    data=self._buffer)
+
+    def __len__(self):
+        return len(self._buffer)
+
+    def keys(self):
+        return list(self._buffer.keys())
+
+    def values(self):
+        return list(self._buffer.values())
 
 def read_json(path: str):
     return JSON(filepath=path).read()

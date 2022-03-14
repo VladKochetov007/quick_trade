@@ -1,5 +1,5 @@
 import numpy as np
-from typing import Dict, Iterable, Any, List
+from typing import Dict, Iterable, Any, List, Tuple
 
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
@@ -118,19 +118,25 @@ class Clusterizer:
 
         return self.clusters
 
-class Tuner:
+class Tuner(QuickTradeTuner):
     def __init__(self,
                  client: TradingClient,
-                 clusters: List[List[str]],
-                 intervals: Iterable[str],
-                 limits: Iterable,
+                 clusters: List[List[str]] = None,
+                 intervals: Iterable[str] = None,
+                 limits: Iterable = None,
                  tuner_instance=QuickTradeTuner,
-                 strategies_kwargs: Dict[str, List[Dict[str, Any]]] = None):
+                 strategies_kwargs: Dict[str, List[Dict[str, Any]]] = None,
+                 initialize_tuners: bool = True):
         self._tuners = []
         self._buffer = Buffer()
         self._tuner_instance_ = tuner_instance
+        self.clusters = []
+        self.client = deepcopy(client)
+        if clusters is None:
+            clusters = []
         for cluster in clusters:
-            if len(cluster) > 1:
+            if len(cluster) > 1 and initialize_tuners:
+                self.clusters.append(cluster)
                 self._tuners.append(
                     tuner_instance(
                         client=deepcopy(client),
@@ -143,16 +149,34 @@ class Tuner:
                 )
         self.n_groups = len(self._tuners)
 
-    def __run_task(self, task, kwargs, kwargs_dynamic=None):
+    def __run_task(self, task, kwargs=None, kwargs_dynamic=None):
         if kwargs_dynamic is None:
             kwargs_dynamic = [{}] * self.n_groups
-        for cluster, tuner in enumerate(self._tuners):
-            task(tuner, **kwargs, **kwargs_dynamic[cluster])
-            self._buffer.write(cluster, tuner.result_tunes)
-        self._buffer.save_to_json(self.__dir_path + "/volatility_tuner_global.json")
+        if kwargs is None:
+            kwargs = dict()
+        for n_cluster, (tuner, cluster) in enumerate(zip(self._tuners, self.clusters)):
+            task(tuner, **kwargs, **kwargs_dynamic[n_cluster])
+            self._buffer.write(' '.join(cluster), tuner.result_tunes)
+        self._buffer.save_to_json(self.__global_tuner_path)
+
+    def __format_path_dynamic(self, path: str, param: str) -> List[Dict[str, str]]:
+        dynamic = []
+        for cluster in range(self.n_groups):
+            dynamic.append({param: path.format(cluster)})
+        return dynamic
 
     def _update_path(self, filepath):
         self.__dir_path = check_make_dir(filepath)
+        self.__global_tuner_path = self.__dir_path + "/volatility_tuner_global.json"
+
+    def __tuners_from_buffer(self):
+        buffer_keys = self._buffer.keys()
+        self.tickers = ' '.join(buffer_keys).split(' ')
+        self.clusters = [cluster.split(' ') for cluster in buffer_keys]
+        self.n_groups = len(self.clusters)
+        self._tuners = [self._tuner_instance_(deepcopy(self.client), self.tickers, multi_backtest=True) for i in range(self.n_groups)]
+        dynamic = [{'data': data} for data in self._buffer.values()]
+        self.__run_task(self._tuner_instance_.load_tunes, kwargs_dynamic=dynamic)
 
     def tune(self,
              trading_class,
@@ -161,9 +185,7 @@ class Tuner:
              update_json_path: str = 'volatility_tuner/returns-{}.json',
              **backtest_kwargs):
 
-        dynamic = []
-        for cluster in range(self.n_groups):
-            dynamic.append({'update_json_path': update_json_path.format(cluster)})
+        dynamic = self.__format_path_dynamic(update_json_path, param='update_json_path')
         self._update_path(update_json_path)
         self.__run_task(self._tuner_instance_.tune,
                         dict(trading_class=trading_class,
@@ -176,6 +198,30 @@ class Tuner:
         self.__run_task(self._tuner_instance_.resorting,
                         kwargs=dict(sort_by=sort_by,
                                     drop_na=drop_na))
+
+    def load_tunes(self, path: str = 'volatility_tuner/returns-{}.json', data=None):
+        self._update_path(path)
+        if data is None:
+            self._buffer.load_from_json(self.__global_tuner_path)
+        else:
+            self._buffer = Buffer(buffer_data=data)
+        self.__tuners_from_buffer()
+
+    def sort_tunes(self, sort_by: str = 'percentage year profit', drop_na: bool = True):
+        self.__run_task(self._tuner_instance_.sort_tunes,
+                        kwargs=dict(sort_by=sort_by,
+                                    drop_na=drop_na))
+
+    def resorting(self, sort_by: str = 'percentage year profit', drop_na: bool = True):
+        self.__run_task(self._tuner_instance_.resorting,
+                        kwargs=dict(sort_by=sort_by,
+                                    drop_na=drop_na))
+
+    def get_best(self, num: int = 1) -> Dict[str, List[Tuple[str, Dict[str, Any]]]]:
+        self.bests = {}
+        for cluster, tuner in zip(self.clusters, self._tuners):
+            self.bests[' '.join(cluster)] = tuner.get_best(num=num)
+        return self.bests
 
 def split_tickers_volatility(tickers: List[str],
                              client=None,

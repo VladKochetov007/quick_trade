@@ -1154,7 +1154,6 @@ class Trader(object):
                     self.stop_losses[e] = correct_sl
 
 
-
 class ExampleStrategies(Trader):
 
     def _window_(self,
