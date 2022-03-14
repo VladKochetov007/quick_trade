@@ -1,3 +1,5 @@
+from warnings import warn
+
 import numpy as np
 from typing import Dict, Iterable, Any, List, Tuple
 
@@ -212,6 +214,9 @@ class Tuner(QuickTradeTuner):
                         kwargs=dict(sort_by=sort_by,
                                     drop_na=drop_na))
 
+    def save_tunes(self, path: str = 'returns.json'):
+        warn('tunes will be saved automatically')
+
     def resorting(self, sort_by: str = 'percentage year profit', drop_na: bool = True):
         self.__run_task(self._tuner_instance_.resorting,
                         kwargs=dict(sort_by=sort_by,
@@ -221,6 +226,12 @@ class Tuner(QuickTradeTuner):
         self.bests = {}
         for cluster, tuner in zip(self.clusters, self._tuners):
             self.bests[' '.join(cluster)] = tuner.get_best(num=num)
+        return self.bests
+
+    def get_worst(self, num: int = 1) -> Dict[str, List[Tuple[str, Dict[str, Any]]]]:
+        self.bests = {}
+        for cluster, tuner in zip(self.clusters, self._tuners):
+            self.bests[' '.join(cluster)] = tuner.get_worst(num=num)
         return self.bests
 
 def split_tickers_volatility(tickers: List[str],

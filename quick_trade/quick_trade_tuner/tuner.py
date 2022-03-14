@@ -181,6 +181,9 @@ class QuickTradeTuner(object):
     def get_best(self, num: int = 1) -> List[Tuple[str, Dict[str, Any]]]:
         return list(self.result_tunes.items())[:num]
 
+    def get_worst(self, num: int = 1) -> List[Tuple[str, Dict[str, Any]]]:
+        return list(self.result_tunes.items())[-num:]
+
 
 class Combinations(object):  # TODO: .
     source: list = []

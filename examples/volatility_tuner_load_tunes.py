@@ -8,6 +8,6 @@ tuner = Tuner(client=TradingClient(binance()),
               intervals=['1h'],
               limits=[1000],
               tuner_instance=QuickTradeTuner)
-tuner.load_tunes()
-tuner.resorting('profit/deviation ratio')
-print(tuner.get_best(3))
+tuner.load_tunes("volatility_tuner_all_binance_history/returns-{}.json")
+tuner.resorting('calmar ratio')
+print(tuner.get_best(5))

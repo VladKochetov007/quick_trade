@@ -601,7 +601,7 @@ class Trader(object):
                     lens_dep.append(len(new_trader.deposit_history))
         self._registered_strategy = str(test_config)
         self.losses = sum(losses)
-        self.trades = sum(trades)
+        self.trades = sum(trades)  # all time
         self.profits = sum(profits)
         self.winrate = float(np.mean(winrates))
 

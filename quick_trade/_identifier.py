@@ -22,7 +22,7 @@ class Identifier(object):
                                 'High': df['High'],
                                 'Low': df['Low'],
                                 'Close': df['Close']}).dropna()
-        min_df = self.df.min(0)
+        min_df = self.df.min(axis=0)
         self.df = self.df * BUFFER_PRECISION_POINTER / min_df
 
     def _format_candle(self, num: int = 0) -> str:
