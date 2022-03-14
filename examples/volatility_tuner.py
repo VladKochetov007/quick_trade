@@ -14,7 +14,7 @@ params = {
     'strategy_bollinger_breakout':
         [
             {
-                'window': Arange(10, 200, 50),
+                'window': Arange(10, 200, 5),
                 'window_dev': Choise([0.5, 1, 1.5]),
                 'plot': False
             }
@@ -29,4 +29,3 @@ tuner = Tuner(client=TradingClient(binance()),
               strategies_kwargs=params)
 tuner.tune(ExampleStrategies,
            commission=0.075)
-print(tuner.get_best(10))
