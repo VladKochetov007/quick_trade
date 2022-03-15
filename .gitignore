@@ -7,7 +7,6 @@ dist
 *.pyc
 .pyc
 quick_trade.egg-info
-*.json
 .DS_Store
 *.dat
 /__pycache__

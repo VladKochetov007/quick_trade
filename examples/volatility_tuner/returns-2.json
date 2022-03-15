@@ -1,0 +1,203 @@
+{
+  "XRP/USDT ADA/USDT BAT/USDT": {
+    "1h": {
+      "1000": {
+        "strategy_bollinger_breakout(plot=False, window=160, window_dev=0.5)": {
+          "winrate": 12.727272727272727,
+          "trades": 55,
+          "losses": 48,
+          "profits": 7,
+          "percentage year profit": -25.299167173427506,
+          "mean deviation": 5.084855328498753,
+          "Sharpe ratio": -1.4492423637793654,
+          "Sortino ratio": -1.9072433141460279,
+          "calmar ratio": -0.8994740855672891,
+          "max drawdown": 28.126621521810247,
+          "profit/deviation ratio": -4.9753956679229265
+        },
+        "strategy_bollinger_breakout(plot=False, window=160, window_dev=1)": {
+          "winrate": 18.181818181818183,
+          "trades": 33,
+          "losses": 27,
+          "profits": 6,
+          "percentage year profit": 35.0050828615571,
+          "mean deviation": 3.6521062538386726,
+          "Sharpe ratio": 0.6524391538197623,
+          "Sortino ratio": 0.8933145214497273,
+          "calmar ratio": 1.9380732195414292,
+          "max drawdown": 18.06179586436869,
+          "profit/deviation ratio": 9.584902636598756
+        },
+        "strategy_bollinger_breakout(plot=False, window=160, window_dev=1.5)": {
+          "winrate": 26.31578947368421,
+          "trades": 19,
+          "losses": 14,
+          "profits": 5,
+          "percentage year profit": 4.070689320224408,
+          "mean deviation": 5.612396993621275,
+          "Sharpe ratio": 0.19725355240389267,
+          "Sortino ratio": 0.2653192285342486,
+          "calmar ratio": 0.15252467019169944,
+          "max drawdown": 26.688727240702725,
+          "profit/deviation ratio": 0.7253031681206652
+        },
+        "strategy_bollinger_breakout(plot=False, window=10, window_dev=0.5)": {
+          "winrate": 29.83425414364641,
+          "trades": 362,
+          "losses": 254,
+          "profits": 108,
+          "percentage year profit": 557.777621080058,
+          "mean deviation": 5.483984900444009,
+          "Sharpe ratio": 0.2576438811849051,
+          "Sortino ratio": 0.4118789724671296,
+          "calmar ratio": 29.111855567681193,
+          "max drawdown": 19.159809988178157,
+          "profit/deviation ratio": 101.71027659738775
+        },
+        "strategy_bollinger_breakout(plot=False, window=10, window_dev=1)": {
+          "winrate": 34.962406015037594,
+          "trades": 266,
+          "losses": 173,
+          "profits": 93,
+          "percentage year profit": 1577.9882539223834,
+          "mean deviation": 6.416441662880638,
+          "Sharpe ratio": 1.9415772759852217,
+          "Sortino ratio": 3.185530943081392,
+          "calmar ratio": 72.60282060505415,
+          "max drawdown": 21.734530983394517,
+          "profit/deviation ratio": 245.92887098952463
+        },
+        "strategy_bollinger_breakout(plot=False, window=10, window_dev=1.5)": {
+          "winrate": 43.452380952380956,
+          "trades": 168,
+          "losses": 95,
+          "profits": 73,
+          "percentage year profit": 2407.997918924894,
+          "mean deviation": 6.470749061829265,
+          "Sharpe ratio": 2.558888701740084,
+          "Sortino ratio": 4.246901262919607,
+          "calmar ratio": 130.02857748429776,
+          "max drawdown": 18.518989944465737,
+          "profit/deviation ratio": 372.1358834836594
+        },
+        "strategy_bollinger_breakout(plot=False, window=110, window_dev=0.5)": {
+          "winrate": 18.055555555555554,
+          "trades": 72,
+          "losses": 59,
+          "profits": 13,
+          "percentage year profit": 27.867021497157964,
+          "mean deviation": 4.493194511304114,
+          "Sharpe ratio": -1.6307787973797847,
+          "Sortino ratio": -2.294975856951031,
+          "calmar ratio": 1.104698395625349,
+          "max drawdown": 25.22590926855014,
+          "profit/deviation ratio": 6.202050996690501
+        },
+        "strategy_bollinger_breakout(plot=False, window=110, window_dev=1)": {
+          "winrate": 25.64102564102564,
+          "trades": 39,
+          "losses": 29,
+          "profits": 10,
+          "percentage year profit": -3.4742935825239907,
+          "mean deviation": 3.6701065436249967,
+          "Sharpe ratio": 0.37113526509192646,
+          "Sortino ratio": 0.5286344069116276,
+          "calmar ratio": -0.17925880261893687,
+          "max drawdown": 19.38143919163369,
+          "profit/deviation ratio": -0.946646518630056
+        },
+        "strategy_bollinger_breakout(plot=False, window=110, window_dev=1.5)": {
+          "winrate": 32.0,
+          "trades": 25,
+          "losses": 17,
+          "profits": 8,
+          "percentage year profit": -62.245343890112046,
+          "mean deviation": 3.8361223807276064,
+          "Sharpe ratio": -0.32720554938987306,
+          "Sortino ratio": -0.4648276575427088,
+          "calmar ratio": -2.949288136756801,
+          "max drawdown": 21.105209462023076,
+          "profit/deviation ratio": -16.226110043524166
+        },
+        "strategy_bollinger_breakout(plot=False, window=210, window_dev=0.5)": {
+          "winrate": 12.244897959183673,
+          "trades": 49,
+          "losses": 43,
+          "profits": 6,
+          "percentage year profit": 0.5032551810335573,
+          "mean deviation": 5.561643676699499,
+          "Sharpe ratio": -1.016670360963994,
+          "Sortino ratio": -1.3357510406156599,
+          "calmar ratio": 0.018134477672681577,
+          "max drawdown": 27.751291772339204,
+          "profit/deviation ratio": 0.09048677158911571
+        },
+        "strategy_bollinger_breakout(plot=False, window=210, window_dev=1)": {
+          "winrate": 16.129032258064516,
+          "trades": 31,
+          "losses": 26,
+          "profits": 5,
+          "percentage year profit": -38.47367308716936,
+          "mean deviation": 4.992253432627462,
+          "Sharpe ratio": -0.5107507888561793,
+          "Sortino ratio": -0.684098130078133,
+          "calmar ratio": -1.5305968835498265,
+          "max drawdown": 25.13638535441125,
+          "profit/deviation ratio": -7.706674672347386
+        },
+        "strategy_bollinger_breakout(plot=False, window=210, window_dev=1.5)": {
+          "winrate": 15.789473684210526,
+          "trades": 19,
+          "losses": 16,
+          "profits": 3,
+          "percentage year profit": -66.67906301740325,
+          "mean deviation": 5.9205136331805415,
+          "Sharpe ratio": -1.2287459153092588,
+          "Sortino ratio": -1.6413821786776117,
+          "calmar ratio": -2.2027006960986504,
+          "max drawdown": 30.271504038430173,
+          "profit/deviation ratio": -11.262378088906248
+        },
+        "strategy_bollinger_breakout(plot=False, window=60, window_dev=0.5)": {
+          "winrate": 21.27659574468085,
+          "trades": 94,
+          "losses": 74,
+          "profits": 20,
+          "percentage year profit": -54.88027620724054,
+          "mean deviation": 4.10953816480617,
+          "Sharpe ratio": -2.733887809260986,
+          "Sortino ratio": -3.7014870617137405,
+          "calmar ratio": -1.8419811192974138,
+          "max drawdown": 29.79415784032222,
+          "profit/deviation ratio": -13.354365869438036
+        },
+        "strategy_bollinger_breakout(plot=False, window=60, window_dev=1)": {
+          "winrate": 25.862068965517242,
+          "trades": 58,
+          "losses": 43,
+          "profits": 15,
+          "percentage year profit": 73.55505192012501,
+          "mean deviation": 6.206503159506412,
+          "Sharpe ratio": -0.23032458836167963,
+          "Sortino ratio": -0.31612881563273143,
+          "calmar ratio": 2.436703605603103,
+          "max drawdown": 30.186294201308726,
+          "profit/deviation ratio": 11.851287275583157
+        },
+        "strategy_bollinger_breakout(plot=False, window=60, window_dev=1.5)": {
+          "winrate": 35.8974358974359,
+          "trades": 39,
+          "losses": 25,
+          "profits": 14,
+          "percentage year profit": 21.675204565973182,
+          "mean deviation": 5.064638378849881,
+          "Sharpe ratio": 0.3040242730658537,
+          "Sortino ratio": 0.43721226158548127,
+          "calmar ratio": 0.864789836351468,
+          "max drawdown": 25.064129635727983,
+          "profit/deviation ratio": 4.279714156195168
+        }
+      }
+    }
+  }
+}
