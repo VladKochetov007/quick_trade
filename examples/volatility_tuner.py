@@ -29,4 +29,4 @@ tuner = Tuner(client=TradingClient(binance()),
               strategies_kwargs=params)
 tuner.tune(ExampleStrategies,
            commission=0.075)
-tuner.sort_tunes()
+tuner.sort_tunes('calmar ratio')

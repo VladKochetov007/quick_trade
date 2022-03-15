@@ -1,5 +1,5 @@
 {
-  "ALL": {
+  "XRP/USDT ADA/USDT BAT/USDT": {
     "1h": {
       "1000": {
         "strategy_bollinger_breakout(plot=False, window=130, window_dev=0.5)": {

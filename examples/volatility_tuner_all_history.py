@@ -29,3 +29,4 @@ tuner = Tuner(client=BinanceTradingClient(),
 tuner.tune(ExampleStrategies,
            commission=0.075,
            update_json_path="volatility_tuner_all_binance_history/returns-{}.json")
+tuner.sort_tunes()
