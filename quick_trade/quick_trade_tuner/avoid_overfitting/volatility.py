@@ -120,7 +120,7 @@ class Clusterizer:
 
         return self.clusters
 
-class Tuner(QuickTradeTuner):
+class Tuner:
     def __init__(self,
                  client: TradingClient,
                  clusters: List[List[str]] = None,

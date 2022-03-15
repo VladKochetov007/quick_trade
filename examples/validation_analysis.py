@@ -1,6 +1,6 @@
 from quick_trade.quick_trade_tuner.avoid_overfitting.validation_analysis import ValidationTuner, Analyzer
 from quick_trade.quick_trade_tuner.tuner import Arange
-from examples.custom_client import BinanceTradingClient
+from custom_client import BinanceTradingClient
 from quick_trade.trading_sys import ExampleStrategies
 from quick_trade import strategy
 from quick_trade.plots import ValidationAnalysisGraph
@@ -19,7 +19,6 @@ class MyTrader(ExampleStrategies):
                                             window=window,
                                             window_dev=window_dev)
         return self.returns
-
 
 
 params = {

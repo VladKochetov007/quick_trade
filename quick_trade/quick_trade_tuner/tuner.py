@@ -114,7 +114,7 @@ class QuickTradeTuner(object):
 
                 if self.multi_test:
                     old_tick = ticker
-                    ticker = 'ALL'
+                    ticker = ' '.join(self.tickers)
                     strat_kw = format_arguments(strategy, kwargs=kwargs)
                 else:
                     strat_kw = trader._registered_strategy
@@ -139,7 +139,7 @@ class QuickTradeTuner(object):
             self.result_tunes = dict(self.result_tunes)
             if self.multi_test:
                 old_tick = ticker
-                ticker = 'ALL'
+                ticker = ' '.join(self.tickers)
             self.result_tunes[ticker] = dict(self.result_tunes[ticker])
             self.result_tunes[ticker][interval] = dict(self.result_tunes[ticker][interval])
             self.result_tunes[ticker][interval][limit] = dict(self.result_tunes[ticker][interval][limit])

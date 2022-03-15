@@ -56,20 +56,7 @@ def slice_frame(df: pd.DataFrame, validation_split: float = 0.3) -> Dict[str, pd
             'val': df[train_val_limit:]}
 
 
-class _Tuner(QuickTradeTuner):
-    type: str
-    validation_split: float
-
-    def config(self, type: str, validation_split: float = 0.3):
-        self.type = type
-        self.validation_split = validation_split
-
-    def _get_df(self, ticker: str, interval: str, limit):
-        frame = super(_Tuner, self)._get_df(ticker=ticker, interval=interval, limit=limit)
-        return slice_frame(df=frame, validation_split=self.validation_split)[self.type]
-
-
-class ValidationTuner(object):
+class ValidationTuner:
     sort_by: str
     analyzer: Analyzer
 
@@ -80,7 +67,20 @@ class ValidationTuner(object):
                  limits: Iterable,
                  strategies_kwargs: Dict[str, List[Dict[str, Any]]] = None,
                  multi_backtest: bool = True,
-                 validation_split: float = 0.3):
+                 validation_split: float = 0.3,
+                 tuner_instance=QuickTradeTuner):
+        class _Tuner(tuner_instance):
+            type: str
+            validation_split: float
+
+            def config(self, type: str, validation_split: float = 0.3):
+                self.type = type
+                self.validation_split = validation_split
+
+            def _get_df(self, ticker: str, interval: str, limit):
+                frame = super(_Tuner, self)._get_df(ticker=ticker, interval=interval, limit=limit)
+                return slice_frame(df=frame, validation_split=self.validation_split)[self.type]
+
         self.train_tuner = _Tuner(client=client,
                                   tickers=tickers,
                                   intervals=intervals,
