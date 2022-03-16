@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+from setuptools import find_packages
 from distutils.core import setup
 
-from setuptools import find_packages
 
 with open('README.md') as file:
     long_desc = file.read()
