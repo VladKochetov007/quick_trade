@@ -240,11 +240,6 @@ TUNER_CODECONF: Dict[str, str] = {
     'profit/deviation ratio': 'profit_deviation_ratio',
 }
 
-BUFFER_PRECISION_POINTER: Union[float, int] = 2 ** 12
-INT_ALPHABET: str = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZбёгджйлпфхцчшщъыьэюяЁБГДЖЙЛПФХЦЧШЩЪЫЬЭЮЯїЇ!#$%&()*+,.:;<>?@^_`{}~-'
-IDENTIFIER_INT_BASE: int = 128
-MIN_DEPOSIT_LENGTH: int = 3
-
 locker = threading.Lock()
 
 
@@ -429,7 +424,8 @@ def get_diff(price: float,
 
 def make_multi_trade_returns(converted_returns: CONVERTED_TYPE_LIST) -> Tuple[PREDICT_TYPE_LIST, List[int]]:
     if EXIT in converted_returns:
-        warn('The use of utils.EXIT is deprecated in this type of strategy. If utils.EXIT is the first item in the sequence, you can replace it with np.nan.')
+        warn('The use of utils.EXIT is deprecated in this type of strategy. '
+             'If utils.EXIT is the first item in the sequence, you can replace it with np.nan.')
     result_credlev: List[int] = []
     result_returns: PREDICT_TYPE_LIST = [BUY] * len(converted_returns)
     flag_lev: int = 0

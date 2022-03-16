@@ -28,7 +28,6 @@ import ta.volatility
 
 from . import indicators
 from . import utils
-from ._identifier import get_identifier
 from .brokers import TradingClient
 from .plots import QuickTradeGraph
 from . import strategy
@@ -64,7 +63,6 @@ class Trader(object):
     fig: QuickTradeGraph
     _multi_converted_: bool = False
     _entry_start_trade: bool
-    identifier: str
     average_growth: Union[np.ndarray, List]
     _converted: utils.CONVERTED_TYPE_LIST
     mean_deviation: float
@@ -122,8 +120,6 @@ class Trader(object):
     @df.setter
     def df(self, frame: pd.DataFrame):
         self._df = frame
-        if 'Close' in self.df.columns:
-            self.update_identifier()
 
     @property
     def _info(self):
@@ -138,10 +134,6 @@ class Trader(object):
                                       self.calmar_ratio,
                                       self.max_drawdown,
                                       self.profit_deviation_ratio)
-
-    def update_identifier(self) -> str:
-        self.identifier = get_identifier(self.df)
-        return self.identifier
 
     @utils.assert_logger
     def __init__(self,
