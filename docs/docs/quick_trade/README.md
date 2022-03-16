@@ -116,7 +116,7 @@ Code:
 ```python
 # initializing a trader, connecting the exchange and the graph and using the strategy.
 from quick_trade.brokers import TradingClient
-from quick_trade.plots import QuickTradeGraph, make_trader_figure
+from quick_trade.plots import TraderGraph, make_trader_figure
 from ccxt import ftx
 
 client = TradingClient(ftx())
@@ -125,7 +125,7 @@ trader = MyTrader(ticker='ETH/BTC',
                   interval='5m')
 
 fig = make_trader_figure()
-graph = QuickTradeGraph(figure=fig)
+graph = TraderGraph(figure=fig)
 trader.connect_graph(graph)
 trader.set_client(client)
 
@@ -162,7 +162,7 @@ trader = MyTrader(ticker='ETH/BTC',
                   interval='5m')
 
 fig = make_trader_figure()
-graph = QuickTradeGraph(figure=fig)
+graph = TraderGraph(figure=fig)
 trader.connect_graph(graph)
 trader.set_client(client)
 

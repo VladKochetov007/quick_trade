@@ -29,7 +29,7 @@ import ta.volatility
 from . import indicators
 from . import utils
 from .brokers import TradingClient
-from .plots import QuickTradeGraph
+from .plots import TraderGraph
 from . import strategy
 
 
@@ -60,7 +60,7 @@ class Trader(object):
     _sec_interval: int
     supports: Dict[int, float]
     resistances: Dict[int, float]
-    fig: QuickTradeGraph
+    fig: TraderGraph
     _multi_converted_: bool = False
     _entry_start_trade: bool
     average_growth: Union[np.ndarray, List]
@@ -624,9 +624,9 @@ class Trader(object):
 
     @utils.assert_logger
     def connect_graph(self,
-                      graph: QuickTradeGraph):
+                      graph: TraderGraph):
         """
-        connect QuickTradeGraph
+        connect TraderGraph
         """
 
         self.fig = graph

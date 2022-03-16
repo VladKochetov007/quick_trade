@@ -142,7 +142,7 @@ class BasePlotlyGraph(BaseGraph):
                                  type='log')
 
 
-class QuickTradeGraph(BasePlotlyGraph):
+class TraderGraph(BasePlotlyGraph):
     data_row: int = 1
     data_col: int = 1
     deposit_row: int = 2

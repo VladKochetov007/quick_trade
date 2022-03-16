@@ -161,7 +161,7 @@ and `self.credit_leverages`.
 from quick_trade.plots import *
 
 fig = make_trader_figure()
-graph = QuickTradeGraph(figure=fig)
+graph = TraderGraph(figure=fig)
 trader.connect_graph(graph)
 
 # At this point, you need to use the strategy
@@ -195,7 +195,7 @@ trader = ExampleStrategies(ticker='ETH/BTC',
                            interval='5m')
 
 fig = make_trader_figure()
-graph = QuickTradeGraph(figure=fig)
+graph = TraderGraph(figure=fig)
 trader.connect_graph(graph)
 trader.set_client(client)
 
@@ -240,13 +240,13 @@ The method sets the plotly figure for graphs
 
 | param  | type | description |
 | :---: | :---: | :---: |
-| graph | `plots.QuickTradeGraph` | QuickTradeGraph figure |
+| graph | `plots.TraderGraph` | TraderGraph figure |
 
 ```python
-from quick_trade.plots import QuickTradeGraph, make_trader_figure
+from quick_trade.plots import TraderGraph, make_trader_figure
 
 figure = make_trader_figure()
-graph = QuickTradeGraph(figure=figure)
+graph = TraderGraph(figure=figure)
 ```
 
 ```python

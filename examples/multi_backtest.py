@@ -1,10 +1,10 @@
 from custom_client import BinanceTradingClient
 from quick_trade.trading_sys import ExampleStrategies
-from quick_trade.plots import QuickTradeGraph, make_trader_figure
+from quick_trade.plots import TraderGraph, make_trader_figure
 
 
 client = BinanceTradingClient()
-graph = QuickTradeGraph(make_trader_figure(700, 1400, row_heights=[1, 20, 2]))
+graph = TraderGraph(make_trader_figure(700, 1400, row_heights=[1, 20, 2]))
 
 trader = ExampleStrategies(interval='1h')
 trader.set_client(client)

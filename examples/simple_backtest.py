@@ -1,6 +1,6 @@
 from quick_trade.trading_sys import Trader
 from quick_trade.brokers import TradingClient
-from quick_trade.plots import make_trader_figure, QuickTradeGraph
+from quick_trade.plots import make_trader_figure, TraderGraph
 from quick_trade.utils import BUY, SELL
 from ta.trend import EMAIndicator, SMAIndicator
 from quick_trade import strategy
@@ -36,7 +36,7 @@ client = TradingClient(
 )
 
 figure = make_trader_figure(height=600, width=900)
-graph = QuickTradeGraph(figure=figure)
+graph = TraderGraph(figure=figure)
 
 df = client.get_data_historical(ticker=ticker, interval=timeframe)
 

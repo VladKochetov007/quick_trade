@@ -30,7 +30,7 @@ Method for creating standard figure for plotly.
 
 ### plot_candlestick
 
-## QuickTradeGraph
+## TraderGraph
 
 ### plot_deposit
 
