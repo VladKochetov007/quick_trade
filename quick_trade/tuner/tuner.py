@@ -185,19 +185,6 @@ class QuickTradeTuner(object):
         return list(self.result_tunes.items())[-num:]
 
 
-class Combinations(object):  # TODO: .
-    source: list = []
-    matrix: np.array
-
-    def __init__(self,
-                 config: Dict[str, List[Dict[str, Dict[str, Any]]]],
-                 timeframe: str = '1h'):
-        for ticker, strats in config.items():
-            for strat in strats:
-                self.source.append((ticker, strat))
-        self.matrix = np.array(list(product(*[[True, False]] * len(self.source))))
-
-
 class Choise(TunableValue):
     pass
 
