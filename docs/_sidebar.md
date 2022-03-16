@@ -7,5 +7,8 @@
 
         - [core](docs/quick_trade/tuner/core.md)
         - [tuner](docs/quick_trade/tuner/tuner.md)
+        - [avoid_overfitting](docs/quick_trade/tuner/avoid_overfitting/README.md)
+          - [volatility](docs/quick_trade/tuner/avoid_overfitting/volatility.md)
+          - [validation analysis](docs/quick_trade/tuner/avoid_overfitting/validation_analysis.md)
 
 - [Install](docs/install.md)
