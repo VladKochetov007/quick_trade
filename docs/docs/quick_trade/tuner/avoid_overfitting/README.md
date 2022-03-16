@@ -73,7 +73,7 @@ print(bests_to_config(tuner.get_best(5)))  # 5 best settings for each tuner
 
 ##### validation sample analysis
 !> This functionality is not directly a tuner that reduces overfitting, it allows you to visually assess the fit.
-1. Split the frame of candles into test and validation sets.
+1. Divide the frame of candles into test and validation sets.
 2. Run the tuners on two samples with the same strategy parameters.
 3. Compare results of the strategies on the test and validation sets.
 
