@@ -1,4 +1,4 @@
-from ccxt import Exchange
+from ccxt import Exchange, binance
 from pandas import DataFrame
 
 from . import utils
@@ -14,7 +14,9 @@ class TradingClient(object):
     __quantity__: float
     trading: bool
 
-    def __init__(self, client: Exchange, trading: bool = True):
+    def __init__(self, client: Exchange = None, trading: bool = True):
+        if client is None:
+            client = binance()
         self.client = client
         self.trading = trading
 

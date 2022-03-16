@@ -50,6 +50,9 @@ class Analyzer(object):
     def plot_frame(self):
         self.fig.plot_frame()
 
+    def strategy_by_number(self, num: int):
+        return self.profit_keys[num]
+
 def slice_frame(df: pd.DataFrame, validation_split: float = 0.3) -> Dict[str, pd.DataFrame]:
     train_val_limit = round(len(df)*(1-validation_split))
     return {'train': df[:train_val_limit],

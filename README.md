@@ -84,7 +84,7 @@ a.backtest()
 ```python
 import quick_trade.trading_sys as qtr
 import ccxt
-from quick_trade.quick_trade_tuner import *
+from quick_trade.tuner import *
 from quick_trade.brokers import TradingClient
 
 

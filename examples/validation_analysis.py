@@ -1,5 +1,5 @@
-from quick_trade.quick_trade_tuner.avoid_overfitting.validation_analysis import ValidationTuner, Analyzer
-from quick_trade.quick_trade_tuner.tuner import Arange
+from quick_trade.tuner.avoid_overfitting.validation_analysis import ValidationTuner, Analyzer
+from quick_trade.tuner.tuner import Arange
 from custom_client import BinanceTradingClient
 from quick_trade.trading_sys import ExampleStrategies
 from quick_trade import strategy

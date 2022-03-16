@@ -1,7 +1,7 @@
-from quick_trade.quick_trade_tuner.avoid_overfitting.volatility import Tuner
+from quick_trade.tuner.avoid_overfitting.volatility import Tuner
 from ccxt import binance
 from quick_trade.brokers import TradingClient
-from quick_trade.quick_trade_tuner.tuner import QuickTradeTuner
+from quick_trade.tuner.tuner import QuickTradeTuner
 
 
 tuner = Tuner(client=TradingClient(binance()),

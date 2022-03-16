@@ -14,6 +14,8 @@
 
 ### get_best
 
+### get_worst
+
 ## Combinations
 
 ## Choise

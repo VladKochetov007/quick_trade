@@ -1,6 +1,6 @@
-from quick_trade.quick_trade_tuner import bests_to_config
+from quick_trade.tuner import bests_to_config
 from quick_trade.trading_sys import ExampleStrategies
-from quick_trade.quick_trade_tuner.avoid_overfitting.volatility import Tuner
+from quick_trade.tuner.avoid_overfitting.volatility import Tuner
 from custom_client import BinanceTradingClient
 from quick_trade.plots import QuickTradeGraph, make_trader_figure
 

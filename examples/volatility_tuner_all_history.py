@@ -1,5 +1,5 @@
-from quick_trade.quick_trade_tuner.avoid_overfitting.volatility import split_tickers_volatility, Tuner
-from quick_trade.quick_trade_tuner.tuner import QuickTradeTuner, Arange, Choise
+from quick_trade.tuner.avoid_overfitting.volatility import split_tickers_volatility, Tuner
+from quick_trade.tuner.tuner import QuickTradeTuner, Arange, Choise
 from quick_trade.trading_sys import ExampleStrategies
 from custom_client import BinanceTradingClient
 
