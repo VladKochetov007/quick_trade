@@ -17,6 +17,7 @@ from .. import utils
 from ..brokers import TradingClient
 from .. import _saving
 from .._code_inspect import format_arguments
+from ..trading_sys import Trader
 
 
 class QuickTradeTuner(object):
@@ -184,6 +185,24 @@ class QuickTradeTuner(object):
     def get_worst(self, num: int = 1) -> List[Tuple[str, Dict[str, Any]]]:
         return list(self.result_tunes.items())[-num:]
 
+class Combinations(object):  # TODO: .
+    source: list = []
+    __matrix: np.array
+
+    def __init__(self,
+                 config: Dict[str, List[Dict[str, Dict[str, Any]]]],
+                 timeframe: str = '1h'):
+        for ticker, strats in config.items():
+            for strat in strats:
+                self.source.append((ticker, strat))
+        self.__matrix = np.array(list(product(*[[True, False]] * len(self.source))))
+        self._config = config
+
+    def tune(self,
+             trader_instance=Trader,
+             sort_by: str = 'percentage year profit'):
+        pass
+        #for
 
 class Choise(TunableValue):
     pass

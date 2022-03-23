@@ -11,6 +11,7 @@
 #   multi-timeframe backtest
 #   telegram bot
 #   https://smart-lab.ru/company/www-marketstat-ru/blog/502764.php
+#   SOLID, DRY
 
 from copy import deepcopy
 from datetime import datetime
@@ -624,10 +625,13 @@ class Trader(object):
 
     @utils.assert_logger
     def connect_graph(self,
-                      graph: TraderGraph):
+                      graph: TraderGraph = None):
         """
         connect TraderGraph
         """
+
+        if graph is None:
+            graph = TraderGraph()
 
         self.fig = graph
         self.fig.connect_trader(self)

@@ -32,7 +32,7 @@ class DataFrameHandler:
         )
 
     def __download(self, ticker: str):
-        self.df = self._client.get_data_historical(ticker, self._timeframe)
+        self.df = self._client.get_data_historical(ticker, interval=self._timeframe)
 
     def download(self, ticker: str):
         if ticker in self._buffer:
