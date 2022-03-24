@@ -22,6 +22,7 @@ from ..trading_sys import Trader
 
 class QuickTradeTuner(object):
     _frames_data: tuple
+
     def __init__(self,
                  client: TradingClient,
                  tickers: Iterable[str] = None,
@@ -185,6 +186,7 @@ class QuickTradeTuner(object):
     def get_worst(self, num: int = 1) -> List[Tuple[str, Dict[str, Any]]]:
         return list(self.result_tunes.items())[-num:]
 
+
 class Combinations(object):  # TODO: .
     source: list = []
     __matrix: np.array
@@ -202,7 +204,8 @@ class Combinations(object):  # TODO: .
              trader_instance=Trader,
              sort_by: str = 'percentage year profit'):
         pass
-        #for
+        # for
+
 
 class Choise(TunableValue):
     pass
