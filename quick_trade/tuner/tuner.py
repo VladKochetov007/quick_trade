@@ -11,7 +11,7 @@ from numpy import linspace
 from pandas import DataFrame
 from tqdm import tqdm
 
-from .core import TunableValue, BacktestMatrix
+from .core import TunableValue
 from .core import transform_all_tunable_values, resort_tunes
 from .. import utils
 from ..brokers import TradingClient
@@ -186,25 +186,6 @@ class QuickTradeTuner(object):
     def get_worst(self, num: int = 1) -> List[Tuple[str, Dict[str, Any]]]:
         return list(self.result_tunes.items())[-num:]
 
-class Combinations(object):  # TODO: .
-    source: list = []
-    __matrix: np.array
-
-    def __init__(self,
-                 config: Dict[str, List[Dict[str, Dict[str, Any]]]],
-                 timeframe: str = '1h'):
-        for ticker, strats in config.items():
-            for strat in strats:
-                self.source.append((ticker, strat))
-        self.__matrix = BacktestMatrix(config=config)
-        self._config = config
-
-    def tune(self,
-             trader_instance=Trader,
-             sort_by: str = 'percentage year profit'):
-        pass
-        # for
-
 
 class Choise(TunableValue):
     pass
@@ -218,12 +199,3 @@ class Arange(TunableValue):
 class Linspace(TunableValue):
     def __init__(self, start, stop, num):
         self.values = linspace(start=start, stop=stop, num=num).astype('float').tolist()
-
-
-class GeometricProgression(TunableValue):
-    def __init__(self, start, stop, multiplier):
-        val = start
-        self.values = []
-        while val <= stop:
-            self.values.append(val)
-            val *= multiplier
