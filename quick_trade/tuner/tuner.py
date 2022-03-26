@@ -17,10 +17,12 @@ from .. import utils
 from ..brokers import TradingClient
 from .. import _saving
 from .._code_inspect import format_arguments
+from ..trading_sys import Trader
 
 
 class QuickTradeTuner(object):
     _frames_data: tuple
+
     def __init__(self,
                  client: TradingClient,
                  tickers: Iterable[str] = None,
@@ -197,12 +199,3 @@ class Arange(TunableValue):
 class Linspace(TunableValue):
     def __init__(self, start, stop, num):
         self.values = linspace(start=start, stop=stop, num=num).astype('float').tolist()
-
-
-class GeometricProgression(TunableValue):
-    def __init__(self, start, stop, multiplier):
-        val = start
-        self.values = []
-        while val <= stop:
-            self.values.append(val)
-            val *= multiplier

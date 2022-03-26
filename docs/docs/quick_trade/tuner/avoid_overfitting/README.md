@@ -1,5 +1,5 @@
 # avoid_overfitting
-This part of qucik_trade is needed to minimize overfitting.
+This part of quick_trade is needed to minimize overfitting.
 
 ## What is overfitting?
 
@@ -18,6 +18,61 @@ This part of qucik_trade is needed to minimize overfitting.
 > -[investopedia](https://www.investopedia.com/terms/o/overfitting.asp)
 
 ### overfitting problem-solving methods implemented in quick trade:
+##### WalkForward analysis (recommended):
+The bottom line is that we check the robustness of the strategy 
+settings that we received during the optimization.
+
+> What is walk-forward optimisation? Walk forward optimisation 
+> is a process for testing a trading strategy by finding its optimal
+> trading parameters in a certain time period (called the in-sample 
+> or training data) and checking the performance of those parameters 
+> in the following time period (called the out-of-sample or testing data).
+> 
+> -[algotrading101](https://algotrading101.com/learn/walk-forward-optimization/)
+
+![WFA-visualization](https://i.stack.imgur.com/IUWuO.gif)
+
+![WFA-visualization-2](https://www.tradelikeamachine.com/images/user-guide/interpreting-results/all-walk-forward-stages-in-wfa.png)
+
+```python
+from quick_trade.tuner.avoid_overfitting import WalkForward
+from quick_trade.trading_sys import ExampleStrategies
+from quick_trade.tuner import Arange
+from quick_trade.brokers import TradingClient
+
+from quick_trade.plots import BasePlotlyGraph, make_figure
+
+config = {
+    'strategy_bollinger_breakout':
+        [
+            {
+                'plot': False,
+                'window': Arange(10, 200, 20),
+                'window_dev': 1
+            }
+        ]
+}
+
+graph = BasePlotlyGraph(make_figure(700, 1400))
+
+client = TradingClient()
+walkforward_optimizer = WalkForward(client=client)
+
+walkforward_optimizer.run_analysis('ETH/USDT',
+                                   '30m',
+                                   config=config,
+                                   trader_instance=ExampleStrategies,
+                                   sort_by='profit/deviation ratio',
+                                   commission=0.075)
+
+
+graph.plot_line(line=walkforward_optimizer.equity(),
+                name='walk-forward analysis',
+                width=2.5,
+                color='white')
+graph.log_y()
+graph.show()
+```
 ##### by volatility:
 1. Group currency pairs by volatility
 2. Within the group, we optimize the strategy parameters. simultaneously on all pairs (built-in cross-testing)
