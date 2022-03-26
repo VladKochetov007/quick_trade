@@ -10,5 +10,6 @@
         - [avoid_overfitting](docs/quick_trade/tuner/avoid_overfitting/README.md)
           - [volatility](docs/quick_trade/tuner/avoid_overfitting/volatility.md)
           - [validation analysis](docs/quick_trade/tuner/avoid_overfitting/validation_analysis.md)
+          - [WalkForward](docs/quick_trade/tuner/avoid_overfitting/walkforward.md)
 
 - [Install](docs/install.md)
