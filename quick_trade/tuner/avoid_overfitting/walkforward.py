@@ -118,7 +118,8 @@ class WalkForward:
 
         samples = zip(*self._make_samples())
         if use_tqdm:
-            bar = tqdm(total=len(self._make_samples()[0]))
+            IS_length = len(self._make_samples()[0])
+            bar = tqdm(total=IS_length)
 
         for IS_data, OOS_data in samples:
             IS_client = _static_data_historical_client(self._client.__class__, IS_data)
