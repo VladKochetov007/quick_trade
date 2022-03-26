@@ -11,7 +11,7 @@ from numpy import linspace
 from pandas import DataFrame
 from tqdm import tqdm
 
-from .core import TunableValue
+from .core import TunableValue, BacktestMatrix
 from .core import transform_all_tunable_values, resort_tunes
 from .. import utils
 from ..brokers import TradingClient
@@ -186,7 +186,6 @@ class QuickTradeTuner(object):
     def get_worst(self, num: int = 1) -> List[Tuple[str, Dict[str, Any]]]:
         return list(self.result_tunes.items())[-num:]
 
-
 class Combinations(object):  # TODO: .
     source: list = []
     __matrix: np.array
@@ -197,7 +196,7 @@ class Combinations(object):  # TODO: .
         for ticker, strats in config.items():
             for strat in strats:
                 self.source.append((ticker, strat))
-        self.__matrix = np.array(list(product(*[[True, False]] * len(self.source))))
+        self.__matrix = BacktestMatrix(config=config)
         self._config = config
 
     def tune(self,

@@ -3,6 +3,8 @@ from typing import Dict
 from typing import List
 from numpy import isnan
 from ..utils import logger
+import numpy as np
+from itertools import product
 
 
 def transform_tunable_param(param_and_value: Dict[str, Any]):
@@ -50,3 +52,28 @@ def resort_tunes(tunes: dict, sort_by: str = 'percentage year profit', drop_na: 
 class TunableValue(object):
     def __init__(self, values):
         self.values = values
+
+
+class BacktestMatrix:
+    def __source_from_config(self):
+        self._source = []
+        for ticker, strats in self._config.items():
+            for strat in strats:
+                self._source.append((ticker, strat))
+
+    def __produce_matrix(self):
+        self._matrix = np.array(
+            list(
+                product(
+                    *[[True, False]] * len(self._source)
+                )
+            )
+        )
+        self._matrix = self._matrix[:-1]  # at least one strategy must be tested
+        self.total_combinations = len(self._matrix)
+
+    def __init__(self, config):
+        self._config = config
+        self.__produce_matrix()
+        self.__source_from_config()
+
