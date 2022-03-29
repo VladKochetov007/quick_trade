@@ -65,6 +65,7 @@ walkforward_optimizer.run_analysis('ETH/USDT',
                                    sort_by='profit/deviation ratio',
                                    commission=0.075)
 
+print(walkforward_optimizer.info())
 
 graph.plot_line(line=walkforward_optimizer.equity(),
                 name='walk-forward analysis',

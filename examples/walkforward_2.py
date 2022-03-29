@@ -21,8 +21,8 @@ graph = BasePlotlyGraph(make_figure(700, 1400))
 client = BinanceTradingClient()
 walkforward_optimizer = WalkForward(client=client)
 
-walkforward_optimizer.run_analysis('BTC/USDT',
-                                   '2h',
+walkforward_optimizer.run_analysis('ETH/USDT',
+                                   '30m',
                                    config=config,
                                    trader_instance=ExampleStrategies,
                                    sort_by='profit/deviation ratio',
@@ -33,5 +33,9 @@ graph.plot_line(line=walkforward_optimizer.equity(),
                 name='walk-forward analysis',
                 width=2.5,
                 color='white')
+graph.plot_line(line=walkforward_optimizer.average_growth,
+                width=2,
+                color='blue')
+print(walkforward_optimizer.info())
 graph.log_y()
 graph.show()

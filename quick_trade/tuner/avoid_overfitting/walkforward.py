@@ -6,7 +6,8 @@ from ...tuner import bests_to_config
 from ..tuner import QuickTradeTuner
 from ...trading_sys import Trader
 from ...brokers import TradingClient
-from ...utils import get_multipliers
+from ... import utils
+
 
 class InSample:
     def __init__(self, tuner: QuickTradeTuner):
@@ -48,6 +49,14 @@ def _static_data_historical_client(instance, df):
 
 class WalkForward:
     _df: pd.DataFrame
+    year_profit: float
+    mean_deviation: float
+    sharpe_ratio: float
+    sortino_ratio: float
+    calmar_ratio: float
+    max_drawdown: float
+    profit_deviation_ratio: float
+    average_growth: np.ndarray
 
     def __load_df(self, ticker, timeframe):
         self._df = self._client.get_data_historical(ticker=ticker,
@@ -144,11 +153,39 @@ class WalkForward:
                     bet=bet)
 
             oos_equity = OOS.equity()[self._indent_chunks*self.chunk_length:]
-            multipliers = get_multipliers(pd.Series(oos_equity))
+            multipliers = utils.get_multipliers(pd.Series(oos_equity))
             self.total_equity.extend(multipliers)
             if use_tqdm:
                 bar.update(1)
         self.total_equity = list(np.cumprod(self.total_equity))
+        self._update_info()
 
     def equity(self):
         return self.total_equity
+
+    def _update_info(self):
+        stats = utils.strategy_characteristics(equity=self.equity(),
+                                               timeframe=self.timeframe)
+        for name, param in {**utils.TUNER_CODECONF,
+                            **utils.ADDITIONAL_TRADER_ATTRIBUTES}.items():
+            try:
+                setattr(self, param, stats[name])
+            except Exception as exc:
+                if isinstance(exc, KeyboardInterrupt):
+                    raise exc
+        self.average_growth = utils.get_exponential_growth(self.equity())
+
+    def info(self) -> str:
+        return utils.INFO_TEXT.format(
+            None,
+            None,
+            None,
+            self.year_profit,
+            None,
+            self.mean_deviation,
+            self.sharpe_ratio,
+            self.sortino_ratio,
+            self.calmar_ratio,
+            self.max_drawdown,
+            self.profit_deviation_ratio
+        )

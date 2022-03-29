@@ -188,7 +188,7 @@ calmar ratio: {}
 max drawdown: {}%
 profit/deviation ratio: {}"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.8.0"
+__version__: str = "7.8.1"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -238,6 +238,9 @@ TUNER_CODECONF: Dict[str, str] = {
     'calmar ratio': 'calmar_ratio',
     'max drawdown': 'max_drawdown',
     'profit/deviation ratio': 'profit_deviation_ratio',
+}
+ADDITIONAL_TRADER_ATTRIBUTES: Dict[str, str] = {
+    'net_returns': 'net_returns'
 }
 
 locker = threading.Lock()
@@ -482,3 +485,56 @@ def recursive_dict(base={}):
     get_dd = lambda: defaultdict(get_dd)
     get_dd_base = lambda b: defaultdict(get_dd, b)
     return map_dict(get_dd_base, base)
+
+def strategy_characteristics(equity, timeframe, profit_trades=0, trades=0):
+    average_growth = get_exponential_growth(equity)
+    _mean_deviation = mean_deviation(pd.Series(equity), average_growth) * 100
+
+    # Sharpe ratio
+    profit_calc_coef = get_coef_sec(timeframe)[0]
+
+    returns = get_multipliers(pd.Series(equity)) - 1
+
+    mean_ = returns.mean() * profit_calc_coef
+    sigma = returns.std() * np.sqrt(profit_calc_coef)
+    sharpe_ratio = mean_ / sigma
+
+    # Sortino ratio
+    sigma = returns[returns < 0].std() * np.sqrt(profit_calc_coef)
+    sortino_ratio = mean_ / sigma
+
+    # max drawdown
+    max_returns = np.fmax.accumulate(equity)
+    res = equity / max_returns - 1
+    max_drawdown = abs(min(res) * 100)
+
+    # average year profit
+    _year_profit = year_profit(average_growth, profit_calc_coef)
+
+    if trades == 0:
+        winrate = 0
+    else:
+        winrate = (profit_trades / trades) * 100
+
+    calmar_ratio = _year_profit / max_drawdown
+
+    # net returns
+    net_returns = pd.Series(equity).diff()
+    net_returns[0] = 0.0
+
+    profit_deviation_ratio = _year_profit / _mean_deviation
+
+    return {
+        'winrate': winrate,
+        'trades': trades,
+        'losses': trades-profit_trades,
+        'profits': profit_trades,
+        'percentage year profit': _year_profit,
+        'mean deviation': _mean_deviation,
+        'Sharpe ratio': sharpe_ratio,
+        'Sortino ratio': sortino_ratio,
+        'calmar ratio': calmar_ratio,
+        'max drawdown': max_drawdown,
+        'profit/deviation ratio': profit_deviation_ratio,
+        'net_returns': net_returns
+    }

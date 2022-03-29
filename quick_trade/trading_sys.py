@@ -79,40 +79,17 @@ class Trader(object):
         self._converted = utils.convert(self.returns)
 
     def deposit_history_update(self):
-        self.average_growth = utils.get_exponential_growth(self.deposit_history)
-        self.mean_deviation = utils.mean_deviation(pd.Series(self.deposit_history), self.average_growth) * 100
-
-        # Sharpe ratio
-        returns = utils.get_multipliers(pd.Series(self.deposit_history)) - 1
-        mean_ = returns.mean() * self._profit_calculate_coef
-        sigma = returns.std() * np.sqrt(self._profit_calculate_coef)
-        self.sharpe_ratio = mean_ / sigma
-
-        # Sortino ratio
-        sigma = returns[returns < 0].std() * np.sqrt(self._profit_calculate_coef)
-        self.sortino_ratio = mean_ / sigma
-
-        # max drawdown
-        max_returns = np.fmax.accumulate(self.deposit_history)
-        res = self.deposit_history / max_returns - 1
-        self.max_drawdown = abs(min(res) * 100)
-
-        # average year profit
-        self.year_profit = utils.year_profit(self.average_growth, self._profit_calculate_coef)
-
-        if self.trades != 0:
-            self.winrate = (self.profits / self.trades) * 100
-        else:
-            self.winrate = 0
+        if self.trades == 0:
             utils.logger.critical('0 trades in %s', self)
 
-        self.calmar_ratio = self.year_profit / self.max_drawdown
-
-        # net returns
-        self.net_returns = pd.Series(self.deposit_history).diff()
-        self.net_returns[0] = 0.0
-
-        self.profit_deviation_ratio = self.year_profit / self.mean_deviation
+        all_characteristics = utils.strategy_characteristics(equity=self.deposit_history,
+                                                             trades=self.trades,
+                                                             profit_trades=self.profits,
+                                                             timeframe=self.interval)
+        self.average_growth = utils.get_exponential_growth(self.deposit_history)
+        for name, param in {**utils.TUNER_CODECONF,
+                            **utils.ADDITIONAL_TRADER_ATTRIBUTES}.items():
+            setattr(self, param, all_characteristics[name])
 
     @property
     def df(self) -> pd.DataFrame:

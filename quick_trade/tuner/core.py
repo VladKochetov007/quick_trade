@@ -3,8 +3,6 @@ from typing import Dict
 from typing import List
 from numpy import isnan
 from ..utils import logger
-import numpy as np
-from itertools import product
 
 
 def transform_tunable_param(param_and_value: Dict[str, Any]):
