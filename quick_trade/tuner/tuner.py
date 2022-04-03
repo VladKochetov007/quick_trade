@@ -5,7 +5,6 @@ from typing import Iterable
 from typing import List
 from typing import Tuple
 
-import numpy as np
 from numpy import arange
 from numpy import linspace
 from pandas import DataFrame
@@ -17,7 +16,6 @@ from .. import utils
 from ..brokers import TradingClient
 from .. import _saving
 from .._code_inspect import format_arguments
-from ..trading_sys import Trader
 
 
 class QuickTradeTuner(object):
@@ -199,3 +197,12 @@ class Arange(TunableValue):
 class Linspace(TunableValue):
     def __init__(self, start, stop, num):
         self.values = linspace(start=start, stop=stop, num=num).astype('float').tolist()
+
+
+class GeometricProgression(TunableValue):
+    def __init__(self, start, stop, multiplier):
+        val = start
+        self.values = []
+        while val <= stop:
+            self.values.append(val)
+            val *= multiplier

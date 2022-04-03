@@ -63,8 +63,14 @@ class WalkForward:
                                                     interval=timeframe)
         self._df = self._df.reset_index()
 
+    def __total_chs_by_ch_length(self):
+        if not self.chunk_length:
+            self.chunk_length = len(self._df) // self._total_chunks
+        else:
+            self._total_chunks = len(self._df) // self.chunk_length
+
     def __prepare_df(self):
-        self.chunk_length = len(self._df) // self._total_chunks
+        self.__total_chs_by_ch_length()
         total_length = self.chunk_length * self._total_chunks
         self._df = self._df[-total_length:]
 
@@ -97,13 +103,15 @@ class WalkForward:
                  total_chunks: int = 10,
                  insample_chunks: int = 3,
                  outofsample_chunks: int = 1,
-                 testing_indent_chunks: int = 1):
+                 testing_indent_chunks: int = 1,
+                 chunk_length=None):
         assert not (total_chunks - insample_chunks) % outofsample_chunks
 
         self._total_chunks = total_chunks
         self._insample_chunks = insample_chunks
         self._outofsample_chunks = outofsample_chunks
         self._indent_chunks = testing_indent_chunks
+        self.chunk_length = chunk_length
 
         self._client = client
 
