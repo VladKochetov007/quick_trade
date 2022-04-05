@@ -25,4 +25,4 @@
     - runner
   - portfolio management
     - efficient diversification:
-      - tot down
+      - top down
