@@ -1,17 +1,58 @@
 
 - Portfolio
   - exchanges
-    - bots
-      - conservative
-        - strategies:
-          - parameters (arguments)
-      - grid
-        - levels:
-          - static
-          - dynamically changing
-      - DCA
-      - options
-      - long term investments
+    - accounts
+      - subaccounts
+        - bots
+          - conservative
+            - strategies)
+              - parameters)
+          - grid
+            - levels:
+              - static
+              - dynamically changing
+          - DCA
+            - pairs)
+            - strategy
+              - max active deals
+              - strategy)
+                - LONG
+                - SHORT
+              - profit currency)
+                - BASE
+                - QUOTE
+              - base order size)
+              - start order type)
+                - LIMIT
+                - MARKET
+            - deal start condition
+              - ...
+            - take profit
+              - target profit (%)
+              - type
+                - FROM_TOTAL_VOLUME
+                - FROM_BASE_ORDER
+              - trailing (ON/OFF)
+                - trailing deviation)
+            - stop loss
+              - stop loss (%)
+              - actions
+                - close deal
+                - close deal + stop bot
+              - stop loss timeout)
+            - safety orders
+              - safety order size
+              - price deviation to open safety orders (% from initial order)
+              - max active safety orders
+              - max safety orders count
+              - safety order volume scale
+              - safety order step count
+            - advanced settings
+              - minimal volume to open trade
+              - cooldown between deals
+              - simultaneous deals per same pair
+          - options
+          - long term investments
 --------------------------------------
 - Tools
   - chart generator 
@@ -26,3 +67,16 @@
   - portfolio management
     - efficient diversification:
       - top down
+--------------------------------------
+- base
+  - data
+    - Charts
+      - symbol)
+      - candles)
+        - open)
+        - high)
+        - low)
+        - close)
+        - volume)
+        - start_time)
+  - Plotting
