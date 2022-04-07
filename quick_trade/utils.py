@@ -188,7 +188,7 @@ calmar ratio: {}
 max drawdown: {}%
 profit/deviation ratio: {}"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.8.2"
+__version__: str = "7.8.3"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -240,7 +240,8 @@ TUNER_CODECONF: Dict[str, str] = {
     'profit/deviation ratio': 'profit_deviation_ratio',
 }
 ADDITIONAL_TRADER_ATTRIBUTES: Dict[str, str] = {
-    'net_returns': 'net_returns'
+    'net_returns': 'net_returns',
+    'average_growth': 'average_growth'
 }
 
 locker = threading.Lock()
@@ -536,5 +537,6 @@ def strategy_characteristics(equity, timeframe, profit_trades=0, trades=0):
         'calmar ratio': calmar_ratio,
         'max drawdown': max_drawdown,
         'profit/deviation ratio': profit_deviation_ratio,
-        'net_returns': net_returns
+        'net_returns': net_returns,
+        'average_growth': average_growth
     }

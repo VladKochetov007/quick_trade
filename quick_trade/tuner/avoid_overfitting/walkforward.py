@@ -105,7 +105,7 @@ class WalkForward:
                  outofsample_chunks: int = 1,
                  testing_indent_chunks: int = 1,
                  chunk_length=None):
-        assert not (total_chunks - insample_chunks) % outofsample_chunks
+        assert not (total_chunks - insample_chunks) % outofsample_chunks or chunk_length
 
         self._total_chunks = total_chunks
         self._insample_chunks = insample_chunks
@@ -114,6 +114,8 @@ class WalkForward:
         self.chunk_length = chunk_length
 
         self._client = client
+
+        self.total_equity = []
 
     def run_analysis(self,
                      ticker: str,
@@ -181,7 +183,6 @@ class WalkForward:
             except Exception as exc:
                 if isinstance(exc, KeyboardInterrupt):
                     raise exc
-        self.average_growth = utils.get_exponential_growth(self.equity())
 
     def info(self) -> str:
         return utils.INFO_TEXT.format(

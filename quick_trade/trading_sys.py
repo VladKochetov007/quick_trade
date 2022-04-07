@@ -1834,3 +1834,50 @@ class ExampleStrategies(Trader):
         self.set_open_stop_and_take(set_stop=False)
         self.set_credit_leverages()
         return self.returns
+
+    @strategy
+    def strategy_pump_detector(self,
+                               period: int = 15,
+                               points=300,
+                               take_profit=300,
+                               stop_loss=150):
+        flag = utils.EXIT
+        sl = np.inf
+        tp = np.inf
+
+        self.returns = [flag] * period
+        self.stop_losses = [np.inf] * period
+        self.take_profits = [np.inf] * period
+
+        for curr_index in self.df.index[period:]:
+            curr_period = self.df[curr_index-period:curr_index]
+            max_ = curr_period['High'].max()
+            min_ = curr_period['Low'].min()
+            close = curr_period['Close'].values[-1]
+
+            growth_in_points = (close - min_) / min_ * 10_000
+            drawdown_in_points = (close - max_) / max_ * -10_000
+
+            if max_ > sl and flag == utils.SELL:
+                flag = utils.EXIT
+            if min_ < sl and flag == utils.BUY:
+                flag = utils.EXIT
+            if max_ > tp and flag == utils.BUY:
+                flag = utils.EXIT
+            if min_ < tp and flag == utils.SELL:
+                flag = utils.EXIT
+
+            if growth_in_points > points and flag != utils.BUY:
+                flag = utils.BUY
+                if self.returns[-1] != flag:
+                    sl = close - close*stop_loss/10_000
+                    tp = close + close*take_profit/10_000
+            elif drawdown_in_points > points and flag != utils.SELL:
+                flag = utils.SELL
+                if self.returns[-1] != flag:
+                    sl = close + close*stop_loss/10_000
+                    tp = close - close*take_profit/10_000
+
+            self.returns.append(flag)
+            self.stop_losses.append(sl)
+            self.take_profits.append(tp)
