@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Darwinex Blog</title>
+	<atom:link href="https://blog.darwinex.com/feed/?lang=fr" rel="self" type="application/rss+xml" />
+	<link>https://blog.darwinex.com/?lang=fr</link>
+	<description>Darwinex - The Trader Exchange</description>
+	<lastBuildDate>Thu, 20 Jan 2022 10:27:31 +0000</lastBuildDate>
+	<language>fr-FR</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.20</generator>
+	<item>
+		<title>Darwinex &#038; IBKR: Instruments, Types de comptes &#038; Multi-devise</title>
+		<link>https://blog.darwinex.com/darwinex-ibkr-actifs-types-de-comptes-multi-devise/?lang=fr</link>
+		<pubDate>Sun, 31 Jan 2021 08:39:41 +0000</pubDate>
+		<dc:creator><![CDATA[Nicolas Faucheur]]></dc:creator>
+				<category><![CDATA[ASTUCES]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17186</guid>
+		<description><![CDATA[We have some exciting news we'd like to share with you about our Interactive Brokers offering.]]></description>
+		</item>
+		<item>
+		<title>La nouvelle section &#8220;Fonds&#8221; remplace votre Wallet</title>
+		<link>https://blog.darwinex.com/la-nouvelle-section-fonds-remplace-votre-wallet/?lang=fr</link>
+		<comments>https://blog.darwinex.com/la-nouvelle-section-fonds-remplace-votre-wallet/?lang=fr#respond</comments>
+		<pubDate>Wed, 26 Aug 2020 11:34:10 +0000</pubDate>
+		<dc:creator><![CDATA[Nicolas Faucheur]]></dc:creator>
+				<category><![CDATA[ASTUCES]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17042</guid>
+		<description><![CDATA[The new “Funds” section extends the scope of the information we show you about your money. ]]></description>
+		<wfw:commentRss>https://blog.darwinex.com/la-nouvelle-section-fonds-remplace-votre-wallet/feed/?lang=fr</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Indice UK100 fermé ce Lundi 31 Août</title>
+		<link>https://blog.darwinex.com/indice-uk100-ferme-ce-lundi-31-aout/?lang=fr</link>
+		<pubDate>Wed, 19 Aug 2020 07:47:32 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[BOARD]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16994</guid>
+		<description><![CDATA[Veuillez noter que le CFD sur Indice UK100 sera fermé le lundi 31 août en raison des vacances d&#8217;été des banques au Royaume-Uni. Tous les autres actifs seront négociés selon les horaires habituels.]]></description>
+		</item>
+		<item>
+		<title>DarwinIA introduit quatres critères additionnels d&#8217;éligibilité</title>
+		<link>https://blog.darwinex.com/darwinia-introduit-trois-criteres-additionnels-dexclusion/?lang=fr</link>
+		<pubDate>Wed, 12 Aug 2020 09:12:42 +0000</pubDate>
+		<dc:creator><![CDATA[Nicolas Faucheur]]></dc:creator>
+				<category><![CDATA[BOARD]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16961</guid>
+		<description><![CDATA[Darwinex accompanies the new D-Score with modifications to the criteria for participating in DarwinIA. From the September 2020 edition, 3 additional excluding criteria will be added.]]></description>
+		</item>
+		<item>
+		<title>Négociez à partir d&#8217;une action US sur Darwinex</title>
+		<link>https://blog.darwinex.com/negociez-a-partir-dune-action-us-sur-darwinex/?lang=fr</link>
+		<comments>https://blog.darwinex.com/negociez-a-partir-dune-action-us-sur-darwinex/?lang=fr#respond</comments>
+		<pubDate>Thu, 23 Jul 2020 13:51:46 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[ASTUCES]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16918</guid>
+		<description><![CDATA[Nous continuons de lever les obstacles qui empêchent les traders talentueux d’opter pour Darwinex. Depuis que nous avons introduit les CFD sur actions en 2018, les plus petites tailles étaient de 1, 5, 10 et 20 actions en fonction du cours de l&#8217;action. Ce qui constituait un obstacle pour les plus petits comptes. Nous réduisons [&#8230;]]]></description>
+		<wfw:commentRss>https://blog.darwinex.com/negociez-a-partir-dune-action-us-sur-darwinex/feed/?lang=fr</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Le nouveau D-Score</title>
+		<link>https://blog.darwinex.com/le-nouveau-score/?lang=fr</link>
+		<pubDate>Thu, 16 Jul 2020 06:45:32 +0000</pubDate>
+		<dc:creator><![CDATA[Javier Colón]]></dc:creator>
+				<category><![CDATA[ASTUCES]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16885</guid>
+		<description><![CDATA[Le calcul du D-Score est maintenant beaucoup plus simple, en utilisant uniquement les données de cotation sans aucune dépendance sur les Attributs / Scores d'investissement. Darwinex utilisera également le nouveau D-Score pour la sélection des actifs sur lesquels nous porterons nos allocations.]]></description>
+		</item>
+		<item>
+		<title>Nouveau: DARWIN Check-out</title>
+		<link>https://blog.darwinex.com/nouveau-darwin-check/?lang=fr</link>
+		<pubDate>Thu, 07 May 2020 13:43:23 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[ASTUCES]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16782</guid>
+		<description><![CDATA[Aujourd'hui, nous déployons une page de promotion individuelle pour chaque DARWIN de l’exchange: le “check-out”. Le DARWIN check-out est votre entonnoir de vente dédié pour fournisseur de DARWIN, afin de faciliter la présentation à famille et connaissances de manière pratique, légale et efficace.]]></description>
+		</item>
+		<item>
+		<title>UK100 sera fermé le 8 mai 2020</title>
+		<link>https://blog.darwinex.com/uk100-sera-ferme-le-8-mai-2020/?lang=fr</link>
+		<pubDate>Tue, 28 Apr 2020 04:50:54 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[BOARD]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16765</guid>
+		<description><![CDATA[Veuillez noter que le vendredi 8 mai 2020, que le CFD UK100 sera fermé en raison d'un jour férié au Royaume-Uni.]]></description>
+		</item>
+		<item>
+		<title>Modification des Horaires de Trading et Swaps: 1er Mai 2020</title>
+		<link>https://blog.darwinex.com/modification-des-horaires-de-trading-et-swaps-1er-mai-2020/?lang=fr</link>
+		<pubDate>Tue, 28 Apr 2020 04:24:51 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[BOARD]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16756</guid>
+		<description><![CDATA[Veuillez noter que les heures de négociation modifiées de Darwinex s'appliqueront à compter du vendredi 1er mai 2020. Des modifications seront également apportées à la manière dont les swaps en EUR sont facturés / crédités au cours de la semaine prochaine en raison du jour férié du 1er mai.]]></description>
+		</item>
+		<item>
+		<title>Nouveau: Toxicité des stratégies de Trading</title>
+		<link>https://blog.darwinex.com/nouveau-toxicite-des-strategies-de-trading/?lang=fr</link>
+		<pubDate>Thu, 23 Apr 2020 12:34:59 +0000</pubDate>
+		<dc:creator><![CDATA[Javier Colón]]></dc:creator>
+				<category><![CDATA[ASTUCES]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16686</guid>
+		<description><![CDATA[Nous continuons d&#8217;intégrer dans notre trousse de diagnostic des statistiques d&#8217;intérêt. Cette fois, c&#8217;est l&#8217;analyse de la toxicité du flux d&#8217;un DARWIN et de ses investisseurs. Nous montrons les nouvelles statistiques dans l&#8217;étude Capacity (Cp), mais pour le moment elles n&#8217;affectent pas le score Cp. Qu&#8217;est-ce que la toxicité du flux La toxicité tente de [&#8230;]]]></description>
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,1865 @@
+<!doctype html><html lang="en"><head>
+    <meta charset="utf-8">
+    <title>
+      Analysing your investors' divergence
+    </title>
+    <meta name="description" content="DARWIN providers can analyze the factors that influence investor divergence and take action to improve it.">
+    
+    <script src="/hs/hsstatic/jquery-libs/static-1.1/jquery/jquery-1.7.1.js"></script>
+<script>hsjQuery = window['jQuery'];</script>
+    <meta property="og:description" content="DARWIN providers can analyze the factors that influence investor divergence and take action to improve it.">
+    <meta property="og:title" content="Analysing your investors' divergence">
+    <meta name="twitter:description" content="DARWIN providers can analyze the factors that influence investor divergence and take action to improve it.">
+    <meta name="twitter:title" content="Analysing your investors' divergence">
+
+    
+
+    
+
+    <style>
+a.cta_button{-moz-box-sizing:content-box !important;-webkit-box-sizing:content-box !important;box-sizing:content-box !important;vertical-align:middle}.hs-breadcrumb-menu{list-style-type:none;margin:0px 0px 0px 0px;padding:0px 0px 0px 0px}.hs-breadcrumb-menu-item{float:left;padding:10px 0px 10px 10px}.hs-breadcrumb-menu-divider:before{content:'›';padding-left:10px}.hs-featured-image-link{border:0}.hs-featured-image{float:right;margin:0 0 20px 20px;max-width:50%}@media (max-width: 568px){.hs-featured-image{float:none;margin:0;width:100%;max-width:100%}}.hs-screen-reader-text{clip:rect(1px, 1px, 1px, 1px);height:1px;overflow:hidden;position:absolute !important;width:1px}
+</style>
+
+<link rel="stylesheet" href="/hs/hsstatic/ContentIcons/static-1.8/fontawesome/5.0.10/css/fontawesome-all.min.css">
+
+    
+
+
+    
+<!--  Added by GoogleAnalytics integration -->
+<script>
+var _hsp = window._hsp = window._hsp || [];
+_hsp.push(['addPrivacyConsentListener', function(consent) { if (consent.allowed || (consent.categories && consent.categories.analytics)) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create','UA-55287188-1','auto');
+  ga('send','pageview');
+}}]);
+</script>
+
+<!-- /Added by GoogleAnalytics integration -->
+
+    <link rel="canonical" href="https://help.darwinex.com/asset-manager-divergence">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta property="og:url" content="https://help.darwinex.com/asset-manager-divergence">
+<meta http-equiv="content-language" content="en">
+<link rel="alternate" hreflang="en" href="https://help.darwinex.com/asset-manager-divergence">
+<link rel="alternate" hreflang="es" href="https://help.darwinex.com/es/gestion-capital-divergencia">
+
+
+
+    <link href="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819703234/hubspot/themes/knowledge/assets/main.min.css" rel="stylesheet">
+    <link href="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819703664/hubspot/themes/knowledge/assets/_support-form.min.css" rel="stylesheet">
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819705943/hubspot/themes/knowledge/assets/kbdom.min.js"></script>
+    <style type="text/css" data-preview-theme="true">
+      .kb-article, .kb-search__suggestions__article-content, .kb-search-results__description {
+        font-family: arial, helvetica, sans-serif;
+      }
+      h1, h2, h3, h3 a, h4, h4 a, h5, h6, .kb__text-link, .kb__text-link-small, .kb-header, .kb-sticky-footer,
+      .kb-search__suggestions__article-title, .kb-search-results__title,
+      #hs_form_target_kb_support_form input.hs-button, #hs_form_target_kb_support_form label, input, select, textarea, #hs_form_target_kb_support_form .hs-field-desc, #hs_form_target_kb_support_form .hs-richtext p {
+        font-family: arial, helvetica, sans-serif;
+      }
+      a,
+      .kb-search__suggestions__breadcrumb,
+      .kb-header__nav .kbui-dropdown__link {
+        color: #007bba;
+      }
+      .kb-header,
+      .kb-header a,
+      .kb-header button.kb-button--link {
+        color: #007bba;
+      }
+      .kb-header svg * {
+        fill: #007bba;
+      }
+      .kb-search-section {
+        background-color: #ffffff;
+      }
+      .kb-search-section__title {
+        color: #FFFFFF;
+      }
+      .kb-search-section-with-image {
+        background-image: url(https://help.darwinex.com/hubfs/Darwinex_June2018/image/bg-definicion_DarkBlue.jpg);
+        background-size: cover;
+        color: #ffffff;
+        position: relative;
+      }
+      .kb-search-section-with-gradient {
+        background-color: ;
+        background-image: linear-gradient(180deg, #ffffff 0%, transparent 97%);
+      }
+      .kb-mobile-search-section {
+        background-color: #ffffff;
+      }
+      .kb-search__suggestions a:hover,
+      .kb-search__suggestions a:focus,
+      .kb-category-menu li.active > a,
+      .kb-category-menu li > a:hover {
+        background-color: rgba(0, 123, 186, .1);
+      }
+      .kb-theme--cards .kb-category-menu li.active > a,
+      .kb-theme--cards .kb-category-menu li > a:hover {
+        background-color: transparent;
+      }
+      .kb-breadcrumbs > ol > li > span,
+      .kb-breadcrumbs > ol > li > a > span,
+      .kb-breadcrumbs > .kb-breadcrumbs__mobile-back a {
+        font-family: helvetica
+      }
+      .kb-breadcrumbs__arrow--left * {
+        fill: #007bba
+      }
+      .kb-sidebar .kb-category-menu a,
+      .kb-mobile-menu .kb-mobile-menu__current-page,
+      .kb-mobile-menu ul > li > a {
+        font-family: helvetica
+      }
+      .kb-header__logo img {
+        max-height: 40px;
+      }
+      .kb-footer__logo img {
+        max-height: 24px;
+      }
+      /* SVG SUPPORT */
+      .kb-header__logo img[src$=".svg"] {
+        height: 40px;
+      }
+      .kb-footer__logo img[src$=".svg"] {
+        height: 24px;
+      }
+      /* MOBILE STYLES */
+      .kb-mobile-menu,
+      .kb-mobile-search__bar {
+        background-color: #ffffff;
+      }
+      .kb-mobile-menu a,
+      .kb-mobile-menu__current-page,
+      .kb-mobile-search__input,
+      .kb-search--open .kb-mobile-search__input {
+        color: #111111
+      }
+      .kb-mobile-search__input::-webkit-input-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__input::-moz-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__input:-ms-input-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__input:-moz-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__mag * {
+        fill: #111111
+      }
+      .kb-mobile-menu__arrow *,
+      .kb-mobile-search__close * {
+        stroke: #111111
+      }
+      @media (max-width: 767px) {
+        .kb-header__nav {
+          background-color: #ffffff
+        }
+        .kb-header,
+        .kb-header a {
+          color: #111111;
+        }
+        .kb-header svg * {
+          fill: #111111;
+        }
+        .kb-theme--content.kb-page--index .kb-header__nav-toggle svg *,
+        .kb-theme--content.kb-page--index .kb-header__nav-close svg *,
+        .kb-theme--tiles.kb-page--index .kb-header__nav-toggle svg *,
+        .kb-theme--tiles.kb-page--index .kb-header__nav-close svg *,
+        .kb-theme--minimal .kb-header__nav-toggle svg *,
+        .kb-theme--minimal .kb-header__nav-close svg *,
+        .kb-theme--cards .kb-header__nav-toggle svg *,
+        .kb-theme--cards .kb-header__nav-close svg *,
+        .kb-theme--default .kb-header__nav-toggle svg *,
+        .kb-theme--default .kb-header__nav-close svg * {
+          fill: #007bba;
+        }
+      }
+    </style>
+  <meta name="generator" content="HubSpot"></head>
+  <body class="kb-theme--cards ">
+    <header>
+      
+      
+  
+
+  
+
+  
+
+  <div class="kb-header" data-preview-id="kb-header">
+    <div class="kb-header-inner" id="kb-header">
+      <div class="kb-header__logo">
+        
+          <a href="https://help.darwinex.com">
+            <img src="https://help.darwinex.com/hubfs/scouting-program-landing/images/logos/logo-darwinex-vertical-inverse.svg" alt="company logo">
+          </a>
+        
+      </div>
+      <a class="kb-header__title" href="/">
+        Darwinex Docs
+      </a>
+      <nav id="kb-header__nav" class="kb-header__nav" role="navigation">
+        <ul>
+          
+            <div class="kb-header__lang-switcher-container">
+              <button class="kb-header__lang-switcher-toggle kb-button--link" data-kbui-dropdown-contents="lang-switcher">
+                <div class="kb-header__lang-switcher-inner">
+                  <div class="kb-header__lang-switcher-icon">
+                    
+    <svg width="23" height="23" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <g fill-rule="evenodd">
+        <path d="M18.6 17.07a3.86 3.86 0 01-.5-2.35c.07-.45.24-.89.28-1.34.04-.46-.08-.97-.46-1.23-.8-.56-2 .43-2.84-.07a1.85 1.85 0 01-.58-.67c-.23-.4-.47-.8-.52-1.25-.05-.45.15-.96.57-1.12.1-.05.22-.07.3-.14.16-.13.14-.38.2-.58.14-.51.76-.69 1.3-.78.5-.08 1-.17 1.5-.11.78.09 1.54.5 2.29.67a9.49 9.49 0 01-1.53 8.97m-5.54-2.26c-.34.46-.82.81-1.14 1.3-.2.3-.34.67-.6.94-.21.22-.5.37-.72.59-.37.37-.5.93-.45 1.46.05.52.25 1.02.45 1.5v.02a9.53 9.53 0 01-1.5-.22c-.28-1.34-.5-2.7-.64-4.07-.03-.27-.06-.55-.18-.8-.42-.75-1.71-.92-1.78-1.78-.03-.36.18-.68.3-1.01.1-.34.07-.8-.26-.93l-.3-.07c-.34-.1-.5-.47-.75-.71-.31-.3-.84-.01-1.2-.24-.36-.23-.49-.65-.84-.87-.36-.23-.67-.74-.37-1.03-.36 0-.7-.13-1-.33A9.4 9.4 0 019.5 1.87c.06.03.1.06.17.08.43.15.9 0 1.35-.08.45-.06 1 0 1.22.4.05.1.08.23.06.34-.08.39-.6.45-.97.6-.33.13-.6.4-.73.74.28.08.57.16.78.36.2.2.31.53.15.77-.16.25-.5.28-.8.33-.88.17-1.72.8-2.59.57-.2-.06-.39-.16-.6-.15-.2 0-.42.2-.36.39.47.23 1.03.71.76 1.17-.16.28-.6.36-.7.67-.1.29.03.75-.27.78-.1 0-.2-.07-.29-.13a1.4 1.4 0 00-1.55-.01c-.1.07-.2.16-.24.28-.1.3.23.59.54.66.31.08.66.06.93.23.4.25.53.86.98.96.26.06.51-.07.76-.13.74-.2 1.51.17 2.13.62.61.45 1.17 1.01 1.87 1.3.4.17.86.26 1.12.6.36.44.19 1.12-.15 1.59m1.91-8.54c.23-.34.93-.4.8-.79-.4-.05-.69-.53-.56-.91a.74.74 0 011-.4c.22.12.35.34.55.5.19.14.5.2.65.01.06-.08.08-.19.1-.3 0-.06.03-.12.04-.19l.33.3a9.5 9.5 0 011.7 2.34c-.4.14-.84.26-1.25.16-.37-.1-.7-.35-1.07-.37-.33-.03-.65.12-.95.25-.3.14-.64.25-.96.16-.32-.1-.56-.49-.38-.76m7.35 3.92l-.07-.54-.06-.4a12 12 0 00-.15-.7l-.04-.17a11.3 11.3 0 00-1.53-3.43l-.07-.1a11.33 11.33 0 00-1.31-1.57A11.11 11.11 0 009.53.14L9.19.2a11.7 11.7 0 00-2.84.91l-.22.1a9.2 9.2 0 00-1.31.8c-.17.1-.33.23-.49.35l-.3.24A10.77 10.77 0 002 4.83l-.1.12c-.39.59-.72 1.21-1 1.86v.02a11.11 11.11 0 008.62 15.4 13.47 13.47 0 001.7.13 11.1 11.1 0 007.89-3.26 11.74 11.74 0 001.11-1.32l.05-.06.5-.74.08-.14.38-.72.1-.22a13.39 13.39 0 00.62-1.63l.11-.44c.05-.19.1-.37.13-.55l.09-.6.05-.43a10.92 10.92 0 000-2.06" id="a" />
+      </g>
+    </svg>
+  
+                  </div>
+                  <div class="kb-header__lang-switcher__selected-lang">
+                    
+    English
+  
+                  </div>
+                  <div class="kb-header__lang-switcher__caret"></div>
+                </div>
+              </button>
+              <div class="kbui-dropdown-contents" data-kbui-dropdown-name="lang-switcher">
+                <div class="kb-header__langs-dropdown">
+                  <ul>
+                    
+                      
+                    
+                      
+                        <li>
+                          <a href="https://help.darwinex.com/es/gestion-capital-divergencia" class="kbui-dropdown__link">
+                            <div class="kb-header__langs-dropdown__link-content">
+                              
+    Español
+  
+                            </div>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </div>
+              </div>
+            </div>
+          
+          
+            
+<li class="kb-header__company-website-link">
+  <a href="https://www.darwinex.com/contact" target="_blank" rel="noopener">
+    Contact us
+    <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.11 10.223V7.0472l1.308-1.3077v4.4835c0 .9323-.7628 1.6952-1.6953 1.6952H1.6952C.7628 11.9182 0 11.1553 0 10.223V4.1955C0 3.2628.7628 2.5 1.6952 2.5h4.4833L4.8707 3.8082H1.6952c-.2099 0-.3872.1771-.3872.3873v6.0275c0 .2098.1773.387.3872.387h6.0275c.21 0 .3873-.1772.3873-.387zM5.9428.4417L12.0137 0l-.442 6.0708L9.6368 4.136 6.0925 7.68 4.3333 5.9207l3.544-3.5442L5.9428.4417z" fill="#007bba" />
+    </svg>
+  </a>
+</li>
+
+          
+          
+          
+          
+        </ul>
+      </nav>
+      
+        <nav id="kb-header__langs-nav" class="kb-header__nav kb-header__langs-nav" role="navigation">
+          <ul>
+            
+              
+            
+              
+                <li>
+                  <a href="https://help.darwinex.com/es/gestion-capital-divergencia">
+    Español
+  </a>
+                </li>
+              
+            
+          </ul>
+        </nav>
+      
+      <div class="kb-header__nav-controls-container">
+        <button id="kb-header__close-target" class="kb-header__nav-close" role="button" aria-label="Close main navigation menu" aria-controls="kb-header__nav kb-header__langs-nav">
+          <span class="kb-icon close" aria-hidden="true">
+            <svg width="16" height="17" xmlns="http://www.w3.org/2000/svg">
+              <g fill="#2D3E50" fill-rule="nonzero">
+                <path d="M15.07107 1.42893c.59587.59588.88893 1.23239.0505 2.07081L2.99975 15.62158c-.83842.83842-1.48089.5394-2.0708-.05051C.33305 14.97519.04 14.33868.87841 13.50026L13.00026 1.37842c.83842-.83842 1.48089-.5394 2.0708.05051z" />
+                <path d="M15.07107 15.57107c-.59588.59587-1.23239.88893-2.07081.0505L.87842 3.49975C.04 2.66132.33902 2.01885.92893 1.42894 1.52481.83305 2.16132.54 2.99974 1.37841l12.12184 12.12184c.83842.83842.5394 1.48089-.05051 2.0708z" />
+              </g>
+            </svg>
+          </span>
+        </button>
+        
+          <button id="kb-header__langs-nav-target" class="kb-header__nav-toggle" role="button" aria-controls="kb-header__langs-nav">
+            <span class="kb-icon langs">
+              
+    <svg width="23" height="23" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <g fill-rule="evenodd">
+        <path d="M18.6 17.07a3.86 3.86 0 01-.5-2.35c.07-.45.24-.89.28-1.34.04-.46-.08-.97-.46-1.23-.8-.56-2 .43-2.84-.07a1.85 1.85 0 01-.58-.67c-.23-.4-.47-.8-.52-1.25-.05-.45.15-.96.57-1.12.1-.05.22-.07.3-.14.16-.13.14-.38.2-.58.14-.51.76-.69 1.3-.78.5-.08 1-.17 1.5-.11.78.09 1.54.5 2.29.67a9.49 9.49 0 01-1.53 8.97m-5.54-2.26c-.34.46-.82.81-1.14 1.3-.2.3-.34.67-.6.94-.21.22-.5.37-.72.59-.37.37-.5.93-.45 1.46.05.52.25 1.02.45 1.5v.02a9.53 9.53 0 01-1.5-.22c-.28-1.34-.5-2.7-.64-4.07-.03-.27-.06-.55-.18-.8-.42-.75-1.71-.92-1.78-1.78-.03-.36.18-.68.3-1.01.1-.34.07-.8-.26-.93l-.3-.07c-.34-.1-.5-.47-.75-.71-.31-.3-.84-.01-1.2-.24-.36-.23-.49-.65-.84-.87-.36-.23-.67-.74-.37-1.03-.36 0-.7-.13-1-.33A9.4 9.4 0 019.5 1.87c.06.03.1.06.17.08.43.15.9 0 1.35-.08.45-.06 1 0 1.22.4.05.1.08.23.06.34-.08.39-.6.45-.97.6-.33.13-.6.4-.73.74.28.08.57.16.78.36.2.2.31.53.15.77-.16.25-.5.28-.8.33-.88.17-1.72.8-2.59.57-.2-.06-.39-.16-.6-.15-.2 0-.42.2-.36.39.47.23 1.03.71.76 1.17-.16.28-.6.36-.7.67-.1.29.03.75-.27.78-.1 0-.2-.07-.29-.13a1.4 1.4 0 00-1.55-.01c-.1.07-.2.16-.24.28-.1.3.23.59.54.66.31.08.66.06.93.23.4.25.53.86.98.96.26.06.51-.07.76-.13.74-.2 1.51.17 2.13.62.61.45 1.17 1.01 1.87 1.3.4.17.86.26 1.12.6.36.44.19 1.12-.15 1.59m1.91-8.54c.23-.34.93-.4.8-.79-.4-.05-.69-.53-.56-.91a.74.74 0 011-.4c.22.12.35.34.55.5.19.14.5.2.65.01.06-.08.08-.19.1-.3 0-.06.03-.12.04-.19l.33.3a9.5 9.5 0 011.7 2.34c-.4.14-.84.26-1.25.16-.37-.1-.7-.35-1.07-.37-.33-.03-.65.12-.95.25-.3.14-.64.25-.96.16-.32-.1-.56-.49-.38-.76m7.35 3.92l-.07-.54-.06-.4a12 12 0 00-.15-.7l-.04-.17a11.3 11.3 0 00-1.53-3.43l-.07-.1a11.33 11.33 0 00-1.31-1.57A11.11 11.11 0 009.53.14L9.19.2a11.7 11.7 0 00-2.84.91l-.22.1a9.2 9.2 0 00-1.31.8c-.17.1-.33.23-.49.35l-.3.24A10.77 10.77 0 002 4.83l-.1.12c-.39.59-.72 1.21-1 1.86v.02a11.11 11.11 0 008.62 15.4 13.47 13.47 0 001.7.13 11.1 11.1 0 007.89-3.26 11.74 11.74 0 001.11-1.32l.05-.06.5-.74.08-.14.38-.72.1-.22a13.39 13.39 0 00.62-1.63l.11-.44c.05-.19.1-.37.13-.55l.09-.6.05-.43a10.92 10.92 0 000-2.06" id="a" />
+      </g>
+    </svg>
+  
+            </span>
+          </button>
+        
+        <button id="kb-header__main-nav-target" class="kb-header__nav-toggle" role="button" aria-label="Open main navigation menu" aria-controls="kb-header__nav">
+          <span class="kb-icon menu">
+            <svg width="25" height="17" xmlns="http://www.w3.org/2000/svg">
+              <g fill="#2D3E50" fill-rule="nonzero">
+                <path d="M24.56897 2.295c0 .85-.2931 1.513-1.72414 1.513H2.15517C.72414 3.808.43103 3.1365.43103 2.295c0-.85.2931-1.513 1.72414-1.513h20.68966c1.43103 0 1.72414.6715 1.72414 1.513zM24.56897 8.8315c0 .85-.2931 1.513-1.72414 1.513H2.15517c-1.43103 0-1.72414-.6715-1.72414-1.513 0-.85.2931-1.513 1.72414-1.513h20.68966c1.43103 0 1.72414.6715 1.72414 1.513zM24.56897 15.3595c0 .85-.2931 1.513-1.72414 1.513H2.15517c-1.43103 0-1.72414-.6715-1.72414-1.513 0-.85.2931-1.513 1.72414-1.513h20.68966c1.43103 0 1.72414.6715 1.72414 1.513z" />
+              </g>
+            </svg>
+          </span>
+        </button>
+    </div>
+    </div>
+  </div>
+  <!-- Mobile Menu -->
+  <div class="kb-mobile-search-section">
+    <div class="kb-mobile-header">
+      <div class="kb-mobile-menu">
+        <div class="kb-mobile-menu__current-page">
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+              Providing a DARWIN
+              
+            
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+            
+          
+          <svg class="kb-mobile-menu__arrow" width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#00A38D" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <ul>
+          
+          <li>
+            
+            
+            <a href="/your-darwinex-account">
+              Your Darwinex Account
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/your-darwinex-account#regulation-money-safety">
+                  Regulation &amp; Money Safety
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/your-darwinex-account#account-application">
+                  Account Application
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/your-darwinex-account#deposits-withdrawals">
+                  Deposits &amp; Withdrawals
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/your-darwinex-account#partnerships">
+                  Partnerships
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/your-darwinex-account#account-security">
+                  Account Security
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/trade-fx-cfd">
+              Trade FX / CFD
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/trade-fx-cfd#first-steps-as-a-trader">
+                  First Steps as a Trader
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/trade-fx-cfd#trading-conditions">
+                  Trading Conditions
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/trade-fx-cfd#trading-basics">
+                  Trading Basics
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/trade-fx-cfd#metatrader-guide">
+                  MetaTrader Guide
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li class="active open">
+            
+            
+            <a href="/providing-a-darwin">
+              Providing a DARWIN
+            </a>
+            <ul>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/managing-a-darwin-portfolio">
+              Managing a DARWIN portfolio
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/managing-a-darwin-portfolio#first-steps-as-an-investor">
+                  First Steps as an Investor
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/managing-a-darwin-portfolio#the-darwin-asset-class">
+                  The DARWIN Asset Class
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/managing-a-darwin-portfolio#creating-a-darwin-portfolio">
+                  Creating a DARWIN Portfolio
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/managing-a-darwin-portfolio#community-darwins">
+                  Community DARWINs
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/world-of-darwinex">
+              World of Darwinex
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/world-of-darwinex#darwinex-metrics-and-graphs">
+                  Darwinex Metrics and Graphs
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/world-of-darwinex#investment-attributes">
+                  Investment Attributes
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/darwinia-capital-allocation">
+              DarwinIA Capital Allocation
+            </a>
+            <ul>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/algorithmic-trading">
+              Algorithmic Trading
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/algorithmic-trading#from-trading-as-a-hobby-to-trading-as-a-profession">
+                  From Trading as a Hobby, to Trading as a Profession
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/algorithmic-trading#algorithmic-trading-investing-with-the-darwin-api">
+                  Algorithmic Trading &amp; Investing with the DARWIN API
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/algorithmic-trading#darwin-data-analytics-for-algorithmic-trading">
+                  DARWIN Data Analytics for Algorithmic Trading
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/algorithmic-trading#algorithmic-trading-training-for-and-by-traders">
+                  Algorithmic Trading: Training for and by Traders
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/darwinex-ibkr">
+              Darwinex &amp; IBKR
+            </a>
+            <ul>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/darwinex-pro">
+              Darwinex Pro
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/darwinex-pro#about-darwinex-pro">
+                  About Darwinex Pro
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/darwinex-pro#economics">
+                  Economics
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/darwinex-pro#regulation-umbrella">
+                  Regulation Umbrella
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/darwinex-pro#raising-capital">
+                  Raising Capital
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/darwinex-pro#pro-how-do-i-get-started">
+                  Pro - how do I get started?
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/darwinex-pro#the-pro-investor-experience">
+                  The Pro investor experience
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+      <div class="kb-mobile-search kb-search" kb-language-tag="en">
+        <div class="kb-mobile-search__placeholder"></div>
+        <div class="kb-mobile-search__box">
+          <div class="kb-mobile-search__bar">
+            <svg class="kb-mobile-search__mag" width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.02 12.672l-3.64-3.64a5.687 5.687 0 0 0 1.06-3.312A5.726 5.726 0 0 0 5.72 0 5.726 5.726 0 0 0 0 5.72a5.726 5.726 0 0 0 5.72 5.72 5.687 5.687 0 0 0 3.311-1.06l3.641 3.64a.95.95 0 0 0 1.348 0 .953.953 0 0 0 0-1.348zm-8.3-3.139a3.813 3.813 0 1 1 0-7.626 3.813 3.813 0 0 1 0 7.626z" fill="#4A4A4A" fill-rule="evenodd" />
+            </svg>
+            <form action="/kb-search-results">
+              <input type="text" class="kb-mobile-search__input kb-search__input" name="term" autocomplete="off" placeholder="Search for answers">
+              <input type="hidden" name="ref" value="24312138124">
+            </form>
+            <svg class="kb-mobile-search__close" width="14" height="14" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#4A4A4A" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12.314L12.314 1M12.314 12.314L1 1" />
+              </g>
+            </svg>
+          </div>
+          <ul class="kb-search__suggestions" data-lang="Results for "></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    kbDom.whenReady(function() {
+          // Mobile Nav Menu
+          var mobileToggle = function() {
+            var navMenuOpen = document.getElementById('kb-header__main-nav-target');
+            var langNavOpen = document.getElementById('kb-header__langs-nav-target');
+            var navClose = document.getElementById('kb-header__close-target');
+
+            navMenuOpen.addEventListener('click',function() {
+              document.body.classList.toggle('kb-header__main-nav-open');
+            });
+
+            if (langNavOpen) {
+            langNavOpen.addEventListener('click',function() {
+              document.body.classList.toggle('kb-header__lang-nav-open');
+            });
+            }
+
+            navClose.addEventListener('click',function() {
+              document.body.classList.remove('kb-header__main-nav-open');
+              document.body.classList.remove('kb-header__lang-nav-open');
+            });
+
+          };
+          window.addEventListener('click', mobileToggle);
+          mobileToggle();
+
+      kbDom.initDropdown(document.querySelector('[data-kbui-dropdown-contents="lang-switcher"]'))
+
+      // Mobile Cat Menu
+      document.querySelector('.kb-mobile-menu__current-page').addEventListener('click',function() {
+        document.querySelector('.kb-mobile-header').classList.toggle('menu-open');
+      });
+      document.querySelector('.kb-mobile-search__mag').addEventListener('click',function() {
+        document.querySelector('.kb-mobile-header').classList.toggle('search-open');
+        if (document.querySelector('.kb-mobile-header').classList.contains('search-open')) {
+          document.querySelector('.kb-mobile-search__input').focus();
+        }
+      });
+      document.querySelector('.kb-mobile-search__close').addEventListener('click',function() {
+        document.querySelector('.kb-mobile-header').classList.remove('search-open');
+      });
+    });
+  </script>
+      
+<div class="kb-search-section kb-search-section--narrow kb-search-section-with-image  ">
+  <div class="kb-search-section__content content-container">
+    <div class="kb-search" kb-language-tag="en">
+      <div class="kb-search__placeholder"></div>
+      <div class="kb-search__box">
+        <div class="kb-search__bar">
+          <svg class="kb-search__mag" width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.02 12.672l-3.64-3.64a5.687 5.687 0 0 0 1.06-3.312A5.726 5.726 0 0 0 5.72 0 5.726 5.726 0 0 0 0 5.72a5.726 5.726 0 0 0 5.72 5.72 5.687 5.687 0 0 0 3.311-1.06l3.641 3.64a.95.95 0 0 0 1.348 0 .953.953 0 0 0 0-1.348zm-8.3-3.139a3.813 3.813 0 1 1 0-7.626 3.813 3.813 0 0 1 0 7.626z" fill="#4A4A4A" fill-rule="evenodd" />
+          </svg>
+          <form action="/kb-search-results">
+            <input type="text" class="kb-search__input" name="term" autocomplete="off" placeholder="Search for answers" required>
+          </form>
+          <svg class="kb-search__close" width="14" height="14" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#4A4A4A" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12.314L12.314 1M12.314 12.314L1 1" />
+            </g>
+          </svg>
+        </div>
+        <ul class="kb-search__suggestions" data-lang="Results for "></ul>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    </header>
+    <main data-preview-id="kb-article-main">
+      
+<div class="content-container-outer">
+  <div class="content-container">
+    
+<div class="kb-breadcrumbs">
+  <div class="kb-breadcrumbs__mobile-back">
+    <svg class="kb-breadcrumbs__arrow kb-breadcrumbs__arrow--left" width="7" height="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M.055 5.7194c.018-.045.0518-.0835.0795-.125.0166-.0255.0322-.052.0489-.0775.007-.011.0116-.024.0216-.034L5.2426.2328c.2877-.3.7662-.3115 1.0685-.026a.7468.7468 0 0 1 .0262 1.0605L1.7954 6l4.5419 4.733a.7462.7462 0 0 1-.0262 1.0601.7563.7563 0 0 1-.5214.207.7568.7568 0 0 1-.547-.2325L.205 6.5174c-.01-.0105-.0146-.023-.0216-.0345-.0167-.025-.0323-.0515-.0489-.077-.0277-.0415-.0615-.08-.0796-.125-.0186-.0455-.0222-.0935-.0312-.141C.0147 6.0934 0 6.0474 0 5.9999c0-.047.0146-.093.0237-.1395.009-.0475.0126-.096.0312-.141" fill="#7C98B6" fill-rule="evenodd" />
+    </svg>
+    <a href="/">Back to home</a>
+  </div>
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Darwinex Docs</span>
+      </a>
+      <meta itemprop="position" content="1">
+    </li>
+    
+      
+        
+      
+        
+      
+        
+          <svg class="kb-breadcrumbs__arrow kb-breadcrumbs__arrow--right" width="7" height="12" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.4905 5.7194c-.018-.045-.0518-.0835-.0795-.125-.0167-.0255-.0323-.052-.049-.0775-.007-.011-.0115-.024-.0216-.034L1.3028.2328c-.2876-.3-.7662-.3115-1.0684-.026a.7468.7468 0 0 0-.0262 1.0605L4.75 6l-4.542 4.733a.7462.7462 0 0 0 .0263 1.0601.7563.7563 0 0 0 .5213.207.7568.7568 0 0 0 .5471-.2325l5.0376-5.2501c.0101-.0105.0146-.023.0217-.0345.0166-.025.0322-.0515.0489-.077.0277-.0415.0614-.08.0795-.125.0187-.0455.0222-.0935.0313-.141.009-.0465.0237-.0925.0237-.14 0-.047-.0147-.093-.0237-.1395-.009-.0475-.0126-.096-.0313-.141" fill="#7C98B6" fill-rule="evenodd" />
+          </svg>
+          <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            
+              <span itemprop="name">Providing a DARWIN</span>
+            
+            <meta itemprop="position" content="2">
+          </li>
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+  </ol>
+</div>
+    <div class="main-body">
+      <div class="kb-sidebar">
+        
+<div class="kb-category-menu">
+  <ul>
+    
+    <li>
+        
+        
+      <a href="/your-darwinex-account">
+        <div class="kb-category-menu-option" data-id="14312900806">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Your Darwinex Account
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="14312900807">
+          
+          
+          <a href="/your-darwinex-account#regulation-money-safety">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Regulation &amp; Money Safety
+          </a>
+        </li>
+        
+        <li data-id="14312900808">
+          
+          
+          <a href="/your-darwinex-account#account-application">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Account Application
+          </a>
+        </li>
+        
+        <li data-id="14312900809">
+          
+          
+          <a href="/your-darwinex-account#deposits-withdrawals">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Deposits &amp; Withdrawals
+          </a>
+        </li>
+        
+        <li data-id="14312900810">
+          
+          
+          <a href="/your-darwinex-account#partnerships">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Partnerships
+          </a>
+        </li>
+        
+        <li data-id="14312900811">
+          
+          
+          <a href="/your-darwinex-account#account-security">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Account Security
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/trade-fx-cfd">
+        <div class="kb-category-menu-option" data-id="12626433441">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Trade FX / CFD
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="14312900812">
+          
+          
+          <a href="/trade-fx-cfd#first-steps-as-a-trader">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            First Steps as a Trader
+          </a>
+        </li>
+        
+        <li data-id="14312900813">
+          
+          
+          <a href="/trade-fx-cfd#trading-conditions">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Trading Conditions
+          </a>
+        </li>
+        
+        <li data-id="14312900814">
+          
+          
+          <a href="/trade-fx-cfd#trading-basics">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Trading Basics
+          </a>
+        </li>
+        
+        <li data-id="14312900815">
+          
+          
+          <a href="/trade-fx-cfd#metatrader-guide">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            MetaTrader Guide
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li class="open">
+        
+        
+      <a href="/providing-a-darwin">
+        <div class="kb-category-menu-option" data-id="24313327274">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Providing a DARWIN
+        </div>
+        
+      </a>
+      <ul>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/managing-a-darwin-portfolio">
+        <div class="kb-category-menu-option" data-id="14312900817">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Managing a DARWIN portfolio
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="14440465485">
+          
+          
+          <a href="/managing-a-darwin-portfolio#first-steps-as-an-investor">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            First Steps as an Investor
+          </a>
+        </li>
+        
+        <li data-id="14312900818">
+          
+          
+          <a href="/managing-a-darwin-portfolio#the-darwin-asset-class">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            The DARWIN Asset Class
+          </a>
+        </li>
+        
+        <li data-id="14312900819">
+          
+          
+          <a href="/managing-a-darwin-portfolio#creating-a-darwin-portfolio">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Creating a DARWIN Portfolio
+          </a>
+        </li>
+        
+        <li data-id="14312900820">
+          
+          
+          <a href="/managing-a-darwin-portfolio#community-darwins">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Community DARWINs
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/world-of-darwinex">
+        <div class="kb-category-menu-option" data-id="13439571282">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          World of Darwinex
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="13439571283">
+          
+          
+          <a href="/world-of-darwinex#darwinex-metrics-and-graphs">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Darwinex Metrics and Graphs
+          </a>
+        </li>
+        
+        <li data-id="14312900822">
+          
+          
+          <a href="/world-of-darwinex#investment-attributes">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Investment Attributes
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/darwinia-capital-allocation">
+        <div class="kb-category-menu-option" data-id="14312900823">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          DarwinIA Capital Allocation
+        </div>
+        
+      </a>
+      <ul>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/algorithmic-trading">
+        <div class="kb-category-menu-option" data-id="14312900824">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Algorithmic Trading
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="63729096964">
+          
+          
+          <a href="/algorithmic-trading#from-trading-as-a-hobby-to-trading-as-a-profession">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            From Trading as a Hobby, to Trading as a Profession
+          </a>
+        </li>
+        
+        <li data-id="14312900825">
+          
+          
+          <a href="/algorithmic-trading#algorithmic-trading-investing-with-the-darwin-api">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Algorithmic Trading &amp; Investing with the DARWIN API
+          </a>
+        </li>
+        
+        <li data-id="23577328415">
+          
+          
+          <a href="/algorithmic-trading#darwin-data-analytics-for-algorithmic-trading">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            DARWIN Data Analytics for Algorithmic Trading
+          </a>
+        </li>
+        
+        <li data-id="27851851190">
+          
+          
+          <a href="/algorithmic-trading#algorithmic-trading-training-for-and-by-traders">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Algorithmic Trading: Training for and by Traders
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/darwinex-ibkr">
+        <div class="kb-category-menu-option" data-id="33234814406">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Darwinex &amp; IBKR
+        </div>
+        
+      </a>
+      <ul>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/darwinex-pro">
+        <div class="kb-category-menu-option" data-id="59513183410">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Darwinex Pro
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="65736201080">
+          
+          
+          <a href="/darwinex-pro#about-darwinex-pro">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            About Darwinex Pro
+          </a>
+        </li>
+        
+        <li data-id="65736033143">
+          
+          
+          <a href="/darwinex-pro#economics">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Economics
+          </a>
+        </li>
+        
+        <li data-id="65736201047">
+          
+          
+          <a href="/darwinex-pro#regulation-umbrella">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Regulation Umbrella
+          </a>
+        </li>
+        
+        <li data-id="66312277856">
+          
+          
+          <a href="/darwinex-pro#raising-capital">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Raising Capital
+          </a>
+        </li>
+        
+        <li data-id="65736201089">
+          
+          
+          <a href="/darwinex-pro#pro-how-do-i-get-started">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Pro - how do I get started?
+          </a>
+        </li>
+        
+        <li data-id="65737317775">
+          
+          
+          <a href="/darwinex-pro#the-pro-investor-experience">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            The Pro investor experience
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+  </ul>
+</div>
+
+<script>
+  kbDom.whenReady(function() {
+    document.querySelectorAll('.kb-category-menu svg').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        var li = kbDom.closest('li', this);
+        if (li) {
+          li.classList.toggle('open');
+        }
+      });
+    })
+  })
+</script>
+      </div>
+      <div class="kb-content">
+        
+
+
+
+<div class="kb-article tinymce-content">
+  <h1><span id="hs_cos_wrapper_name" class="hs_cos_wrapper hs_cos_wrapper_meta_field hs_cos_wrapper_type_text" style="" data-hs-cos-general-type="meta_field" data-hs-cos-type="text">Analysing your investors' divergence</span></h1>
+  
+    <h2>DARWIN providers can analyze the factors that influence investor divergence and take action to improve it.</h2>
+   <p>The Investor Divergence section of the <a href="https://www.darwinex.com/asset-manager/divergence" target="_blank" rel="noopener">Asset Management</a> portal provides information on the execution of investor orders directly generated by orders from the strategy underlying the DARWIN.<br><br>This information is provided only to our DARWIN provider to analyze the factors that influence the divergence affecting their investors and take action to improve it. <br><br>The Investor Divergence comes with 3 sections:</p>
+<ol>
+<li>Info DARWIN</li>
+<li>Strategy and investors' orders and</li>
+<li>Net strategy and investors' positions.</li>
+</ol>
+<h4>Table of contents</h4>
+<ol>
+<li><a href="#INFODarwin" rel=" noopener">Info DARWIN</a></li>
+<li><a href="#Strategyorders" rel=" noopener">Strategy and investors' orders</a>
+<ol>
+<li><a href="#Orderfiltering" rel=" noopener">Order navigation and filtering</a>
+<ol>
+<li><a href="#Filters" rel=" noopener">Filters</a></li>
+<li><a href="#Timeevolution" rel=" noopener">Time evolution of the divergence and the invested capital</a></li>
+</ol>
+</li>
+<li><a href="#CSVDownload" rel=" noopener">C</a><a href="#CSVDownload" rel=" noopener">SV Download</a></li>
+<li><a href="#Ordergraphs" rel=" noopener">Order graphs</a></li>
+<li><a href="#CSVDownload" rel=" noopener"></a><a href="#Orderlist" rel=" noopener">Order list</a>
+<ol>
+<li><a href="#detailsinvestorsorder" rel=" noopener">Details of the execution of an investors’ order</a></li>
+<li><a href="#orderpooling" rel=" noopener">Order pooling</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><a href="#Netstrategy" rel=" noopener">Net strategy and investors' positions</a><br>
+<ol>
+<li><a href="#Alerts" rel=" noopener">Alerts</a></li>
+<li><a href="#VWAG" rel=" noopener">VWAP (Volume-Weighted Average Price) calculation</a></li>
+</ol>
+</li>
+</ol>
+<ol></ol>
+<p><a id="INFODarwin" data-hs-anchor="true"></a></p>
+<h3>1. INFO Darwin</h3>
+<p>In this section, the DARWIN whose divergence information is to be <span style="font-size: 1rem;">viewed is selected.</span></p>
+<p><img alt="dpp-darwin-info-en" class="hs-image-align-none" style="font-size: medium; width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-darwin-info-en.png?width=688&amp;name=dpp-darwin-info-en.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-darwin-info-en.png?width=344&amp;name=dpp-darwin-info-en.png 344w, https://help.darwinex.com/hs-fs/hubfs/dpp-darwin-info-en.png?width=688&amp;name=dpp-darwin-info-en.png 688w, https://help.darwinex.com/hs-fs/hubfs/dpp-darwin-info-en.png?width=1032&amp;name=dpp-darwin-info-en.png 1032w, https://help.darwinex.com/hs-fs/hubfs/dpp-darwin-info-en.png?width=1376&amp;name=dpp-darwin-info-en.png 1376w, https://help.darwinex.com/hs-fs/hubfs/dpp-darwin-info-en.png?width=1720&amp;name=dpp-darwin-info-en.png 1720w, https://help.darwinex.com/hs-fs/hubfs/dpp-darwin-info-en.png?width=2064&amp;name=dpp-darwin-info-en.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>The exact target VaR and VaR ratio is shown here for the selected DARWIN asset.</p>
+<div class="hs-callout-type-tip" data-hs-callout-type="tip">
+<p>Read the <a href="https://help.darwinex.com/risk-manager" target="_blank" rel="noopener">article about the Risk Engine</a> to know how target VaR and VaR ratio are calculated.</p>
+</div>
+<p>It also displays information about the invested capital (in $), the number of investors, the monthly divergence, and latency.</p>
+<p><a id="Strategyorders" data-hs-anchor="true"></a></p>
+<h3>2. Strategy and investors' orders</h3>
+<p>This section shows the orders executed by the underlying strategy and the orders that have been consequently executed for all investors (provided that there were investors in the DARWIN at the time of the strategy order).</p>
+<div class="hs-callout-type-note" data-hs-callout-type="note">
+<p>For each strategy order, there will be an investors’ order (1 single order for all investors).</p>
+</div>
+<p>Only investors’ orders whose symbol corresponds to the symbol of the strategy order are displayed. I.e. if there is already an open position in EURUSD and the strategy trades in EURGBP, associated with this order in EURGBP, only the investors’ order in EURGBP will be displayed; potential risk adjustment orders in EURUSD will not be displayed.</p>
+<p>It is broken down into 4 parts.</p>
+<p><a id="Orderfiltering" data-hs-anchor="true"></a></p>
+<h4>a) Order navigation and filtering</h4>
+<p>It makes it possible to filter the orders to be viewed in the graphs and the list.</p>
+<p><img alt="dpp-divergence-navigation-en-1" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-navigation-en-1.png?width=688&amp;name=dpp-divergence-navigation-en-1.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-navigation-en-1.png?width=344&amp;name=dpp-divergence-navigation-en-1.png 344w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-navigation-en-1.png?width=688&amp;name=dpp-divergence-navigation-en-1.png 688w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-navigation-en-1.png?width=1032&amp;name=dpp-divergence-navigation-en-1.png 1032w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-navigation-en-1.png?width=1376&amp;name=dpp-divergence-navigation-en-1.png 1376w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-navigation-en-1.png?width=1720&amp;name=dpp-divergence-navigation-en-1.png 1720w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-navigation-en-1.png?width=2064&amp;name=dpp-divergence-navigation-en-1.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>It has the following options.</p>
+<ul>
+<li><strong>Search</strong>: entering the trading platform ticket number will display the two orders (opening and close) associated with it.</li>
+</ul>
+<div class="hs-callout-type-warning" data-hs-callout-type="warning">
+<p>For MT5 accounts the number of the order is not displayed for the time being; thus, searching per ticket number won't work for MT5 accounts.</p>
+</div>
+<ul>
+<li><strong>Filters:</strong> shows/hides the different parameters according to which the orders can be filtered (described below).</li>
+<li><strong>Number of orders</strong>: the number of orders to be viewed in the graph and list.</li>
+<li><strong>To date</strong>: the number of orders that meet the filter criteria, which date (of the strategy order) is prior to the to date, is displayed.</li>
+<li><strong>Chart icon:</strong> shows/hides the chart that displays the evolution of divergence and invested capital over time (described below).</li>
+<li><strong>&lt; &gt;</strong>: buttons to move the number of orders left (older) and right (more recent).</li>
+</ul>
+<p><a id="Filters" data-hs-anchor="true"></a></p>
+<p><strong>i) Filters</strong></p>
+<p><strong><img alt="dpp-divergence-filters-en" class="hs-image-align-center" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-en.png?width=688&amp;name=dpp-divergence-filters-en.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-en.png?width=344&amp;name=dpp-divergence-filters-en.png 344w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-en.png?width=688&amp;name=dpp-divergence-filters-en.png 688w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-en.png?width=1032&amp;name=dpp-divergence-filters-en.png 1032w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-en.png?width=1376&amp;name=dpp-divergence-filters-en.png 1376w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-en.png?width=1720&amp;name=dpp-divergence-filters-en.png 1720w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-en.png?width=2064&amp;name=dpp-divergence-filters-en.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></strong></p>
+<ul>
+<li><strong>Symbol</strong>: all symbols can be displayed or you can filter by a specific symbol. Only those symbols in which the DARWIN and the investors have previously traded can be selected.</li>
+<li><strong>Execution time</strong>: a minimum and maximum range can be filtered.</li>
+<li><strong>Divergence ‰</strong>: a minimum and maximum range can be filtered.</li>
+<li><strong>Reset</strong>: eliminates all filters.</li>
+</ul>
+<p><a id="Timeevolution" data-hs-anchor="true"></a></p>
+<p><strong>ii) Time evolution of the divergence and the invested capital</strong></p>
+<p><strong><img alt="dpp-divergence-chart-icon-1" class="hs-image-align-center" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-chart-icon-1.gif?width=688&amp;name=dpp-divergence-chart-icon-1.gif" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-chart-icon-1.gif?width=344&amp;name=dpp-divergence-chart-icon-1.gif 344w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-chart-icon-1.gif?width=688&amp;name=dpp-divergence-chart-icon-1.gif 688w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-chart-icon-1.gif?width=1032&amp;name=dpp-divergence-chart-icon-1.gif 1032w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-chart-icon-1.gif?width=1376&amp;name=dpp-divergence-chart-icon-1.gif 1376w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-chart-icon-1.gif?width=1720&amp;name=dpp-divergence-chart-icon-1.gif 1720w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-chart-icon-1.gif?width=2064&amp;name=dpp-divergence-chart-icon-1.gif 2064w" sizes="(max-width: 688px) 100vw, 688px"></strong></p>
+<p>Displays a graph that shows the time evolution of:</p>
+<ul>
+<li>Divergence as a %: time evolution of the divergence that the DARWIN has accumulated from inception, showing values for every day from the day it started to have investment. Positive divergence means better price, while negative divergence means the worse price for investors.</li>
+<li>Invested capital: the evolution over time of the total capital invested by all investors (not including losses and earnings); the same information that is displayed on the DARWIN details page.</li>
+</ul>
+<p>This graph also shows a shaded vertical stripe that indicates the time range of the orders viewed in the list below.</p>
+<p><span style="text-decoration: underline;">Interaction with the graph</span></p>
+<p>Left-clicking on this graph selects the date, and the order table below shows all the orders (that meet the filter conditions selected in the filter bar) up to that date.</p>
+<p>E.g. if we select the date as in the image below, the order list will display all the orders up to 11/07/2018.</p>
+<p><img alt="dpp-divergence-time-evolution-to-date" class="hs-image-align-center" style="width: 175px;" src="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-time-evolution-to-date.png?width=175&amp;name=dpp-divergence-time-evolution-to-date.png" width="175" srcset="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-time-evolution-to-date.png?width=88&amp;name=dpp-divergence-time-evolution-to-date.png 88w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-time-evolution-to-date.png?width=175&amp;name=dpp-divergence-time-evolution-to-date.png 175w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-time-evolution-to-date.png?width=263&amp;name=dpp-divergence-time-evolution-to-date.png 263w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-time-evolution-to-date.png?width=350&amp;name=dpp-divergence-time-evolution-to-date.png 350w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-time-evolution-to-date.png?width=438&amp;name=dpp-divergence-time-evolution-to-date.png 438w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-time-evolution-to-date.png?width=525&amp;name=dpp-divergence-time-evolution-to-date.png 525w" sizes="(max-width: 175px) 100vw, 175px"></p>
+<p><a id="CSVDownload" data-hs-anchor="true"></a><span style="font-size: 1.125rem; font-weight: bold;">b) CSV Download</span></p>
+<p>A CSV file providing order information can also be downloaded from the order navigation bar.</p>
+<p><img alt="dpp-divergence-filters-csv" class="hs-image-align-center" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-csv.png?width=688&amp;name=dpp-divergence-filters-csv.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-csv.png?width=344&amp;name=dpp-divergence-filters-csv.png 344w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-csv.png?width=688&amp;name=dpp-divergence-filters-csv.png 688w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-csv.png?width=1032&amp;name=dpp-divergence-filters-csv.png 1032w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-csv.png?width=1376&amp;name=dpp-divergence-filters-csv.png 1376w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-csv.png?width=1720&amp;name=dpp-divergence-filters-csv.png 1720w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-csv.png?width=2064&amp;name=dpp-divergence-filters-csv.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>There are 2 options.</p>
+<ol>
+<li><strong>With the current filter</strong>: it instantly downloads a CSV file with the data being viewed (only the selected number of orders will be downloaded).</li>
+<li><strong>By date range</strong>: it downloads all the existing orders between 2 dates, with no order number limit but limited to a maximum time range of 12 months. It also makes it possible to filter by a specific symbol. If the number of orders selected for downloading is high, the download can take between 60 and 120 seconds to be completed.<br><br></li>
+</ol>
+<p><a id="Ordergraphs" data-hs-anchor="true"></a></p>
+<h4>c) Order graphs</h4>
+<p>These graphs display the main information on the divergence associated with the orders filtered in accordance with the order filter bar.</p>
+<p>The X-axis for the graphs is not time, but only the order of the order sequence. That is, all the bars/points in the graphs are equally spaced horizontally, and there can be a time difference of milliseconds, minutes, or days between orders. The most recent orders are displayed on the right of the graph. At the bottom of the graph, the date of the first and the last displayed order is shown (time range that comprises all displayed orders).</p>
+<p><img alt="dpp-divergence-filters-order-graphs-en-1" class="hs-image-align-center" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-graphs-en-1.png?width=688&amp;name=dpp-divergence-filters-order-graphs-en-1.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-graphs-en-1.png?width=344&amp;name=dpp-divergence-filters-order-graphs-en-1.png 344w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-graphs-en-1.png?width=688&amp;name=dpp-divergence-filters-order-graphs-en-1.png 688w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-graphs-en-1.png?width=1032&amp;name=dpp-divergence-filters-order-graphs-en-1.png 1032w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-graphs-en-1.png?width=1376&amp;name=dpp-divergence-filters-order-graphs-en-1.png 1376w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-graphs-en-1.png?width=1720&amp;name=dpp-divergence-filters-order-graphs-en-1.png 1720w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-graphs-en-1.png?width=2064&amp;name=dpp-divergence-filters-order-graphs-en-1.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>There are 4 different graphs.</p>
+<ol>
+<li><strong>Divergence ‰</strong>: bar graph displaying the divergence ‰ associated with each order. The positive divergence (favourable for investors) is shown in green and the negative divergence (unfavourable for investors) is shown in red. The maximum and minimum divergence of all the orders being viewed are displayed as horizontal lines.</li>
+<li><strong>Execution time</strong>: a white line graph that indicates, for each order, the time that has elapsed from the reception of the strategy order to the market execution of the investors’ order.</li>
+<li><strong>Leverage</strong>: orange line graph that shows the investor leverage for each order, i.e. nominal divided by the total investor equity.</li>
+<li><strong>Nominal volume</strong>: the nominal value, in the underlying strategy currency, of the investor order executed.</li>
+</ol>
+<p>To the right of the graphs, there is a panel that displays information associated with the order. Moving the cursor over each order updates this information.</p>
+<p><img alt="dpp-divergence-order-graph-detail" class="hs-image-align-center" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-detail.gif?width=688&amp;name=dpp-divergence-order-graph-detail.gif" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-detail.gif?width=344&amp;name=dpp-divergence-order-graph-detail.gif 344w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-detail.gif?width=688&amp;name=dpp-divergence-order-graph-detail.gif 688w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-detail.gif?width=1032&amp;name=dpp-divergence-order-graph-detail.gif 1032w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-detail.gif?width=1376&amp;name=dpp-divergence-order-graph-detail.gif 1376w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-detail.gif?width=1720&amp;name=dpp-divergence-order-graph-detail.gif 1720w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-detail.gif?width=2064&amp;name=dpp-divergence-order-graph-detail.gif 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>The fields shown are the following.</p>
+<ul>
+<li>Line 1: trading platform ticket number | date of the underlying strategy order.</li>
+<li>Line 2: symbol | type | price for the strategy</li>
+<li>Line 3: divergence in pips | divergence as ‰ | price for investors</li>
+<li>Line 4: execution time</li>
+<li>Line 5: investor equity</li>
+<li>Line 6: leverage</li>
+<li>Line 7: total volume executed for all investors | nominal for the entire order in the strategy currency.</li>
+</ul>
+<div class="hs-callout-type-tip" data-hs-callout-type="tip">
+<p>See the <a href="#Orderlist" rel=" noopener">Order list</a> section to obtain more information about each of the fields associated with the strategy orders and investors' orders.</p>
+</div>
+<p><span style="text-decoration: underline;">Interaction with the graphs</span></p>
+<p>Clicking on an order displays its details/breakdown in the order list. In addition, the relevant order will be selected (highlighted in blue) and the data in the information panel on the right will be fixed until another order is selected, or else it is de-selected in the order list, clicking on the relevant row.</p>
+<p>You can also zoom on the graph area by left-clicking, dragging, and releasing the cursor.</p>
+<p>The leverage and nominal graphs are not displayed by default and can be activated and de-activated as preferred.</p>
+<p><img alt="dpp-divergence-order-graph-interaction" class="hs-image-align-center" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-interaction.gif?width=688&amp;name=dpp-divergence-order-graph-interaction.gif" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-interaction.gif?width=344&amp;name=dpp-divergence-order-graph-interaction.gif 344w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-interaction.gif?width=688&amp;name=dpp-divergence-order-graph-interaction.gif 688w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-interaction.gif?width=1032&amp;name=dpp-divergence-order-graph-interaction.gif 1032w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-interaction.gif?width=1376&amp;name=dpp-divergence-order-graph-interaction.gif 1376w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-interaction.gif?width=1720&amp;name=dpp-divergence-order-graph-interaction.gif 1720w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-order-graph-interaction.gif?width=2064&amp;name=dpp-divergence-order-graph-interaction.gif 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p><a id="Orderlist" data-hs-anchor="true"></a></p>
+<h4>d) Order list</h4>
+<p>The order list displays all the information on the divergence associated with the orders filtered in accordance with the order filter bar.</p>
+<p>The information about the order executed by the strategy is shown on the left, and the information about the global order executed for all investors is shown on the right.</p>
+<p><img alt="dpp-divergence-filters-order-list-en" class="hs-image-align-center" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-list-en.png?width=688&amp;name=dpp-divergence-filters-order-list-en.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-list-en.png?width=344&amp;name=dpp-divergence-filters-order-list-en.png 344w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-list-en.png?width=688&amp;name=dpp-divergence-filters-order-list-en.png 688w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-list-en.png?width=1032&amp;name=dpp-divergence-filters-order-list-en.png 1032w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-list-en.png?width=1376&amp;name=dpp-divergence-filters-order-list-en.png 1376w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-list-en.png?width=1720&amp;name=dpp-divergence-filters-order-list-en.png 1720w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-filters-order-list-en.png?width=2064&amp;name=dpp-divergence-filters-order-list-en.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>Description of the fields:</p>
+<ul>
+<li><strong>Strategy</strong>
+<ul>
+<li><strong>Order</strong>: trading platform ticket number associated with the order. 1 or 2 orders can be associated with the same ticket; there will be one single order if the trade has not been yet closed, or if hedging was carried out on opening or closure. For now, no ticket number is displayed for MT5 accounts.</li>
+<li><strong>Date</strong>: date and time of execution of the order.</li>
+<li><strong>Symbol</strong>: symbol of the order.</li>
+<li><strong>Type</strong>: buy or sell.</li>
+<li><strong>Size</strong>: volume in lots.</li>
+<li><strong>Price</strong>: price of the strategy order.</li>
+</ul>
+</li>
+<li><strong>Investors</strong>
+<ul>
+<li><strong>Execution time</strong>: the time that has elapsed from the execution of the strategy order to the completion of the execution of the investors’ order.</li>
+<li><strong>Equity</strong>: total valuation (including losses and earnings) of all the investors’ aggregate investment in the underlying strategy currency at the time of execution of the order.</li>
+<li><strong>Size</strong>: volume in lots.</li>
+<li><strong>Nominal</strong>: total nominal value of the order in the strategy currency.</li>
+<li><strong>Price</strong>: price of the investors’ order.</li>
+<li><strong>Divergence</strong>: variation in pips (FX) or in points (other assets) between the strategy price and the investors’ order price.</li>
+<li><strong>Divergence ‰</strong>: variation in ‰ between the strategy price and the investors’ order price E.g. if the strategy price is 1.15384 and the investors’ price is 1.15389 the divergence ‰ will equal (1.15389 - 1.15384) / 1.15384 * 1000 = 0.00433‰, multiplied by -1 if it is a buy order.</li>
+<li><strong>Divergence €</strong>: the divergence as a monetary value, in the strategy currency. It is calculated by multiplying the nominal value of the order by the divergence percentage.</li>
+</ul>
+</li>
+</ul>
+<p><span style="text-decoration: underline;">Interaction with the order list</span></p>
+<p>The order list can be arranged by field clicking on the order arrows (<img alt="flechas-ordenacion" class="hs-image-align-none" style="width: 17px;" src="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/flechas-ordenacion.png?width=17&amp;name=flechas-ordenacion.png" width="17" srcset="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/flechas-ordenacion.png?width=9&amp;name=flechas-ordenacion.png 9w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/flechas-ordenacion.png?width=17&amp;name=flechas-ordenacion.png 17w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/flechas-ordenacion.png?width=26&amp;name=flechas-ordenacion.png 26w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/flechas-ordenacion.png?width=34&amp;name=flechas-ordenacion.png 34w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/flechas-ordenacion.png?width=43&amp;name=flechas-ordenacion.png 43w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/flechas-ordenacion.png?width=51&amp;name=flechas-ordenacion.png 51w" sizes="(max-width: 17px) 100vw, 17px">) or the headers of each column that can be arranged. Only the results yielded in terms of the criteria selected in the filter bar are arranged; i.e. <span style="text-decoration: underline;">not all the existing orders are arranged</span>, but only the orders viewed. Only the list is arranged, not the graph.</p>
+<p>Clicking on a row or on the see details icon (<img alt="ver-detalle" class="hs-image-align-none" style="width: 27px;" src="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/ver-detalle.png?width=27&amp;name=ver-detalle.png" width="27" srcset="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/ver-detalle.png?width=14&amp;name=ver-detalle.png 14w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/ver-detalle.png?width=27&amp;name=ver-detalle.png 27w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/ver-detalle.png?width=41&amp;name=ver-detalle.png 41w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/ver-detalle.png?width=54&amp;name=ver-detalle.png 54w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/ver-detalle.png?width=68&amp;name=ver-detalle.png 68w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/ver-detalle.png?width=81&amp;name=ver-detalle.png 81w" sizes="(max-width: 27px) 100vw, 27px">) shows/hides the details of the market execution of an investors’ order. These details are also displayed by clicking on a point/bar in the order graph.</p>
+<p>Moving the mouse cursor over the rows of the table, the corresponding order will be displayed on the graph above. This is useful when the rows are not ordered chronologically.</p>
+<p><img alt="dpp-divergence-list-interaction" class="hs-image-align-center" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-list-interaction.gif?width=688&amp;name=dpp-divergence-list-interaction.gif" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-list-interaction.gif?width=344&amp;name=dpp-divergence-list-interaction.gif 344w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-list-interaction.gif?width=688&amp;name=dpp-divergence-list-interaction.gif 688w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-list-interaction.gif?width=1032&amp;name=dpp-divergence-list-interaction.gif 1032w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-list-interaction.gif?width=1376&amp;name=dpp-divergence-list-interaction.gif 1376w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-list-interaction.gif?width=1720&amp;name=dpp-divergence-list-interaction.gif 1720w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-list-interaction.gif?width=2064&amp;name=dpp-divergence-list-interaction.gif 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p><a id="detailsinvestorsorder" data-hs-anchor="true"></a></p>
+<p><strong>i) Details of the execution of an investors’ order</strong></p>
+<p>An investors’ order is divided into one or several deals.</p>
+<p>A deal is one of the segments in an investors’ order for which Darwinex requests execution from the liquidity provider. The details of the execution of an investors’ order displays the various deals that have been part of it.</p>
+<p>In turn, each of the deals can be divided into one or several fills. A fill is each of the fragments into which the liquidity provider fills in a deal.</p>
+<p>E.g.: a 50 buy order (deal) is sent and then filled in by smaller fragments (fills) at various prices; i.e. 10 at 1.25, 15 at 1.27, and 25 at 1.265. The deal price will be the weighted average of fill prices.</p>
+<div class="hs-callout-type-note" data-hs-callout-type="note">
+<p>It is not necessary for all the fills of the previous deal to have been completed in order to send new order deals. A fill from a later deal could be executed before a fill from a previous deal.</p>
+</div>
+<p>The following information for each deal and fill is displayed.</p>
+<p><img alt="dpp-divergence-inversor-order-detail-2-en" class="hs-image-align-center" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-inversor-order-detail-2-en.png?width=688&amp;name=dpp-divergence-inversor-order-detail-2-en.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-inversor-order-detail-2-en.png?width=344&amp;name=dpp-divergence-inversor-order-detail-2-en.png 344w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-inversor-order-detail-2-en.png?width=688&amp;name=dpp-divergence-inversor-order-detail-2-en.png 688w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-inversor-order-detail-2-en.png?width=1032&amp;name=dpp-divergence-inversor-order-detail-2-en.png 1032w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-inversor-order-detail-2-en.png?width=1376&amp;name=dpp-divergence-inversor-order-detail-2-en.png 1376w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-inversor-order-detail-2-en.png?width=1720&amp;name=dpp-divergence-inversor-order-detail-2-en.png 1720w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-inversor-order-detail-2-en.png?width=2064&amp;name=dpp-divergence-inversor-order-detail-2-en.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<ul>
+<li><strong>Date</strong>: the date when the execution of a deal or fill was completed. The deal date will be the date of the last fill.</li>
+<li><strong>Volume</strong>: volume in lots. The deal volume will be the sum of the fill volumes.</li>
+<li><strong>Market time</strong>: the time from the sending of the order to the market to the completion of its execution.
+<ul>
+<li>The market time for the complete order is the longest market time of all the deals.</li>
+<li>The market time for a deal is the longest market time of all the fills in that deal.</li>
+<li>The market time for a fill is simply the time between the request for the execution of the deal and the completion of that fill.</li>
+</ul>
+</li>
+<li><strong>Execution time</strong>: the time that has elapsed from the reception of the strategy order to the completion of the execution of the investors’ order. The market time is included in the execution time. The difference between execution time and market time is the time of processing in the Darwinex system.</li>
+<li><strong>Price</strong>: the price for each deal and fill. The price of the deal and the complete order may have more decimals than standard as the weighted average price is calculated on the basis of all the fills.</li>
+<li><strong>Divergence</strong>: variation in pips (FX) or in points (other assets) between the strategy price and the investors’ order price.</li>
+<li><strong>Div. VWApip</strong>: variation in pips weighted by the volume. This value specifies the total contribution of each fill/deal in the total divergence of the global investors’ order. The total Div. VWApip for all the deals corresponds to the divergence of the complete order; and the total Div. VWApip of all the fills in a deal corresponds to the divergence of the relevant deal. E.g.:
+<ul>
+<li>An order with a total volume of 58.33 lots, and a strategy order price of 1.58747, divergence, 8.43 pips</li>
+<li>Deal 1: volume 50 lots, price 1.5881882 → Div.VWApip = (1.5881882 - 1.58747)*50/58.33 = 6.15635 pips
+<ul>
+<li>Fill 1: volume 3.25 lots, price 1.5877200 → Div.VWApip = (1.58772 - 1.58747)*3.25/58.33 = 0.13929 pips</li>
+</ul>
+</li>
+<li>Deal 2: volume 8.33 lots, price 1.5890642 → Div.VWApip = (1.5890642 - 1.58747)*8.33/58.33 = 2.27664 pips</li>
+</ul>
+</li>
+</ul>
+<p>The ⋀ and ⋁ icons hide/display the information about fill execution.</p>
+<p>The graph in the left-hand panel displays the fills, with the X-axis being the sequence of execution of the fills.</p>
+<ul>
+<li>The upper graph shows the VWApip divergence, in red if negative and in green if positive. The number next to each bar specifies the deal to which each fill belongs.</li>
+<li>The bottom graph shows the market time for each fill.</li>
+<li>To the right of the graph, and information panel indicates:
+<ul>
+<li>Deal and date of execution of the deal.</li>
+<li>Fill and date of execution of the fill</li>
+<li>VWap divergence</li>
+<li>Market time</li>
+<li>Execution time</li>
+</ul>
+</li>
+</ul>
+<p><img alt="dpp-divergence-fill-graph" class="hs-image-align-center" style="width: 600px;" src="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-fill-graph.gif?width=600&amp;name=dpp-divergence-fill-graph.gif" width="600" srcset="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-fill-graph.gif?width=300&amp;name=dpp-divergence-fill-graph.gif 300w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-fill-graph.gif?width=600&amp;name=dpp-divergence-fill-graph.gif 600w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-fill-graph.gif?width=900&amp;name=dpp-divergence-fill-graph.gif 900w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-fill-graph.gif?width=1200&amp;name=dpp-divergence-fill-graph.gif 1200w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-fill-graph.gif?width=1500&amp;name=dpp-divergence-fill-graph.gif 1500w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-fill-graph.gif?width=1800&amp;name=dpp-divergence-fill-graph.gif 1800w" sizes="(max-width: 600px) 100vw, 600px"></p>
+<p><a id="orderpooling" data-hs-anchor="true"></a></p>
+<p><strong>ii) Order pooling</strong></p>
+<p>Sometimes, when the strategy trades the same assets several times in a short timeframe, the risk manager can pool these orders together into a single order for the investors.</p>
+<p>When this happens, there will be investor data for only one of the orders. Investors' volume associated with the order will have an increased size as it's associated with more than one of the strategy's orders.</p>
+<p>In the following example, 24.98 lots are two times 12.49 lots as two of the strategy's orders, each of 0.4 lots, got pooled together into the first order for investors.&nbsp;</p>
+<p><img alt="dpp-divergence-order-grouping" class="hs-image-align-center" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-order-grouping.png?width=688&amp;name=dpp-divergence-order-grouping.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-order-grouping.png?width=344&amp;name=dpp-divergence-order-grouping.png 344w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-order-grouping.png?width=688&amp;name=dpp-divergence-order-grouping.png 688w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-order-grouping.png?width=1032&amp;name=dpp-divergence-order-grouping.png 1032w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-order-grouping.png?width=1376&amp;name=dpp-divergence-order-grouping.png 1376w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-order-grouping.png?width=1720&amp;name=dpp-divergence-order-grouping.png 1720w, https://help.darwinex.com/hs-fs/hubfs/Manual%20DPP/dpp-divergence-order-grouping.png?width=2064&amp;name=dpp-divergence-order-grouping.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p><a id="Netstrategy" data-hs-anchor="true"></a></p>
+<h3>3. Net strategy and investors' positions</h3>
+<p>This section shows the net positions of the underlying strategy, of the DARWIN, and of all the investors in the DARWIN. Their symbol, total open volume, type/side (buy or sell) and price (VWAP: Volume-Weighted Average Price) is shown for all of them. It's important to emphasize that while the FIFO rule applies to both investors and the DARWIN, the operation of the underlying strategy will depend on the trader.</p>
+<p><img alt="dpp-divergence-net-position-en" class="hs-image-align-center" style="width: 427px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-net-position-en.png?width=427&amp;name=dpp-divergence-net-position-en.png" width="427" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-net-position-en.png?width=214&amp;name=dpp-divergence-net-position-en.png 214w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-net-position-en.png?width=427&amp;name=dpp-divergence-net-position-en.png 427w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-net-position-en.png?width=641&amp;name=dpp-divergence-net-position-en.png 641w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-net-position-en.png?width=854&amp;name=dpp-divergence-net-position-en.png 854w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-net-position-en.png?width=1068&amp;name=dpp-divergence-net-position-en.png 1068w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-net-position-en.png?width=1281&amp;name=dpp-divergence-net-position-en.png 1281w" sizes="(max-width: 427px) 100vw, 427px"></p>
+<p>The date and time of the last update are shown next to the section title.</p>
+<p>By clicking on the icon, all positions will be updated.</p>
+<p>The investors' and the DARWIN's volume is rounded to 2 decimals. All the decimals are displayed by moving the cursor over it.</p>
+<p><img alt="dpp-divergence-full-decimals" class="hs-image-align-center" style="width: 164px;" src="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-full-decimals.png?width=164&amp;name=dpp-divergence-full-decimals.png" width="164" srcset="https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-full-decimals.png?width=82&amp;name=dpp-divergence-full-decimals.png 82w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-full-decimals.png?width=164&amp;name=dpp-divergence-full-decimals.png 164w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-full-decimals.png?width=246&amp;name=dpp-divergence-full-decimals.png 246w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-full-decimals.png?width=328&amp;name=dpp-divergence-full-decimals.png 328w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-full-decimals.png?width=410&amp;name=dpp-divergence-full-decimals.png 410w, https://help.darwinex.com/hs-fs/hubfs/dpp-divergence-full-decimals.png?width=492&amp;name=dpp-divergence-full-decimals.png 492w" sizes="(max-width: 164px) 100vw, 164px"></p>
+<p>It's usual that the DARWIN's positions are smaller than the minimum contract size and that therefore "0.00" is displayed as the size. The details are displayed by moving the cursor over it.</p>
+<p><a id="Alerts" data-hs-anchor="true"></a></p>
+<h4><strong>a) Alerts</strong></h4>
+<p>If an inconsistency between the underlying strategy positions and the investors’ positions is detected, the text of the problematic symbol is highlighted in red. E.g. the investors should never have an open position in an asset while the underlying strategy does not, and vice versa.</p>
+<p><img alt="net-positions-alert-en" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/net-positions-alert-en.png?width=688&amp;name=net-positions-alert-en.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/net-positions-alert-en.png?width=344&amp;name=net-positions-alert-en.png 344w, https://help.darwinex.com/hs-fs/hubfs/net-positions-alert-en.png?width=688&amp;name=net-positions-alert-en.png 688w, https://help.darwinex.com/hs-fs/hubfs/net-positions-alert-en.png?width=1032&amp;name=net-positions-alert-en.png 1032w, https://help.darwinex.com/hs-fs/hubfs/net-positions-alert-en.png?width=1376&amp;name=net-positions-alert-en.png 1376w, https://help.darwinex.com/hs-fs/hubfs/net-positions-alert-en.png?width=1720&amp;name=net-positions-alert-en.png 1720w, https://help.darwinex.com/hs-fs/hubfs/net-positions-alert-en.png?width=2064&amp;name=net-positions-alert-en.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p><a id="VWAG" data-hs-anchor="true"></a></p>
+<h4><strong>b) VWAP (Volume-Weighted Average Price) calculation</strong></h4>
+<p>The VWAP price is calculated by finding the weighted average for all the trades in the same asset in the case of the underlying strategy and the DARWIN, and for the same asset and all the investors in the case of investors.</p>
+<p>All the investors’ price is considered when calculating the investors’ VWAP, which means that the trades of investors who bought the DARWIN after the date when the strategy / DARWIN traded in an asset are also counted.</p>
+<p>E.g. the DARWIN can trade on 4 January at 16:00 buying EURUSD, at a price of 1.11401, and on 8 January at 17:00, a new investor can buy the DARWIN, thus executing trades for the EURUSD, let us say at a price of 1.11701. There is a price difference between 1.11401 and 1.11701, but this difference is not the divergence of normal order execution.</p>
+<div class="hs-callout-type-note" data-hs-callout-type="note">
+<p>Thus, the difference between investors’ and strategy VWAP value should never be understood as a divergence.</p>
+</div>
+<p>Here are two examples of how the VWAP is calculated.</p>
+<table style="width: 100%; margin-left: auto; margin-right: auto; border-color: #99acc2; border-style: solid; border-collapse: collapse; table-layout: fixed; height: 160px;" border="1" cellpadding="4" class="hs-table-align-center"><caption>
+<p><strong>Example 1</strong></p>
+</caption>
+<tbody>
+<tr style="height: 32px;">
+<td style="width: 16.6667%; height: 32px;"><strong>Sequence</strong></td>
+<td style="width: 16.6667%; height: 32px;"><strong>Side</strong></td>
+<td style="width: 16.6667%; height: 32px;"><strong>Volume</strong></td>
+<td style="width: 16.6667%; height: 32px;"><strong>Price</strong></td>
+<td style="width: 16.6667%; height: 32px;"><strong>Net volume</strong></td>
+<td style="width: 16.6667%; height: 32px;"><strong>VWAP</strong></td>
+</tr>
+<tr style="height: 32px;">
+<td style="width: 16.6667%; height: 32px;">1</td>
+<td style="width: 16.6667%; height: 32px;">BUY</td>
+<td style="width: 16.6667%; height: 32px;">1</td>
+<td style="width: 16.6667%; height: 32px;">2</td>
+<td style="width: 16.6667%; height: 32px;">1</td>
+<td style="width: 16.6667%; height: 32px;">2</td>
+</tr>
+<tr style="height: 32px;">
+<td style="width: 16.6667%; height: 32px;">2</td>
+<td style="width: 16.6667%; height: 32px;">SELL</td>
+<td style="width: 16.6667%; height: 32px;">1.5</td>
+<td style="width: 16.6667%; height: 32px;">1</td>
+<td style="width: 16.6667%; height: 32px;">2.5</td>
+<td style="width: 16.6667%; height: 32px;">1.4</td>
+</tr>
+<tr style="height: 32px;">
+<td style="width: 16.6667%; height: 32px;">3</td>
+<td style="width: 16.6667%; height: 32px;">BUY</td>
+<td style="width: 16.6667%; height: 32px;">1.5</td>
+<td style="width: 16.6667%; height: 32px;">1.35</td>
+<td style="width: 16.6667%; height: 32px;">1</td>
+<td style="width: 16.6667%; height: 32px;">1.4</td>
+</tr>
+<tr style="height: 32px;">
+<td style="width: 16.6667%; height: 32px;">4</td>
+<td style="width: 16.6667%; height: 32px;">BUY</td>
+<td style="width: 16.6667%; height: 32px;">1</td>
+<td style="width: 16.6667%; height: 32px;">2</td>
+<td style="width: 16.6667%; height: 32px;">2</td>
+<td style="width: 16.6667%; height: 32px;">1.7</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table style="width: 100%; margin-left: auto; margin-right: auto; border-color: #99acc2; border-style: solid; border-collapse: collapse; table-layout: fixed;" border="1" cellpadding="4" class="hs-table-align-center"><caption>
+<p><strong>Example 2</strong></p>
+</caption>
+<tbody>
+<tr>
+<td style="width: 16.5698%;"><strong>Sequence</strong></td>
+<td style="width: 16.5698%;"><strong>Side</strong></td>
+<td style="width: 16.5698%;"><strong>Volume</strong></td>
+<td style="width: 16.5698%;"><strong>Price</strong></td>
+<td style="width: 16.5698%;"><strong>Net volume</strong></td>
+<td style="width: 16.7151%;"><strong>VWAP</strong></td>
+</tr>
+<tr>
+<td style="width: 16.5698%;">1</td>
+<td style="width: 16.5698%;">BUY</td>
+<td style="width: 16.5698%;">1</td>
+<td style="width: 16.5698%;">2</td>
+<td style="width: 16.5698%;">1</td>
+<td style="width: 16.7151%;">2</td>
+</tr>
+<tr>
+<td style="width: 16.5698%;">2</td>
+<td style="width: 16.5698%;">SELL</td>
+<td style="width: 16.5698%;">1.5</td>
+<td style="width: 16.5698%;">1</td>
+<td style="width: 16.5698%;">2.5</td>
+<td style="width: 16.7151%;">1.4</td>
+</tr>
+<tr>
+<td style="width: 16.5698%;">3</td>
+<td style="width: 16.5698%;">BUY</td>
+<td style="width: 16.5698%;">1.5</td>
+<td style="width: 16.5698%;">1.35</td>
+<td style="width: 16.5698%;">1</td>
+<td style="width: 16.7151%;">1.4</td>
+</tr>
+<tr>
+<td style="width: 16.5698%;">4</td>
+<td style="width: 16.5698%;">BUY</td>
+<td style="width: 16.5698%;">1</td>
+<td style="width: 16.5698%;">2</td>
+<td style="width: 16.5698%;">2</td>
+<td style="width: 16.7151%;">1.7</td>
+</tr>
+<tr>
+<td style="width: 16.5698%;">5</td>
+<td style="width: 16.5698%;">SELL</td>
+<td style="width: 16.5698%;">3</td>
+<td style="width: 16.5698%;">1.45</td>
+<td style="width: 16.5698%;">-1</td>
+<td style="width: 16.7151%;">1.45</td>
+</tr>
+<tr>
+<td style="width: 16.5698%;">6</td>
+<td style="width: 16.5698%;">BUY</td>
+<td style="width: 16.5698%;">0.5</td>
+<td style="width: 16.5698%;">1.33</td>
+<td style="width: 16.5698%;">-0.5</td>
+<td style="width: 16.7151%;">1.45</td>
+</tr>
+<tr>
+<td style="width: 16.5698%;">7</td>
+<td style="width: 16.5698%;">SELL</td>
+<td style="width: 16.5698%;">1.3</td>
+<td style="width: 16.5698%;">1.63</td>
+<td style="width: 16.5698%;">-1.8</td>
+<td style="width: 16.7151%;">-1.58</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</div>
+
+<script>
+  kbDom.whenReady(function() {
+    var smoothScroll = new smoothAnchorsScrolling();
+
+    var articleSmoothScrolling = function() {
+      function scrollToAnchor(state) {
+        const anchorId = (state && state.anchorId) || null;
+        if (!anchorId) {
+          return;
+        }
+        var anchor = document.querySelector(
+          '[id="' + anchorId.substring(1) + '"][data-hs-anchor="true"]'
+        );
+        smoothScroll.scrollTo(anchor);
+      }
+
+      document
+        .querySelectorAll('a[href^="#"][rel*="noopener"]')
+        .forEach(function(link) {
+          // Adding the handler to the click event on each anchor link
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var node = e.currentTarget;
+            var targetAnchorId = decodeURI(node.hash);
+            var state = { anchorId: targetAnchorId };
+
+            scrollToAnchor(state);
+            history.pushState(state, null, node.href);
+          });
+        });
+
+      window.addEventListener('popstate', function(e) {
+        if (e.state !== undefined) {
+          scrollToAnchor(e.state);
+        }
+      });
+
+      (function() {
+        var targetAnchorId = decodeURI(window.location.hash);
+        var initialState = {
+          anchorId: targetAnchorId,
+        };
+        if (targetAnchorId) {
+          setTimeout(function() {
+            scrollToAnchor(initialState);
+          }, 1);
+        }
+        history.pushState(initialState, null, '');
+      })();
+    };
+
+    window.addEventListener('load', function(e) {
+      articleSmoothScrolling();
+    });
+  });
+</script>
+        <div id="ka-feedback-form-container" portal-id="4288148" article-id="24312138124" article-language-tag="en" ungated-for-multi-language="true" enviro="prod" feedback-hubapi-domain="feedback.hubapi.com" js-feedback-domain="js.hubspotfeedback.com">
+  <div id="ka-feedback-form"></div>
+  <link rel="stylesheet" href="https://js.hubspotfeedback.com/feedbackknowledge.css">
+  <script type="text/javascript" src="https://js.hubspotfeedback.com/feedbackknowledge.js"></script>
+</div>
+        
+
+<div id="kb-related-articles-container" portal-id="4288148" knowledge-base-id="5692971171" article-id="24312138124" article-language="en" contact-vid="" heading="Related articles" enviro="prod" sso-login="false" public-hubapi-domain="public.hubapi.com">
+  
+    <div id="kb-related-articles"></div>
+    <link rel="stylesheet" href="https://js.hubspotfeedback.com/relatedarticles.css">
+    <script type="text/javascript" src="https://js.hubspotfeedback.com/relatedarticles.js"></script>
+  
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </main>
+    <footer>
+      
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+  
+
+
+<div class="kb-sticky-footer" data-preview-id="kb-footer">
+  <div class="kb-footer">
+    
+      <div class="kb-footer__center-aligned-content">
+        
+          <div class="kb-footer__logo">
+            
+              <a href="https://help.darwinex.com">
+                <img src="https://help.darwinex.com/hubfs/scouting-program-landing/images/logos/logo-darwinex-vertical-inverse.svg" alt="company logo">
+              </a>
+            
+          </div>
+        
+        
+          <div class="kb-footer__title">CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. 67% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.</div>
+        
+        
+          <div class="kb-footer__social">
+            <ul>
+              
+              <li><a href="https://www.youtube.com/channel/UC6aYa9XjWy-HmHhyp5uN_9g" class="youtube" target="_blank" rel="noopener">
+  
+  <img src="https://static.hsstatic.net/TemplateAssets/static-1.17/img/hs_default_template_images/modules/Follow+Me+-+Email/youtube_circle_black.png" alt="youtube_social_link_icon_alt_text">
+</a></li>
+              
+              <li><a href="https://twitter.com/darwinexchange" class="twitter" target="_blank" rel="noopener">
+  
+  <img src="https://static.hsstatic.net/TemplateAssets/static-1.17/img/hs_default_template_images/modules/Follow+Me+-+Email/twitter_circle_black.png" alt="twitter_social_link_icon_alt_text">
+</a></li>
+              
+              <li><a href="https://www.linkedin.com/company/tradeslide-ventures/?viewAsMember=true" class="linkedin" target="_blank" rel="noopener">
+  
+  <img src="https://static.hsstatic.net/TemplateAssets/static-1.17/img/hs_default_template_images/modules/Follow+Me+-+Email/linkedin_circle_black.png" alt="linkedin_social_link_icon_alt_text">
+</a></li>
+              
+            </ul>
+          </div>
+        
+      </div>
+    
+    
+      <div class="kb-footer__links-container">
+        <ul class="kb-footer__links columns__one">
+          
+            
+<li class="kb-footer__company-website-link">
+  <a href="https://www.darwinex.com/contact" target="_blank" rel="noopener">
+    Contact us
+    <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.11 10.223V7.0472l1.308-1.3077v4.4835c0 .9323-.7628 1.6952-1.6953 1.6952H1.6952C.7628 11.9182 0 11.1553 0 10.223V4.1955C0 3.2628.7628 2.5 1.6952 2.5h4.4833L4.8707 3.8082H1.6952c-.2099 0-.3872.1771-.3872.3873v6.0275c0 .2098.1773.387.3872.387h6.0275c.21 0 .3873-.1772.3873-.387zM5.9428.4417L12.0137 0l-.442 6.0708L9.6368 4.136 6.0925 7.68 4.3333 5.9207l3.544-3.5442L5.9428.4417z" fill="#007bba" />
+    </svg>
+  </a>
+</li>
+
+          
+        </ul>
+      </div>
+    
+  </div>
+</div>
+    </footer>
+    
+<script>
+(function () {
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/_hcms/perf', true /*async*/);
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.onreadystatechange = function () {
+                // do nothing.
+            };
+            var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            function populateNetworkInfo(name, connection, info) {
+                if (name in connection) {
+                    info[name] = connection[name];
+                }
+            }
+            var networkInfo = {};
+            if (connection) {
+                ['type', 'effectiveType', 'downlink', 'rtt'].forEach(function(name) {
+                    populateNetworkInfo(name, connection, networkInfo);
+                });
+            }
+            var perfData = {
+                url: location.href,
+                portal: 4288148,
+                content: 24312138124,
+                group: -1,
+                connection: networkInfo,
+                timing: performance.timing
+            };
+            xhr.send(JSON.stringify(perfData));
+        }, 3000);  // Execute this 3 seconds after onload.
+    });
+})();
+</script>
+
+
+
+<!-- Start of HubSpot Analytics Code -->
+<script type="text/javascript">
+var _hsq = _hsq || [];
+_hsq.push(["setContentType", "knowledge-article"]);
+_hsq.push(["setCanonicalUrl", "https:\/\/help.darwinex.com\/asset-manager-divergence"]);
+_hsq.push(["setPageId", "24312138124"]);
+_hsq.push(["setContentMetadata", {
+    "contentPageId": 24312138124,
+    "legacyPageId": "24312138124",
+    "contentFolderId": null,
+    "contentGroupId": 5692971171,
+    "abTestId": null,
+    "languageVariantId": 24312138124,
+    "languageCode": "en",
+    
+}]);
+</script>
+
+<script type="text/javascript" id="hs-script-loader" async defer src="/hs/scriptloader/4288148.js"></script>
+<!-- End of HubSpot Analytics Code -->
+
+
+<script type="text/javascript">
+var hsVars = {
+    ticks: 1648924048162,
+    page_id: 24312138124,
+    
+    content_group_id: 5692971171,
+    portal_id: 4288148,
+    app_hs_base_url: "https://app.hubspot.com",
+    cp_hs_base_url: "https://cp.hubspot.com",
+    language: "en",
+    analytics_page_type: "knowledge-article",
+    analytics_page_id: "24312138124",
+    category_id: 6,
+    folder_id: 0,
+    is_hubspot_user: false
+}
+</script>
+
+
+<script defer src="/hs/hsstatic/HubspotToolsMenu/static-1.119/js/index.js"></script>
+
+
+
+
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819701058/hubspot/themes/knowledge/assets/kb-search.min.js"></script>
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819705261/hubspot/themes/knowledge/assets/sticky-header.min.js"></script>
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819703995/hubspot/themes/knowledge/assets/smooth-anchors-scrolling.min.js"></script>
+  
+</body></html>

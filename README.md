@@ -3,7 +3,8 @@
   - exchanges
     - accounts
       - subaccounts
-        - bots
+        - trading bots
+          - 
           - conservative
             - strategies)
               - parameters)

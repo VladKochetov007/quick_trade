@@ -1,0 +1,1601 @@
+<!doctype html><html lang="es"><head>
+    <meta charset="utf-8">
+    <title>
+      Darwinex Pro - Centro de Documentación
+    </title>
+    <meta name="description" content="Darwinex Pro | ">
+    
+    <script src="/hs/hsstatic/jquery-libs/static-1.1/jquery/jquery-1.7.1.js"></script>
+<script>hsjQuery = window['jQuery'];</script>
+    <meta property="og:description" content="Darwinex Pro | ">
+    <meta property="og:title" content="Darwinex Docs | Darwinex Pro">
+    <meta name="twitter:description" content="Darwinex Pro | ">
+    <meta name="twitter:title" content="Darwinex Docs | Darwinex Pro">
+
+    
+
+    
+    <link rel="stylesheet" href="/hs/hsstatic/ContentIcons/static-1.8/fontawesome/5.0.10/css/fontawesome-all.min.css">
+<style>
+a.cta_button{-moz-box-sizing:content-box !important;-webkit-box-sizing:content-box !important;box-sizing:content-box !important;vertical-align:middle}.hs-breadcrumb-menu{list-style-type:none;margin:0px 0px 0px 0px;padding:0px 0px 0px 0px}.hs-breadcrumb-menu-item{float:left;padding:10px 0px 10px 10px}.hs-breadcrumb-menu-divider:before{content:'›';padding-left:10px}.hs-featured-image-link{border:0}.hs-featured-image{float:right;margin:0 0 20px 20px;max-width:50%}@media (max-width: 568px){.hs-featured-image{float:none;margin:0;width:100%;max-width:100%}}.hs-screen-reader-text{clip:rect(1px, 1px, 1px, 1px);height:1px;overflow:hidden;position:absolute !important;width:1px}
+</style>
+
+    
+
+    
+<!--  Added by GoogleAnalytics integration -->
+<script>
+var _hsp = window._hsp = window._hsp || [];
+_hsp.push(['addPrivacyConsentListener', function(consent) { if (consent.allowed || (consent.categories && consent.categories.analytics)) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create','UA-55287188-1','auto');
+  ga('send','pageview');
+}}]);
+</script>
+
+<!-- /Added by GoogleAnalytics integration -->
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta http-equiv="content-language" content="es">
+<meta property="og:type" content="article">
+
+
+    <link href="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1649273567880/hubspot/themes/knowledge/assets/main.min.css" rel="stylesheet">
+    <link href="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1649273568396/hubspot/themes/knowledge/assets/_support-form.min.css" rel="stylesheet">
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1649273570540/hubspot/themes/knowledge/assets/kbdom.min.js"></script>
+    <style type="text/css" data-preview-theme="true">
+      .kb-article, .kb-search__suggestions__article-content, .kb-search-results__description {
+        font-family: arial, helvetica, sans-serif;
+      }
+      h1, h2, h3, h3 a, h4, h4 a, h5, h6, .kb__text-link, .kb__text-link-small, .kb-header, .kb-sticky-footer,
+      .kb-search__suggestions__article-title, .kb-search-results__title,
+      #hs_form_target_kb_support_form input.hs-button, #hs_form_target_kb_support_form label, input, select, textarea, #hs_form_target_kb_support_form .hs-field-desc, #hs_form_target_kb_support_form .hs-richtext p {
+        font-family: arial, helvetica, sans-serif;
+      }
+      a,
+      .kb-search__suggestions__breadcrumb,
+      .kb-header__nav .kbui-dropdown__link {
+        color: #007bba;
+      }
+      .kb-header,
+      .kb-header a,
+      .kb-header button.kb-button--link {
+        color: #007bba;
+      }
+      .kb-header svg * {
+        fill: #007bba;
+      }
+      .kb-search-section {
+        background-color: #ffffff;
+      }
+      .kb-search-section__title {
+        color: #FFFFFF;
+      }
+      .kb-search-section-with-image {
+        background-image: url(https://help.darwinex.com/hubfs/Darwinex_June2018/image/bg-definicion_DarkBlue.jpg);
+        background-size: cover;
+        color: #ffffff;
+        position: relative;
+      }
+      .kb-search-section-with-gradient {
+        background-color: ;
+        background-image: linear-gradient(180deg, #ffffff 0%, transparent 97%);
+      }
+      .kb-mobile-search-section {
+        background-color: #ffffff;
+      }
+      .kb-search__suggestions a:hover,
+      .kb-search__suggestions a:focus,
+      .kb-category-menu li.active > a,
+      .kb-category-menu li > a:hover {
+        background-color: rgba(0, 123, 186, .1);
+      }
+      .kb-theme--cards .kb-category-menu li.active > a,
+      .kb-theme--cards .kb-category-menu li > a:hover {
+        background-color: transparent;
+      }
+      .kb-breadcrumbs > ol > li > span,
+      .kb-breadcrumbs > ol > li > a > span,
+      .kb-breadcrumbs > .kb-breadcrumbs__mobile-back a {
+        font-family: helvetica
+      }
+      .kb-breadcrumbs__arrow--left * {
+        fill: #007bba
+      }
+      .kb-sidebar .kb-category-menu a,
+      .kb-mobile-menu .kb-mobile-menu__current-page,
+      .kb-mobile-menu ul > li > a {
+        font-family: helvetica
+      }
+      .kb-header__logo img {
+        max-height: 40px;
+      }
+      .kb-footer__logo img {
+        max-height: 24px;
+      }
+      /* SVG SUPPORT */
+      .kb-header__logo img[src$=".svg"] {
+        height: 40px;
+      }
+      .kb-footer__logo img[src$=".svg"] {
+        height: 24px;
+      }
+      /* MOBILE STYLES */
+      .kb-mobile-menu,
+      .kb-mobile-search__bar {
+        background-color: #ffffff;
+      }
+      .kb-mobile-menu a,
+      .kb-mobile-menu__current-page,
+      .kb-mobile-search__input,
+      .kb-search--open .kb-mobile-search__input {
+        color: #111111
+      }
+      .kb-mobile-search__input::-webkit-input-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__input::-moz-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__input:-ms-input-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__input:-moz-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__mag * {
+        fill: #111111
+      }
+      .kb-mobile-menu__arrow *,
+      .kb-mobile-search__close * {
+        stroke: #111111
+      }
+      @media (max-width: 767px) {
+        .kb-header__nav {
+          background-color: #ffffff
+        }
+        .kb-header,
+        .kb-header a {
+          color: #111111;
+        }
+        .kb-header svg * {
+          fill: #111111;
+        }
+        .kb-theme--content.kb-page--index .kb-header__nav-toggle svg *,
+        .kb-theme--content.kb-page--index .kb-header__nav-close svg *,
+        .kb-theme--tiles.kb-page--index .kb-header__nav-toggle svg *,
+        .kb-theme--tiles.kb-page--index .kb-header__nav-close svg *,
+        .kb-theme--minimal .kb-header__nav-toggle svg *,
+        .kb-theme--minimal .kb-header__nav-close svg *,
+        .kb-theme--cards .kb-header__nav-toggle svg *,
+        .kb-theme--cards .kb-header__nav-close svg *,
+        .kb-theme--default .kb-header__nav-toggle svg *,
+        .kb-theme--default .kb-header__nav-close svg * {
+          fill: #007bba;
+        }
+      }
+    </style>
+  <meta name="generator" content="HubSpot"></head>
+  <body class="kb-theme--cards ">
+    <header>
+      
+      
+  
+
+  
+
+  
+
+  <div class="kb-header" data-preview-id="kb-header">
+    <div class="kb-header-inner" id="kb-header">
+      <div class="kb-header__logo">
+        
+          <a href="https://help.darwinex.com">
+            <img src="https://help.darwinex.com/hubfs/scouting-program-landing/images/logos/logo-darwinex-vertical-inverse.svg" alt="logotipo de la compañía">
+          </a>
+        
+      </div>
+      <a class="kb-header__title" href="/es">
+        Centro de Documentación
+      </a>
+      <nav id="kb-header__nav" class="kb-header__nav" role="navigation">
+        <ul>
+          
+            <div class="kb-header__lang-switcher-container">
+              <button class="kb-header__lang-switcher-toggle kb-button--link" data-kbui-dropdown-contents="lang-switcher">
+                <div class="kb-header__lang-switcher-inner">
+                  <div class="kb-header__lang-switcher-icon">
+                    
+    <svg width="23" height="23" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <g fill-rule="evenodd">
+        <path d="M18.6 17.07a3.86 3.86 0 01-.5-2.35c.07-.45.24-.89.28-1.34.04-.46-.08-.97-.46-1.23-.8-.56-2 .43-2.84-.07a1.85 1.85 0 01-.58-.67c-.23-.4-.47-.8-.52-1.25-.05-.45.15-.96.57-1.12.1-.05.22-.07.3-.14.16-.13.14-.38.2-.58.14-.51.76-.69 1.3-.78.5-.08 1-.17 1.5-.11.78.09 1.54.5 2.29.67a9.49 9.49 0 01-1.53 8.97m-5.54-2.26c-.34.46-.82.81-1.14 1.3-.2.3-.34.67-.6.94-.21.22-.5.37-.72.59-.37.37-.5.93-.45 1.46.05.52.25 1.02.45 1.5v.02a9.53 9.53 0 01-1.5-.22c-.28-1.34-.5-2.7-.64-4.07-.03-.27-.06-.55-.18-.8-.42-.75-1.71-.92-1.78-1.78-.03-.36.18-.68.3-1.01.1-.34.07-.8-.26-.93l-.3-.07c-.34-.1-.5-.47-.75-.71-.31-.3-.84-.01-1.2-.24-.36-.23-.49-.65-.84-.87-.36-.23-.67-.74-.37-1.03-.36 0-.7-.13-1-.33A9.4 9.4 0 019.5 1.87c.06.03.1.06.17.08.43.15.9 0 1.35-.08.45-.06 1 0 1.22.4.05.1.08.23.06.34-.08.39-.6.45-.97.6-.33.13-.6.4-.73.74.28.08.57.16.78.36.2.2.31.53.15.77-.16.25-.5.28-.8.33-.88.17-1.72.8-2.59.57-.2-.06-.39-.16-.6-.15-.2 0-.42.2-.36.39.47.23 1.03.71.76 1.17-.16.28-.6.36-.7.67-.1.29.03.75-.27.78-.1 0-.2-.07-.29-.13a1.4 1.4 0 00-1.55-.01c-.1.07-.2.16-.24.28-.1.3.23.59.54.66.31.08.66.06.93.23.4.25.53.86.98.96.26.06.51-.07.76-.13.74-.2 1.51.17 2.13.62.61.45 1.17 1.01 1.87 1.3.4.17.86.26 1.12.6.36.44.19 1.12-.15 1.59m1.91-8.54c.23-.34.93-.4.8-.79-.4-.05-.69-.53-.56-.91a.74.74 0 011-.4c.22.12.35.34.55.5.19.14.5.2.65.01.06-.08.08-.19.1-.3 0-.06.03-.12.04-.19l.33.3a9.5 9.5 0 011.7 2.34c-.4.14-.84.26-1.25.16-.37-.1-.7-.35-1.07-.37-.33-.03-.65.12-.95.25-.3.14-.64.25-.96.16-.32-.1-.56-.49-.38-.76m7.35 3.92l-.07-.54-.06-.4a12 12 0 00-.15-.7l-.04-.17a11.3 11.3 0 00-1.53-3.43l-.07-.1a11.33 11.33 0 00-1.31-1.57A11.11 11.11 0 009.53.14L9.19.2a11.7 11.7 0 00-2.84.91l-.22.1a9.2 9.2 0 00-1.31.8c-.17.1-.33.23-.49.35l-.3.24A10.77 10.77 0 002 4.83l-.1.12c-.39.59-.72 1.21-1 1.86v.02a11.11 11.11 0 008.62 15.4 13.47 13.47 0 001.7.13 11.1 11.1 0 007.89-3.26 11.74 11.74 0 001.11-1.32l.05-.06.5-.74.08-.14.38-.72.1-.22a13.39 13.39 0 00.62-1.63l.11-.44c.05-.19.1-.37.13-.55l.09-.6.05-.43a10.92 10.92 0 000-2.06" id="a" />
+      </g>
+    </svg>
+  
+                  </div>
+                  <div class="kb-header__lang-switcher__selected-lang">
+                    
+    Español
+  
+                  </div>
+                  <div class="kb-header__lang-switcher__caret"></div>
+                </div>
+              </button>
+              <div class="kbui-dropdown-contents" data-kbui-dropdown-name="lang-switcher">
+                <div class="kb-header__langs-dropdown">
+                  <ul>
+                    
+                      
+                        <li>
+                          <a href="https://help.darwinex.com/" class="kbui-dropdown__link">
+                            <div class="kb-header__langs-dropdown__link-content">
+                              
+    English
+  
+                            </div>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                    
+                  </ul>
+                </div>
+              </div>
+            </div>
+          
+          
+            
+<li class="kb-header__company-website-link">
+  <a href="https://www.darwinex.com/es/contact" target="_blank" rel="noopener">
+    Contáctanos
+    <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.11 10.223V7.0472l1.308-1.3077v4.4835c0 .9323-.7628 1.6952-1.6953 1.6952H1.6952C.7628 11.9182 0 11.1553 0 10.223V4.1955C0 3.2628.7628 2.5 1.6952 2.5h4.4833L4.8707 3.8082H1.6952c-.2099 0-.3872.1771-.3872.3873v6.0275c0 .2098.1773.387.3872.387h6.0275c.21 0 .3873-.1772.3873-.387zM5.9428.4417L12.0137 0l-.442 6.0708L9.6368 4.136 6.0925 7.68 4.3333 5.9207l3.544-3.5442L5.9428.4417z" fill="#007bba" />
+    </svg>
+  </a>
+</li>
+
+          
+          
+          
+          
+        </ul>
+      </nav>
+      
+        <nav id="kb-header__langs-nav" class="kb-header__nav kb-header__langs-nav" role="navigation">
+          <ul>
+            
+              
+                <li>
+                  <a href="https://help.darwinex.com/">
+    English
+  </a>
+                </li>
+              
+            
+              
+            
+          </ul>
+        </nav>
+      
+      <div class="kb-header__nav-controls-container">
+        <button id="kb-header__close-target" class="kb-header__nav-close" role="button" aria-label="Close main navigation menu" aria-controls="kb-header__nav kb-header__langs-nav">
+          <span class="kb-icon close" aria-hidden="true">
+            <svg width="16" height="17" xmlns="http://www.w3.org/2000/svg">
+              <g fill="#2D3E50" fill-rule="nonzero">
+                <path d="M15.07107 1.42893c.59587.59588.88893 1.23239.0505 2.07081L2.99975 15.62158c-.83842.83842-1.48089.5394-2.0708-.05051C.33305 14.97519.04 14.33868.87841 13.50026L13.00026 1.37842c.83842-.83842 1.48089-.5394 2.0708.05051z" />
+                <path d="M15.07107 15.57107c-.59588.59587-1.23239.88893-2.07081.0505L.87842 3.49975C.04 2.66132.33902 2.01885.92893 1.42894 1.52481.83305 2.16132.54 2.99974 1.37841l12.12184 12.12184c.83842.83842.5394 1.48089-.05051 2.0708z" />
+              </g>
+            </svg>
+          </span>
+        </button>
+        
+          <button id="kb-header__langs-nav-target" class="kb-header__nav-toggle" role="button" aria-controls="kb-header__langs-nav">
+            <span class="kb-icon langs">
+              
+    <svg width="23" height="23" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <g fill-rule="evenodd">
+        <path d="M18.6 17.07a3.86 3.86 0 01-.5-2.35c.07-.45.24-.89.28-1.34.04-.46-.08-.97-.46-1.23-.8-.56-2 .43-2.84-.07a1.85 1.85 0 01-.58-.67c-.23-.4-.47-.8-.52-1.25-.05-.45.15-.96.57-1.12.1-.05.22-.07.3-.14.16-.13.14-.38.2-.58.14-.51.76-.69 1.3-.78.5-.08 1-.17 1.5-.11.78.09 1.54.5 2.29.67a9.49 9.49 0 01-1.53 8.97m-5.54-2.26c-.34.46-.82.81-1.14 1.3-.2.3-.34.67-.6.94-.21.22-.5.37-.72.59-.37.37-.5.93-.45 1.46.05.52.25 1.02.45 1.5v.02a9.53 9.53 0 01-1.5-.22c-.28-1.34-.5-2.7-.64-4.07-.03-.27-.06-.55-.18-.8-.42-.75-1.71-.92-1.78-1.78-.03-.36.18-.68.3-1.01.1-.34.07-.8-.26-.93l-.3-.07c-.34-.1-.5-.47-.75-.71-.31-.3-.84-.01-1.2-.24-.36-.23-.49-.65-.84-.87-.36-.23-.67-.74-.37-1.03-.36 0-.7-.13-1-.33A9.4 9.4 0 019.5 1.87c.06.03.1.06.17.08.43.15.9 0 1.35-.08.45-.06 1 0 1.22.4.05.1.08.23.06.34-.08.39-.6.45-.97.6-.33.13-.6.4-.73.74.28.08.57.16.78.36.2.2.31.53.15.77-.16.25-.5.28-.8.33-.88.17-1.72.8-2.59.57-.2-.06-.39-.16-.6-.15-.2 0-.42.2-.36.39.47.23 1.03.71.76 1.17-.16.28-.6.36-.7.67-.1.29.03.75-.27.78-.1 0-.2-.07-.29-.13a1.4 1.4 0 00-1.55-.01c-.1.07-.2.16-.24.28-.1.3.23.59.54.66.31.08.66.06.93.23.4.25.53.86.98.96.26.06.51-.07.76-.13.74-.2 1.51.17 2.13.62.61.45 1.17 1.01 1.87 1.3.4.17.86.26 1.12.6.36.44.19 1.12-.15 1.59m1.91-8.54c.23-.34.93-.4.8-.79-.4-.05-.69-.53-.56-.91a.74.74 0 011-.4c.22.12.35.34.55.5.19.14.5.2.65.01.06-.08.08-.19.1-.3 0-.06.03-.12.04-.19l.33.3a9.5 9.5 0 011.7 2.34c-.4.14-.84.26-1.25.16-.37-.1-.7-.35-1.07-.37-.33-.03-.65.12-.95.25-.3.14-.64.25-.96.16-.32-.1-.56-.49-.38-.76m7.35 3.92l-.07-.54-.06-.4a12 12 0 00-.15-.7l-.04-.17a11.3 11.3 0 00-1.53-3.43l-.07-.1a11.33 11.33 0 00-1.31-1.57A11.11 11.11 0 009.53.14L9.19.2a11.7 11.7 0 00-2.84.91l-.22.1a9.2 9.2 0 00-1.31.8c-.17.1-.33.23-.49.35l-.3.24A10.77 10.77 0 002 4.83l-.1.12c-.39.59-.72 1.21-1 1.86v.02a11.11 11.11 0 008.62 15.4 13.47 13.47 0 001.7.13 11.1 11.1 0 007.89-3.26 11.74 11.74 0 001.11-1.32l.05-.06.5-.74.08-.14.38-.72.1-.22a13.39 13.39 0 00.62-1.63l.11-.44c.05-.19.1-.37.13-.55l.09-.6.05-.43a10.92 10.92 0 000-2.06" id="a" />
+      </g>
+    </svg>
+  
+            </span>
+          </button>
+        
+        <button id="kb-header__main-nav-target" class="kb-header__nav-toggle" role="button" aria-label="Open main navigation menu" aria-controls="kb-header__nav">
+          <span class="kb-icon menu">
+            <svg width="25" height="17" xmlns="http://www.w3.org/2000/svg">
+              <g fill="#2D3E50" fill-rule="nonzero">
+                <path d="M24.56897 2.295c0 .85-.2931 1.513-1.72414 1.513H2.15517C.72414 3.808.43103 3.1365.43103 2.295c0-.85.2931-1.513 1.72414-1.513h20.68966c1.43103 0 1.72414.6715 1.72414 1.513zM24.56897 8.8315c0 .85-.2931 1.513-1.72414 1.513H2.15517c-1.43103 0-1.72414-.6715-1.72414-1.513 0-.85.2931-1.513 1.72414-1.513h20.68966c1.43103 0 1.72414.6715 1.72414 1.513zM24.56897 15.3595c0 .85-.2931 1.513-1.72414 1.513H2.15517c-1.43103 0-1.72414-.6715-1.72414-1.513 0-.85.2931-1.513 1.72414-1.513h20.68966c1.43103 0 1.72414.6715 1.72414 1.513z" />
+              </g>
+            </svg>
+          </span>
+        </button>
+    </div>
+    </div>
+  </div>
+  <!-- Mobile Menu -->
+  <div class="kb-mobile-search-section">
+    <div class="kb-mobile-header">
+      <div class="kb-mobile-menu">
+        <div class="kb-mobile-menu__current-page">
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+              Darwinex Pro
+              
+            
+          
+          <svg class="kb-mobile-menu__arrow" width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#00A38D" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <ul>
+          
+          <li>
+            
+            
+            <a href="/es/tu-cuenta-darwinex">
+              Tu cuenta Darwinex
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/es/tu-cuenta-darwinex#regulación-y-seguridad-de-fondos">
+                  Regulación y seguridad de fondos
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/tu-cuenta-darwinex#apertura-de-cuenta">
+                  Apertura de cuenta
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/tu-cuenta-darwinex#depósitos-y-retiradas">
+                  Depósitos y retiradas
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/tu-cuenta-darwinex#seguridad-de-tu-cuenta">
+                  Seguridad de tu cuenta
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/operar-fx-cfd">
+              Operar FX / CFD
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/es/operar-fx-cfd#primeros-pasos-como-trader">
+                  Primeros pasos como trader
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/operar-fx-cfd#condiciones-de-brokeraje">
+                  Condiciones de brokeraje
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/operar-fx-cfd#básicos-de-trading">
+                  Básicos de trading
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/operar-fx-cfd#guía-metatrader">
+                  Guía MetaTrader
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/proveer-un-darwin">
+              Proveer un DARWIN
+            </a>
+            <ul>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/invertir-en-darwins">
+              Invertir en DARWINs
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/es/invertir-en-darwins#primeros-pasos-como-inversor">
+                  Primeros pasos como inversor
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/invertir-en-darwins#el-activo-darwin">
+                  El activo DARWIN
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/invertir-en-darwins#crear-un-portfolio-de-darwins">
+                  Crear un portfolio de DARWINs
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/mundo-darwinex">
+              Mundo Darwinex
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/es/mundo-darwinex#métricas-y-gráficos">
+                  Métricas y gráficos
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/mundo-darwinex#atributos">
+                  Atributos
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/asignación-de-capital-darwinia">
+              Asignación de capital DarwinIA
+            </a>
+            <ul>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/darwinex-ibkr">
+              Darwinex &amp; IBKR
+            </a>
+            <ul>
+              
+            </ul>
+          </li>
+          
+          <li class="active open">
+            
+            
+            <a href="/es/darwinex-pro">
+              Darwinex Pro
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#sobre-darwinex-pro">
+                  Sobre Darwinex Pro
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#modelo-económico-pro">
+                  Modelo Económico Pro
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#regulación">
+                  Regulación
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#captando-capital">
+                  Captando Capital
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#cómo-solicito-activar-pro">
+                  ¿Cómo solicito activar Pro?
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#la-experiencia-del-inversor-en-pro">
+                  La experiencia del inversor en Pro
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+      <div class="kb-mobile-search kb-search" kb-language-tag="es">
+        <div class="kb-mobile-search__placeholder"></div>
+        <div class="kb-mobile-search__box">
+          <div class="kb-mobile-search__bar">
+            <svg class="kb-mobile-search__mag" width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.02 12.672l-3.64-3.64a5.687 5.687 0 0 0 1.06-3.312A5.726 5.726 0 0 0 5.72 0 5.726 5.726 0 0 0 0 5.72a5.726 5.726 0 0 0 5.72 5.72 5.687 5.687 0 0 0 3.311-1.06l3.641 3.64a.95.95 0 0 0 1.348 0 .953.953 0 0 0 0-1.348zm-8.3-3.139a3.813 3.813 0 1 1 0-7.626 3.813 3.813 0 0 1 0 7.626z" fill="#4A4A4A" fill-rule="evenodd" />
+            </svg>
+            <form action="/es/kb-search-results">
+              <input type="text" class="kb-mobile-search__input kb-search__input" name="term" autocomplete="off" placeholder="Buscar respuestas">
+              <input type="hidden" name="ref" value="">
+            </form>
+            <svg class="kb-mobile-search__close" width="14" height="14" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#4A4A4A" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12.314L12.314 1M12.314 12.314L1 1" />
+              </g>
+            </svg>
+          </div>
+          <ul class="kb-search__suggestions" data-lang="Resultados para "></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    kbDom.whenReady(function() {
+          // Mobile Nav Menu
+          var mobileToggle = function() {
+            var navMenuOpen = document.getElementById('kb-header__main-nav-target');
+            var langNavOpen = document.getElementById('kb-header__langs-nav-target');
+            var navClose = document.getElementById('kb-header__close-target');
+
+            navMenuOpen.addEventListener('click',function() {
+              document.body.classList.toggle('kb-header__main-nav-open');
+            });
+
+            if (langNavOpen) {
+            langNavOpen.addEventListener('click',function() {
+              document.body.classList.toggle('kb-header__lang-nav-open');
+            });
+            }
+
+            navClose.addEventListener('click',function() {
+              document.body.classList.remove('kb-header__main-nav-open');
+              document.body.classList.remove('kb-header__lang-nav-open');
+            });
+
+          };
+          window.addEventListener('click', mobileToggle);
+          mobileToggle();
+
+      kbDom.initDropdown(document.querySelector('[data-kbui-dropdown-contents="lang-switcher"]'))
+
+      // Mobile Cat Menu
+      document.querySelector('.kb-mobile-menu__current-page').addEventListener('click',function() {
+        document.querySelector('.kb-mobile-header').classList.toggle('menu-open');
+      });
+      document.querySelector('.kb-mobile-search__mag').addEventListener('click',function() {
+        document.querySelector('.kb-mobile-header').classList.toggle('search-open');
+        if (document.querySelector('.kb-mobile-header').classList.contains('search-open')) {
+          document.querySelector('.kb-mobile-search__input').focus();
+        }
+      });
+      document.querySelector('.kb-mobile-search__close').addEventListener('click',function() {
+        document.querySelector('.kb-mobile-header').classList.remove('search-open');
+      });
+    });
+  </script>
+      
+<div class="kb-search-section kb-search-section--narrow kb-search-section-with-image  ">
+  <div class="kb-search-section__content content-container">
+    <div class="kb-search" kb-language-tag="es">
+      <div class="kb-search__placeholder"></div>
+      <div class="kb-search__box">
+        <div class="kb-search__bar">
+          <svg class="kb-search__mag" width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.02 12.672l-3.64-3.64a5.687 5.687 0 0 0 1.06-3.312A5.726 5.726 0 0 0 5.72 0 5.726 5.726 0 0 0 0 5.72a5.726 5.726 0 0 0 5.72 5.72 5.687 5.687 0 0 0 3.311-1.06l3.641 3.64a.95.95 0 0 0 1.348 0 .953.953 0 0 0 0-1.348zm-8.3-3.139a3.813 3.813 0 1 1 0-7.626 3.813 3.813 0 0 1 0 7.626z" fill="#4A4A4A" fill-rule="evenodd" />
+          </svg>
+          <form action="/es/kb-search-results">
+            <input type="text" class="kb-search__input" name="term" autocomplete="off" placeholder="Buscar respuestas" required>
+          </form>
+          <svg class="kb-search__close" width="14" height="14" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#4A4A4A" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12.314L12.314 1M12.314 12.314L1 1" />
+            </g>
+          </svg>
+        </div>
+        <ul class="kb-search__suggestions" data-lang="Resultados para "></ul>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    </header>
+    <main data-preview-id="kb-category-main">
+      
+<div class="content-container-outer">
+  <div class="content-container">
+    
+<div class="kb-breadcrumbs">
+  <div class="kb-breadcrumbs__mobile-back">
+    <svg class="kb-breadcrumbs__arrow kb-breadcrumbs__arrow--left" width="7" height="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M.055 5.7194c.018-.045.0518-.0835.0795-.125.0166-.0255.0322-.052.0489-.0775.007-.011.0116-.024.0216-.034L5.2426.2328c.2877-.3.7662-.3115 1.0685-.026a.7468.7468 0 0 1 .0262 1.0605L1.7954 6l4.5419 4.733a.7462.7462 0 0 1-.0262 1.0601.7563.7563 0 0 1-.5214.207.7568.7568 0 0 1-.547-.2325L.205 6.5174c-.01-.0105-.0146-.023-.0216-.0345-.0167-.025-.0323-.0515-.0489-.077-.0277-.0415-.0615-.08-.0796-.125-.0186-.0455-.0222-.0935-.0312-.141C.0147 6.0934 0 6.0474 0 5.9999c0-.047.0146-.093.0237-.1395.009-.0475.0126-.096.0312-.141" fill="#7C98B6" fill-rule="evenodd" />
+    </svg>
+    <a href="/es">Volver al inicio</a>
+  </div>
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/es">
+        <span itemprop="name">Centro de Documentación</span>
+      </a>
+      <meta itemprop="position" content="1">
+    </li>
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <svg class="kb-breadcrumbs__arrow kb-breadcrumbs__arrow--right" width="7" height="12" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.4905 5.7194c-.018-.045-.0518-.0835-.0795-.125-.0167-.0255-.0323-.052-.049-.0775-.007-.011-.0115-.024-.0216-.034L1.3028.2328c-.2876-.3-.7662-.3115-1.0684-.026a.7468.7468 0 0 0-.0262 1.0605L4.75 6l-4.542 4.733a.7462.7462 0 0 0 .0263 1.0601.7563.7563 0 0 0 .5213.207.7568.7568 0 0 0 .5471-.2325l5.0376-5.2501c.0101-.0105.0146-.023.0217-.0345.0166-.025.0322-.0515.0489-.077.0277-.0415.0614-.08.0795-.125.0187-.0455.0222-.0935.0313-.141.009-.0465.0237-.0925.0237-.14 0-.047-.0147-.093-.0237-.1395-.009-.0475-.0126-.096-.0313-.141" fill="#7C98B6" fill-rule="evenodd" />
+          </svg>
+          <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            
+              <span itemprop="name">Darwinex Pro</span>
+            
+            <meta itemprop="position" content="2">
+          </li>
+          
+        
+      
+    
+  </ol>
+</div>
+    <div class="main-body">
+      <div class="kb-sidebar">
+        
+<div class="kb-category-menu">
+  <ul>
+    
+    <li>
+        
+        
+      <a href="/es/tu-cuenta-darwinex">
+        <div class="kb-category-menu-option" data-id="14312900806">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Tu cuenta Darwinex
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="14312900807">
+          
+          
+          <a href="/es/tu-cuenta-darwinex#regulación-y-seguridad-de-fondos">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Regulación y seguridad de fondos
+          </a>
+        </li>
+        
+        <li data-id="14312900808">
+          
+          
+          <a href="/es/tu-cuenta-darwinex#apertura-de-cuenta">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Apertura de cuenta
+          </a>
+        </li>
+        
+        <li data-id="14312900809">
+          
+          
+          <a href="/es/tu-cuenta-darwinex#depósitos-y-retiradas">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Depósitos y retiradas
+          </a>
+        </li>
+        
+        <li data-id="14312900811">
+          
+          
+          <a href="/es/tu-cuenta-darwinex#seguridad-de-tu-cuenta">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Seguridad de tu cuenta
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/operar-fx-cfd">
+        <div class="kb-category-menu-option" data-id="12626433441">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Operar FX / CFD
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="14312900812">
+          
+          
+          <a href="/es/operar-fx-cfd#primeros-pasos-como-trader">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Primeros pasos como trader
+          </a>
+        </li>
+        
+        <li data-id="14312900813">
+          
+          
+          <a href="/es/operar-fx-cfd#condiciones-de-brokeraje">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Condiciones de brokeraje
+          </a>
+        </li>
+        
+        <li data-id="14312900814">
+          
+          
+          <a href="/es/operar-fx-cfd#básicos-de-trading">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Básicos de trading
+          </a>
+        </li>
+        
+        <li data-id="14312900815">
+          
+          
+          <a href="/es/operar-fx-cfd#guía-metatrader">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Guía MetaTrader
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/proveer-un-darwin">
+        <div class="kb-category-menu-option" data-id="24313327274">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Proveer un DARWIN
+        </div>
+        
+      </a>
+      <ul>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/invertir-en-darwins">
+        <div class="kb-category-menu-option" data-id="14312900817">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Invertir en DARWINs
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="14440465485">
+          
+          
+          <a href="/es/invertir-en-darwins#primeros-pasos-como-inversor">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Primeros pasos como inversor
+          </a>
+        </li>
+        
+        <li data-id="14312900818">
+          
+          
+          <a href="/es/invertir-en-darwins#el-activo-darwin">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            El activo DARWIN
+          </a>
+        </li>
+        
+        <li data-id="14312900819">
+          
+          
+          <a href="/es/invertir-en-darwins#crear-un-portfolio-de-darwins">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Crear un portfolio de DARWINs
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/mundo-darwinex">
+        <div class="kb-category-menu-option" data-id="13439571282">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Mundo Darwinex
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="13439571283">
+          
+          
+          <a href="/es/mundo-darwinex#métricas-y-gráficos">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Métricas y gráficos
+          </a>
+        </li>
+        
+        <li data-id="14312900822">
+          
+          
+          <a href="/es/mundo-darwinex#atributos">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Atributos
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/asignación-de-capital-darwinia">
+        <div class="kb-category-menu-option" data-id="14312900823">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Asignación de capital DarwinIA
+        </div>
+        
+      </a>
+      <ul>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/darwinex-ibkr">
+        <div class="kb-category-menu-option" data-id="33234814406">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Darwinex &amp; IBKR
+        </div>
+        
+      </a>
+      <ul>
+        
+      </ul>
+    </li>
+    
+    <li class="open">
+        
+        
+      <a href="/es/darwinex-pro">
+        <div class="kb-category-menu-option" data-id="59513183410">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Darwinex Pro
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="65736201080">
+          
+          
+          <a href="/es/darwinex-pro#sobre-darwinex-pro">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Sobre Darwinex Pro
+          </a>
+        </li>
+        
+        <li data-id="65736033143">
+          
+          
+          <a href="/es/darwinex-pro#modelo-económico-pro">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Modelo Económico Pro
+          </a>
+        </li>
+        
+        <li data-id="65736201047">
+          
+          
+          <a href="/es/darwinex-pro#regulación">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Regulación
+          </a>
+        </li>
+        
+        <li data-id="66312277856">
+          
+          
+          <a href="/es/darwinex-pro#captando-capital">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Captando Capital
+          </a>
+        </li>
+        
+        <li data-id="65736201089">
+          
+          
+          <a href="/es/darwinex-pro#cómo-solicito-activar-pro">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            ¿Cómo solicito activar Pro?
+          </a>
+        </li>
+        
+        <li data-id="65737317775">
+          
+          
+          <a href="/es/darwinex-pro#la-experiencia-del-inversor-en-pro">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            La experiencia del inversor en Pro
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+  </ul>
+</div>
+
+<script>
+  kbDom.whenReady(function() {
+    document.querySelectorAll('.kb-category-menu svg').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        var li = kbDom.closest('li', this);
+        if (li) {
+          li.classList.toggle('open');
+        }
+      });
+    })
+  })
+</script>
+      </div>
+      <div class="kb-content">
+      
+<div class="kb-categories">
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <h1 id="darwinex-pro">Darwinex Pro</h1>
+      <h6 class="kb-categories__category-description">Todo lo que necesitas saber sobre Darwinex Pro</h6>
+      
+      
+      
+        <div class="kb-categories__item" id="sobre-darwinex-pro">
+          <h4>Sobre Darwinex Pro</h4>
+          <h6>
+            <ul class="kb-subcategory__articles">
+              
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/qué-es-darwinex-pro">¿Qué es Darwinex Pro?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/qué-diferencia-hay-entre-darwinex-y-darwinex-pro">¿Qué diferencia hay entre Darwinex y Darwinex Pro?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/qué-cobro-por-los-inversores-que-traigo">¿Qué cobro por los inversores que traigo?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/al-contratar-pro-renuncio-a-darwinex">¿Al contratar Pro, renuncio a Darwinex?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/con-qué-broker-operan-mis-inversores-y-cuánto-pagan">¿Con qué broker operan mis inversores? ¿Y cuánto pagan?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/qué-relación-hay-entre-mis-darwins-y-las-estrategias-que-vendo-en-pro">¿Qué relación hay entre mis DARWINs y las estrategias que vendo en Pro?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/asociarán-mis-inversores-mis-estrategias-pro-con-mis-darwins">¿Asociarán mis inversores mis estrategias Pro con mis DARWINs?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/puedo-invitar-a-cualquier-inversor">¿Puedo invitar a cualquier inversor?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/qué-cobertura-regulatoria-tengo-para-captar">¿Qué cobertura regulatoria tengo para captar?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/cómo-me-vendo-ante-mis-inversores">¿Cómo me vendo ante mis inversores?</a></li>
+                
+              
+            </ul>
+            
+              <a href="#" role="button" class="kb-subcategory__expand-articles-toggle kb__text-link">Ver más</a>
+            
+          </h6>
+        </div>
+      
+        <div class="kb-categories__item" id="modelo-económico-pro">
+          <h4>Modelo Económico Pro</h4>
+          <h6>
+            <ul class="kb-subcategory__articles">
+              
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/cuéntame-todo-sobre-el-modelo-económico-de-darwinex-pro">Cuéntame todo sobre el modelo económico de Darwinex Pro</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/qué-recibo-a-cambio-del-pago-del-alta">¿Qué recibo a cambio del pago del canon de alta de 10000€/£/$?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/qué-es-el-canon-por-la-plataforma-quién-lo-paga">¿Qué es el canon por la plataforma? ¿Quién lo paga?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/puedo-personalizar-las-comisiones-por-inversor">¿Puedo personalizar las comisiones por inversor?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/puedo-fijar-las-comisiones-que-quiera">¿Puedo fijar las comisiones que quiera?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/por-qué-cobramos-el-alta-por-adelantado">¿Por qué cobramos el alta por adelantado?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/por-qué-se-paga-por-invitación">¿Por qué se paga por invitación?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/puedo-personalizar-las-comisiones-para-cada-estrategia">¿Puedo personalizar las comisiones para cada estrategia?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/puedo-personalizar-el-riesgo-de-mis-estrategias-por-inversor">¿Puedo personalizar el riesgo de mis estrategias por inversor?</a></li>
+                
+              
+            </ul>
+            
+              <a href="#" role="button" class="kb-subcategory__expand-articles-toggle kb__text-link">Ver más</a>
+            
+          </h6>
+        </div>
+      
+        <div class="kb-categories__item" id="regulación">
+          <h4>Regulación</h4>
+          <h6>
+            <ul class="kb-subcategory__articles">
+              
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/cómo-capto-inversión">¿Cómo capto inversión?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/necesito-estar-regulado">¿Necesito estar regulado?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/qué-obligaciones-/-normas-me-son-aplicables">¿Qué obligaciones / normas me son aplicables?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/qué-tipo-de-relación-y-contacto-tendré-con-el-regulador">¿Qué tipo de relación y contacto tendré con el regulador?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/qué-puedo-y-qué-no-puedo-hacer">¿Qué puedo, y qué no puedo hacer?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/cómo/dónde-me-formo-en-los-requerimientos-regulatorios-y-cuánto-me-cuesta">¿Cómo/dónde me formo en los requerimientos regulatorios, y cuánto me cuesta?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/quiero-informarme-sobre-el-marco-regulatorio.-qué-leo">Quiero informarme sobre el marco regulatorio. ¿Qué leo?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/qué-tipo-de-relación-tengo-con-el-inversor">¿Qué tipo de relación tengo con el inversor?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/puedo-nombrar-promotores-adicionales">¿Puedo nombrar promotores adicionales?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/qué-pasa-si-incumplo-alguna-norma">¿Qué pasa si incumplo alguna norma?</a></li>
+                
+              
+            </ul>
+            
+              <a href="#" role="button" class="kb-subcategory__expand-articles-toggle kb__text-link">Ver más</a>
+            
+          </h6>
+        </div>
+      
+        <div class="kb-categories__item" id="captando-capital">
+          <h4>Captando Capital</h4>
+          <h6>
+            <ul class="kb-subcategory__articles">
+              
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/qué-material-de-marketing-me-facilita-darwinex-pro">¿Qué material de Marketing me facilita Darwinex Pro?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/de-qué-información-dispondrá-el-inversor">¿De qué información dispondrá el inversor?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/puedo-operar-con-los-mismos-instrumentos-que-en-darwinex">¿Puedo operar con los mismos instrumentos que en Darwinex?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/cómo-puedo-acceder-a-la-plataforma-de-inversión">¿Cómo puedo acceder a la plataforma de inversión?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/qué-parámetros-puedo-configurar-en-darwinex-pro">¿Qué parámetros puedo configurar en Darwinex Pro?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/puedo-incluir-más-de-una-estrategia">¿Puedo incluir más de una estrategia?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/puedo-incluir-estrategias-de-otros-proveedores">¿Puedo incluir estrategias de otros proveedores?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/cómo-funciona-el-motor-de-riesgo-en-darwinex-pro">¿Cómo funciona el Motor de Riesgo en Darwinex Pro?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/dónde-puedo-visualizar-mis-datos-de-clientes-y-gestionar-las-invitaciones/altas">¿Dónde puedo visualizar mis datos de clientes y gestionar las invitaciones/altas?</a></li>
+                
+              
+            </ul>
+            
+              <a href="#" role="button" class="kb-subcategory__expand-articles-toggle kb__text-link">Ver más</a>
+            
+          </h6>
+        </div>
+      
+        <div class="kb-categories__item" id="cómo-solicito-activar-pro">
+          <h4>¿Cómo solicito activar Pro?</h4>
+          <h6>
+            <ul class="kb-subcategory__articles">
+              
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/cómo-puedo-solicitar-el-servicio">¿Cómo puedo solicitar el servicio de Darwinex Pro?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/qué-requisitos-previos-necesito-para-optar-a-este-servicio">¿Qué requisitos previos necesito para optar a este servicio?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/cómo-es-el-proceso-de-solicitud-y-aprobación">¿Cómo es el proceso de solicitud y aprobación?</a></li>
+                
+              
+            </ul>
+            
+          </h6>
+        </div>
+      
+        <div class="kb-categories__item" id="la-experiencia-del-inversor-en-pro">
+          <h4>La experiencia del inversor en Pro</h4>
+          <h6>
+            <ul class="kb-subcategory__articles">
+              
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/qué-pasa-con-mi-cuenta-de-darwinex">¿Puedo invitar a mis inversores de Darwinex a Darwinex Pro?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/una-vez-que-el-servicio-esté-listo-debo-hacer-algo-más-para-vender">Una vez que el servicio esté listo, ¿debo hacer algo más para vender?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/cómo-capacitarme-para-vender-más/mejor">¿Cómo capacitarme para vender más/mejor?</a></li>
+                
+                  
+                  <li><a href="https://help.darwinex.com/es/qué-requisitos-existen-para-dar-de-alta-un-inversor">¿Qué requisitos existen para dar de alta un inversor?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/cuál-es-el-importe-mínimo-para-abrir-una-cuenta-de-inversor">¿Cuál es el importe mínimo para abrir una cuenta de inversor?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/en-qué-consiste-el-test-de-idoneidad">¿En qué consiste el test de idoneidad?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/qué-otros-roles-o-responsabilidades-tengo-con-el-inversor">¿Qué otros roles o responsabilidades tengo con el inversor?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/puedo-dar-de-alta-a-inversores-que-estén-activos-en-darwinex">¿Puedo dar de alta a inversores que estén activos en Darwinex?</a></li>
+                
+                  
+                  <li class="expanded-only"><a href="https://help.darwinex.com/es/existe-alguna-limitación-en-proveer-el-servicio">¿Existe alguna limitación en proveer el servicio?</a></li>
+                
+              
+            </ul>
+            
+              <a href="#" role="button" class="kb-subcategory__expand-articles-toggle kb__text-link">Ver más</a>
+            
+          </h6>
+        </div>
+      
+    
+  
+</div>
+
+<script>
+  kbDom.whenReady(function() {
+    var kbSubcategoryOnExpand = function(articles, toggle) {
+      articles.classList.add('expanded');
+      toggle.textContent = 'Ver menos';
+    }
+
+    var kbSubcategoryOnCollapse = function(articles, toggle) {
+      articles.classList.remove('expanded');
+      toggle.textContent = 'Ver más';
+    }
+
+    var kbSubcategorySetupExpand = function(toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        var allArticles = document.querySelectorAll('.kb-subcategory__articles');
+        var articles = kbDom.siblings(toggle, '.kb-subcategory__articles')[0];
+        var isExpanded = articles.classList.contains('expanded');
+        if (isExpanded) {
+          kbSubcategoryOnCollapse(articles, toggle);
+        } else {
+          allArticles.forEach(function(el) {
+            var curToggle = kbDom.siblings(el, '.kb-subcategory__expand-articles-toggle')[0];
+            if (curToggle) {
+              kbSubcategoryOnCollapse(el, curToggle);
+            }
+          })
+
+          kbSubcategoryOnExpand(articles, toggle);
+        }
+      })
+    }
+
+    document.querySelectorAll('.kb-subcategory__expand-articles-toggle').forEach(function(el) {
+      kbSubcategorySetupExpand(el);
+    });
+
+    var AFTER_THE_LAST_SLASH_REGEX = /\/([^\/]+)\/?$/;
+    var smoothScroll = new smoothAnchorsScrolling();
+
+    var categoriesSmoothScroll = function() {
+      var linksArray = document.querySelectorAll('.open a');
+      var updateActiveMenuItem = function(selectedItemPath) {
+        linksArray.forEach(function(link) {
+          kbDom.closest('li', link).classList.remove('active');
+        })
+        document.querySelectorAll('a[href="' + selectedItemPath + '"]').forEach(
+          function(link) {
+            kbDom.closest('li', link).classList.add('active');
+          }
+        );
+      };
+      linksArray.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          var node = e.currentTarget;
+          var decodedHash = decodeURI(node.hash);
+          var decodedPathname = decodeURI(node.pathname);
+          var targetPathWithHash = decodedPathname + decodedHash;
+          var clickedState = {
+            path: targetPathWithHash,
+            parentCat: decodedPathname.match(AFTER_THE_LAST_SLASH_REGEX)[1],
+            childCat: decodedHash.replace('#', '')
+          };
+          document.querySelector('.kb-mobile-header').classList.remove('menu-open');
+          scrollToCategory(clickedState);
+          history.pushState(clickedState, '', node.href);
+        });
+      });
+      var scrollToCategory = function(passedState) {
+        var selectedId = passedState.childCat || passedState.parentCat;
+        updateActiveMenuItem(passedState.path);
+
+        var target = document.querySelector('[id="' + selectedId + '"]');
+        smoothScroll.scrollTo(target);
+      };
+      window.addEventListener('popstate', function(e) {
+        if (!e.state) {
+          history.back();
+        } else {
+          scrollToCategory(e.state);
+        }
+      });
+      var init = (function() {
+        var decodedHash = decodeURI(window.location.hash);
+        var decodedPathname = decodeURI(window.location.pathname);
+        var initialState = {
+          path: decodedPathname + decodedHash,
+          parentCat: decodedPathname.match(AFTER_THE_LAST_SLASH_REGEX)[1],
+          childCat: decodedHash.substr(1)
+        };
+        if (decodedHash) {
+          setTimeout(function() {
+            scrollToCategory(initialState);
+          }, 1);
+        }
+        history.pushState(initialState, null, '');
+      })();
+    }
+
+    window.addEventListener('load', function(e) {
+      categoriesSmoothScroll();
+    });
+
+  });
+</script>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </main>
+    <footer>
+      
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+  
+
+
+<div class="kb-sticky-footer" data-preview-id="kb-footer">
+  <div class="kb-footer">
+    
+      <div class="kb-footer__center-aligned-content">
+        
+          <div class="kb-footer__logo">
+            
+              <a href="https://help.darwinex.com">
+                <img src="https://help.darwinex.com/hubfs/scouting-program-landing/images/logos/logo-darwinex-vertical-inverse.svg" alt="logotipo de la compañía">
+              </a>
+            
+          </div>
+        
+        
+          <div class="kb-footer__title">Los CFD son instrumentos complejos y están asociados a un riesgo elevado de perder dinero rápidamente debido al apalancamiento. 67% de las cuentas de inversores minoristas pierden dinero en la comercialización con CFD con este proveedor. Debe considerar si comprende el funcionamiento de los CFD y si puede permitirse asumir un riesgo elevado de perder su dinero.</div>
+        
+        
+          <div class="kb-footer__social">
+            <ul>
+              
+              <li><a href="https://www.facebook.com/pg/Darwinexchange/posts/" class="facebook" target="_blank" rel="noopener">
+  
+  <img src="https://static.hsstatic.net/TemplateAssets/static-1.17/img/hs_default_template_images/modules/Follow+Me+-+Email/facebook_circle_black.png" alt="facebook_social_link_icon_alt_text">
+</a></li>
+              
+              <li><a href="https://www.youtube.com/channel/UC6aYa9XjWy-HmHhyp5uN_9g" class="youtube" target="_blank" rel="noopener">
+  
+  <img src="https://static.hsstatic.net/TemplateAssets/static-1.17/img/hs_default_template_images/modules/Follow+Me+-+Email/youtube_circle_black.png" alt="youtube_social_link_icon_alt_text">
+</a></li>
+              
+              <li><a href="https://twitter.com/darwinex_es" class="twitter" target="_blank" rel="noopener">
+  
+  <img src="https://static.hsstatic.net/TemplateAssets/static-1.17/img/hs_default_template_images/modules/Follow+Me+-+Email/twitter_circle_black.png" alt="twitter_social_link_icon_alt_text">
+</a></li>
+              
+            </ul>
+          </div>
+        
+      </div>
+    
+    
+      <div class="kb-footer__links-container">
+        <ul class="kb-footer__links columns__one">
+          
+            
+<li class="kb-footer__company-website-link">
+  <a href="https://www.darwinex.com/es/contact" target="_blank" rel="noopener">
+    Contáctanos
+    <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.11 10.223V7.0472l1.308-1.3077v4.4835c0 .9323-.7628 1.6952-1.6953 1.6952H1.6952C.7628 11.9182 0 11.1553 0 10.223V4.1955C0 3.2628.7628 2.5 1.6952 2.5h4.4833L4.8707 3.8082H1.6952c-.2099 0-.3872.1771-.3872.3873v6.0275c0 .2098.1773.387.3872.387h6.0275c.21 0 .3873-.1772.3873-.387zM5.9428.4417L12.0137 0l-.442 6.0708L9.6368 4.136 6.0925 7.68 4.3333 5.9207l3.544-3.5442L5.9428.4417z" fill="#007bba" />
+    </svg>
+  </a>
+</li>
+
+          
+        </ul>
+      </div>
+    
+  </div>
+</div>
+    </footer>
+    
+
+
+<!-- Start of HubSpot Analytics Code -->
+<script type="text/javascript">
+var _hsq = _hsq || [];
+_hsq.push(["setContentType", "listing-page"]);
+_hsq.push(["setCanonicalUrl", "https:\/\/help.darwinex.com\/es\/darwinex-pro"]);
+_hsq.push(["setPageId", "5692971171"]);
+_hsq.push(["setContentMetadata", {
+    "contentPageId": null,
+    "legacyPageId": null,
+    "contentFolderId": null,
+    "contentGroupId": 5692971171,
+    "abTestId": null,
+    "languageVariantId": null,
+    "languageCode": null,
+    
+}]);
+</script>
+
+<script type="text/javascript" id="hs-script-loader" async defer src="/hs/scriptloader/4288148.js"></script>
+<!-- End of HubSpot Analytics Code -->
+
+
+<script type="text/javascript">
+var hsVars = {
+    ticks: 1649338286994,
+    page_id: 0,
+    
+    content_group_id: 5692971171,
+    portal_id: 4288148,
+    app_hs_base_url: "https://app.hubspot.com",
+    cp_hs_base_url: "https://cp.hubspot.com",
+    language: "es",
+    analytics_page_type: "",
+    analytics_page_id: "5692971171",
+    category_id: 6,
+    folder_id: 0,
+    is_hubspot_user: false
+}
+</script>
+
+
+<script defer src="/hs/hsstatic/HubspotToolsMenu/static-1.128/js/index.js"></script>
+
+
+
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1649273565870/hubspot/themes/knowledge/assets/kb-search.min.js"></script>
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1649273569985/hubspot/themes/knowledge/assets/sticky-header.min.js"></script>
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1649273568710/hubspot/themes/knowledge/assets/smooth-anchors-scrolling.min.js"></script>
+  
+</body></html>

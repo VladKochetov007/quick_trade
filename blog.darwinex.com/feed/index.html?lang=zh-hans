@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Darwinex Blog</title>
+	<atom:link href="https://blog.darwinex.com/feed/?lang=zh-hans" rel="self" type="application/rss+xml" />
+	<link>https://blog.darwinex.com/?lang=zh-hans</link>
+	<description>The online brokerage that allows sophisticated traders to trade the market and investors to back them.</description>
+	<lastBuildDate>Thu, 20 Jan 2022 10:27:31 +0000</lastBuildDate>
+	<language>zh-CN</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.20</generator>
+	<item>
+		<title>新的“资金”部分取代了“钱包”</title>
+		<link>https://blog.darwinex.com/%e6%96%b0%e7%9a%84%e8%b5%84%e9%87%91%e9%83%a8%e5%88%86%e5%8f%96%e4%bb%a3%e4%ba%86%e9%92%b1%e5%8c%85/?lang=zh-hans</link>
+		<comments>https://blog.darwinex.com/%e6%96%b0%e7%9a%84%e8%b5%84%e9%87%91%e9%83%a8%e5%88%86%e5%8f%96%e4%bb%a3%e4%ba%86%e9%92%b1%e5%8c%85/?lang=zh-hans#respond</comments>
+		<pubDate>Mon, 31 Aug 2020 07:47:49 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[小技巧]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17053</guid>
+		<description><![CDATA[新的“资金”部分扩大了我们向您显示的有关资金的信息范围。]]></description>
+		<wfw:commentRss>https://blog.darwinex.com/%e6%96%b0%e7%9a%84%e8%b5%84%e9%87%91%e9%83%a8%e5%88%86%e5%8f%96%e4%bb%a3%e4%ba%86%e9%92%b1%e5%8c%85/feed/?lang=zh-hans</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>8月31日2020年UK100将关闭</title>
+		<link>https://blog.darwinex.com/8%e6%9c%8831%e6%97%a52020%e5%b9%b4uk100%e5%b0%86%e5%85%b3%e9%97%ad/?lang=zh-hans</link>
+		<pubDate>Thu, 20 Aug 2020 06:10:19 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[公告板]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17002</guid>
+		<description><![CDATA[请注意，因英国假期指数差价合约UK100将于8月31日2020年星期一关闭。 在假期期间流动性可能收缩，因此点差会扩大。 假期也可能导致过夜费的变化。 其余的金融工具将按照通常的时间表运行。]]></description>
+		</item>
+		<item>
+		<title>增加了另外四个排除DarwinIA交易比赛的资格</title>
+		<link>https://blog.darwinex.com/%e5%a2%9e%e5%8a%a0%e4%ba%86%e5%8f%a6%e5%a4%96%e5%9b%9b%e4%b8%aa%e6%8e%92%e9%99%a4darwinia%e4%ba%a4%e6%98%93%e6%af%94%e8%b5%9b%e7%9a%84%e8%b5%84%e6%a0%bc/?lang=zh-hans</link>
+		<pubDate>Mon, 17 Aug 2020 09:03:56 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[公告板]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16958</guid>
+		<description><![CDATA[Darwinex随新的D-Score一起修改了参与DarwinIA的标准。 从2020年9月号开始，将增加4个限制。]]></description>
+		</item>
+		<item>
+		<title>交易最小量一支美股起</title>
+		<link>https://blog.darwinex.com/%e4%ba%a4%e6%98%93%e6%9c%80%e5%b0%8f%e9%87%8f%e4%b8%80%e6%94%af%e7%be%8e%e8%82%a1%e8%b5%b7/?lang=zh-hans</link>
+		<comments>https://blog.darwinex.com/%e4%ba%a4%e6%98%93%e6%9c%80%e5%b0%8f%e9%87%8f%e4%b8%80%e6%94%af%e7%be%8e%e8%82%a1%e8%b5%b7/?lang=zh-hans#respond</comments>
+		<pubDate>Fri, 24 Jul 2020 07:34:09 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[小技巧]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16920</guid>
+		<description><![CDATA[我们将继续消除障碍以便专业从事股票人才交易者选择Darwinex。 自从我们在2018年推出股票差价合约(CFD)以来，基于股票价格的最小数量为1、5、10和20支股。 因此，每家公司的股票最低投资额约为1,500-3,500美元，这对小额账户构成了障碍。 现在我们将最小交易规模减少到1支股。 绝对是由Darwinex经纪商提供的所有行动。 目前有200多支美股。 进行此更改： 我们降低了投资股票的入门槛。 我们提高了操作员管理风险的能力。 这增加了使用Darwinex本身的好处： 创建更均衡的投资组合：除了投资股票外，您还可以投资我们的“ ETF”：DARWINs。 从您的共享帐户（MT4或MT5）创建股票DARWIN，并利用 通过DarwinIA分配获得Darwinex资金，以及 通过Darwinex市场获得第三方资金。 &#160; 而且请不要忘记与我们以DMA格式交易股票差价合约的通常优势： 利用CFD相对于现货股票的优势可以进行多种类型的操作，同时可以享受CFD供应商没有提供的保证。 具有竞争力的价格与您的交易才华挂钩。 &#160;  我们正在并行研究与股票更相关的一些倡议： 我们将介绍精选的最具流动性的欧洲股票。 我们将成为 Interactive Brokers 的合作伙伴，这样您就可以在IBKR执行情况下进行现货交易，并根据您的操作创建DARWIN。 敬请期待2020年下半年的新闻！]]></description>
+		<wfw:commentRss>https://blog.darwinex.com/%e4%ba%a4%e6%98%93%e6%9c%80%e5%b0%8f%e9%87%8f%e4%b8%80%e6%94%af%e7%be%8e%e8%82%a1%e8%b5%b7/feed/?lang=zh-hans</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>新D-Score</title>
+		<link>https://blog.darwinex.com/new-d-score/?lang=zh-hans</link>
+		<pubDate>Mon, 20 Jul 2020 07:59:01 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[小技巧]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16916</guid>
+		<description><![CDATA[8月1日我们将发布D-Score（D分数）的修改版。 在本文章中我们要说明： D分数的由来 随着时间的推移，我们学到了什么 全新的D-Score算法 对其他功能的影响 D-Score在Darwinex的用处 作为总结，我们简化并同时改善了D分数的计算。 我们独立于属性来执行此操作，它将完全基于价格数据。 我们将继续在Darwinex使用它作为用来冒险您的资本的指标。 1.D分数的由来 D-Score诞生于2013年，在我们的人才和资本市场启动之前。 那时我们的目标是自动寻找世界上最好的交易员，以使其具有知名度并可以在我们未来的市场中筹集资金。 那时，甚至现在，大多数信号服务也仅限于按照非常简单的标准来显示最佳策略列表。 真正好的交易员并没有真正脱颖而出。 您必须具有一定程度的交易知识才能真正的大海捞针。 好的交易员和投资者都感到沮丧。 我们相信找到该算法将使我们能够使非交易者进入我们的市场，使他们有足够的信心进行成功的投资。 我们还认为通过这种方式人才会将我们视为唯一真正关心他们成功的技术提供商，我们对此深信不疑。 出于这个目标我们开始发现交易策略可靠性的收益很大程度上取决于其风险管理。 这意味着结果不仅必须针对策略的整体风险水平进行标准化，而且还应考虑每个仓位的风险水平。 举例来说，假设某策略以1：1的杠杆率进行了9笔交易，每笔亏损10个点，然后开了另一笔以100：1的杠杆率赢得10点的交易。 信号产生正回报，但这是一个好信号吗？ 此外，在最后一次交易中，我们应允许什么杠杆作用来代表先前的样本？ 5：1？ 10：1？ 这种类型的操作最明显和最常用的情况是马丁格尔策略（martingale），但也有许多变体。 我们得出的结论是有必要创建一种算法能够将风险决策从仓位转换为策略级别的全局风险级别，以消除产生统计错觉的可能性。 不仅如此，我们还了解到推销信号的唯一方法应该是使用能够正确比较信号的产品。 Darwin (达尔文是已开通跟单系统的交易策略)。 DARWIN是将一种信号转换为另一种信号，其中如上所述，通过交易或头寸使用个人杠杆不会对获利能力产生错误的幻想。 同时，我们已经知道要创建一个新产品DARWIN，因此我们必须实施新算法来寻找市场上的人才。 除了测量信号质量之外，我们还要求D分数（D-Score）： 保护信号提供者100％的知识产权，从而为投资者提供足够的信心。 理想情况下，我们希望将其分解为单独的单元。 属性就是这样诞生的，以便更加透明的提供客户并为交易者提供改进的思路。 不受风险等级的影响。 对于任何类型的资产均有效，但前提是该风险仅是其波动性的函数（例如，期权除外） 对任何类型的操作均有效。 无法利用某些代码漏洞来“欺骗”后人为地改善它。 正如所解释的那样，重要的是要强调D-Score早于DARWIN（跟单系统）的诞生。 实际上早了2年。 尽管如此，我们认为这应该不是问题，因为D分数应该独立于风险水平。 2. 我们学到了什么 如果D-Score使用了最先进的DARWIN版本以及所有当前和过去的DARWIN（超过10,000个），则很有可能会采用不同的方法。 当前D分数的复杂性是其发展的结果。 现在我们有了数据并进行了许多分析，我们得出的结论是使用DARWIN报价就可以得到比当前更具预测性的D-Score，而无需使用可投资指标（12个投资指标，EX,MC&#8230;）。 我们认为是这样因为DARWIN价格已经纳入了所有风险归一化（全局和按仓位），因此是“无噪声”纯信号。 我们认为当前的D评分是调查金融资产分类的重要一步，通过比较不同的风险策略。 但是如果您具有纯信号，最好仅使用价格来确定其质量。 另一方面，我们在创建过程中对自己施加的限制（尤其是可以根据独立属性计算）使我们无法像过去那样反复迭代D-Score及其属性。 影响他的成绩的各种因素（属性，权重，历史，资产）使他陷入了无法演变的地步。 我们都知道它必须进行改进，但是以前我们不知道如何做。 [&#8230;]]]></description>
+		</item>
+		<item>
+		<title>推出：DARWIN Check out</title>
+		<link>https://blog.darwinex.com/%e6%8e%a8%e5%87%ba%ef%bc%9adarwin-check-out/?lang=zh-hans</link>
+		<pubDate>Thu, 14 May 2020 06:56:36 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[小技巧]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16804</guid>
+		<description><![CDATA[DARWIN check-ou页面可合法，有效和简单的帮助管理从亲密圈子（朋友和家人）吸引到您的DARWIN的资金。]]></description>
+		</item>
+		<item>
+		<title>5月8日2020年UK100关闭</title>
+		<link>https://blog.darwinex.com/5%e6%9c%888%e6%97%a52020%e5%b9%b4uk100%e5%85%b3%e9%97%ad/?lang=zh-hans</link>
+		<pubDate>Tue, 28 Apr 2020 04:56:35 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[公告板]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16767</guid>
+		<description><![CDATA[请注意，因英国假期指数差价合约UK100将于5月8日2020年星期一关闭。]]></description>
+		</item>
+		<item>
+		<title>2020年5月1日交易时间</title>
+		<link>https://blog.darwinex.com/2020%e5%b9%b45%e6%9c%881%e6%97%a5%e4%ba%a4%e6%98%93%e6%97%b6%e9%97%b4/?lang=zh-hans</link>
+		<pubDate>Tue, 28 Apr 2020 04:26:05 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[公告板]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16758</guid>
+		<description><![CDATA[请注意，由于2020年5月1日（星期三）的欧洲假期，我们的交易时间发生了以下变化。此外，在本周内，欧元掉期费用/库存费将发生变化。]]></description>
+		</item>
+		<item>
+		<title>发布：交易策略毒性图</title>
+		<link>https://blog.darwinex.com/%e5%8f%91%e5%b8%83%ef%bc%9a%e4%ba%a4%e6%98%93%e7%ad%96%e7%95%a5%e6%af%92%e6%80%a7%e5%9b%be/?lang=zh-hans</link>
+		<pubDate>Thu, 23 Apr 2020 09:40:02 +0000</pubDate>
+		<dc:creator><![CDATA[Javier Colón]]></dc:creator>
+				<category><![CDATA[小技巧]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16688</guid>
+		<description><![CDATA[我们继续将那些我们认为对交易者和投资者非常感兴趣的统计信息纳入诊断工具包。 这次是关于DARWIN流动的毒性分析及投资者们。 什么是交易流动的毒性 毒性试图衡量流动性提供者抵消流量的难易程度，我们将了解为什么它是一个非常重要的参数。 该统计数据显示在DARWIN容量研究中，但目前不影响您的成绩。 在市场中，有一些代理商负责创建市场向订单簿提供流动性，以最小的风险获得利润。 他们从市场的一侧获取流动性，希望通过市场另一侧的需求尽快摆脱这种操作。 如果他们能够同时突破上述定单，很明显，他们赢得了点差，但是如果市场在撤回头寸的同时发生变化，会发生什么呢？ 有时他们会赢有时会输，平均而言，他们会获得收益（或亏损），具体取决于该供应商确定他接受的订单的能力。 流动的毒性将取决于： 在一段时间内所述资产中以相反方向移动的定单交易量。 订单量越大，供应商消除风险所花费的时间就越长，因为在另一侧没有足够的时间找需求。 价格在操作后的那个瞬间所采取的方向。 如果价格上涨有利于DARWIN，则意味着提供商将很快进入亏损。 如果平均总是有利的偏差于DARWIN，则该流量将被认为是有毒性的。 另一边的供应商类型。 具体而言，对风险的偏好将决定资产的持仓时间和在某个时间段的开仓量。 毒性如何测量 从流动性提供者的角度来看，订单的大小并不完全是一个问题，因为他们可以对其进行管理： 限制他们愿意放入订单中的最大尺寸，以及 定义他们希望在某种资产和流量（经纪商），最大风险敞口，以及他们考虑维持风险敞口的平均时间。 每个提供者将根据他们的风险偏好定义一个限制。 因此，这是您可控制的参数。 另一方面，市场方向是他们无法事先掌握的东西，因此他们必须很好地保护自己，从系统化接单中快速产生盈利并将其保留的时间维持在能承受的风险里，并关闭亏损操作。 当前流动里非常大的订单将使价格向其有利的方向移动因为每个供应商都将撤回直到没有兴趣进入市场的另一端。 因此，DARWIN的毒性取决于在订单发送后的价格波动（到5分钟，包括许多供应商对风险的偏好），用具有代表性的策略订单来当样本 。 如果原始策略的上涨有利于该策略，该流动将是有毒的，否则不是。 显然订单数量和价格的越快上涨有利于您，它会尽快变得更加有毒。 为什么很重要知道流动毒性 情况一 如果DARWIN有剧毒，即使在投入巨资之前，我们得确保它永远无法管理比能力指标（Capacity）显示的金额高。 此外，这些是DARWIN，即使相对于Capacity所定义的最大值投资很少，也可能导致差异问题。 请注意，因为如果DARWIN在没有大量交易的情况下是有毒的，这也可能表明交易员正在将其信号卖给其他经纪商或它是EA。 也就是说，我们可能看不到DARWIN实际管理的全部数量。它也可能是策略枯竭的指标，因为许多其他交易者都在攻击同样的低效率，尤其是如果它们的策略是每笔交易的平均点差收入很少（小于10个点）。 情况二 如果DARWIN的差异度很高但流动没有毒性，则意味着它没有适当地分裂操作而产生差异。 如果经理逐渐将交易量引入市场（最少10秒节奏），则市场很可能能够吸收更多交易量。 Darwinex的毒性工具 我们希望提供不仅一种可以定义该策略是否有害的工具，而且可以在必要时帮助DARWIN管理人员提高其能力。 为此对于每个DARWIN，使用了最后200个开仓订单和最后200个平仓订单，然后使用每个样本制作两个图表。 回报图 首先我们以假设测量DARWIN比原来平仓时间延迟x秒钟后进行的操作而获得的月度盈利。 为此我们采用的原始策略x秒价格（使用我们的历史买入价或卖价的价格数据），并以该新价格计算交易的获利能力。 如果获利能力较差，则意味着在200次操作的示例中，DARWIN的效果要好于x秒后开仓的情况，在这种情况下，它会产生毒性。 我们显示了每月盈利，将与差异进行比较，以每月形式进行衡量，从而适当地管理优化容量。 如果DARWIN的差异为-1％，但是通过拆分可以得到-0.2％，您知道您仍然有一定的分馏余量。 因此，该工具对量化操作的数量和分裂操作方式有很大帮助。 许多DARWIN的输入和输出毒性非常不同，因此新工具还允许他们确定那些订单可以拆分和不拆分。 我们必须记住，这项研究是按照200个订单完成的，并且不排除任何订单，因此我们必须对所采取的措施保持谨慎。 可能有一些订单会扭曲图表朝一个方向或另一个方向。 点图 第二张图显示了单位点差（差价/价格x10000）。 点数显示的是该策略将获得的平均价格，如果该策略晚于实际时间x秒钟后下订单。 希望此新功能有用，并请给我们尽可能多的反馈以进行改进。]]></description>
+		</item>
+		<item>
+		<title>新西兰的下一个假期可能会扩大点差范围</title>
+		<link>https://blog.darwinex.com/%e6%96%b0%e8%a5%bf%e5%85%b0%e7%9a%84%e4%b8%8b%e4%b8%80%e4%b8%aa%e5%81%87%e6%9c%9f%e5%8f%af%e8%83%bd%e4%bc%9a%e6%89%a9%e5%a4%a7%e7%82%b9%e5%b7%ae%e8%8c%83%e5%9b%b4-2/?lang=zh-hans</link>
+		<comments>https://blog.darwinex.com/%e6%96%b0%e8%a5%bf%e5%85%b0%e7%9a%84%e4%b8%8b%e4%b8%80%e4%b8%aa%e5%81%87%e6%9c%9f%e5%8f%af%e8%83%bd%e4%bc%9a%e6%89%a9%e5%a4%a7%e7%82%b9%e5%b7%ae%e8%8c%83%e5%9b%b4-2/?lang=zh-hans#respond</comments>
+		<pubDate>Thu, 23 Apr 2020 05:16:07 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[公告板]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=16743</guid>
+		<description><![CDATA[4月27号，下星期一，是新西兰的假期。 这可能会导致流动性收缩，从而扩大点差。 如有任何疑问，请发送电子邮件至 info@darwinex.com。]]></description>
+		<wfw:commentRss>https://blog.darwinex.com/%e6%96%b0%e8%a5%bf%e5%85%b0%e7%9a%84%e4%b8%8b%e4%b8%80%e4%b8%aa%e5%81%87%e6%9c%9f%e5%8f%af%e8%83%bd%e4%bc%9a%e6%89%a9%e5%a4%a7%e7%82%b9%e5%b7%ae%e8%8c%83%e5%9b%b4-2/feed/?lang=zh-hans</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

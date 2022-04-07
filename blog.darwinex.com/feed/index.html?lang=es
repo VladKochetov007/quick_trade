@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Darwinex Blog</title>
+	<atom:link href="https://blog.darwinex.com/feed/?lang=es" rel="self" type="application/rss+xml" />
+	<link>https://blog.darwinex.com/?lang=es</link>
+	<description>The Blog Of The Trader Exchange</description>
+	<lastBuildDate>Thu, 20 Jan 2022 10:27:31 +0000</lastBuildDate>
+	<language>es-ES</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.20</generator>
+	<item>
+		<title>Horarios de trading para el Día de la Independencia de EE.UU (5 de julio de 2021)</title>
+		<link>https://blog.darwinex.com/horarios-de-trading-para-el-dia-de-la-independencia-de-ee-uu-5-de-julio-de-2021/?lang=es</link>
+		<comments>https://blog.darwinex.com/horarios-de-trading-para-el-dia-de-la-independencia-de-ee-uu-5-de-julio-de-2021/?lang=es#respond</comments>
+		<pubDate>Wed, 30 Jun 2021 13:51:07 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[TABLÓN]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17635</guid>
+		<description><![CDATA[Por favor, tened en cuenta el horario de trading modificado de Darwinex con motivo de la celebración del ¡Día de la Independencia de EE.UU (5 de julio de 2021). Todas las horas están indicadas según la zona horaria de Londres (BST). &#160; FX Lunes &#8211; 5 de  julio de 2021 Pares de divisas Horario Habitual DARWINs** [&#8230;]]]></description>
+		<wfw:commentRss>https://blog.darwinex.com/horarios-de-trading-para-el-dia-de-la-independencia-de-ee-uu-5-de-julio-de-2021/feed/?lang=es</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Buenas noticias: ¡reducimos los swaps de NDX y DAX ~25%!</title>
+		<link>https://blog.darwinex.com/reducimos-swaps-ndx-dax-25-por-ciento/?lang=es</link>
+		<comments>https://blog.darwinex.com/reducimos-swaps-ndx-dax-25-por-ciento/?lang=es#respond</comments>
+		<pubDate>Mon, 19 Apr 2021 15:39:58 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[TABLÓN]]></category>
+		<category><![CDATA[DAX]]></category>
+		<category><![CDATA[gdaxi]]></category>
+		<category><![CDATA[nasdaq]]></category>
+		<category><![CDATA[nasdaq 100]]></category>
+		<category><![CDATA[ndx]]></category>
+		<category><![CDATA[swaps]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17444</guid>
+		<description><![CDATA[Seguimos trabajando duro para mejorar la experiencia de nuestros usuarios. En este sentido, nos alegra anunciar que, desde hoy, reducimos los swaps diarios de dos de los índices más operados en nuestra plataforma: NASDAQ 100 (NDX), y DAX (GDAXI) &#8230; aproximadamente un 25%! Puedes hacer click aquí para ver nuestras condiciones de trading. Esperamos que [&#8230;]]]></description>
+		<wfw:commentRss>https://blog.darwinex.com/reducimos-swaps-ndx-dax-25-por-ciento/feed/?lang=es</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Se va a producir un split 3 a 1 de la acción $SHW</title>
+		<link>https://blog.darwinex.com/dnp-se-va-a-producir-un-split-3-a-1-de-la-accion-shw-es/?lang=es</link>
+		<comments>https://blog.darwinex.com/dnp-se-va-a-producir-un-split-3-a-1-de-la-accion-shw-es/?lang=es#respond</comments>
+		<pubDate>Wed, 24 Mar 2021 20:53:09 +0000</pubDate>
+		<dc:creator><![CDATA[Karl Beacham]]></dc:creator>
+				<category><![CDATA[DICCIONARIO]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17330</guid>
+		<description><![CDATA[Te rogamos tengas en cuenta que se va a producir el split 3 a 1 de la acción de Sherwin-Williams ($SHW). El número de las acciones existentes de $SHW se multiplicará por 3, recibiendo cada accionista existente 2 acciones por cada una de sus acciones. En Darwinex realizaremos el split el próximo jueves, 1 de abril de 2021, [&#8230;]]]></description>
+		<wfw:commentRss>https://blog.darwinex.com/dnp-se-va-a-producir-un-split-3-a-1-de-la-accion-shw-es/feed/?lang=es</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Deshabilitado el TRY hasta nuevo aviso</title>
+		<link>https://blog.darwinex.com/aviso-de-trading-deshabilitado-try/?lang=es</link>
+		<comments>https://blog.darwinex.com/aviso-de-trading-deshabilitado-try/?lang=es#respond</comments>
+		<pubDate>Tue, 23 Mar 2021 18:57:15 +0000</pubDate>
+		<dc:creator><![CDATA[Karl Beacham]]></dc:creator>
+				<category><![CDATA[DICCIONARIO]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17338</guid>
+		<description><![CDATA[Debido a la reciente volatilidad en el TRY por la destitución del Presidente del Banco Central turco, el mercado de swaps de la Lira Turca presenta niveles muy bajos de liquidez, lo que se traduce en swaps anormalmente altos. Como medida de protección a nuestros clientes y a nosotros mismos, hemos deshabilitado la apertura de nuevas [&#8230;]]]></description>
+		<wfw:commentRss>https://blog.darwinex.com/aviso-de-trading-deshabilitado-try/feed/?lang=es</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Horarios de trading modificados por cambio de hora en EE.UU.</title>
+		<link>https://blog.darwinex.com/horarios-de-trading-modificados-por-cambio-de-hora-en-ee-uu/?lang=es</link>
+		<comments>https://blog.darwinex.com/horarios-de-trading-modificados-por-cambio-de-hora-en-ee-uu/?lang=es#respond</comments>
+		<pubDate>Thu, 04 Mar 2021 09:42:41 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[TABLÓN]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17201</guid>
+		<description><![CDATA[Por favor toma nota de nuestros horarios de trading modificados (*) durante el período de 2 semanas entre el cambio de hora en EE.UU. el 14 de marzo y el posterior cambio de hora en Europa el 28 de marzo de 2021.]]></description>
+		<wfw:commentRss>https://blog.darwinex.com/horarios-de-trading-modificados-por-cambio-de-hora-en-ee-uu/feed/?lang=es</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Bajada de margen en XAGUSD (Clientes Profesionales) y XTIUSD (Clientes Minoristas y Profesionales)</title>
+		<link>https://blog.darwinex.com/bajada-de-margen-en-xagusd-clientes-profesionales-y-xtiusd-clientes-minoristas-y-profesionales/?lang=es</link>
+		<pubDate>Fri, 12 Feb 2021 06:30:40 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[TABLÓN]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17196</guid>
+		<description><![CDATA[Con motivo de la bajada de volatilidad, hemos bajado el margen requerido de XAGUSD para Clientes Profesionales. En paralelo, también hemos bajado el margen requerido de XTIUSD, por el mismo motivo, tanto para Minoristas como Profesionales.]]></description>
+		</item>
+		<item>
+		<title>Cambio de horarios de trading por el Día de los Presidentes en EE.UU. el 15 de febrero de 2021</title>
+		<link>https://blog.darwinex.com/cambio-de-horarios-de-trading-por-el-dia-de-los-presidentes-en-ee-uu-el-15-de-febrero-de-2021/?lang=es</link>
+		<comments>https://blog.darwinex.com/cambio-de-horarios-de-trading-por-el-dia-de-los-presidentes-en-ee-uu-el-15-de-febrero-de-2021/?lang=es#respond</comments>
+		<pubDate>Fri, 05 Feb 2021 10:31:17 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[TABLÓN]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17191</guid>
+		<description><![CDATA[Por favor toma nota de los cambios en nuestros horarios de trading por el Día de los Presidentes en EE.UU el lunes 15 de febrero de 2021. Commodities 15 de febrero de 2021 UTC XAUUSD Cierre temprano a las 17:43 UTC XAGUSD Cierre temprano a las 17:59 UTC XTIUSD Cierre temprano a las 17:44 UTC [&#8230;]]]></description>
+		<wfw:commentRss>https://blog.darwinex.com/cambio-de-horarios-de-trading-por-el-dia-de-los-presidentes-en-ee-uu-el-15-de-febrero-de-2021/feed/?lang=es</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Modificación de horarios de trading por festivo en Australia (26 de enero de 2021)</title>
+		<link>https://blog.darwinex.com/modificacion-de-horarios-de-trading-por-festivo-en-australia-26-de-enero-de-2021/?lang=es</link>
+		<pubDate>Thu, 21 Jan 2021 06:58:42 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[TABLÓN]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17179</guid>
+		<description><![CDATA[El martes 26 de enero de 2021 es el Día de Australia. Durante este día, los spreads podrían ampliarse y la liquidez contraerse. También se modificará el horario de trading del AUS200. Indices  Martes 26 de enero de 2021 AUS200 06:11 – 22:00 UTC &#160; El resto de los activos operará según su horario de trading habitual. [&#8230;]]]></description>
+		</item>
+		<item>
+		<title>Darwinex &#038; IBKR enero 2021: nuevos activos, nuevos tipos de cuenta y multidivisa</title>
+		<link>https://blog.darwinex.com/darwinex-ibkr-enero-2021-nuevos-activos-nuevos-tipos-de-cuenta-y-multidivisa/?lang=es</link>
+		<pubDate>Fri, 15 Jan 2021 07:27:56 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[PRODUCTO]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17170</guid>
+		<description><![CDATA[Tenemos novedades que nos gustaría compartir contigo en relación con nuestra oferta de Interactive Brokers.]]></description>
+		</item>
+		<item>
+		<title>Horarios de trading por festividad de Martin Luther King en EE.UU. el 18 de enero de 2021</title>
+		<link>https://blog.darwinex.com/horarios-de-trading-por-festividad-de-martin-luther-king-en-ee-uu-el-18-de-enero-de-2021/?lang=es</link>
+		<pubDate>Mon, 11 Jan 2021 07:21:32 +0000</pubDate>
+		<dc:creator><![CDATA[The Market Owl]]></dc:creator>
+				<category><![CDATA[TABLÓN]]></category>
+
+		<guid isPermaLink="false">https://blog.darwinex.com/?p=17164</guid>
+		<description><![CDATA[Por favor ten en cuenta que el lunes 18 de enero de 2021 se aplicará el siguiente horario de trading.
+]]></description>
+		</item>
+	</channel>
+</rss>

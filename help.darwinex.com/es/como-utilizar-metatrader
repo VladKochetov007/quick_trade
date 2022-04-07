@@ -1,0 +1,1714 @@
+<!doctype html><html lang="es"><head>
+    <meta charset="utf-8">
+    <title>
+      ¿Cómo utilizar MetaTrader 4?
+    </title>
+    <meta name="description" content="Metatrader es una plataforma de trading que destaca por su facilidad de manejo y por adaptarse a varios tipos de traders, desde los más novatos a los más profesionales.">
+    
+    <script src="/hs/hsstatic/jquery-libs/static-1.1/jquery/jquery-1.7.1.js"></script>
+<script>hsjQuery = window['jQuery'];</script>
+    <meta property="og:description" content="Metatrader es una plataforma de trading que destaca por su facilidad de manejo y por adaptarse a varios tipos de traders, desde los más novatos a los más profesionales.">
+    <meta property="og:title" content="¿Cómo utilizar MetaTrader 4?">
+    <meta name="twitter:description" content="Metatrader es una plataforma de trading que destaca por su facilidad de manejo y por adaptarse a varios tipos de traders, desde los más novatos a los más profesionales.">
+    <meta name="twitter:title" content="¿Cómo utilizar MetaTrader 4?">
+
+    
+
+    
+
+    <style>
+a.cta_button{-moz-box-sizing:content-box !important;-webkit-box-sizing:content-box !important;box-sizing:content-box !important;vertical-align:middle}.hs-breadcrumb-menu{list-style-type:none;margin:0px 0px 0px 0px;padding:0px 0px 0px 0px}.hs-breadcrumb-menu-item{float:left;padding:10px 0px 10px 10px}.hs-breadcrumb-menu-divider:before{content:'›';padding-left:10px}.hs-featured-image-link{border:0}.hs-featured-image{float:right;margin:0 0 20px 20px;max-width:50%}@media (max-width: 568px){.hs-featured-image{float:none;margin:0;width:100%;max-width:100%}}.hs-screen-reader-text{clip:rect(1px, 1px, 1px, 1px);height:1px;overflow:hidden;position:absolute !important;width:1px}
+</style>
+
+<link rel="stylesheet" href="/hs/hsstatic/ContentIcons/static-1.8/fontawesome/5.0.10/css/fontawesome-all.min.css">
+
+    
+
+
+    
+<!--  Added by GoogleAnalytics integration -->
+<script>
+var _hsp = window._hsp = window._hsp || [];
+_hsp.push(['addPrivacyConsentListener', function(consent) { if (consent.allowed || (consent.categories && consent.categories.analytics)) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create','UA-55287188-1','auto');
+  ga('send','pageview');
+}}]);
+</script>
+
+<!-- /Added by GoogleAnalytics integration -->
+
+    <link rel="canonical" href="https://help.darwinex.com/es/como-utilizar-metatrader">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta property="og:url" content="https://help.darwinex.com/es/como-utilizar-metatrader">
+<meta http-equiv="content-language" content="es">
+
+
+
+    <link href="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819703234/hubspot/themes/knowledge/assets/main.min.css" rel="stylesheet">
+    <link href="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819703664/hubspot/themes/knowledge/assets/_support-form.min.css" rel="stylesheet">
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819705943/hubspot/themes/knowledge/assets/kbdom.min.js"></script>
+    <style type="text/css" data-preview-theme="true">
+      .kb-article, .kb-search__suggestions__article-content, .kb-search-results__description {
+        font-family: arial, helvetica, sans-serif;
+      }
+      h1, h2, h3, h3 a, h4, h4 a, h5, h6, .kb__text-link, .kb__text-link-small, .kb-header, .kb-sticky-footer,
+      .kb-search__suggestions__article-title, .kb-search-results__title,
+      #hs_form_target_kb_support_form input.hs-button, #hs_form_target_kb_support_form label, input, select, textarea, #hs_form_target_kb_support_form .hs-field-desc, #hs_form_target_kb_support_form .hs-richtext p {
+        font-family: arial, helvetica, sans-serif;
+      }
+      a,
+      .kb-search__suggestions__breadcrumb,
+      .kb-header__nav .kbui-dropdown__link {
+        color: #007bba;
+      }
+      .kb-header,
+      .kb-header a,
+      .kb-header button.kb-button--link {
+        color: #007bba;
+      }
+      .kb-header svg * {
+        fill: #007bba;
+      }
+      .kb-search-section {
+        background-color: #ffffff;
+      }
+      .kb-search-section__title {
+        color: #FFFFFF;
+      }
+      .kb-search-section-with-image {
+        background-image: url(https://help.darwinex.com/hubfs/Darwinex_June2018/image/bg-definicion_DarkBlue.jpg);
+        background-size: cover;
+        color: #ffffff;
+        position: relative;
+      }
+      .kb-search-section-with-gradient {
+        background-color: ;
+        background-image: linear-gradient(180deg, #ffffff 0%, transparent 97%);
+      }
+      .kb-mobile-search-section {
+        background-color: #ffffff;
+      }
+      .kb-search__suggestions a:hover,
+      .kb-search__suggestions a:focus,
+      .kb-category-menu li.active > a,
+      .kb-category-menu li > a:hover {
+        background-color: rgba(0, 123, 186, .1);
+      }
+      .kb-theme--cards .kb-category-menu li.active > a,
+      .kb-theme--cards .kb-category-menu li > a:hover {
+        background-color: transparent;
+      }
+      .kb-breadcrumbs > ol > li > span,
+      .kb-breadcrumbs > ol > li > a > span,
+      .kb-breadcrumbs > .kb-breadcrumbs__mobile-back a {
+        font-family: helvetica
+      }
+      .kb-breadcrumbs__arrow--left * {
+        fill: #007bba
+      }
+      .kb-sidebar .kb-category-menu a,
+      .kb-mobile-menu .kb-mobile-menu__current-page,
+      .kb-mobile-menu ul > li > a {
+        font-family: helvetica
+      }
+      .kb-header__logo img {
+        max-height: 40px;
+      }
+      .kb-footer__logo img {
+        max-height: 24px;
+      }
+      /* SVG SUPPORT */
+      .kb-header__logo img[src$=".svg"] {
+        height: 40px;
+      }
+      .kb-footer__logo img[src$=".svg"] {
+        height: 24px;
+      }
+      /* MOBILE STYLES */
+      .kb-mobile-menu,
+      .kb-mobile-search__bar {
+        background-color: #ffffff;
+      }
+      .kb-mobile-menu a,
+      .kb-mobile-menu__current-page,
+      .kb-mobile-search__input,
+      .kb-search--open .kb-mobile-search__input {
+        color: #111111
+      }
+      .kb-mobile-search__input::-webkit-input-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__input::-moz-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__input:-ms-input-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__input:-moz-placeholder {
+        color: #111111
+      }
+      .kb-mobile-search__mag * {
+        fill: #111111
+      }
+      .kb-mobile-menu__arrow *,
+      .kb-mobile-search__close * {
+        stroke: #111111
+      }
+      @media (max-width: 767px) {
+        .kb-header__nav {
+          background-color: #ffffff
+        }
+        .kb-header,
+        .kb-header a {
+          color: #111111;
+        }
+        .kb-header svg * {
+          fill: #111111;
+        }
+        .kb-theme--content.kb-page--index .kb-header__nav-toggle svg *,
+        .kb-theme--content.kb-page--index .kb-header__nav-close svg *,
+        .kb-theme--tiles.kb-page--index .kb-header__nav-toggle svg *,
+        .kb-theme--tiles.kb-page--index .kb-header__nav-close svg *,
+        .kb-theme--minimal .kb-header__nav-toggle svg *,
+        .kb-theme--minimal .kb-header__nav-close svg *,
+        .kb-theme--cards .kb-header__nav-toggle svg *,
+        .kb-theme--cards .kb-header__nav-close svg *,
+        .kb-theme--default .kb-header__nav-toggle svg *,
+        .kb-theme--default .kb-header__nav-close svg * {
+          fill: #007bba;
+        }
+      }
+    </style>
+  <meta name="generator" content="HubSpot"></head>
+  <body class="kb-theme--cards ">
+    <header>
+      
+      
+  
+
+  
+
+  
+
+  <div class="kb-header" data-preview-id="kb-header">
+    <div class="kb-header-inner" id="kb-header">
+      <div class="kb-header__logo">
+        
+          <a href="https://help.darwinex.com">
+            <img src="https://help.darwinex.com/hubfs/scouting-program-landing/images/logos/logo-darwinex-vertical-inverse.svg" alt="logotipo de la compañía">
+          </a>
+        
+      </div>
+      <a class="kb-header__title" href="/es">
+        Centro de Documentación
+      </a>
+      <nav id="kb-header__nav" class="kb-header__nav" role="navigation">
+        <ul>
+          
+            <div class="kb-header__lang-switcher-container">
+              <button class="kb-header__lang-switcher-toggle kb-button--link" data-kbui-dropdown-contents="lang-switcher">
+                <div class="kb-header__lang-switcher-inner">
+                  <div class="kb-header__lang-switcher-icon">
+                    
+    <svg width="23" height="23" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <g fill-rule="evenodd">
+        <path d="M18.6 17.07a3.86 3.86 0 01-.5-2.35c.07-.45.24-.89.28-1.34.04-.46-.08-.97-.46-1.23-.8-.56-2 .43-2.84-.07a1.85 1.85 0 01-.58-.67c-.23-.4-.47-.8-.52-1.25-.05-.45.15-.96.57-1.12.1-.05.22-.07.3-.14.16-.13.14-.38.2-.58.14-.51.76-.69 1.3-.78.5-.08 1-.17 1.5-.11.78.09 1.54.5 2.29.67a9.49 9.49 0 01-1.53 8.97m-5.54-2.26c-.34.46-.82.81-1.14 1.3-.2.3-.34.67-.6.94-.21.22-.5.37-.72.59-.37.37-.5.93-.45 1.46.05.52.25 1.02.45 1.5v.02a9.53 9.53 0 01-1.5-.22c-.28-1.34-.5-2.7-.64-4.07-.03-.27-.06-.55-.18-.8-.42-.75-1.71-.92-1.78-1.78-.03-.36.18-.68.3-1.01.1-.34.07-.8-.26-.93l-.3-.07c-.34-.1-.5-.47-.75-.71-.31-.3-.84-.01-1.2-.24-.36-.23-.49-.65-.84-.87-.36-.23-.67-.74-.37-1.03-.36 0-.7-.13-1-.33A9.4 9.4 0 019.5 1.87c.06.03.1.06.17.08.43.15.9 0 1.35-.08.45-.06 1 0 1.22.4.05.1.08.23.06.34-.08.39-.6.45-.97.6-.33.13-.6.4-.73.74.28.08.57.16.78.36.2.2.31.53.15.77-.16.25-.5.28-.8.33-.88.17-1.72.8-2.59.57-.2-.06-.39-.16-.6-.15-.2 0-.42.2-.36.39.47.23 1.03.71.76 1.17-.16.28-.6.36-.7.67-.1.29.03.75-.27.78-.1 0-.2-.07-.29-.13a1.4 1.4 0 00-1.55-.01c-.1.07-.2.16-.24.28-.1.3.23.59.54.66.31.08.66.06.93.23.4.25.53.86.98.96.26.06.51-.07.76-.13.74-.2 1.51.17 2.13.62.61.45 1.17 1.01 1.87 1.3.4.17.86.26 1.12.6.36.44.19 1.12-.15 1.59m1.91-8.54c.23-.34.93-.4.8-.79-.4-.05-.69-.53-.56-.91a.74.74 0 011-.4c.22.12.35.34.55.5.19.14.5.2.65.01.06-.08.08-.19.1-.3 0-.06.03-.12.04-.19l.33.3a9.5 9.5 0 011.7 2.34c-.4.14-.84.26-1.25.16-.37-.1-.7-.35-1.07-.37-.33-.03-.65.12-.95.25-.3.14-.64.25-.96.16-.32-.1-.56-.49-.38-.76m7.35 3.92l-.07-.54-.06-.4a12 12 0 00-.15-.7l-.04-.17a11.3 11.3 0 00-1.53-3.43l-.07-.1a11.33 11.33 0 00-1.31-1.57A11.11 11.11 0 009.53.14L9.19.2a11.7 11.7 0 00-2.84.91l-.22.1a9.2 9.2 0 00-1.31.8c-.17.1-.33.23-.49.35l-.3.24A10.77 10.77 0 002 4.83l-.1.12c-.39.59-.72 1.21-1 1.86v.02a11.11 11.11 0 008.62 15.4 13.47 13.47 0 001.7.13 11.1 11.1 0 007.89-3.26 11.74 11.74 0 001.11-1.32l.05-.06.5-.74.08-.14.38-.72.1-.22a13.39 13.39 0 00.62-1.63l.11-.44c.05-.19.1-.37.13-.55l.09-.6.05-.43a10.92 10.92 0 000-2.06" id="a" />
+      </g>
+    </svg>
+  
+                  </div>
+                  <div class="kb-header__lang-switcher__selected-lang">
+                    
+    Español
+  
+                  </div>
+                  <div class="kb-header__lang-switcher__caret"></div>
+                </div>
+              </button>
+              <div class="kbui-dropdown-contents" data-kbui-dropdown-name="lang-switcher">
+                <div class="kb-header__langs-dropdown">
+                  <ul>
+                    
+                      
+                        <li>
+                          <a href="https://help.darwinex.com//trade-fx-cfd/metatrader-guide" class="kbui-dropdown__link">
+                            <div class="kb-header__langs-dropdown__link-content">
+                              
+    English
+  
+                            </div>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                    
+                  </ul>
+                </div>
+              </div>
+            </div>
+          
+          
+            
+<li class="kb-header__company-website-link">
+  <a href="https://www.darwinex.com/es/contact" target="_blank" rel="noopener">
+    Contáctanos
+    <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.11 10.223V7.0472l1.308-1.3077v4.4835c0 .9323-.7628 1.6952-1.6953 1.6952H1.6952C.7628 11.9182 0 11.1553 0 10.223V4.1955C0 3.2628.7628 2.5 1.6952 2.5h4.4833L4.8707 3.8082H1.6952c-.2099 0-.3872.1771-.3872.3873v6.0275c0 .2098.1773.387.3872.387h6.0275c.21 0 .3873-.1772.3873-.387zM5.9428.4417L12.0137 0l-.442 6.0708L9.6368 4.136 6.0925 7.68 4.3333 5.9207l3.544-3.5442L5.9428.4417z" fill="#007bba" />
+    </svg>
+  </a>
+</li>
+
+          
+          
+          
+          
+        </ul>
+      </nav>
+      
+        <nav id="kb-header__langs-nav" class="kb-header__nav kb-header__langs-nav" role="navigation">
+          <ul>
+            
+              
+                <li>
+                  <a href="https://help.darwinex.com//trade-fx-cfd/metatrader-guide">
+    English
+  </a>
+                </li>
+              
+            
+              
+            
+          </ul>
+        </nav>
+      
+      <div class="kb-header__nav-controls-container">
+        <button id="kb-header__close-target" class="kb-header__nav-close" role="button" aria-label="Close main navigation menu" aria-controls="kb-header__nav kb-header__langs-nav">
+          <span class="kb-icon close" aria-hidden="true">
+            <svg width="16" height="17" xmlns="http://www.w3.org/2000/svg">
+              <g fill="#2D3E50" fill-rule="nonzero">
+                <path d="M15.07107 1.42893c.59587.59588.88893 1.23239.0505 2.07081L2.99975 15.62158c-.83842.83842-1.48089.5394-2.0708-.05051C.33305 14.97519.04 14.33868.87841 13.50026L13.00026 1.37842c.83842-.83842 1.48089-.5394 2.0708.05051z" />
+                <path d="M15.07107 15.57107c-.59588.59587-1.23239.88893-2.07081.0505L.87842 3.49975C.04 2.66132.33902 2.01885.92893 1.42894 1.52481.83305 2.16132.54 2.99974 1.37841l12.12184 12.12184c.83842.83842.5394 1.48089-.05051 2.0708z" />
+              </g>
+            </svg>
+          </span>
+        </button>
+        
+          <button id="kb-header__langs-nav-target" class="kb-header__nav-toggle" role="button" aria-controls="kb-header__langs-nav">
+            <span class="kb-icon langs">
+              
+    <svg width="23" height="23" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <g fill-rule="evenodd">
+        <path d="M18.6 17.07a3.86 3.86 0 01-.5-2.35c.07-.45.24-.89.28-1.34.04-.46-.08-.97-.46-1.23-.8-.56-2 .43-2.84-.07a1.85 1.85 0 01-.58-.67c-.23-.4-.47-.8-.52-1.25-.05-.45.15-.96.57-1.12.1-.05.22-.07.3-.14.16-.13.14-.38.2-.58.14-.51.76-.69 1.3-.78.5-.08 1-.17 1.5-.11.78.09 1.54.5 2.29.67a9.49 9.49 0 01-1.53 8.97m-5.54-2.26c-.34.46-.82.81-1.14 1.3-.2.3-.34.67-.6.94-.21.22-.5.37-.72.59-.37.37-.5.93-.45 1.46.05.52.25 1.02.45 1.5v.02a9.53 9.53 0 01-1.5-.22c-.28-1.34-.5-2.7-.64-4.07-.03-.27-.06-.55-.18-.8-.42-.75-1.71-.92-1.78-1.78-.03-.36.18-.68.3-1.01.1-.34.07-.8-.26-.93l-.3-.07c-.34-.1-.5-.47-.75-.71-.31-.3-.84-.01-1.2-.24-.36-.23-.49-.65-.84-.87-.36-.23-.67-.74-.37-1.03-.36 0-.7-.13-1-.33A9.4 9.4 0 019.5 1.87c.06.03.1.06.17.08.43.15.9 0 1.35-.08.45-.06 1 0 1.22.4.05.1.08.23.06.34-.08.39-.6.45-.97.6-.33.13-.6.4-.73.74.28.08.57.16.78.36.2.2.31.53.15.77-.16.25-.5.28-.8.33-.88.17-1.72.8-2.59.57-.2-.06-.39-.16-.6-.15-.2 0-.42.2-.36.39.47.23 1.03.71.76 1.17-.16.28-.6.36-.7.67-.1.29.03.75-.27.78-.1 0-.2-.07-.29-.13a1.4 1.4 0 00-1.55-.01c-.1.07-.2.16-.24.28-.1.3.23.59.54.66.31.08.66.06.93.23.4.25.53.86.98.96.26.06.51-.07.76-.13.74-.2 1.51.17 2.13.62.61.45 1.17 1.01 1.87 1.3.4.17.86.26 1.12.6.36.44.19 1.12-.15 1.59m1.91-8.54c.23-.34.93-.4.8-.79-.4-.05-.69-.53-.56-.91a.74.74 0 011-.4c.22.12.35.34.55.5.19.14.5.2.65.01.06-.08.08-.19.1-.3 0-.06.03-.12.04-.19l.33.3a9.5 9.5 0 011.7 2.34c-.4.14-.84.26-1.25.16-.37-.1-.7-.35-1.07-.37-.33-.03-.65.12-.95.25-.3.14-.64.25-.96.16-.32-.1-.56-.49-.38-.76m7.35 3.92l-.07-.54-.06-.4a12 12 0 00-.15-.7l-.04-.17a11.3 11.3 0 00-1.53-3.43l-.07-.1a11.33 11.33 0 00-1.31-1.57A11.11 11.11 0 009.53.14L9.19.2a11.7 11.7 0 00-2.84.91l-.22.1a9.2 9.2 0 00-1.31.8c-.17.1-.33.23-.49.35l-.3.24A10.77 10.77 0 002 4.83l-.1.12c-.39.59-.72 1.21-1 1.86v.02a11.11 11.11 0 008.62 15.4 13.47 13.47 0 001.7.13 11.1 11.1 0 007.89-3.26 11.74 11.74 0 001.11-1.32l.05-.06.5-.74.08-.14.38-.72.1-.22a13.39 13.39 0 00.62-1.63l.11-.44c.05-.19.1-.37.13-.55l.09-.6.05-.43a10.92 10.92 0 000-2.06" id="a" />
+      </g>
+    </svg>
+  
+            </span>
+          </button>
+        
+        <button id="kb-header__main-nav-target" class="kb-header__nav-toggle" role="button" aria-label="Open main navigation menu" aria-controls="kb-header__nav">
+          <span class="kb-icon menu">
+            <svg width="25" height="17" xmlns="http://www.w3.org/2000/svg">
+              <g fill="#2D3E50" fill-rule="nonzero">
+                <path d="M24.56897 2.295c0 .85-.2931 1.513-1.72414 1.513H2.15517C.72414 3.808.43103 3.1365.43103 2.295c0-.85.2931-1.513 1.72414-1.513h20.68966c1.43103 0 1.72414.6715 1.72414 1.513zM24.56897 8.8315c0 .85-.2931 1.513-1.72414 1.513H2.15517c-1.43103 0-1.72414-.6715-1.72414-1.513 0-.85.2931-1.513 1.72414-1.513h20.68966c1.43103 0 1.72414.6715 1.72414 1.513zM24.56897 15.3595c0 .85-.2931 1.513-1.72414 1.513H2.15517c-1.43103 0-1.72414-.6715-1.72414-1.513 0-.85.2931-1.513 1.72414-1.513h20.68966c1.43103 0 1.72414.6715 1.72414 1.513z" />
+              </g>
+            </svg>
+          </span>
+        </button>
+    </div>
+    </div>
+  </div>
+  <!-- Mobile Menu -->
+  <div class="kb-mobile-search-section">
+    <div class="kb-mobile-header">
+      <div class="kb-mobile-menu">
+        <div class="kb-mobile-menu__current-page">
+          
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            
+          
+            
+              
+                
+              
+                
+              
+                
+              
+                
+                Guía MetaTrader
+                
+              
+            
+          
+            
+              
+            
+          
+            
+              
+                
+              
+                
+              
+                
+              
+            
+          
+            
+              
+                
+              
+                
+              
+            
+          
+            
+              
+            
+          
+            
+              
+            
+          
+            
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            
+          
+          <svg class="kb-mobile-menu__arrow" width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#00A38D" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <ul>
+          
+          <li>
+            
+            
+            <a href="/es/tu-cuenta-darwinex">
+              Tu cuenta Darwinex
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/es/tu-cuenta-darwinex#regulación-y-seguridad-de-fondos">
+                  Regulación y seguridad de fondos
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/tu-cuenta-darwinex#apertura-de-cuenta">
+                  Apertura de cuenta
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/tu-cuenta-darwinex#depósitos-y-retiradas">
+                  Depósitos y retiradas
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/tu-cuenta-darwinex#seguridad-de-tu-cuenta">
+                  Seguridad de tu cuenta
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li class="active open">
+            
+            
+            <a href="/es/operar-fx-cfd">
+              Operar FX / CFD
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/es/operar-fx-cfd#primeros-pasos-como-trader">
+                  Primeros pasos como trader
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/operar-fx-cfd#condiciones-de-brokeraje">
+                  Condiciones de brokeraje
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/operar-fx-cfd#básicos-de-trading">
+                  Básicos de trading
+                </a>
+              </li>
+              
+              
+              
+              <li class="active">
+                <a href="/es/operar-fx-cfd#guía-metatrader">
+                  Guía MetaTrader
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/proveer-un-darwin">
+              Proveer un DARWIN
+            </a>
+            <ul>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/invertir-en-darwins">
+              Invertir en DARWINs
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/es/invertir-en-darwins#primeros-pasos-como-inversor">
+                  Primeros pasos como inversor
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/invertir-en-darwins#el-activo-darwin">
+                  El activo DARWIN
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/invertir-en-darwins#crear-un-portfolio-de-darwins">
+                  Crear un portfolio de DARWINs
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/mundo-darwinex">
+              Mundo Darwinex
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/es/mundo-darwinex#métricas-y-gráficos">
+                  Métricas y gráficos
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/mundo-darwinex#atributos">
+                  Atributos
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/asignación-de-capital-darwinia">
+              Asignación de capital DarwinIA
+            </a>
+            <ul>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/darwinex-ibkr">
+              Darwinex &amp; IBKR
+            </a>
+            <ul>
+              
+            </ul>
+          </li>
+          
+          <li>
+            
+            
+            <a href="/es/darwinex-pro">
+              Darwinex Pro
+            </a>
+            <ul>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#sobre-darwinex-pro">
+                  Sobre Darwinex Pro
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#modelo-económico-pro">
+                  Modelo Económico Pro
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#regulación">
+                  Regulación
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#captando-capital">
+                  Captando Capital
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#cómo-solicito-activar-pro">
+                  ¿Cómo solicito activar Pro?
+                </a>
+              </li>
+              
+              
+              
+              <li>
+                <a href="/es/darwinex-pro#la-experiencia-del-inversor-en-pro">
+                  La experiencia del inversor en Pro
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+      <div class="kb-mobile-search kb-search" kb-language-tag="es">
+        <div class="kb-mobile-search__placeholder"></div>
+        <div class="kb-mobile-search__box">
+          <div class="kb-mobile-search__bar">
+            <svg class="kb-mobile-search__mag" width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.02 12.672l-3.64-3.64a5.687 5.687 0 0 0 1.06-3.312A5.726 5.726 0 0 0 5.72 0 5.726 5.726 0 0 0 0 5.72a5.726 5.726 0 0 0 5.72 5.72 5.687 5.687 0 0 0 3.311-1.06l3.641 3.64a.95.95 0 0 0 1.348 0 .953.953 0 0 0 0-1.348zm-8.3-3.139a3.813 3.813 0 1 1 0-7.626 3.813 3.813 0 0 1 0 7.626z" fill="#4A4A4A" fill-rule="evenodd" />
+            </svg>
+            <form action="/es/kb-search-results">
+              <input type="text" class="kb-mobile-search__input kb-search__input" name="term" autocomplete="off" placeholder="Buscar respuestas">
+              <input type="hidden" name="ref" value="33853672917">
+            </form>
+            <svg class="kb-mobile-search__close" width="14" height="14" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#4A4A4A" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12.314L12.314 1M12.314 12.314L1 1" />
+              </g>
+            </svg>
+          </div>
+          <ul class="kb-search__suggestions" data-lang="Resultados para "></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    kbDom.whenReady(function() {
+          // Mobile Nav Menu
+          var mobileToggle = function() {
+            var navMenuOpen = document.getElementById('kb-header__main-nav-target');
+            var langNavOpen = document.getElementById('kb-header__langs-nav-target');
+            var navClose = document.getElementById('kb-header__close-target');
+
+            navMenuOpen.addEventListener('click',function() {
+              document.body.classList.toggle('kb-header__main-nav-open');
+            });
+
+            if (langNavOpen) {
+            langNavOpen.addEventListener('click',function() {
+              document.body.classList.toggle('kb-header__lang-nav-open');
+            });
+            }
+
+            navClose.addEventListener('click',function() {
+              document.body.classList.remove('kb-header__main-nav-open');
+              document.body.classList.remove('kb-header__lang-nav-open');
+            });
+
+          };
+          window.addEventListener('click', mobileToggle);
+          mobileToggle();
+
+      kbDom.initDropdown(document.querySelector('[data-kbui-dropdown-contents="lang-switcher"]'))
+
+      // Mobile Cat Menu
+      document.querySelector('.kb-mobile-menu__current-page').addEventListener('click',function() {
+        document.querySelector('.kb-mobile-header').classList.toggle('menu-open');
+      });
+      document.querySelector('.kb-mobile-search__mag').addEventListener('click',function() {
+        document.querySelector('.kb-mobile-header').classList.toggle('search-open');
+        if (document.querySelector('.kb-mobile-header').classList.contains('search-open')) {
+          document.querySelector('.kb-mobile-search__input').focus();
+        }
+      });
+      document.querySelector('.kb-mobile-search__close').addEventListener('click',function() {
+        document.querySelector('.kb-mobile-header').classList.remove('search-open');
+      });
+    });
+  </script>
+      
+<div class="kb-search-section kb-search-section--narrow kb-search-section-with-image  ">
+  <div class="kb-search-section__content content-container">
+    <div class="kb-search" kb-language-tag="es">
+      <div class="kb-search__placeholder"></div>
+      <div class="kb-search__box">
+        <div class="kb-search__bar">
+          <svg class="kb-search__mag" width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.02 12.672l-3.64-3.64a5.687 5.687 0 0 0 1.06-3.312A5.726 5.726 0 0 0 5.72 0 5.726 5.726 0 0 0 0 5.72a5.726 5.726 0 0 0 5.72 5.72 5.687 5.687 0 0 0 3.311-1.06l3.641 3.64a.95.95 0 0 0 1.348 0 .953.953 0 0 0 0-1.348zm-8.3-3.139a3.813 3.813 0 1 1 0-7.626 3.813 3.813 0 0 1 0 7.626z" fill="#4A4A4A" fill-rule="evenodd" />
+          </svg>
+          <form action="/es/kb-search-results">
+            <input type="text" class="kb-search__input" name="term" autocomplete="off" placeholder="Buscar respuestas" required>
+          </form>
+          <svg class="kb-search__close" width="14" height="14" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#4A4A4A" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12.314L12.314 1M12.314 12.314L1 1" />
+            </g>
+          </svg>
+        </div>
+        <ul class="kb-search__suggestions" data-lang="Resultados para "></ul>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    </header>
+    <main data-preview-id="kb-article-main">
+      
+<div class="content-container-outer">
+  <div class="content-container">
+    
+<div class="kb-breadcrumbs">
+  <div class="kb-breadcrumbs__mobile-back">
+    <svg class="kb-breadcrumbs__arrow kb-breadcrumbs__arrow--left" width="7" height="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M.055 5.7194c.018-.045.0518-.0835.0795-.125.0166-.0255.0322-.052.0489-.0775.007-.011.0116-.024.0216-.034L5.2426.2328c.2877-.3.7662-.3115 1.0685-.026a.7468.7468 0 0 1 .0262 1.0605L1.7954 6l4.5419 4.733a.7462.7462 0 0 1-.0262 1.0601.7563.7563 0 0 1-.5214.207.7568.7568 0 0 1-.547-.2325L.205 6.5174c-.01-.0105-.0146-.023-.0216-.0345-.0167-.025-.0323-.0515-.0489-.077-.0277-.0415-.0615-.08-.0796-.125-.0186-.0455-.0222-.0935-.0312-.141C.0147 6.0934 0 6.0474 0 5.9999c0-.047.0146-.093.0237-.1395.009-.0475.0126-.096.0312-.141" fill="#7C98B6" fill-rule="evenodd" />
+    </svg>
+    <a href="/es">Volver al inicio</a>
+  </div>
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/es">
+        <span itemprop="name">Centro de Documentación</span>
+      </a>
+      <meta itemprop="position" content="1">
+    </li>
+    
+      
+        
+      
+        
+          <svg class="kb-breadcrumbs__arrow kb-breadcrumbs__arrow--right" width="7" height="12" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.4905 5.7194c-.018-.045-.0518-.0835-.0795-.125-.0167-.0255-.0323-.052-.049-.0775-.007-.011-.0115-.024-.0216-.034L1.3028.2328c-.2876-.3-.7662-.3115-1.0684-.026a.7468.7468 0 0 0-.0262 1.0605L4.75 6l-4.542 4.733a.7462.7462 0 0 0 .0263 1.0601.7563.7563 0 0 0 .5213.207.7568.7568 0 0 0 .5471-.2325l5.0376-5.2501c.0101-.0105.0146-.023.0217-.0345.0166-.025.0322-.0515.0489-.077.0277-.0415.0614-.08.0795-.125.0187-.0455.0222-.0935.0313-.141.009-.0465.0237-.0925.0237-.14 0-.047-.0147-.093-.0237-.1395-.009-.0475-.0126-.096-.0313-.141" fill="#7C98B6" fill-rule="evenodd" />
+          </svg>
+          <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            
+              
+              
+              <a itemprop="item" href="/es/operar-fx-cfd">
+                  <span itemprop="name">Operar FX / CFD</span>
+              </a>
+            
+            <meta itemprop="position" content="2">
+          </li>
+          
+            
+              
+            
+              
+            
+              
+            
+              
+                <svg class="kb-breadcrumbs__arrow kb-breadcrumbs__arrow--right" width="7" height="12" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6.4905 5.7194c-.018-.045-.0518-.0835-.0795-.125-.0167-.0255-.0323-.052-.049-.0775-.007-.011-.0115-.024-.0216-.034L1.3028.2328c-.2876-.3-.7662-.3115-1.0684-.026a.7468.7468 0 0 0-.0262 1.0605L4.75 6l-4.542 4.733a.7462.7462 0 0 0 .0263 1.0601.7563.7563 0 0 0 .5213.207.7568.7568 0 0 0 .5471-.2325l5.0376-5.2501c.0101-.0105.0146-.023.0217-.0345.0166-.025.0322-.0515.0489-.077.0277-.0415.0614-.08.0795-.125.0187-.0455.0222-.0935.0313-.141.009-.0465.0237-.0925.0237-.14 0-.047-.0147-.093-.0237-.1395-.009-.0475-.0126-.096-.0313-.141" fill="#7C98B6" fill-rule="evenodd" />
+                </svg>
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                  <span itemprop="name">Guía MetaTrader</span>
+                  <meta itemprop="position" content="3">
+                </li>
+              
+            
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+  </ol>
+</div>
+    <div class="main-body">
+      <div class="kb-sidebar">
+        
+<div class="kb-category-menu">
+  <ul>
+    
+    <li>
+        
+        
+      <a href="/es/tu-cuenta-darwinex">
+        <div class="kb-category-menu-option" data-id="14312900806">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Tu cuenta Darwinex
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="14312900807">
+          
+          
+          <a href="/es/tu-cuenta-darwinex#regulación-y-seguridad-de-fondos">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Regulación y seguridad de fondos
+          </a>
+        </li>
+        
+        <li data-id="14312900808">
+          
+          
+          <a href="/es/tu-cuenta-darwinex#apertura-de-cuenta">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Apertura de cuenta
+          </a>
+        </li>
+        
+        <li data-id="14312900809">
+          
+          
+          <a href="/es/tu-cuenta-darwinex#depósitos-y-retiradas">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Depósitos y retiradas
+          </a>
+        </li>
+        
+        <li data-id="14312900811">
+          
+          
+          <a href="/es/tu-cuenta-darwinex#seguridad-de-tu-cuenta">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Seguridad de tu cuenta
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li class="open">
+        
+        
+      <a href="/es/operar-fx-cfd">
+        <div class="kb-category-menu-option" data-id="12626433441">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Operar FX / CFD
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="14312900812">
+          
+          
+          <a href="/es/operar-fx-cfd#primeros-pasos-como-trader">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Primeros pasos como trader
+          </a>
+        </li>
+        
+        <li data-id="14312900813">
+          
+          
+          <a href="/es/operar-fx-cfd#condiciones-de-brokeraje">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Condiciones de brokeraje
+          </a>
+        </li>
+        
+        <li data-id="14312900814">
+          
+          
+          <a href="/es/operar-fx-cfd#básicos-de-trading">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Básicos de trading
+          </a>
+        </li>
+        
+        <li class="active" data-id="14312900815">
+          
+          
+          <a href="/es/operar-fx-cfd#guía-metatrader">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Guía MetaTrader
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/proveer-un-darwin">
+        <div class="kb-category-menu-option" data-id="24313327274">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Proveer un DARWIN
+        </div>
+        
+      </a>
+      <ul>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/invertir-en-darwins">
+        <div class="kb-category-menu-option" data-id="14312900817">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Invertir en DARWINs
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="14440465485">
+          
+          
+          <a href="/es/invertir-en-darwins#primeros-pasos-como-inversor">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Primeros pasos como inversor
+          </a>
+        </li>
+        
+        <li data-id="14312900818">
+          
+          
+          <a href="/es/invertir-en-darwins#el-activo-darwin">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            El activo DARWIN
+          </a>
+        </li>
+        
+        <li data-id="14312900819">
+          
+          
+          <a href="/es/invertir-en-darwins#crear-un-portfolio-de-darwins">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Crear un portfolio de DARWINs
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/mundo-darwinex">
+        <div class="kb-category-menu-option" data-id="13439571282">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Mundo Darwinex
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="13439571283">
+          
+          
+          <a href="/es/mundo-darwinex#métricas-y-gráficos">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Métricas y gráficos
+          </a>
+        </li>
+        
+        <li data-id="14312900822">
+          
+          
+          <a href="/es/mundo-darwinex#atributos">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Atributos
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/asignación-de-capital-darwinia">
+        <div class="kb-category-menu-option" data-id="14312900823">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Asignación de capital DarwinIA
+        </div>
+        
+      </a>
+      <ul>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/darwinex-ibkr">
+        <div class="kb-category-menu-option" data-id="33234814406">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Darwinex &amp; IBKR
+        </div>
+        
+      </a>
+      <ul>
+        
+      </ul>
+    </li>
+    
+    <li>
+        
+        
+      <a href="/es/darwinex-pro">
+        <div class="kb-category-menu-option" data-id="59513183410">
+          <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+          Darwinex Pro
+        </div>
+        
+        <div>
+          <svg width="12" height="7" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.6817 1.6816l-4.5364 4-4.5364-3.9315" stroke="#007bba" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        
+      </a>
+      <ul>
+        
+        <li data-id="65736201080">
+          
+          
+          <a href="/es/darwinex-pro#sobre-darwinex-pro">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Sobre Darwinex Pro
+          </a>
+        </li>
+        
+        <li data-id="65736033143">
+          
+          
+          <a href="/es/darwinex-pro#modelo-económico-pro">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Modelo Económico Pro
+          </a>
+        </li>
+        
+        <li data-id="65736201047">
+          
+          
+          <a href="/es/darwinex-pro#regulación">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Regulación
+          </a>
+        </li>
+        
+        <li data-id="66312277856">
+          
+          
+          <a href="/es/darwinex-pro#captando-capital">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            Captando Capital
+          </a>
+        </li>
+        
+        <li data-id="65736201089">
+          
+          
+          <a href="/es/darwinex-pro#cómo-solicito-activar-pro">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            ¿Cómo solicito activar Pro?
+          </a>
+        </li>
+        
+        <li data-id="65737317775">
+          
+          
+          <a href="/es/darwinex-pro#la-experiencia-del-inversor-en-pro">
+            <span class="kb-category-menu-option__color-bar" style="background-color: #007bba;"></span>
+            La experiencia del inversor en Pro
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+  </ul>
+</div>
+
+<script>
+  kbDom.whenReady(function() {
+    document.querySelectorAll('.kb-category-menu svg').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        var li = kbDom.closest('li', this);
+        if (li) {
+          li.classList.toggle('open');
+        }
+      });
+    })
+  })
+</script>
+      </div>
+      <div class="kb-content">
+        
+
+
+
+<div class="kb-article tinymce-content">
+  <h1><span id="hs_cos_wrapper_name" class="hs_cos_wrapper hs_cos_wrapper_meta_field hs_cos_wrapper_type_text" style="" data-hs-cos-general-type="meta_field" data-hs-cos-type="text">¿Cómo utilizar MetaTrader 4?</span></h1>
+  
+    <h2>Metatrader es una plataforma de trading que destaca por su facilidad de manejo y por adaptarse a varios tipos de traders, desde los más novatos a los más profesionales.</h2>
+   <p>Metatrader 4 y 5 son las Plataformas Trading que el bróker de Darwinex pone a disposición de los traders para operar FX y CFDs.</p>
+<p>Metatrader es la plataforma más extendida para los traders independientes y encontrar recursos para la misma es realmente sencillo.</p>
+<p>En esta guía vamos a explicar:</p>
+<ul>
+<li>Cómo descargar e instalar la plataforma Metatrader para operar FX y CFDs con Darwinex.</li>
+<li>Cómo ver la cotización de los diferentes activos y realizar gráficos y análisis técnico sobre ellos.</li>
+<li>Cómo realizar la operativa como trader a través de las distintas órdenes que existen en Metatrader.</li>
+<li>Diferencias entre Metatrader 4 y Metatrader 5</li>
+</ul>
+<p>Además, te daremos varios consejos que te permitirán sacarle mucho más provecho a la misma.</p>
+<h4>Contenido</h4>
+<p><a href="#descarga" rel=" noopener">1. Descarga e Instalación</a></p>
+<p><a href="#vista-general" rel=" noopener">2. Vista General Metatrader</a></p>
+<p><a href="#cotizaciones" rel=" noopener">3. Cotizaciones</a></p>
+<p><a href="#graficos" rel=" noopener">4. Gráficos</a></p>
+<p><a href="#abrir-cerrar" rel=" noopener">5. Cómo Abrir y Cerrar una Operación</a></p>
+<p><a href="#sl-tp" rel=" noopener">6. Órdenes Stop Loss y Take Profit</a></p>
+<p><a href="#ordenes-pendientes" rel=" noopener">7. Órdenes Pendientes</a></p>
+<p><a href="#analisis-tecnico" rel=" noopener">8. Herramientas de Análisis Técnico</a></p>
+<p><a href="#plantillas" rel=" noopener">9. Plantillas</a></p>
+<p><a href="#operaciones" rel=" noopener">10. Operaciones Abiertas e Histórico de Operaciones</a></p>
+<p><a href="#diferencias" rel=" noopener">11. Diferencias entre Metatrader 4 (MT4) y Metatrader 5 (MT5)</a></p>
+<p><a href="#consejos" rel=" noopener">12. Consejos</a></p>
+<a id="descarga" data-hs-anchor="true"></a>
+<h3>1. Descarga e Instalación</h3>
+<p>La descarga de la plataforma la realizaremos desde el portal de Darwinex dónde, una vez logueados, pulsaremos en "Cuenta demo Metatrader" o "Cuenta real Metatrader" y, una vez allí, encontraremos un enlace para descargar el terminar MT4 o MT5 en versión Windows.</p>
+<p>Descargado el archivo "Darwinexsetup.exe", lo ejecutaremos y no tenemos más que seguir las instrucciones en pantalla para instalar el programa:</p>
+<ul>
+<li>Pulsamos en "Configuración" si queremos elegir el directorio queremos instalar Metatrader.</li>
+<li>Pulsamos en "siguiente" para iniciar el proceso de Instalación.</li>
+<li>Al finalizar tendremos la plataforma instalada y lista para comenzar a operar en Darwinex.</li>
+</ul>
+<div class="hs-callout-type-tip" data-hs-callout-type="tip">
+<p><a href="https://help.darwinex.com/es/descargar-mt4-mt5-darwinex" rel=" noopener">Accede a los enlaces directos de descarga</a>.</p>
+</div>
+<a id="vista-general" data-hs-anchor="true"></a>
+<h3>2. Vista General Metatrader 4</h3>
+<p>Si bien posteriormente iremos detallando los aspectos concretos de esta plataforma, veamos de una manera más general las distintas partes que componen esta plataforma.</p>
+<img alt="INI005_Metatrader" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Metatrader.png?width=688&amp;name=INI005_Metatrader.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Metatrader.png?width=344&amp;name=INI005_Metatrader.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Metatrader.png?width=688&amp;name=INI005_Metatrader.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Metatrader.png?width=1032&amp;name=INI005_Metatrader.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Metatrader.png?width=1376&amp;name=INI005_Metatrader.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Metatrader.png?width=1720&amp;name=INI005_Metatrader.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Metatrader.png?width=2064&amp;name=INI005_Metatrader.png 2064w" sizes="(max-width: 688px) 100vw, 688px"><br>
+<ol>
+<li><strong>Observación del Mercado</strong>, dónde podemos ver las cotizaciones de los distintos activos.</li>
+<li><strong>Navegador</strong>, dónde podremos cambiar de cuentas, o ver los diferentes indicadores, asesores expertos o scripts.</li>
+<li><strong>Profundidad de Mercado</strong>, dónde podremos operar con un Click con un lotaje, stop y take profit predefinido, o incluso poner órdenes pendientes.</li>
+<li><strong>Pestaña de Operaciones</strong>, dónde veremos el saldo de nuestra cuenta y las órdenes abiertas o pendientes.</li>
+<li><strong>Pestaña de Historial de Cuenta</strong>, dónde podremos ver nuestro histórico de operaciones.</li>
+<li><strong>Gráficos</strong>, que podremos organizar a nuestro gusto.</li>
+<li><strong>Barra de Herramientas</strong>, para acceder a distintas funcionalidades de Metatrader.</li>
+</ol>
+<a id="cotizaciones" data-hs-anchor="true"></a>
+<h3>3. Cotizaciones</h3>
+<p>Las cotizaciones en MetaTrader 4 se pueden observar a través de una ventana llamada "Observación del Mercado", la cual se puede activar de diferentes maneras:</p>
+<p>Utilizando el menú VER/Observación del Mercado.</p>
+<p>Pulsando la combinación de teclas Ctrl+M.</p>
+<p>Apretando el botón correspondiente en la barra de herramientas.</p>
+<p><img alt="INI005_Barra_Cotizaciones" class="hs-image-align-center" style="width: 311px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Cotizaciones.jpg?width=311&amp;name=INI005_Barra_Cotizaciones.jpg" width="311" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Cotizaciones.jpg?width=156&amp;name=INI005_Barra_Cotizaciones.jpg 156w, https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Cotizaciones.jpg?width=311&amp;name=INI005_Barra_Cotizaciones.jpg 311w, https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Cotizaciones.jpg?width=467&amp;name=INI005_Barra_Cotizaciones.jpg 467w, https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Cotizaciones.jpg?width=622&amp;name=INI005_Barra_Cotizaciones.jpg 622w, https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Cotizaciones.jpg?width=778&amp;name=INI005_Barra_Cotizaciones.jpg 778w, https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Cotizaciones.jpg?width=933&amp;name=INI005_Barra_Cotizaciones.jpg 933w" sizes="(max-width: 311px) 100vw, 311px"></p>
+<p>Una vez abierta la ventana de Observación del Mercado:</p>
+<p><strong>Paso 1</strong>. Aprieta el botón derecho del ratón para que aparezca el menú contextual y pulsa en "Símbolos" tal y como se muestra en la siguiente imagen.</p>
+<p><img alt="INI005_Cotizaciones" class="hs-image-align-center" style="width: 306px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones.png?width=306&amp;name=INI005_Cotizaciones.png" width="306" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones.png?width=153&amp;name=INI005_Cotizaciones.png 153w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones.png?width=306&amp;name=INI005_Cotizaciones.png 306w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones.png?width=459&amp;name=INI005_Cotizaciones.png 459w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones.png?width=612&amp;name=INI005_Cotizaciones.png 612w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones.png?width=765&amp;name=INI005_Cotizaciones.png 765w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones.png?width=918&amp;name=INI005_Cotizaciones.png 918w" sizes="(max-width: 306px) 100vw, 306px"></p>
+<p><strong>Paso 2</strong>. En la siguiente pantalla podrás elegir qué símbolos quieres mostrar u ocultar navegando a través de los distintos grupos de activos financieros.</p>
+<p><img alt="INI005_Simbolos" class="hs-image-align-center" style="width: 490px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Simbolos.jpg?width=490&amp;name=INI005_Simbolos.jpg" width="490" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Simbolos.jpg?width=245&amp;name=INI005_Simbolos.jpg 245w, https://help.darwinex.com/hs-fs/hubfs/INI005_Simbolos.jpg?width=490&amp;name=INI005_Simbolos.jpg 490w, https://help.darwinex.com/hs-fs/hubfs/INI005_Simbolos.jpg?width=735&amp;name=INI005_Simbolos.jpg 735w, https://help.darwinex.com/hs-fs/hubfs/INI005_Simbolos.jpg?width=980&amp;name=INI005_Simbolos.jpg 980w, https://help.darwinex.com/hs-fs/hubfs/INI005_Simbolos.jpg?width=1225&amp;name=INI005_Simbolos.jpg 1225w, https://help.darwinex.com/hs-fs/hubfs/INI005_Simbolos.jpg?width=1470&amp;name=INI005_Simbolos.jpg 1470w" sizes="(max-width: 490px) 100vw, 490px"></p>
+<p><strong>Paso 3</strong>. Al cerrar esta última pantalla, verás en la ventana de observación de mercado la cotización de todos aquellos activos (símbolos) que hayas decidido mostrar.</p>
+<h3><img alt="INI005_Cotizaciones_Final" class="hs-image-align-center" style="width: 351px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones_Final.png?width=351&amp;name=INI005_Cotizaciones_Final.png" width="351" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones_Final.png?width=176&amp;name=INI005_Cotizaciones_Final.png 176w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones_Final.png?width=351&amp;name=INI005_Cotizaciones_Final.png 351w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones_Final.png?width=527&amp;name=INI005_Cotizaciones_Final.png 527w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones_Final.png?width=702&amp;name=INI005_Cotizaciones_Final.png 702w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones_Final.png?width=878&amp;name=INI005_Cotizaciones_Final.png 878w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cotizaciones_Final.png?width=1053&amp;name=INI005_Cotizaciones_Final.png 1053w" sizes="(max-width: 351px) 100vw, 351px"></h3>
+<a id="graficos" data-hs-anchor="true"></a>
+<h3>4. Gráficos</h3>
+<p>Para crear un gráfico nuevo, de cualquier activo financiero, se debe apretar con el botón derecho del ratón en el activo correspondiente dentro de la ventana de "Observación del Mercado", y después seleccionar el elemento "Ventana del Gráfico".</p>
+<p>Una vez abierto el gráfico, a través de las barras de herramientas de "Gráficos" y "Periodicidad" podremos elegir el tipo de gráfico a mostrar y la periodicidad correspondiente. Aquí puedes observar las barras correspondientes señaladas, las cuales, en caso de no estar visibles, se activarían dentro del menú "Ver... Barras de Herramientas..."</p>
+<p><img alt="INI005_Barra_Graficos_Periodicidad" class="hs-image-align-none" style="width: 643px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Graficos_Periodicidad.jpg?width=643&amp;name=INI005_Barra_Graficos_Periodicidad.jpg" width="643" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Graficos_Periodicidad.jpg?width=322&amp;name=INI005_Barra_Graficos_Periodicidad.jpg 322w, https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Graficos_Periodicidad.jpg?width=643&amp;name=INI005_Barra_Graficos_Periodicidad.jpg 643w, https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Graficos_Periodicidad.jpg?width=965&amp;name=INI005_Barra_Graficos_Periodicidad.jpg 965w, https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Graficos_Periodicidad.jpg?width=1286&amp;name=INI005_Barra_Graficos_Periodicidad.jpg 1286w, https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Graficos_Periodicidad.jpg?width=1608&amp;name=INI005_Barra_Graficos_Periodicidad.jpg 1608w, https://help.darwinex.com/hs-fs/hubfs/INI005_Barra_Graficos_Periodicidad.jpg?width=1929&amp;name=INI005_Barra_Graficos_Periodicidad.jpg 1929w" sizes="(max-width: 643px) 100vw, 643px"></p>
+<p>En Metatrader distinguimos tres tipos de gráficos: <strong>Gráfico de Líneas, Gráfico de Barras y Gráfico de Velas</strong>. Podrás utilizar el que más te guste a través de los tres iconos de la izquierda que encontrarás en la barra de gráficos.</p>
+<h4>Línea</h4>
+<p><img alt="INI005_Grafico_Linea" class="hs-image-align-none" style="width: 607px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Linea.jpg?width=607&amp;name=INI005_Grafico_Linea.jpg" width="607" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Linea.jpg?width=304&amp;name=INI005_Grafico_Linea.jpg 304w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Linea.jpg?width=607&amp;name=INI005_Grafico_Linea.jpg 607w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Linea.jpg?width=911&amp;name=INI005_Grafico_Linea.jpg 911w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Linea.jpg?width=1214&amp;name=INI005_Grafico_Linea.jpg 1214w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Linea.jpg?width=1518&amp;name=INI005_Grafico_Linea.jpg 1518w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Linea.jpg?width=1821&amp;name=INI005_Grafico_Linea.jpg 1821w" sizes="(max-width: 607px) 100vw, 607px"></p>
+<h4>Barras</h4>
+<p><img alt="INI005_Grafico_Barras" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Barras.png?width=688&amp;name=INI005_Grafico_Barras.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Barras.png?width=344&amp;name=INI005_Grafico_Barras.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Barras.png?width=688&amp;name=INI005_Grafico_Barras.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Barras.png?width=1032&amp;name=INI005_Grafico_Barras.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Barras.png?width=1376&amp;name=INI005_Grafico_Barras.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Barras.png?width=1720&amp;name=INI005_Grafico_Barras.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Barras.png?width=2064&amp;name=INI005_Grafico_Barras.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<h4>Velas</h4>
+<p><img alt="INI005_Grafico_Velas" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Velas.png?width=688&amp;name=INI005_Grafico_Velas.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Velas.png?width=344&amp;name=INI005_Grafico_Velas.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Velas.png?width=688&amp;name=INI005_Grafico_Velas.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Velas.png?width=1032&amp;name=INI005_Grafico_Velas.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Velas.png?width=1376&amp;name=INI005_Grafico_Velas.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Velas.png?width=1720&amp;name=INI005_Grafico_Velas.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Grafico_Velas.png?width=2064&amp;name=INI005_Grafico_Velas.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>Puedes configurar los colores de tus gráficos a través de las propiedades del mismo. Para ello, sólo tendrás que pulsar el botón derecho del ratón encima del gráfico y darle a "propiedades".</p>
+<p><img alt="Propiedades_Graficos" class="hs-image-align-center" style="width: 587px;" src="https://www.darwinex.com/education/tips/Como_Utilizar_Mt4/INI005_Propiedades_Graficos.PNG" width="587"></p>
+<p>En el menú contextual de cualquier gráfico encontramos otras funciones muy útiles que explicamos a continuación.</p>
+<ul>
+<li><strong>Actualizar</strong>: Se usa cuando se produce un error o la gráfica no está actualizada. Todos los datos que le hacen falta al gráfico serán subidos desde el servidor y el gráfico se actualizará.</li>
+<li><strong>Cuadricula</strong>: Sirve para mostrar/ocultar las líneas de cuadrícula en el gráfico.</li>
+<li><strong>Volúmenes</strong>: Se emplea para mostrar/ocultar el volumen de las transacciones, es decir el número de transacciones en cualquier periodo del gráfico (correspondiente a cada candela o barra).</li>
+<li><strong>Acercar/Alejar (+/-)</strong>: Esta función le permite al usuario modificar las dimensiones del gráfico. También se pueden emplear los botones de la barra de herramientas.</li>
+<li><strong>Guardar como imagen</strong>: Permite guardar el gráfico como un archivo *.png<br><br><img class="hs-image-align-center" style="width: 188px;" src="https://help.darwinex.com/hs-fs/hubfs/image-png.png?width=188&amp;name=image-png.png" width="188" srcset="https://help.darwinex.com/hs-fs/hubfs/image-png.png?width=94&amp;name=image-png.png 94w, https://help.darwinex.com/hs-fs/hubfs/image-png.png?width=188&amp;name=image-png.png 188w, https://help.darwinex.com/hs-fs/hubfs/image-png.png?width=282&amp;name=image-png.png 282w, https://help.darwinex.com/hs-fs/hubfs/image-png.png?width=376&amp;name=image-png.png 376w, https://help.darwinex.com/hs-fs/hubfs/image-png.png?width=470&amp;name=image-png.png 470w, https://help.darwinex.com/hs-fs/hubfs/image-png.png?width=564&amp;name=image-png.png 564w" sizes="(max-width: 188px) 100vw, 188px"><br><br></li>
+</ul>
+<a id="abrir-cerrar" data-hs-anchor="true"></a>
+<h3>5. Cómo Abrir y Cerrar una Operación</h3>
+<h4>Abrir</h4>
+<p>Existen varias maneras de abrir una orden a mercado. La más sencilla es:</p>
+<ol>
+<li>Abre el gráfico del activo que quieras operar</li>
+<li>Pulsa la tecla F9</li>
+<li>Te aparecerá esta pantalla:</li>
+</ol>
+<p><img alt="INI005_Ventana_Orden" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Ventana_Orden.png?width=688&amp;name=INI005_Ventana_Orden.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Ventana_Orden.png?width=344&amp;name=INI005_Ventana_Orden.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ventana_Orden.png?width=688&amp;name=INI005_Ventana_Orden.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ventana_Orden.png?width=1032&amp;name=INI005_Ventana_Orden.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ventana_Orden.png?width=1376&amp;name=INI005_Ventana_Orden.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ventana_Orden.png?width=1720&amp;name=INI005_Ventana_Orden.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ventana_Orden.png?width=2064&amp;name=INI005_Ventana_Orden.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>En ella:</p>
+<ol>
+<li>Comprueba el símbolo, determina el volumen de la operación y, si lo deseas, los niveles de Stop Loss y Take Profit</li>
+<li>Pulsa en Vender al Mercado, o Comprar al Mercado</li>
+<li>Una vez abierta, la operación aparecerá automáticamente en la pestaña “Operaciones” de la ventana “Terminal”.</li>
+</ol>
+<div class="hs-callout-type-caution" data-hs-callout-type="caution">
+<p>Una vez pulsemos Vender o Comprar la orden se envía al mercado.</p>
+</div>
+<h4>Cerrar</h4>
+<p>Vamos a ver cómo cerrar una orden en su totalidad, o cómo realizar un cierre parcial.</p>
+<p><strong>Cierre total</strong></p>
+<p>Para cerrar una orden de una manera rápida, tenemos dos opciones:</p>
+<ol>
+<li>En la pestaña operaciones, pulsando con el botón derecho del ratón encima de la orden en cuestión, seleccionamos "Cerrar orden" en el menú contextual que nos habrá aparecido.</li>
+<li>Pulsar la "x" que encontramos a la derecha de la orden en cuestión.</li>
+</ol>
+<p>En ambos casos el cierre de la operación será instantáneo y se realizará a las condiciones de mercado de dicho momento.</p>
+<p><img alt="INI005_Cerrar_Orden" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden.png?width=688&amp;name=INI005_Cerrar_Orden.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden.png?width=344&amp;name=INI005_Cerrar_Orden.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden.png?width=688&amp;name=INI005_Cerrar_Orden.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden.png?width=1032&amp;name=INI005_Cerrar_Orden.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden.png?width=1376&amp;name=INI005_Cerrar_Orden.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden.png?width=1720&amp;name=INI005_Cerrar_Orden.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden.png?width=2064&amp;name=INI005_Cerrar_Orden.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p><strong>Cierre parcial</strong></p>
+<p>Existe una manera adicional de cerrar una orden, lo que además nos permitirá hacer un cierre parcial y no un cierre por su totalidad. De la misma manera, tendremos dos opciones</p>
+<ol>
+<li>En la pestaña operaciones, pulsando con el botón derecho del ratón encima de la orden en cuestión, seleccionamos "Modificar o eliminar orden" en el menú contextual que nos habrá aparecido.</li>
+<li>Realizar un "doble click" en la orden en cuestión.</li>
+</ol>
+<p><img alt="INI005_Cerrar_Orden_Transicion" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden_Transicion.png?width=688&amp;name=INI005_Cerrar_Orden_Transicion.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden_Transicion.png?width=344&amp;name=INI005_Cerrar_Orden_Transicion.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden_Transicion.png?width=688&amp;name=INI005_Cerrar_Orden_Transicion.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden_Transicion.png?width=1032&amp;name=INI005_Cerrar_Orden_Transicion.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden_Transicion.png?width=1376&amp;name=INI005_Cerrar_Orden_Transicion.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden_Transicion.png?width=1720&amp;name=INI005_Cerrar_Orden_Transicion.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cerrar_Orden_Transicion.png?width=2064&amp;name=INI005_Cerrar_Orden_Transicion.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>Al realizar esto, nos aparecerá una ventaja adicional donde podremos cerrar la la operación, con la ventaja de que podremos elegir el volumen a cerrar. Así podremos realizar un cierre parcial en lugar de total.</p>
+<p><img alt="INI005_Cierre_Parcial" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Cierre_Parcial.png?width=688&amp;name=INI005_Cierre_Parcial.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Cierre_Parcial.png?width=344&amp;name=INI005_Cierre_Parcial.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cierre_Parcial.png?width=688&amp;name=INI005_Cierre_Parcial.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cierre_Parcial.png?width=1032&amp;name=INI005_Cierre_Parcial.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cierre_Parcial.png?width=1376&amp;name=INI005_Cierre_Parcial.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cierre_Parcial.png?width=1720&amp;name=INI005_Cierre_Parcial.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Cierre_Parcial.png?width=2064&amp;name=INI005_Cierre_Parcial.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<a id="sl-tp" data-hs-anchor="true"></a>
+<h3>6. Órdenes Stop Loss y Take Profit</h3>
+<h4>Stop Loss</h4>
+<p>El Stop Loss es una orden que sirve para cerrar una operación previamente abierta con el fin de limitar las pérdidas. El Stop Loss determina el nivel máximo de pérdida que estás dispuesto a aceptar.</p>
+<p>Cuando estamos comprados, el SL deberá establecerse por debajo del precio actual de mercado.</p>
+<p>Cuando estamos vendidos, el SL deberá establecerse por encima del precio actual de mercado.</p>
+<h4>Take Profit</h4>
+<p>Son órdenes utilizadas para establecer niveles de toma de beneficios y, por tanto, se cerrará la operación en positivo si se alcanza ese nivel.</p>
+<p>Cuando estamos comprados, el precio deberá situarse por encima del precio actual de mercado.</p>
+<p>Cuando estamos vendidos, el precio deberá situarse por debajo del precio actual de mercado.</p>
+<div class="hs-callout-type-note" data-hs-callout-type="note">
+<p>Ambas órdenes se ejecutan automáticamente sin necesidad de intervención por parte del trader.</p>
+</div>
+<p>Si queremos establecer un SL y/o TP al introducir la orden en mercado, podremos hacerlo desde la propia ventana de "Orden".</p>
+<p><img alt="INI005_Orden_SL_TP" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Orden_SL_TP.png?width=688&amp;name=INI005_Orden_SL_TP.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Orden_SL_TP.png?width=344&amp;name=INI005_Orden_SL_TP.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Orden_SL_TP.png?width=688&amp;name=INI005_Orden_SL_TP.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Orden_SL_TP.png?width=1032&amp;name=INI005_Orden_SL_TP.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Orden_SL_TP.png?width=1376&amp;name=INI005_Orden_SL_TP.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Orden_SL_TP.png?width=1720&amp;name=INI005_Orden_SL_TP.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Orden_SL_TP.png?width=2064&amp;name=INI005_Orden_SL_TP.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>En caso de que queramos establecerlos posteriormente, o modificar los mismos, no tendremos más que modificar la orden en cuestión, cómo ya hemos visto en el apartado anterior, y acceder a una ventana como la siguiente.</p>
+<p><img alt="INI005_Modificar_SL_TP" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Modificar_SL_TP.png?width=688&amp;name=INI005_Modificar_SL_TP.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Modificar_SL_TP.png?width=344&amp;name=INI005_Modificar_SL_TP.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Modificar_SL_TP.png?width=688&amp;name=INI005_Modificar_SL_TP.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Modificar_SL_TP.png?width=1032&amp;name=INI005_Modificar_SL_TP.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Modificar_SL_TP.png?width=1376&amp;name=INI005_Modificar_SL_TP.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Modificar_SL_TP.png?width=1720&amp;name=INI005_Modificar_SL_TP.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Modificar_SL_TP.png?width=2064&amp;name=INI005_Modificar_SL_TP.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<a id="ordenes-pendientes" data-hs-anchor="true"></a>
+<h3>7. Órdenes Pendientes</h3>
+<p>Son instrucciones para la apertura automática de una operación cuando un determinado activo alcanza un nivel de precios predeterminado.</p>
+<p>Pueden usarse para abrir tanto operaciones de compra como de venta. En Metatrader 4 distinguimos cuatro tipos de órdenes pendientes.</p>
+<ol>
+<li><strong>Buy Limit (Compra Límite)</strong>. Orden para comprar a un precio inferior (mejor) al precio de mercado actual.</li>
+<li><strong>Sell Limit (Venta Límite)</strong>. Orden para vender a un precio superior (mejor) al precio de mercado actual.</li>
+<li><strong>Buy Stop (Compra Stop)</strong>. Orden para comprar a un precio superior (peor) al precio de mercado actual. Normalmente las órdenes de este tipo se colocan a la espera que el precio del activo alcance un cierto nivel y siga creciendo</li>
+<li><strong>Sell Stop (Venta Stop)</strong>. Orden para vender a un precio inferior (peor) al precio de mercado actual. Normalmente las órdenes de este tipo se colocan a la espera que el precio del activo alcance un cierto nivel y siga bajando.</li>
+<li><strong>Buy Stop Limit (Sólo MT5).</strong> Es una combinación de las anteriores. Definimos un nivel de entrada, y una vez el precio alcanza el mismo, se activa una orden de compra límite. En este caso, el nivel de entrada tiene que estar por encima del precio ask actual, y el nivel Limit deberá estar por debajo del nivel Stop marcado.</li>
+<li><strong>Sell Stop Limit (Sólo MT5)</strong>. Es una combinación de las anteriores. Definimos un nivel de entrada, y una vez el precio alcanza el mismo, se activa una orden de venta límite. En este caso, el nivel de entrada tiene que estar por debajo del precio bid actual, y el nivel Limit deberá estar por encima del nivel Stop marcado.</li>
+</ol>
+<p><img alt="INI005_Tipos_Ordenes_b" class="hs-image-align-center" style="width: 583px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Tipos_Ordenes_b.png?width=583&amp;name=INI005_Tipos_Ordenes_b.png" width="583" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Tipos_Ordenes_b.png?width=292&amp;name=INI005_Tipos_Ordenes_b.png 292w, https://help.darwinex.com/hs-fs/hubfs/INI005_Tipos_Ordenes_b.png?width=583&amp;name=INI005_Tipos_Ordenes_b.png 583w, https://help.darwinex.com/hs-fs/hubfs/INI005_Tipos_Ordenes_b.png?width=875&amp;name=INI005_Tipos_Ordenes_b.png 875w, https://help.darwinex.com/hs-fs/hubfs/INI005_Tipos_Ordenes_b.png?width=1166&amp;name=INI005_Tipos_Ordenes_b.png 1166w, https://help.darwinex.com/hs-fs/hubfs/INI005_Tipos_Ordenes_b.png?width=1458&amp;name=INI005_Tipos_Ordenes_b.png 1458w, https://help.darwinex.com/hs-fs/hubfs/INI005_Tipos_Ordenes_b.png?width=1749&amp;name=INI005_Tipos_Ordenes_b.png 1749w" sizes="(max-width: 583px) 100vw, 583px"></p>
+<p>Veamos cómo introducir y modificar una orden pendiente en Metatrader 4.</p>
+<p><strong>Para introducir una orden pendiente</strong>, en la ventana de "Orden", cambiaremos el Tipo de Orden a "Orden Pendiente" (1). Posteriormente, elegiremos el Tipo de Orden (2), pondremos el "Precio" (3) al que queremos poner la orden y pulsaremos en "Colocar Orden" (4). Podremos aprovechar para establecer aquí también un nivel de Stop Loss (5) y Take Profit (6).</p>
+<p><img alt="INI005_Operacion_Orden_Pendiente" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Operacion_Orden_Pendiente.png?width=688&amp;name=INI005_Operacion_Orden_Pendiente.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Operacion_Orden_Pendiente.png?width=344&amp;name=INI005_Operacion_Orden_Pendiente.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Operacion_Orden_Pendiente.png?width=688&amp;name=INI005_Operacion_Orden_Pendiente.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Operacion_Orden_Pendiente.png?width=1032&amp;name=INI005_Operacion_Orden_Pendiente.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Operacion_Orden_Pendiente.png?width=1376&amp;name=INI005_Operacion_Orden_Pendiente.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Operacion_Orden_Pendiente.png?width=1720&amp;name=INI005_Operacion_Orden_Pendiente.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Operacion_Orden_Pendiente.png?width=2064&amp;name=INI005_Operacion_Orden_Pendiente.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>Una vez pulsamos en "Colocar Ordenes", veremos nuestras ordenes pendientes por debajo de la línea que indica el Balance, Equidad, etc.</p>
+<p><img alt="INI005_Ordenes_Pendientes" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Ordenes_Pendientes.png?width=688&amp;name=INI005_Ordenes_Pendientes.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Ordenes_Pendientes.png?width=344&amp;name=INI005_Ordenes_Pendientes.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ordenes_Pendientes.png?width=688&amp;name=INI005_Ordenes_Pendientes.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ordenes_Pendientes.png?width=1032&amp;name=INI005_Ordenes_Pendientes.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ordenes_Pendientes.png?width=1376&amp;name=INI005_Ordenes_Pendientes.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ordenes_Pendientes.png?width=1720&amp;name=INI005_Ordenes_Pendientes.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ordenes_Pendientes.png?width=2064&amp;name=INI005_Ordenes_Pendientes.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>Podremos <strong>modificarlas</strong> pulsando un doble click en las mismas, o eliminarlas pulsando la "x" que aparece a la derecha de la orden pendiente.</p>
+<a id="analisis-tecnico" data-hs-anchor="true"></a>
+<h3>8. Herramientas de Análisis Técnico</h3>
+<p>Podemos incluir infinidad de elementos a un gráfico, ya sea a través del menú "Insertar" o a través de la barra de herramientas de "Gráficos".</p>
+<p><img alt="INI005_Menu_Graficos" class="hs-image-align-left" style="width: 300px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos.png?width=300&amp;name=INI005_Menu_Graficos.png" width="300" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos.png?width=150&amp;name=INI005_Menu_Graficos.png 150w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos.png?width=300&amp;name=INI005_Menu_Graficos.png 300w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos.png?width=450&amp;name=INI005_Menu_Graficos.png 450w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos.png?width=600&amp;name=INI005_Menu_Graficos.png 600w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos.png?width=750&amp;name=INI005_Menu_Graficos.png 750w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos.png?width=900&amp;name=INI005_Menu_Graficos.png 900w" sizes="(max-width: 300px) 100vw, 300px"></p>
+<p><img class="hs-image-align-none" style="width: 300px;" src="https://help.darwinex.com/hs-fs/hubfs/image-png-1.png?width=300&amp;name=image-png-1.png" width="300" srcset="https://help.darwinex.com/hs-fs/hubfs/image-png-1.png?width=150&amp;name=image-png-1.png 150w, https://help.darwinex.com/hs-fs/hubfs/image-png-1.png?width=300&amp;name=image-png-1.png 300w, https://help.darwinex.com/hs-fs/hubfs/image-png-1.png?width=450&amp;name=image-png-1.png 450w, https://help.darwinex.com/hs-fs/hubfs/image-png-1.png?width=600&amp;name=image-png-1.png 600w, https://help.darwinex.com/hs-fs/hubfs/image-png-1.png?width=750&amp;name=image-png-1.png 750w, https://help.darwinex.com/hs-fs/hubfs/image-png-1.png?width=900&amp;name=image-png-1.png 900w" sizes="(max-width: 300px) 100vw, 300px"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Para añadir un elemento gráfico, tenemos que seleccionarlo, ir al gráfico, y allí pulsar el botón izquierdo del ratón mientras determinamos el tamaño de dicho elemento.</p>
+<p><img alt="INI005_Ejemplo_Grafico" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Grafico.png?width=688&amp;name=INI005_Ejemplo_Grafico.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Grafico.png?width=344&amp;name=INI005_Ejemplo_Grafico.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Grafico.png?width=688&amp;name=INI005_Ejemplo_Grafico.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Grafico.png?width=1032&amp;name=INI005_Ejemplo_Grafico.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Grafico.png?width=1376&amp;name=INI005_Ejemplo_Grafico.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Grafico.png?width=1720&amp;name=INI005_Ejemplo_Grafico.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Grafico.png?width=2064&amp;name=INI005_Ejemplo_Grafico.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>Para modificar las propiedades del elemento gráfico tienes dos opciones:</p>
+<p>1. Seleccionar el elemento y entrar en sus propiedades con el menu contextual (botón derecho del ratón).</p>
+<p><img alt="INI005_Propiedades_Elemento_Grafico" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Propiedades_Elemento_Grafico.png?width=688&amp;name=INI005_Propiedades_Elemento_Grafico.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Propiedades_Elemento_Grafico.png?width=344&amp;name=INI005_Propiedades_Elemento_Grafico.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Propiedades_Elemento_Grafico.png?width=688&amp;name=INI005_Propiedades_Elemento_Grafico.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Propiedades_Elemento_Grafico.png?width=1032&amp;name=INI005_Propiedades_Elemento_Grafico.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Propiedades_Elemento_Grafico.png?width=1376&amp;name=INI005_Propiedades_Elemento_Grafico.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Propiedades_Elemento_Grafico.png?width=1720&amp;name=INI005_Propiedades_Elemento_Grafico.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Propiedades_Elemento_Grafico.png?width=2064&amp;name=INI005_Propiedades_Elemento_Grafico.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p>2. A través del Menu "Gráfico... Objetos... Lista de Objetos"</p>
+<p><img alt="INI005_Menu_Graficos_Objetos" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos_Objetos.png?width=688&amp;name=INI005_Menu_Graficos_Objetos.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos_Objetos.png?width=344&amp;name=INI005_Menu_Graficos_Objetos.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos_Objetos.png?width=688&amp;name=INI005_Menu_Graficos_Objetos.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos_Objetos.png?width=1032&amp;name=INI005_Menu_Graficos_Objetos.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos_Objetos.png?width=1376&amp;name=INI005_Menu_Graficos_Objetos.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos_Objetos.png?width=1720&amp;name=INI005_Menu_Graficos_Objetos.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Graficos_Objetos.png?width=2064&amp;name=INI005_Menu_Graficos_Objetos.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<h4>Indicadores en Metatrader</h4>
+<p>La plataforma Metatrader incluye un gran número de indicadores de uso extendido como puede ser el RSI, MACD, bandas de Bollinger, Medias Móviles, etc.</p>
+<p>Para incluir un indicador tenemos dos opciones:</p>
+<p>1. Selecciona el indicador correspondiente en el menú Insertar-&gt;Indicadores</p>
+<p><img alt="INI005_Menu_Indicadores" class="hs-image-align-none" style="width: 670px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Indicadores.png?width=670&amp;name=INI005_Menu_Indicadores.png" width="670" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Indicadores.png?width=335&amp;name=INI005_Menu_Indicadores.png 335w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Indicadores.png?width=670&amp;name=INI005_Menu_Indicadores.png 670w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Indicadores.png?width=1005&amp;name=INI005_Menu_Indicadores.png 1005w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Indicadores.png?width=1340&amp;name=INI005_Menu_Indicadores.png 1340w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Indicadores.png?width=1675&amp;name=INI005_Menu_Indicadores.png 1675w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Indicadores.png?width=2010&amp;name=INI005_Menu_Indicadores.png 2010w" sizes="(max-width: 670px) 100vw, 670px"></p>
+<p>2. Arrastra el indicador desde el Navegador.</p>
+<p><img alt="INI005_Navegador" class="hs-image-align-center" style="width: 303px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Navegador.png?width=303&amp;name=INI005_Navegador.png" width="303" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Navegador.png?width=152&amp;name=INI005_Navegador.png 152w, https://help.darwinex.com/hs-fs/hubfs/INI005_Navegador.png?width=303&amp;name=INI005_Navegador.png 303w, https://help.darwinex.com/hs-fs/hubfs/INI005_Navegador.png?width=455&amp;name=INI005_Navegador.png 455w, https://help.darwinex.com/hs-fs/hubfs/INI005_Navegador.png?width=606&amp;name=INI005_Navegador.png 606w, https://help.darwinex.com/hs-fs/hubfs/INI005_Navegador.png?width=758&amp;name=INI005_Navegador.png 758w, https://help.darwinex.com/hs-fs/hubfs/INI005_Navegador.png?width=909&amp;name=INI005_Navegador.png 909w" sizes="(max-width: 303px) 100vw, 303px"></p>
+<p>Puedes incluir tantos indicadores como quieras. Por ejemplo, en el siguiente gráfico hemos incluido una media móvil y un RSI.</p>
+<p><img alt="INI005_Ejemplo_Indicadores" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Indicadores.png?width=688&amp;name=INI005_Ejemplo_Indicadores.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Indicadores.png?width=344&amp;name=INI005_Ejemplo_Indicadores.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Indicadores.png?width=688&amp;name=INI005_Ejemplo_Indicadores.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Indicadores.png?width=1032&amp;name=INI005_Ejemplo_Indicadores.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Indicadores.png?width=1376&amp;name=INI005_Ejemplo_Indicadores.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Indicadores.png?width=1720&amp;name=INI005_Ejemplo_Indicadores.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Ejemplo_Indicadores.png?width=2064&amp;name=INI005_Ejemplo_Indicadores.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<div class="hs-callout-type-tip" data-hs-callout-type="tip">
+<p>Para encontrar indicadores adicionales puedes visitar la comunidad <a href="https://www.mql5.com/en/market/mt4/indicator" target="_blank" rel="noopener">Mql5.com</a>.</p>
+</div>
+<a id="plantillas" data-hs-anchor="true"></a>
+<h3>9. Plantillas</h3>
+<p>Las plantillas no son más que configuraciones personalizadas de nuestros gráficos. Una vez grabadas con un nombre concreto, podrás aplicarlas rápidamente a cualquier nuevo gráfico.</p>
+<p>En estas podrás configurar todas las propiedades de nuestro gráfico (color de fondo, color de las velas, cuadrícula, etc.) y decidir si incluyes algún indicador por defecto.</p>
+<p>En Metatrader tienes varias plantillas predefinidas a las que podrías acceder desde el menú "Gráficos".</p>
+<p><img alt="INI005_Menu_Plantilla" class="hs-image-align-center" style="width: 405px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Plantilla.png?width=405&amp;name=INI005_Menu_Plantilla.png" width="405" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Plantilla.png?width=203&amp;name=INI005_Menu_Plantilla.png 203w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Plantilla.png?width=405&amp;name=INI005_Menu_Plantilla.png 405w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Plantilla.png?width=608&amp;name=INI005_Menu_Plantilla.png 608w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Plantilla.png?width=810&amp;name=INI005_Menu_Plantilla.png 810w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Plantilla.png?width=1013&amp;name=INI005_Menu_Plantilla.png 1013w, https://help.darwinex.com/hs-fs/hubfs/INI005_Menu_Plantilla.png?width=1215&amp;name=INI005_Menu_Plantilla.png 1215w" sizes="(max-width: 405px) 100vw, 405px"></p>
+<div class="hs-callout-type-tip" data-hs-callout-type="tip">
+<p><a href="https://f.hubspotusercontent40.net/hubfs/4288148/Knowledge%20Base/INI005_Plantilla_Darwinex.tpl" rel="nofollow noopener">Descarga un ejemplo de plantilla de un gráfico en blanco y negro con una media móvil simple de 14 períodos y un RSI</a></p>
+</div>
+<a id="operaciones" data-hs-anchor="true"></a>
+<h3>10. Operaciones Abiertas e Histórico de Operaciones</h3>
+<h4>Operaciones</h4>
+<p>En la ventana "Terminal" (Menu Ver...Terminal o Ctrl+T) encontramos la pestaña "Operaciones", en la que podrás ver el detalle de todas las operaciones abiertas, las activas y las pendientes, así como otra información relativa a la cuenta dónde distinguimos:</p>
+<ul>
+<li><strong>Balance</strong>. Es sencillamente el dinero que tienes en la cuenta sin tener en cuenta las posiciones abiertas. La variación del balance sólo se produce cuando se cierran posiciones y no cuando se abren o cuando permanecen abiertas.</li>
+<li><strong>Equidad o Patrimonio</strong>. Cuando hay posiciones abiertas el balance es un dato que pierde cierta importancia en favor del patrimonio, también llamado equidad (por traducción directa de equity en inglés). El patrimonio es la suma del balance más los beneficios y pérdidas de las posiciones abiertas. A estos beneficios y pérdidas se les llaman beneficios y pérdidas flotantes y su valor fluctúa con cada movimiento en el precio del activo en el que está abierta la posición. Cuando no hay ninguna posición abierta, el balance y el patrimonio son iguales.</li>
+<li><strong>Margen</strong>. El margen es la cantidad de dinero que el trader pone en una determinada posición. Aunque no parezca muy evidente está muy relacionado con el apalancamiento. Para explicarlo, vamos a suponer primero que no hay apalancamiento o, lo que es lo mismo, que el apalancamiento es 1:1. Si el trader quiere comprar 0.12 lotes de EURUSD, equivalentes a 12.000 EUR (0,12 * 100.000), el margen será exactamente de 12.000 EUR (apalancamiento 1:1). Sin embargo, sin operamos con un apalancamiento de 1:30 (como el máximo que ofrece Darwinex en ciertos activos), el margen será equivalente a dividir esos 12.000 EUR entre 30, o lo que es lo mismo, 400 EUR. No tienes que confundir el apalancamiento máximo que ofrece Darwinex para ciertos activos con el apalancamiento efectivo con el que está operando el trader. En el ejemplo anterior, si imaginamos que la cuenta tiene 3000 EUR de patrimonio, el apalancamiento efectivo de esa posición será de 4:1 (12.000 / 3.000).</li>
+<li><strong>Margen Libre.</strong> El margen libre es la diferencia entre el patrimonio de la cuenta y la suma del margen utilizado en todas las posiciones que permanezcan abiertas. Margen Libre = Patrimonio - Margen</li>
+<li><strong>Nivel de Margen</strong>. Es el ratio Patrimonio / Margen expresado en porcentaje.</li>
+</ul>
+<h4>Historial de cuentas</h4>
+<p>Esta pestaña también se encuentra en la ventana "Terminal" (Menu Ver...Terminal o Ctrl+T) y en ella podrás ver todo el histórico de operaciones realizadas hasta la fecha.</p>
+<p>En la misma encontramos el detalle exacto del momento de la entrada y salida de la operación, el precio de entrada y salida, detalle del último Stop o Take Profit que había establecido, y por último, la comisión, tasas swap y resultado (beneficios) de cada trade.</p>
+<p>Este historial se puede exportar a un archivo .html que se puede abrir sin ningún problema en Excel para llevar nuestro propio diario de operaciones, o hacer otros cálculos pertinentes.</p>
+<p>Para exportar nuestro historial, no tendrás más que pulsar con el botón derecho del ratón en el "Historial de Cuentas" y darle a "Guardar como informe detallado".</p>
+<p><img alt="INI005_Guardar_Informe_Detallado" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Guardar_Informe_Detallado.png?width=688&amp;name=INI005_Guardar_Informe_Detallado.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Guardar_Informe_Detallado.png?width=344&amp;name=INI005_Guardar_Informe_Detallado.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Guardar_Informe_Detallado.png?width=688&amp;name=INI005_Guardar_Informe_Detallado.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Guardar_Informe_Detallado.png?width=1032&amp;name=INI005_Guardar_Informe_Detallado.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Guardar_Informe_Detallado.png?width=1376&amp;name=INI005_Guardar_Informe_Detallado.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Guardar_Informe_Detallado.png?width=1720&amp;name=INI005_Guardar_Informe_Detallado.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Guardar_Informe_Detallado.png?width=2064&amp;name=INI005_Guardar_Informe_Detallado.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<a id="diferencias" data-hs-anchor="true"></a>
+<h3>11. Diferencias entre Metatrader 4 (MT4) y Metatrader 5 (MT5)</h3>
+<p>Veamos algunas de las&nbsp;diferencias entre MetaTrader 4 (MT4) y MetaTrader 5 (MT5).</p>
+<table style="border-color: #99acc2; border-collapse: collapse; table-layout: fixed; margin-left: auto; margin-right: auto;" border="1" cellpadding="4">
+<tbody>
+<tr>
+<th></th>
+<th><strong>Metatrader 4</strong></th>
+<th><strong>Metatrader 5</strong></th>
+</tr>
+<tr>
+<td><strong>Ordenes Pendientes</strong></td>
+<td style="text-align: center;">4 tipos:&nbsp; Buy Limit, Buy Stop, Sell Limit, Sell Stop</td>
+<td style="text-align: center;">6 tipos:&nbsp;&nbsp;Buy Limit, Buy Stop, Sell Limit, Sell Stop, Buy Stop Limit, Sell Stop Limit</td>
+</tr>
+<tr>
+<td><strong>Profundidad de Mercado</strong></td>
+<td style="text-align: center;">✘</td>
+<td style="text-align: center;"><strong>✔</strong></td>
+</tr>
+<tr>
+<td><strong>Indicadores Técnicos</strong></td>
+<td style="text-align: center;">30</td>
+<td style="text-align: center;">38</td>
+</tr>
+<tr>
+<td><strong>Comisión</strong></td>
+<td style="text-align: center;">100% entrada</td>
+<td style="text-align: center;">50% entrada / 50% salida</td>
+</tr>
+<tr>
+<td><strong>Objetos Gráficos</strong></td>
+<td style="text-align: center;">31</td>
+<td style="text-align: center;">44</td>
+</tr>
+<tr>
+<td><strong>Marcos Temporales</strong></td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">21</td>
+</tr>
+<tr>
+<td><strong>Probador de Estrategias</strong></td>
+<td style="text-align: center;">Un sólo hilo (Single threaded)</td>
+<td style="text-align: center;">
+<p>Multi-hilo (Multi-threaded)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Hedging/Cobertura</strong></td>
+<td style="text-align: center;"><strong>✔</strong></td>
+<td style="text-align: center;">
+<p><strong>✔</strong></p>
+</td>
+</tr>
+<tr>
+<td>
+<p><strong>Lenguaje Programación</strong></p>
+</td>
+<td style="text-align: center;">MQL4</td>
+<td style="text-align: center;">MQL5</td>
+</tr>
+</tbody>
+</table>
+<div class="hs-callout-type-tip" data-hs-callout-type="tip">
+<p><a href="https://www.darwinex.com/tradingplatforms" target="_blank" rel="noopener">Conoce todas las diferencias</a>.</p>
+</div>
+<a id="consejos" data-hs-anchor="true"></a>
+<h3>12. Consejos</h3>
+<p><strong>Plantilla por Defecto</strong>. Para hacer el trabajo más rápido, puedes hacer que la plantilla por defecto se ajuste a tus necesidades. Para ello, una vez tengas un gráfico con tus indicadores, colores y timeframe, graba la misma con el nombre "default.tpl". Una vez realizado, cada vez que abras un nuevo gráfico este se mostrará ¡como más te gusta!</p>
+<p><strong>Workspace</strong>. Puedes guardarte tus propios espacios de trabajo con tu configuración preferida de gráficos, temporalidades, etc. De esta forma, cambiar de activo subyacente y tener varios gráficos abiertos es realmente sencillo.</p>
+<p><img alt="INI005_Workspace.1" class="hs-image-align-none" style="width: 688px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Workspace.1.png?width=688&amp;name=INI005_Workspace.1.png" width="688" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Workspace.1.png?width=344&amp;name=INI005_Workspace.1.png 344w, https://help.darwinex.com/hs-fs/hubfs/INI005_Workspace.1.png?width=688&amp;name=INI005_Workspace.1.png 688w, https://help.darwinex.com/hs-fs/hubfs/INI005_Workspace.1.png?width=1032&amp;name=INI005_Workspace.1.png 1032w, https://help.darwinex.com/hs-fs/hubfs/INI005_Workspace.1.png?width=1376&amp;name=INI005_Workspace.1.png 1376w, https://help.darwinex.com/hs-fs/hubfs/INI005_Workspace.1.png?width=1720&amp;name=INI005_Workspace.1.png 1720w, https://help.darwinex.com/hs-fs/hubfs/INI005_Workspace.1.png?width=2064&amp;name=INI005_Workspace.1.png 2064w" sizes="(max-width: 688px) 100vw, 688px"></p>
+<p><strong>Operativa One-Click</strong>. Para operar con un sólo click pulsa en la "flecha" que hay arriba a la izquierda en el gráfico (junto al símbolo) y verás una ventana con el precio de compra y de venta, así como un recuadro dónde podrás configurar un volumen a tu elección. A partir de ese momento, con solo pulsar en el precio de compra o de venta, estarás operando a un click con el volumen previamente definido.</p>
+<p><img alt="INI005_Operativa_One_Click" class="hs-image-align-center" style="width: 460px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Operativa_One_Click.png?width=460&amp;name=INI005_Operativa_One_Click.png" width="460" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Operativa_One_Click.png?width=230&amp;name=INI005_Operativa_One_Click.png 230w, https://help.darwinex.com/hs-fs/hubfs/INI005_Operativa_One_Click.png?width=460&amp;name=INI005_Operativa_One_Click.png 460w, https://help.darwinex.com/hs-fs/hubfs/INI005_Operativa_One_Click.png?width=690&amp;name=INI005_Operativa_One_Click.png 690w, https://help.darwinex.com/hs-fs/hubfs/INI005_Operativa_One_Click.png?width=920&amp;name=INI005_Operativa_One_Click.png 920w, https://help.darwinex.com/hs-fs/hubfs/INI005_Operativa_One_Click.png?width=1150&amp;name=INI005_Operativa_One_Click.png 1150w, https://help.darwinex.com/hs-fs/hubfs/INI005_Operativa_One_Click.png?width=1380&amp;name=INI005_Operativa_One_Click.png 1380w" sizes="(max-width: 460px) 100vw, 460px"></p>
+<p><strong>Profundidad de Mercado</strong>. Si activamos en Metatrader 5 la ventana de "Profundidad de mercado" podremos predefinir el volumen, la distancia del Stop Loss y la distancia del Take Profit y operar desde allí con un sólo click. Ten en cuenta que, en este caso, al cotizar Darwinex con 5 decimales, para un SL o TP de 50 pipos, deberemos poner 500 en lugar de 50. Podemos abrir la Profundidad de mercado pulsando con el botón derecho del ratón encima del activo en cuestión, o con la combinación de teclas "Alt+B".</p>
+<p><img alt="INI005_Profundidad_de_Mercado" class="hs-image-align-center" style="width: 352px;" src="https://help.darwinex.com/hs-fs/hubfs/INI005_Profundidad_de_Mercado.png?width=352&amp;name=INI005_Profundidad_de_Mercado.png" width="352" srcset="https://help.darwinex.com/hs-fs/hubfs/INI005_Profundidad_de_Mercado.png?width=176&amp;name=INI005_Profundidad_de_Mercado.png 176w, https://help.darwinex.com/hs-fs/hubfs/INI005_Profundidad_de_Mercado.png?width=352&amp;name=INI005_Profundidad_de_Mercado.png 352w, https://help.darwinex.com/hs-fs/hubfs/INI005_Profundidad_de_Mercado.png?width=528&amp;name=INI005_Profundidad_de_Mercado.png 528w, https://help.darwinex.com/hs-fs/hubfs/INI005_Profundidad_de_Mercado.png?width=704&amp;name=INI005_Profundidad_de_Mercado.png 704w, https://help.darwinex.com/hs-fs/hubfs/INI005_Profundidad_de_Mercado.png?width=880&amp;name=INI005_Profundidad_de_Mercado.png 880w, https://help.darwinex.com/hs-fs/hubfs/INI005_Profundidad_de_Mercado.png?width=1056&amp;name=INI005_Profundidad_de_Mercado.png 1056w" sizes="(max-width: 352px) 100vw, 352px"></p>
+<p><strong>Indicadores / Scripts</strong>. Existen miles de indicadores adicionales para esta plataforma pues el colectivo de usuarios de la misma es enorme. Así mismo, existen pequeños programas llamados "scripts", que realizan funciones específicas una vez son ejecutados y que pueden facilitar muchísimo la operativa. Te recomendamos que empieces a buscar en la web de <a href="https://www.mql5.com/es/market/mt4/indicator" target="_blank" rel="noopener">Mql5.com</a>.</p>
+<p><strong>Metatrader en Mac</strong>. Desde diciembre de 2020, existe la posibilidad de operar con Metatrader en MacOS. Puedes obtener los terminales a través de los siguientes enlaces:</p>
+<ul>
+<li><a href="https://download.mql5.com/cdn/web/metaquotes.software.corp/mt4/MetaTrader4.dmg" target="_blank" rel="noopener">Descarga del terminal de escritorio MT4 para MacOS</a></li>
+<li><a href="https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg" target="_blank" rel="noopener">Descarga del terminal de escritorio MT5 para MacOS</a></li>
+</ul>
+<div class="hs-callout-type-tip" data-hs-callout-type="tip">
+<p>Internet está lleno de recursos con tutoriales para Metatrader. Te recomendamos empezar por la web de <a href="https://www.mql5.com/es/market/mt4/indicator" target="_blank" rel="noopener">Mql5.com</a> donde encontrarás artículos y recursos específicos de esta plataforma. En Youtube encontrarás además multitud de vídeos sobre el funcionamiento de esta plataforma.</p>
+</div>
+<p>&nbsp;</p>
+</div>
+
+<script>
+  kbDom.whenReady(function() {
+    var smoothScroll = new smoothAnchorsScrolling();
+
+    var articleSmoothScrolling = function() {
+      function scrollToAnchor(state) {
+        const anchorId = (state && state.anchorId) || null;
+        if (!anchorId) {
+          return;
+        }
+        var anchor = document.querySelector(
+          '[id="' + anchorId.substring(1) + '"][data-hs-anchor="true"]'
+        );
+        smoothScroll.scrollTo(anchor);
+      }
+
+      document
+        .querySelectorAll('a[href^="#"][rel*="noopener"]')
+        .forEach(function(link) {
+          // Adding the handler to the click event on each anchor link
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var node = e.currentTarget;
+            var targetAnchorId = decodeURI(node.hash);
+            var state = { anchorId: targetAnchorId };
+
+            scrollToAnchor(state);
+            history.pushState(state, null, node.href);
+          });
+        });
+
+      window.addEventListener('popstate', function(e) {
+        if (e.state !== undefined) {
+          scrollToAnchor(e.state);
+        }
+      });
+
+      (function() {
+        var targetAnchorId = decodeURI(window.location.hash);
+        var initialState = {
+          anchorId: targetAnchorId,
+        };
+        if (targetAnchorId) {
+          setTimeout(function() {
+            scrollToAnchor(initialState);
+          }, 1);
+        }
+        history.pushState(initialState, null, '');
+      })();
+    };
+
+    window.addEventListener('load', function(e) {
+      articleSmoothScrolling();
+    });
+  });
+</script>
+        <div id="ka-feedback-form-container" portal-id="4288148" article-id="33853672917" article-language-tag="es" ungated-for-multi-language="true" enviro="prod" feedback-hubapi-domain="feedback.hubapi.com" js-feedback-domain="js.hubspotfeedback.com">
+  <div id="ka-feedback-form"></div>
+  <link rel="stylesheet" href="https://js.hubspotfeedback.com/feedbackknowledge.css">
+  <script type="text/javascript" src="https://js.hubspotfeedback.com/feedbackknowledge.js"></script>
+</div>
+        
+
+<div id="kb-related-articles-container" portal-id="4288148" knowledge-base-id="5692971171" article-id="33853672917" article-language="es" contact-vid="" heading="Artículos relacionados" enviro="prod" sso-login="false" public-hubapi-domain="public.hubapi.com">
+  
+    <div id="kb-related-articles"></div>
+    <link rel="stylesheet" href="https://js.hubspotfeedback.com/relatedarticles.css">
+    <script type="text/javascript" src="https://js.hubspotfeedback.com/relatedarticles.js"></script>
+  
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </main>
+    <footer>
+      
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+  
+
+
+<div class="kb-sticky-footer" data-preview-id="kb-footer">
+  <div class="kb-footer">
+    
+      <div class="kb-footer__center-aligned-content">
+        
+          <div class="kb-footer__logo">
+            
+              <a href="https://help.darwinex.com">
+                <img src="https://help.darwinex.com/hubfs/scouting-program-landing/images/logos/logo-darwinex-vertical-inverse.svg" alt="logotipo de la compañía">
+              </a>
+            
+          </div>
+        
+        
+          <div class="kb-footer__title">Los CFD son instrumentos complejos y están asociados a un riesgo elevado de perder dinero rápidamente debido al apalancamiento. 67% de las cuentas de inversores minoristas pierden dinero en la comercialización con CFD con este proveedor. Debe considerar si comprende el funcionamiento de los CFD y si puede permitirse asumir un riesgo elevado de perder su dinero.</div>
+        
+        
+          <div class="kb-footer__social">
+            <ul>
+              
+              <li><a href="https://www.facebook.com/pg/Darwinexchange/posts/" class="facebook" target="_blank" rel="noopener">
+  
+  <img src="https://static.hsstatic.net/TemplateAssets/static-1.17/img/hs_default_template_images/modules/Follow+Me+-+Email/facebook_circle_black.png" alt="facebook_social_link_icon_alt_text">
+</a></li>
+              
+              <li><a href="https://www.youtube.com/channel/UC6aYa9XjWy-HmHhyp5uN_9g" class="youtube" target="_blank" rel="noopener">
+  
+  <img src="https://static.hsstatic.net/TemplateAssets/static-1.17/img/hs_default_template_images/modules/Follow+Me+-+Email/youtube_circle_black.png" alt="youtube_social_link_icon_alt_text">
+</a></li>
+              
+              <li><a href="https://twitter.com/darwinex_es" class="twitter" target="_blank" rel="noopener">
+  
+  <img src="https://static.hsstatic.net/TemplateAssets/static-1.17/img/hs_default_template_images/modules/Follow+Me+-+Email/twitter_circle_black.png" alt="twitter_social_link_icon_alt_text">
+</a></li>
+              
+            </ul>
+          </div>
+        
+      </div>
+    
+    
+      <div class="kb-footer__links-container">
+        <ul class="kb-footer__links columns__one">
+          
+            
+<li class="kb-footer__company-website-link">
+  <a href="https://www.darwinex.com/es/contact" target="_blank" rel="noopener">
+    Contáctanos
+    <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.11 10.223V7.0472l1.308-1.3077v4.4835c0 .9323-.7628 1.6952-1.6953 1.6952H1.6952C.7628 11.9182 0 11.1553 0 10.223V4.1955C0 3.2628.7628 2.5 1.6952 2.5h4.4833L4.8707 3.8082H1.6952c-.2099 0-.3872.1771-.3872.3873v6.0275c0 .2098.1773.387.3872.387h6.0275c.21 0 .3873-.1772.3873-.387zM5.9428.4417L12.0137 0l-.442 6.0708L9.6368 4.136 6.0925 7.68 4.3333 5.9207l3.544-3.5442L5.9428.4417z" fill="#007bba" />
+    </svg>
+  </a>
+</li>
+
+          
+        </ul>
+      </div>
+    
+  </div>
+</div>
+    </footer>
+    
+<script>
+(function () {
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/_hcms/perf', true /*async*/);
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.onreadystatechange = function () {
+                // do nothing.
+            };
+            var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            function populateNetworkInfo(name, connection, info) {
+                if (name in connection) {
+                    info[name] = connection[name];
+                }
+            }
+            var networkInfo = {};
+            if (connection) {
+                ['type', 'effectiveType', 'downlink', 'rtt'].forEach(function(name) {
+                    populateNetworkInfo(name, connection, networkInfo);
+                });
+            }
+            var perfData = {
+                url: location.href,
+                portal: 4288148,
+                content: 33853672917,
+                group: -1,
+                connection: networkInfo,
+                timing: performance.timing
+            };
+            xhr.send(JSON.stringify(perfData));
+        }, 3000);  // Execute this 3 seconds after onload.
+    });
+})();
+</script>
+
+
+
+<!-- Start of HubSpot Analytics Code -->
+<script type="text/javascript">
+var _hsq = _hsq || [];
+_hsq.push(["setContentType", "knowledge-article"]);
+_hsq.push(["setCanonicalUrl", "https:\/\/help.darwinex.com\/es\/como-utilizar-metatrader"]);
+_hsq.push(["setPageId", "33853672917"]);
+_hsq.push(["setContentMetadata", {
+    "contentPageId": 33853672917,
+    "legacyPageId": "33853672917",
+    "contentFolderId": null,
+    "contentGroupId": 5692971171,
+    "abTestId": null,
+    "languageVariantId": 33853672917,
+    "languageCode": "es",
+    
+}]);
+</script>
+
+<script type="text/javascript" id="hs-script-loader" async defer src="/hs/scriptloader/4288148.js"></script>
+<!-- End of HubSpot Analytics Code -->
+
+
+<script type="text/javascript">
+var hsVars = {
+    ticks: 1648924057591,
+    page_id: 33853672917,
+    
+    content_group_id: 5692971171,
+    portal_id: 4288148,
+    app_hs_base_url: "https://app.hubspot.com",
+    cp_hs_base_url: "https://cp.hubspot.com",
+    language: "es",
+    analytics_page_type: "knowledge-article",
+    analytics_page_id: "33853672917",
+    category_id: 6,
+    folder_id: 0,
+    is_hubspot_user: false
+}
+</script>
+
+
+<script defer src="/hs/hsstatic/HubspotToolsMenu/static-1.119/js/index.js"></script>
+
+
+
+
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819701058/hubspot/themes/knowledge/assets/kb-search.min.js"></script>
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819705261/hubspot/themes/knowledge/assets/sticky-header.min.js"></script>
+    <script type="text/javascript" src="//cdn2.hubspot.net/hub/7052064/hub_generated/template_assets/1648819703995/hubspot/themes/knowledge/assets/smooth-anchors-scrolling.min.js"></script>
+  
+</body></html>
