@@ -1,10 +1,15 @@
+import numpy as np
+import pandas as pd
 from numpy import nan
 from pandas import DataFrame
 from pandas import Series
 from ta.volatility import AverageTrueRange
 from .utils import BUY, SELL
 
-class SuperTrendIndicator(object):
+class Indicator:
+    pass
+
+class SuperTrendIndicator(Indicator):
     """
     Supertrend (ST)
     """
@@ -81,3 +86,47 @@ class SuperTrendIndicator(object):
         )
 
         return df
+
+
+class PriceChannel(Indicator):
+    def __init__(self,
+                 high: pd.Series,
+                 low: pd.Series,
+                 support_period: int = 20,
+                 resistance_period: int = 20,
+                 channel_part: float = 1.0):
+        self._support_period = support_period
+        self._resistance_period = support_period
+        self._high = high
+        self._low = low
+        self._part = channel_part
+        self._run()
+
+    def __run_lev(self, func, period):
+        channel = [np.nan] * period
+        for roll in self._low.rolling(period):
+            channel.append(func(roll))
+        return channel
+
+    def _run(self):
+        support = self.__run_lev(lambda x: x.min(), self._support_period)
+        resistance = self.__run_lev(lambda x: x.max(), self._resistance_period)
+
+        self.high = []
+        self.low = []
+
+        for low, high in zip(support, resistance):
+            mid = (low + high) / 2
+            diff = high - low
+
+            new_low = mid - (diff*self._part)/2
+            new_high = mid + (diff*self._part)/2
+
+            self.high.append(new_high)
+            self.low.append(new_low)
+
+    def higher_line(self):
+        return self.high
+
+    def lower_line(self):
+        return self.low

@@ -359,13 +359,9 @@ The strategy issues its verdict based on the last change to the dataframe. If yo
 
 ### deposit_history_update
 
-### update_identifier
-
 ### correct_sl_tp
 
-### save
-
-### load
+### trailing_stop
 
 ## ExampleStrategies
 

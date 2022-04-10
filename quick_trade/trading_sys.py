@@ -1043,12 +1043,8 @@ class Trader(object):
             self.open_lot_prices.append(self._open_price)
             if set_take:
                 self.take_profits.append(take_flag)
-            elif sig == utils.EXIT:
-                self.take_profits[e] = take_flag
             if set_stop:
                 self.stop_losses.append(stop_flag)
-            elif sig == utils.EXIT:
-                self.stop_losses[e] = take_flag
         utils.logger.debug('(%s) stop loss: %f pips, trader take profit: %f pips', self, stop_loss, take_profit)
 
     @utils.assert_logger
@@ -1126,6 +1122,35 @@ class Trader(object):
                 else:
                     self.stop_losses[e] = correct_sl
 
+    def trailing_stop(self):
+        for (i,
+             (price,
+              high,
+              low,
+              entry,
+              signal,
+              sl_before,
+              open_trade)
+             ) in enumerate(zip(self.df['Close'],
+                                self.df['High'].values,
+                                self.df['Low'].values,
+                                self._converted,
+                                self.returns,
+                                self.stop_losses,
+                                self.open_lot_prices)):
+            if entry is not np.nan:
+                diff_open_sl = sl_before - open_trade
+                trade_high = high
+                trade_low = low
+            trade_low = min(low, trade_low)
+            trade_high = max(high, trade_high)
+            if signal == utils.BUY:
+                sl = trade_high + diff_open_sl
+            elif signal == utils.SELL:
+                sl = trade_low + diff_open_sl
+            else:
+                sl = sl_before
+            self.stop_losses[i] = sl
 
 class ExampleStrategies(Trader):
 
@@ -1774,7 +1799,7 @@ class ExampleStrategies(Trader):
         return self.returns
 
     @strategy
-    def strategy_kst(self, **kst_kwargs):
+    def strategy_kst(self, sl=5000, **kst_kwargs):
         KST = ta.trend.KSTIndicator(close=self.df['Close'], **kst_kwargs)
         fast = KST.kst()
         slow = KST.kst_sig()
@@ -1785,7 +1810,7 @@ class ExampleStrategies(Trader):
             else:
                 self.returns.append(utils.SELL)
         self.set_credit_leverages(1)
-        self.set_open_stop_and_take(stop_loss=5000)
+        self.set_open_stop_and_take(stop_loss=sl)
         return self.returns
 
     @strategy
@@ -1881,3 +1906,23 @@ class ExampleStrategies(Trader):
             self.returns.append(flag)
             self.stop_losses.append(sl)
             self.take_profits.append(tp)
+
+    @strategy
+    def strategy_price_channel(self,
+                               support_period: int = 20,
+                               resistance_period: int = 20,
+                               channel_part: float = 0.8):
+        PC = indicators.PriceChannel(high=self.df['High'],
+                                     low=self.df['Low'],
+                                     support_period=support_period,
+                                     resistance_period=resistance_period,
+                                     channel_part=channel_part)
+        flag = utils.EXIT
+        for price, low, high in zip(self.df['Close'],
+                                    PC.lower_line(),
+                                    PC.higher_line()):
+            if price > high:
+                flag = utils.SELL
+            elif price < low:
+                flag = utils.BUY
+            self.returns.append(flag)
