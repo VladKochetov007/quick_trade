@@ -16,4 +16,5 @@ quick_trade.egg-info
 **__pycache__
 __pycache__/
 *.py[cod]
-examples/walkforward_validation.py
+*.csv
+!examples/dataframes/BNBUSDT1d.csv
