@@ -1,0 +1,1687 @@
+
+
+
+
+<html>
+<head>
+    <title>ApiTrade-자동 거래 및 암호화 교류에 차 익의 서비스</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/favicon.png?v=1650052154362" type="image/x-icon">
+    <link href="/css/bundle.css?v=1650052154362" rel="stylesheet">
+    <link href="/fonts/fonts.css?v=1650052154362" rel="stylesheet">
+</head>
+<body>
+<nav id="navbar" class="navbar navbar-expand-md navbar-dark fixed-top">
+
+    <a class="navbar-brand" href="#">
+
+    </a>
+
+    <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+    >
+        +
+    </button>
+
+    
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item active">
+                <a class="nav-link" data-scroll href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#technologies">Exchanges</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#advantages">Advantages</a>
+            </li>
+            
+            
+            
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#faq">FAQ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#affilate">Affiliate</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#competition">Competition</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#news">News</a>
+            </li>
+            
+                
+            
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            
+            <div class="dropdown telegram-dropdown">
+                <button class="btn btn-light btn-ripple btn-ripple2 mx-1 py-1 px-1" type="button" id="dropdownTelegramButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="rounded-circle" src="/images/telegram-intro-new.svg" width="30" height="30">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownTelegramButton">
+                    <div class="btn btn-light mx-1 py-1 px-1">
+                        <a href="https://t.me/joinchat/AAAAAETgTtLIc84BpWGuvA">
+                            <img src="/images/telegram-intro-new.svg" width="30" height="30" />
+                        </a>
+                    </div>
+                    <div class="btn btn-light mx-1 py-1 px-1">
+                        <a href="https://t.me/joinchat/AAAAAETgTtLIc84BpWGuvA">
+                            <span class="telegram-wrap">
+                                <img src="/images/telegram-intro-en.svg" width="36" height="36" />
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="btn btn-light mx-1 py-1 px-1">
+                <a href="https://discord.gg/P3PY7Vu">
+                    <img class="rounded-circle" src="/images/discord-icon.svg" width="30" height="30">
+                </a>
+            </div>
+            <div class="btn btn-light mx-1 py-1 px-1">
+                <a href="https://www.facebook.com/apitraderu/">
+                    <img class="rounded-circle" src="/images/facebook-intro.svg" width="30" height="30">
+                </a>
+            </div>
+            <div class="btn btn-light mx-1 py-1 px-1">
+                <a href="https://twitter.com/apitrade">
+                    <img class="rounded-circle" src="/images/twitter-intro.svg" width="30" height="30">
+                </a>
+            </div>
+            
+            
+            <div class="dropdown">
+                <button class="btn btn-light mx-1 py-1 px-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="rounded-circle" src="/img/flags/32/South-Korea.square.png" width="30" height="30">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    
+                        <a href="/?locale=en">
+                            <img class="rounded-circle" src="img/flags/32/United-States.square.png" width="30" height="30">
+                        </a>
+                    
+                        <a href="/?locale=ru">
+                            <img class="rounded-circle" src="img/flags/32/Russia.square.png" width="30" height="30">
+                        </a>
+                    
+                        <a href="/?locale=de">
+                            <img class="rounded-circle" src="img/flags/32/Germany.square.png" width="30" height="30">
+                        </a>
+                    
+                        <a href="/?locale=es">
+                            <img class="rounded-circle" src="img/flags/32/Spain.square.png" width="30" height="30">
+                        </a>
+                    
+                        <a href="/?locale=fr">
+                            <img class="rounded-circle" src="img/flags/32/France.square.png" width="30" height="30">
+                        </a>
+                    
+                        <a href="/?locale=zh">
+                            <img class="rounded-circle" src="img/flags/32/China.square.png" width="30" height="30">
+                        </a>
+                    
+                        <a href="/?locale=ja">
+                            <img class="rounded-circle" src="img/flags/32/Japan.square.png" width="30" height="30">
+                        </a>
+                    
+                        <a href="/?locale=ko">
+                            <img class="rounded-circle" src="img/flags/32/South-Korea.square.png" width="30" height="30">
+                        </a>
+                    
+                </div>
+            </div>
+            <div class="mx-1" role="group">
+                
+                
+                    
+                        
+                        <button type="button" data-toggle="modal" id="showSignInModal" data-target="#signInModal" class="btn btn-light"
+                                style="margin-right: -55px; z-index: 9999; position: relative;">
+                            로그인
+                        </button>
+                        
+                        <button type="button" data-toggle="modal" id="showSignUpModal" data-target="#signUpModal" class="btn btn-primary btn-ripple-hover pl-5">
+                            등록하세요
+                        </button>
+                    
+                    
+                
+            </div>
+        </form>
+    </div>
+</nav>
+
+<div id="intro" class="intro container-fluid container-fluid--fill position-relative overflow-hidden p-3 text-center bg-primary">
+
+    <div class="intro-inner-wrapper">
+        <div class="intro--content col-md-18 p-lg-5 mx-auto my-auto text-light" style="z-index: 1">
+            <img class="intro--logotype" src="/images/logo.svg"/>
+            <h1 class="font-weight-normal">Automated Crypto Currency Trading!</h1>
+            <h3><b>Revolutionary</b> platform that does thousands of profitable trades for you on crypto exchanges automatically. Makes money while you sleep!</h3>
+            <button class="btn btn-lg mt-4" type="button" data-toggle="modal" id="introShowSignUpModal" data-target="#signUpModal" >Join Apitrade now!</button>
+        </div>
+
+        
+            <div id="introCover" class="intro--cover">
+                <div class="cover-video">
+                    <video loop="" muted="" autoplay="" poster="/images/intro.jpg">
+                        <source data-src="/movies/compressed/intro.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        
+
+        <div class="mouse-center">
+            <div class="mouse-down"></div>
+        </div>
+    </div>
+
+</div>
+
+
+<div id="features" class="features_container container-fluid container-fluid--drop-shadow">
+    <div class="row">
+        <div class="col-24">
+            <h2 class="text-center">Our unique advantages:</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2 col-md-24"></div>
+
+        <div class="col-1 col-md-24"></div>
+        <div class="col-6 col-md-24 text-center mb-4 px-5">
+            <img class="rounded-circle mb-3" src="/images/features-risks.svg">
+            <h4>Low risk</h4>
+           The service uses the most advanced trading algorithms and <b>arbitrage</b> with minimum risk levels, based on machine learning
+        </div>
+        <div class="col-6 col-md-24 text-center mb-4 px-5">
+            <img class="rounded-circle mb-3" src="/images/features-positions.svg">
+            <h4>Stable income</h4>
+            ApiTrade goes through all possible exchanges to find you the most profitable deals that will make you a little but stable income on a daily basis
+        </div>
+
+        <div class="col-6 col-md-24 text-center mb-4 px-5">
+            <img class="rounded-circle mb-3" src="/images/features-comission.svg">
+            <h4>No sign-up or monthly fees</h4>
+            ApiTrade makes money from profitable trades only, charging you a percentage. There is no monthly or daily fee whatsoever. You pay only from what you make.
+        </div>
+        <div class="col-1 col-md-24"></div>
+
+        <div class="col-2 col-md-24"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-2"></div>
+
+        <div class="col-1 col-md-24"></div>
+        <div class="col-6 col-md-24 text-center mb-4 px-5">
+            <img class="rounded-circle mb-3" src="/images/features-security.svg">
+            <h4>Security</h4>
+          We do not accept and/or store your funds on our accounts. We do not have access to your funds withdrawals either.
+        </div>
+        <div class="col-6 col-md-24 text-center mb-4 px-5">
+            <img class="rounded-circle mb-3" src="/images/features-moneyback.svg">
+            <h4>Guarantees</h4>
+There is 100% compensation if a trade ends up with a loss after 45 days (not for withdrawal)
+        </div>
+        <div class="col-6 col-md-24 text-center mb-4 px-5">
+            <img class="rounded-circle mb-3" src="/images/features-participation.svg">
+            <h4>All is easy!</h4>
+You dont need to set up any sort of parameters and constantly control whats going on. Just click the button and there you go, profits all the way
+        </div>
+        <div class="col-1 col-md-24"></div>
+
+        <div class="col-2 col-md-24"></div>
+    </div>
+
+    <div class="collapse" id="moreFeatures">
+        <div class="row">
+            <div class="col-2 col-md-24"></div>
+
+            <div class="col-1 col-md-24"></div>
+            <div class="col-6 col-md-24 text-center mb-4 px-5">
+                <h4>Client is always right!</h4>
+We offer fast and easy client support via Telegram.
+            </div>
+            <div class="col-6 col-md-24 text-center mb-4 px-5">
+                <h4>25 crypto-exchanges aggregation</h4>
+In the near future we are going to offer trading via 25 crypto exchanges in a single window mode.
+            </div>
+            <div class="col-6 col-md-24 text-center mb-4 px-5">
+                <h4>Total transparency</h4>
+You can track any of the profitable trades, see exact profits and time it took to establish any of those profitable trades
+            </div>
+            <div class="col-1 col-md-24"></div>
+
+            <div class="col-2 col-md-24"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24 text-center">
+            <button class="btn btn-primary btn-ripple" data-toggle="collapse" data-target="#moreFeatures">Even more...</button>
+        </div>
+    </div>
+</div>
+
+
+<div id="technologies" class="technologies_container container-fluid">
+    
+    <div class="row">
+        <div class="col-1 col-md-24"></div>
+        <div class="col-2 col-md-24 col--ruler"></div>
+        <div class="col-7 col-md-24 col--ruler">
+            <h2 class="text-left">A single interface for all crypto exchanges.</h2>
+            <h5>At this moment we have 25 crypto exchanges working with us to provide crypto prices via API interface in real time.
+                <br><br>
+                For auto-trading and arbitrage, there are 3 most popular exchanges added to the system. We are more than happy to add more exchanges by request, but most of them arent good enough to handle serious clientele. 
+</h5>
+               </div>
+        <div class="col-1 col-md-24"></div>
+        <div class="col-10 col-md-24 text-right">
+
+            <div class="orbita-placeholder orbita">
+
+                <div class="orbita_circle orbita_circle--first"></div>
+                <div class="orbita_circle orbita_circle--second"></div>
+                <div class="orbita_circle orbita_circle--third"></div>
+
+                <div class="orbita_planet orbita_planet--ripple">
+                    <img src="/images/orbita_planet.png">
+                </div>
+
+                <div class="orbita_sattelite orbita_sattelite--first_circle orbita_sattelite--first_circle1" data-toggle="tooltip" data-placement="auto" title="Binance - the biggest crypto exchange with a turnover above $1 billion, has very low commissions and big number of trading pairs.">
+                    <div class="orbita_sattelite_name">Binance</div>
+                    <img src="/images/orbita_binance.png">
+                </div>
+                <div class="orbita_sattelite orbita_sattelite--first_circle orbita_sattelite--first_circle2" data-toggle="tooltip" data-placement="auto" title="Huobi - top5 exchange with turnover over $1 billion per day">
+                    <div class="orbita_sattelite_name">Huobi</div>
+                    <img src="/images/orbita_huobi.png">
+                </div>
+                <div class="orbita_sattelite orbita_sattelite--first_circle orbita_sattelite--first_circle3" data-toggle="tooltip" data-placement="auto" title="Bittrex - well known U.S. based crypto exchange, opened in 2014. Its turnover is above $300 million a day. Has lots of trading pairs.">
+                    <div class="orbita_sattelite_name">Bittrex</div>
+                    <img src="/images/orbita_bitrex.png">
+                </div>
+
+
+                <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle1" data-toggle="tooltip" data-placement="auto" title="Bit-Z - биржа с оборотом около $200 млн в день, созданная в 2016 году.">
+                    <div class="orbita_sattelite_name">Bit Z</div>
+                    <img src="/images/orbita-bit.png">
+                </div>
+                <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle2" data-toggle="tooltip" data-placement="auto" title="Bitstamp - старейшая биржа, работающая с 2011 года, имеющая оборот около $300 млн в день">
+                    <div class="orbita_sattelite_name">Bitstamp</div>
+                    <img src="/images/orbita_bittrex.png">
+                </div>
+                <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle3" data-toggle="tooltip" data-placement="auto" title="Bitfinex - biggest crypto exchange for professional traders with deposits above $10,000
+">
+                    <div class="orbita_sattelite_name">Bitfinex</div>
+                    <img src="/images/orbita_bitfinex.png">
+                </div>
+                <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle4" data-toggle="tooltip" data-placement="auto" title="Kraken - one of the oldest and well respected crypto exchanges with a turnover above half a billion USD per day, despite all other exchanges, Kraken has real USD pairs.
+">
+                    <div class="orbita_sattelite_name">Kraken</div>
+                    <img src="/images/orbita_kraken.png">
+                </div>
+                <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle5" data-toggle="tooltip" data-placement="auto" title="Poloniex - oldest U.S. based crypto exchange with a turnover above $100 million a day, in 2017 bought out by Circles, that belongs to Goldman Sachs.">
+                    <div class="orbita_sattelite_name">Poloniex</div>
+                    <img src="/images/orbita_poloniex.png">
+                </div>
+
+                <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle1" data-toggle="tooltip" data-placement="auto" title="OKEx (OkCoin) - big exchange from Hong-Kong with turnover above $1 billion.">
+                    <div class="orbita_sattelite_name">OKEx</div>
+                    <img src="/images/orbita_kcoin.png">
+                </div>
+                <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle2" data-toggle="tooltip" data-placement="auto" title="Cryptopia - biggest exchange from New Zealand with lots of trading pairs.">
+                    <div class="orbita_sattelite_name">Cryptopia</div>
+                    <img src="/images/orbita_cryptopia.png">
+                </div>
+                <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle3" data-toggle="tooltip" data-placement="auto" title="KuCoin  - one of the fastest growing crypto exchanges with a current turnover above $40 million a day and usually first one to add new promising coins. Has low fees.">
+                    <div class="orbita_sattelite_name">KuCoin</div>
+                    <img src="/images/orbita_kucoin.png">
+                </div>
+                <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle4" data-toggle="tooltip" data-placement="auto" title="GDAX (Coinbase) - biggest U.S. government regulated crypto exchange with a turnover above $500 million a day, compared to all existing exchanges has the lowest number of trading pairs.">
+                    <div class="orbita_sattelite_name">GDAX</div>
+                    <img src="/images/orbita_gdax.png">
+                </div>
+            </div>
+        </div>
+        <div class="col-2 col-md-24"></div>
+        <div class="col-1 col-md-24"></div>
+    </div>
+</div>
+
+
+<div id="advantages" class="advantages_container container-fluid">
+    
+    <div class="row">
+        <div class="col-2 col-md-24"></div>
+        <div class="col-20 col-md-24 col--ruler">
+            <h2 class="heading-ribbon w-50">User income is generated by thousands of instant trades throughout the day using well known algorithms.
+</h2>
+            <h4 class="w-25">Market conditions are changing very fast, algorithms that worked yesterday are not necessarily working the same way today. Keeping this in mind we are always working to change and improve trading strategies manually and using machine learning.</h4>
+            <h5 class="w-50">According to statistics, we can clearly see that the system does mostly profitable trades on a daily basis, such profits can be around 0.5-1% per day (not guaranteed). A 1BTC deposit rising with a rate of 0.5% per day  that you hold on crypto exchange website can turn into 6 BTC in a year. Despite banks and funds, ApiTrade does not hold onto your funds.
+</h5>
+            <script>
+                window.series = [
+                    [1,1.6, 3.9, 9.5 , 23, 57, 144]
+                ]
+            </script>
+            <div class="advantages-media">
+            </div>
+            <h2 class="heading-ribbon mt-5 mb-2 w-50">Trading methods compared</h2>
+          <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center"></th>
+                    <th scope="col" class="bg-primary text-white text-center">ApiTrade</th>
+                    <th scope="col" class="text-center">Manual Trading</th>
+                    <th scope="col" class="text-center">Bot Trading</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Predictable daily profits</td>
+                    <td class="bg-primary text-white text-center"><img src="/images/yes-icon.svg"> Yes</td>
+                    <td class="text-center">No</td>
+                    <td class="text-center">No</td>
+                </tr>
+                <tr>
+                    <td class="">Minimum Risk</td>
+                    <td class="bg-primary text-white text-center"><img src="/images/yes-icon.svg"> Yes</td>
+                    <td class="text-center">No</td>
+                    <td class="text-center">No</td>
+                </tr>
+                <tr>
+                    <td class="">Zero set up and constant control</td>
+                    <td class="bg-primary text-white text-center"><img src="/images/yes-icon.svg"> Yes</td>
+                    <td class="text-center">No</td>
+                    <td class="text-center">No</td>
+                </tr>
+                <tr>
+                    <td class="">Automated selection of trading pairs</td>
+                    <td class="bg-primary text-white text-center"><img src="/images/yes-icon.svg"> Yes</td>
+                    <td class="text-center">No</td>
+                    <td class="text-center">No</td>
+                </tr>
+             <tr>
+                    <td class="">Arbitrage</td>
+                    <td class="bg-primary text-white text-center"><img src="/images/yes-icon.svg">Yes</td>
+                    <td class="text-center">No</td>
+                    <td class="text-center">No</td>
+                </tr>
+             <tr>
+                    <td class="">High Frequency Trading (HFT)</td>
+                    <td class="bg-primary text-white text-center"><img src="/images/yes-icon.svg"> Yes</td>
+                    <td class="text-center">No</td>
+                    <td class="text-center">No</td>
+                </tr>
+                <tr>
+                    <td class="">No sign-up or monthly fees</td>
+                    <td class="bg-primary text-white text-center"><img src="/images/yes-icon.svg"> Yes</td>
+                    <td class="text-center">No</td>
+                    <td class="text-center">No</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-24 col-md-24 col--ruler">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-18 col-md-24 py-2 text-muted">
+           
+                </div>
+                <div class="col-6 col-md-24 py-2 text-muted">
+                    <button type="button" class="btn btn-light" style="margin-right: -55px; z-index:  9999; position:  relative;" data-toggle="modal"
+                            data-target="#signInModal">SignIn
+                    </button>
+                    <button type="button" class="btn btn-primary btn-ripple pl-5" data-toggle="modal" data-target="#signUpModal">SignUp</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div id="faq" class="faq_container container-fluid">
+    <div class="row">
+        <div class="container-fluid--ruler"></div>
+    </div>
+    <div class="row">
+        <div class="col-2 col-md-24"></div>
+        <div class="col-20 col-md-24"><h2 class="text-left">Answers to frequently asked questions</h2></div>
+        <div class="col-2 col-md-24"></div>
+</div>
+    <div class="row">
+        <div class="col-2 col-md-24"></div>
+        <div class="col-4 col-md-24">
+            <div class="list-group">
+                
+                    
+                    <a href="#faq" data-scroll class="list-group-item list-group-item-action " data-toggle="collapse"
+                       data-target="#commonQuestions">
+                        一般的なご質問
+                    </a>
+                
+                    
+                    <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                       data-target="#serviceQuestions">
+                        サービスと連携します。
+                    </a>
+                
+                    
+                    <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                       data-target="#financeQuestions">
+                        収支取引に関する質問
+                    </a>
+                
+                    
+                    <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                       data-target="#exchangeQuestions">
+                        交流について
+                    </a>
+                
+                    
+                    <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                       data-target="#differencesQuestions">
+                        アナログやボットからの相違点
+                    </a>
+                
+                    
+                    <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                       data-target="#problemsQuestions">
+                        可能性のある問題とリスク
+                    </a>
+                
+            </div>
+        </div>
+        <div class="col-16 col-md-24" id="questions">
+            
+                
+                
+                <div id="commonQuestions" class="collapse show" data-parent="#questions">
+                    <h2 class="text-left mb-2">一般的なご質問</h2>
+                    <div>
+                        
+                    </div>
+                </div>
+            
+                
+                
+                <div id="serviceQuestions" class="collapse " data-parent="#questions">
+                    <h2 class="text-left mb-2">サービスと連携します。</h2>
+                    <div>
+                        
+                    </div>
+                </div>
+            
+                
+                
+                <div id="financeQuestions" class="collapse " data-parent="#questions">
+                    <h2 class="text-left mb-2">収支取引に関する質問</h2>
+                    <div>
+                        
+                    </div>
+                </div>
+            
+                
+                
+                <div id="exchangeQuestions" class="collapse " data-parent="#questions">
+                    <h2 class="text-left mb-2">交流について</h2>
+                    <div>
+                        
+                    </div>
+                </div>
+            
+                
+                
+                <div id="differencesQuestions" class="collapse " data-parent="#questions">
+                    <h2 class="text-left mb-2">アナログやボットからの相違点</h2>
+                    <div>
+                        
+                    </div>
+                </div>
+            
+                
+                
+                <div id="problemsQuestions" class="collapse " data-parent="#questions">
+                    <h2 class="text-left mb-2">可能性のある問題とリスク</h2>
+                    <div>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        <div class="col-2 col-md-24"></div>
+    </div>
+</div>
+
+
+<div id="affilate" class="affilate_container container-fluid container-fluid--primary">
+    
+    <div class="row">
+        <div class="col-2 col-md-24"></div>
+        <div class="col-10 col-md-24">
+            <h2 class="text-left">Affiliate Program</h2>
+            <h5>
+Join our affiliate program and make 10% of all deposits, lifetime! 
+                <br><br>
+            </h5>
+            <h4>
+              This is the best way to make money doing nothing and with zero capital involved.
+            </h4>
+            <h5 class="heading-yes">Register an ApiTrade account and create a unique referral link</h5>
+            <h5 class="heading-yes">Send referral link to your friend.</h5>
+            <h5 class="heading-yes">Your friend clicks the link.</h5>
+            <h5 class="heading-yes">He registers at ApiTrade and you make 10% of his income, lifetime.</h5>
+        </div>
+        <div class="col-10 col-md-24 text-right">
+            <div class="affilate-media">
+                <img src="/images/affilate-bg.svg">
+            </div>
+        </div>
+        <div class="col-2 col-md-24"></div>
+</div>
+</div>
+
+
+<div id="competition" class="competition_container container-fluid">
+    <div class="row">
+        <div class="col-2 col-md-24"></div>
+        <div class="col-20 col-md-24 col--ruler">
+            <h2 class="mb-2 w-50">Competition</h2>
+            <div class="bg-muted p-sm">
+                Competition
+            </div>
+            <div style="overflow-y:auto;height:600px;">
+                <table class="table table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Partner</th>
+                        <th>Income</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                        
+                            <tr>
+                                <td>1</td>
+                                <td>2885</td>
+                                <td>Zykov</td>
+                                <td><span class="text-nowrap">12921.25</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>2</td>
+                                <td>10658</td>
+                                <td>bitcoinjesus.net</td>
+                                <td><span class="text-nowrap">10117.31</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>3</td>
+                                <td>355</td>
+                                <td>355</td>
+                                <td><span class="text-nowrap">9703.19</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>4</td>
+                                <td>5</td>
+                                <td>https://t.me/ApiTradeSecrets | Telegram: @ApiTradeSecrets | API Trade Affiliate Program Secrets | Секреты Партнерской Программы API Trade</td>
+                                <td><span class="text-nowrap">8699.79</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>5</td>
+                                <td>4184</td>
+                                <td>Тупа шобы айфон выиграть</td>
+                                <td><span class="text-nowrap">5397.74</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>6</td>
+                                <td>772</td>
+                                <td>Raketa</td>
+                                <td><span class="text-nowrap">4908.21</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>7</td>
+                                <td>4027</td>
+                                <td>4027</td>
+                                <td><span class="text-nowrap">4350.51</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>8</td>
+                                <td>50139</td>
+                                <td>50139</td>
+                                <td><span class="text-nowrap">3753.39</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>9</td>
+                                <td>10449</td>
+                                <td>Crypto Gang 42 | To the moon and back | ‹^› ‹(•_•)› ‹^›</td>
+                                <td><span class="text-nowrap">2614.43</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>10</td>
+                                <td>8594</td>
+                                <td>DD</td>
+                                <td><span class="text-nowrap">2414.38</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>11</td>
+                                <td>46179</td>
+                                <td>46179</td>
+                                <td><span class="text-nowrap">1408.26</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>12</td>
+                                <td>9605</td>
+                                <td>9605</td>
+                                <td><span class="text-nowrap">1355.28</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>13</td>
+                                <td>7182</td>
+                                <td>7182</td>
+                                <td><span class="text-nowrap">1300.61</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>14</td>
+                                <td>154</td>
+                                <td>Я знаю как выжать максимум @AndyApi</td>
+                                <td><span class="text-nowrap">1267.33</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>15</td>
+                                <td>3274</td>
+                                <td>3274</td>
+                                <td><span class="text-nowrap">1266.54</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>16</td>
+                                <td>50268</td>
+                                <td>touringo</td>
+                                <td><span class="text-nowrap">1084.05</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>17</td>
+                                <td>11184</td>
+                                <td>11184</td>
+                                <td><span class="text-nowrap">1036.99</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>18</td>
+                                <td>298</td>
+                                <td>Mr John</td>
+                                <td><span class="text-nowrap">996.96</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>19</td>
+                                <td>14206</td>
+                                <td>Владимир Иосипенко</td>
+                                <td><span class="text-nowrap">988.53</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>20</td>
+                                <td>49991</td>
+                                <td>49991</td>
+                                <td><span class="text-nowrap">973.99</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>21</td>
+                                <td>761</td>
+                                <td>761</td>
+                                <td><span class="text-nowrap">943.12</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>22</td>
+                                <td>3921</td>
+                                <td>3921</td>
+                                <td><span class="text-nowrap">921.81</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>23</td>
+                                <td>694</td>
+                                <td>https://digex.io/about-digex.htm</td>
+                                <td><span class="text-nowrap">893.05</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>24</td>
+                                <td>16389</td>
+                                <td>Yaroslav4400</td>
+                                <td><span class="text-nowrap">872.2</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>25</td>
+                                <td>25066</td>
+                                <td>25066</td>
+                                <td><span class="text-nowrap">866.1</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>26</td>
+                                <td>4446</td>
+                                <td>Gearing</td>
+                                <td><span class="text-nowrap">862.06</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>27</td>
+                                <td>2404</td>
+                                <td>2404</td>
+                                <td><span class="text-nowrap">857.84</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>28</td>
+                                <td>45124</td>
+                                <td>@perfectearningz</td>
+                                <td><span class="text-nowrap">856.37</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>29</td>
+                                <td>1587</td>
+                                <td>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; 1000р бонус всем!!! | мой блог с отчетами -&gt; apitrade1.ru | Помогаю всем! )))))) | мой телеграмм @GreatAndrei &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</td>
+                                <td><span class="text-nowrap">821.69</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>30</td>
+                                <td>3597</td>
+                                <td>16$ рефбек при регистрации-от 1 биткоина бонус 20$ - @AlexanderCryptoProfit</td>
+                                <td><span class="text-nowrap">808.15</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>31</td>
+                                <td>50293</td>
+                                <td>50293</td>
+                                <td><span class="text-nowrap">745.04</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>32</td>
+                                <td>866</td>
+                                <td>866</td>
+                                <td><span class="text-nowrap">733.76</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>33</td>
+                                <td>18781</td>
+                                <td>18781</td>
+                                <td><span class="text-nowrap">723.68</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>34</td>
+                                <td>1784</td>
+                                <td>ID 1784  логин vaninevgeny - мой курс по торговле ботами https://totalcryptobot.ru</td>
+                                <td><span class="text-nowrap">698.02</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>35</td>
+                                <td>11766</td>
+                                <td>11766</td>
+                                <td><span class="text-nowrap">694.62</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>36</td>
+                                <td>50294</td>
+                                <td>50294</td>
+                                <td><span class="text-nowrap">670.05</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>37</td>
+                                <td>31583</td>
+                                <td>31583</td>
+                                <td><span class="text-nowrap">666.22</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>38</td>
+                                <td>6663</td>
+                                <td>6663</td>
+                                <td><span class="text-nowrap">654.75</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>39</td>
+                                <td>14734</td>
+                                <td>14734</td>
+                                <td><span class="text-nowrap">652.26</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>40</td>
+                                <td>12496</td>
+                                <td>12496</td>
+                                <td><span class="text-nowrap">626.05</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>41</td>
+                                <td>104</td>
+                                <td> Залетел в декабре по 19к$, оказываю психологическую помощь/ t.me/FuckFiat :)</td>
+                                <td><span class="text-nowrap">581.54</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>42</td>
+                                <td>4078</td>
+                                <td>4078</td>
+                                <td><span class="text-nowrap">570.82</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>43</td>
+                                <td>2538</td>
+                                <td>Пишу ежедневные отчеты https://vk.com/cparock | Бонус всем 16$ | + рефбек от меня!</td>
+                                <td><span class="text-nowrap">566.44</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>44</td>
+                                <td>22920</td>
+                                <td>22920</td>
+                                <td><span class="text-nowrap">511.55</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>45</td>
+                                <td>21573</td>
+                                <td>WhiteNights</td>
+                                <td><span class="text-nowrap">508.99</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>46</td>
+                                <td>23873</td>
+                                <td>23873</td>
+                                <td><span class="text-nowrap">505.5</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>47</td>
+                                <td>1524</td>
+                                <td>API</td>
+                                <td><span class="text-nowrap">488.38</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>48</td>
+                                <td>51722</td>
+                                <td>51722</td>
+                                <td><span class="text-nowrap">462.52</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>49</td>
+                                <td>8852</td>
+                                <td>🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀   Руководство по туземунь бота     https://youtu.be/kdmbvDsGw5o        🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀</td>
+                                <td><span class="text-nowrap">461.29</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>50</td>
+                                <td>13</td>
+                                <td>13</td>
+                                <td><span class="text-nowrap">454.14</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>51</td>
+                                <td>86</td>
+                                <td>86</td>
+                                <td><span class="text-nowrap">449.13</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>52</td>
+                                <td>339</td>
+                                <td>339</td>
+                                <td><span class="text-nowrap">427.28</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>53</td>
+                                <td>50640</td>
+                                <td>50640</td>
+                                <td><span class="text-nowrap">423.07</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>54</td>
+                                <td>3155</td>
+                                <td>3155</td>
+                                <td><span class="text-nowrap">422.04</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>55</td>
+                                <td>1328</td>
+                                <td>Who&#039;s your daddy ^.^</td>
+                                <td><span class="text-nowrap">420.03</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>56</td>
+                                <td>74</td>
+                                <td>o_0 who&#039;s here? 0_o</td>
+                                <td><span class="text-nowrap">419.35</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>57</td>
+                                <td>3406</td>
+                                <td>apitrade.wordpress.com</td>
+                                <td><span class="text-nowrap">415.57</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>58</td>
+                                <td>2761</td>
+                                <td>MoneyRoom ⚡ Support - @MRoomIDs ⚡</td>
+                                <td><span class="text-nowrap">406</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>59</td>
+                                <td>185</td>
+                                <td>Войду в 20ку по любому!</td>
+                                <td><span class="text-nowrap">395.91</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>60</td>
+                                <td>2225</td>
+                                <td>https://t.me/JpShip Помогаю своим рефам. Пополню ваш баланс в АТ (0.8 за 1 USD, приму BUSD, USDT, возможны варианты)</td>
+                                <td><span class="text-nowrap">378.06</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>61</td>
+                                <td>44040</td>
+                                <td>44040</td>
+                                <td><span class="text-nowrap">371.42</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>62</td>
+                                <td>25404</td>
+                                <td>25404</td>
+                                <td><span class="text-nowrap">363.01</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>63</td>
+                                <td>50482</td>
+                                <td>50482</td>
+                                <td><span class="text-nowrap">339.35</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>64</td>
+                                <td>7605</td>
+                                <td>7605</td>
+                                <td><span class="text-nowrap">337.6</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>65</td>
+                                <td>260</td>
+                                <td>260</td>
+                                <td><span class="text-nowrap">335.41</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>66</td>
+                                <td>10704</td>
+                                <td>10704</td>
+                                <td><span class="text-nowrap">335.41</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>67</td>
+                                <td>2115</td>
+                                <td>!!!</td>
+                                <td><span class="text-nowrap">333.67</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>68</td>
+                                <td>31522</td>
+                                <td>31522</td>
+                                <td><span class="text-nowrap">319.93</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>69</td>
+                                <td>2734</td>
+                                <td>2734</td>
+                                <td><span class="text-nowrap">317.2</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>70</td>
+                                <td>3813</td>
+                                <td>3813</td>
+                                <td><span class="text-nowrap">315.15</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>71</td>
+                                <td>565</td>
+                                <td>565</td>
+                                <td><span class="text-nowrap">313.07</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>72</td>
+                                <td>12258</td>
+                                <td>12258</td>
+                                <td><span class="text-nowrap">312.1</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>73</td>
+                                <td>18</td>
+                                <td>18</td>
+                                <td><span class="text-nowrap">311.98</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>74</td>
+                                <td>4971</td>
+                                <td>4971</td>
+                                <td><span class="text-nowrap">311.38</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>75</td>
+                                <td>137</td>
+                                <td>robotfarm.ru</td>
+                                <td><span class="text-nowrap">304.08</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>76</td>
+                                <td>23818</td>
+                                <td>23818</td>
+                                <td><span class="text-nowrap">303.53</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>77</td>
+                                <td>3981</td>
+                                <td>3981</td>
+                                <td><span class="text-nowrap">302.26</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>78</td>
+                                <td>53795</td>
+                                <td>53795</td>
+                                <td><span class="text-nowrap">299.79</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>79</td>
+                                <td>29780</td>
+                                <td>29780</td>
+                                <td><span class="text-nowrap">293.18</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>80</td>
+                                <td>3035</td>
+                                <td>K Kruts , телега @ kkruts - любые вопросы по работе сервиса задавайте, чем смогу помогу без всяких обязательств</td>
+                                <td><span class="text-nowrap">287.12</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>81</td>
+                                <td>12882</td>
+                                <td>12882</td>
+                                <td><span class="text-nowrap">280.56</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>82</td>
+                                <td>24877</td>
+                                <td>24877</td>
+                                <td><span class="text-nowrap">276.38</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>83</td>
+                                <td>718</td>
+                                <td>718</td>
+                                <td><span class="text-nowrap">273.81</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>84</td>
+                                <td>8629</td>
+                                <td>8629</td>
+                                <td><span class="text-nowrap">273.19</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>85</td>
+                                <td>6792</td>
+                                <td>pct</td>
+                                <td><span class="text-nowrap">268.55</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>86</td>
+                                <td>6753</td>
+                                <td>6753</td>
+                                <td><span class="text-nowrap">264.37</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>87</td>
+                                <td>1567</td>
+                                <td>1567</td>
+                                <td><span class="text-nowrap">262.85</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>88</td>
+                                <td>11102</td>
+                                <td>11102</td>
+                                <td><span class="text-nowrap">257.48</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>89</td>
+                                <td>429</td>
+                                <td>Webmister</td>
+                                <td><span class="text-nowrap">254.19</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>90</td>
+                                <td>993</td>
+                                <td>993</td>
+                                <td><span class="text-nowrap">251.78</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>91</td>
+                                <td>282</td>
+                                <td>282</td>
+                                <td><span class="text-nowrap">251.63</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>92</td>
+                                <td>2682</td>
+                                <td>2682</td>
+                                <td><span class="text-nowrap">242.52</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>93</td>
+                                <td>4645</td>
+                                <td>4645</td>
+                                <td><span class="text-nowrap">235.23</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>94</td>
+                                <td>24431</td>
+                                <td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9df4f3fbf2ddeef4f0edf1f8feefe4ede9f2e9effcf9f4f3fab3fef2f0">[email&#160;protected]</a></td>
+                                <td><span class="text-nowrap">235.11</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>95</td>
+                                <td>4090</td>
+                                <td>NATASHA</td>
+                                <td><span class="text-nowrap">229.89</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>96</td>
+                                <td>51966</td>
+                                <td>51966</td>
+                                <td><span class="text-nowrap">227.62</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>97</td>
+                                <td>2310</td>
+                                <td>2310</td>
+                                <td><span class="text-nowrap">223.15</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>98</td>
+                                <td>9886</td>
+                                <td>9886</td>
+                                <td><span class="text-nowrap">220.37</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>99</td>
+                                <td>52474</td>
+                                <td>52474</td>
+                                <td><span class="text-nowrap">218.99</span></td>
+                            </tr>
+                        
+                            <tr>
+                                <td>100</td>
+                                <td>4783</td>
+                                <td>Отдаю бонусы каждому! Как только увижу биржи и минимальный баланс на вашем аккаунте.</td>
+                                <td><span class="text-nowrap">201.89</span></td>
+                            </tr>
+                        
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+
+
+<footer class="footer_container container-fluid">
+    <div class="row">
+        <div class="col-2 col-md-24"></div>
+        <div class="col-20 col-md-24"><h2 class="text-left">We’re keeping you <b>informed</b></h2></div>
+        <div class="col-2 col-md-24"></div>
+    </div>
+    <div id="news" class="row">
+        <div class="col-2 col-md-24"></div>
+        <div class="col-10 col-md-24">
+            <div class="news_block news_block-first">
+                <h4>
+                    <a href="#">
+                        Start TRADING BY of ApiTrade →
+                    </a>
+                </h4>
+                <div class="news_block_content">
+                    In General, the purpose of the service is to increase your income and save your time and nerves.
+                    With the help of ApiTrade you will be able to trade cryptocurrencies on all major crypto-exchanges in a single window mode (the system
+                    automatically selects the exchange with the best price).
+                    But more importantly, the system will allow you to have significant passive income after turning on high-speed automated trading function and
+                    automatic arbitrage, regardless of the rise or decline of the market.
+                    Also by using the service, you will be able to easily monitor your cryptocurrency portfolio.
+                </div>
+            </div>
+        </div>
+        <div class="col-1 col-md-24"></div>
+        <div class="col-9 col-md-24">
+            <div class="news_block news_block-second">
+                <h4>
+                    <a href="#">
+                        STOP SUFFERING →
+                    </a>
+                </h4>
+                <div class="news_block_content">
+                    In General, the purpose of the service is to increase your income and save your time and nerves.
+                    With the help of ApiTrade you will be able to trade cryptocurrencies on all major crypto-exchanges in a single window mode (the system
+                    automatically selects the exchange with the best price).
+                    But more importantly, the system will allow you to have significant passive income after turning on high-speed automated trading function and
+                    automatic arbitrage, regardless of the rise or decline of the market.
+                    Also by using the service, you will be able to easily monitor your cryptocurrency portfolio.
+                </div>
+            </div>
+        </div>
+        <div class="col-2 col-md-24"></div>
+    </div>
+    <div class="row">
+        <div class="col-2 col-md-24"></div>
+        <div class="col-12 col-md-24 mt-4">
+            <h2 class="text-left mb-4">
+                Ready to go?<br>
+                <b>Get in touch</b> with us
+            </h2>
+        </div>
+        <div class="col-2 col-md-24 mt-4 text-center">
+            <a href="https://tx.me/apitradepro">
+                <div class="btn btn-light btn-ripple py-1 px-1 mt-2 mb-1">
+                    <img class="rounded-circle" src="/images/ащщеук-telegram.svg" width="30" height="30">
+                </div>
+                <br>
+                Telegram
+            </a>
+        </div>
+        <div class="col-2 col-md-24 mt-4 text-center">
+            <a target="_blank" href="https://www.facebook.com/apitraderu/">
+                <div class="btn btn-light py-1 px-1 mt-2 mb-1">
+                    <img class="rounded-circle" src="/images/footer-facebook.svg" width="30" height="30">
+                </div>
+                <br>
+                Facebook
+            </a>
+        </div>
+        <div class="col-2 col-md-24 mt-4 text-center">
+            <a target="_blank" href="https://twitter.com/apitrade">
+                <div class="btn btn-light py-1 px-1 mt-2 mb-1">
+                    <img class="rounded-circle" src="/images/footer-twitter.svg" width="30" height="30">
+                </div>
+                <br>
+                Twitter
+            </a>
+        </div>
+        <div class="col-2 col-md-24 mt-4 text-center">
+            <a href="http://tx.me/ApiTrade_Support_Bot">
+                <div class="btn btn-light py-1 px-1 mt-2 mb-1">
+                    <img class="rounded-circle" src="/images/footer-support.svg" width="30" height="30">
+                </div>
+                <br>
+               Support
+            </a>
+        </div>
+        <div class="col-2 col-md-24"></div>
+</div>
+    
+    <div class="row">
+        <div class="col-2 col-md-24"></div>
+        <div class="col-20 col-md-24">
+            <hr class="my-0">
+        </div>
+        <div class="col-2 col-md-24"></div>
+</div>
+    <div id="contacts" class="row">
+        <div class="col-1 col-md-24"></div>
+        <div class="map col-22 col-md-24 mb-2 position-relative">
+
+        </div>
+        <div class="col-1 col-md-24"></div>
+    </div>
+    <div class="row">
+        <div class="col-2 col-md-24"></div>
+        <div class="col-3 col-md-24 mb-2 pt-2">© 2018 ApiTrade</div>
+        <div class="col-7 col-md-24 mb-2">
+            <img src="./images/proudly-based.png">
+            Based in the <b>United States</b>
+        </div>
+        <div class="col-5 col-md-24 mb-2">
+            <img class="pt-1" src="./images/pci-dss.png">
+        </div>
+        <div class="col-3 col-md-24 mb-2 pt-2">
+            <a href="javascript:;" data-toggle="modal" id="showTermsOfUseModal" data-target="#termsOfUseModal">
+                <u>Website Terms of Use</u>
+            </a>
+        </div>
+        <div class="col-3 col-md-24 mb-2 pt-2">
+            <a href="javascript:;" data-toggle="modal" id="showPrivacyPolicyModal" data-target="#privacyPolicyModal">
+                <u>Privacy Policy</u>
+            </a>
+        </div>
+        <div class="col-2 col-md-24"></div>
+</div>
+</footer>
+
+
+<div class="modal fade" id="termsOfUseModal" tabindex="-1" role="dialog" aria-labelledby="termsOfUseModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsOfUseModalLongTitle">ウェブサイト利用規約</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                サービスのすべての条項は、「FAQ」のセクション詳細で説明されます。サービスは、預金を受け入れていない、それらの利子の付かないおよび支払い (払い戻し預金) を提供しません。ユーザーの選択に交流に格納されているすべてのクライアントの資金。これらのツールをあなた自身のリスクと適切な交換の安全のための責任。サービスがアクセスできない資金の撤退に証券取引所から。<br><br>サービス負わない証券取引所、取引所からの資金の窃盗から生じる損失を悪用倒産交換株式取引所の技術的なエラーのため、証券取引所、シャープでロック アカウント秋コースとユーザー サービスとは限りません将来は、利回りボラティリティ、交流、正確性、適時性、ソフトウェアの仕事の流動性に依存するため。サービスは、根拠に決定をするか、過去の期間の統計情報を提供します。ユーザーのすべての決定は、ご自身の責任で取る。"As is"に基づいて、サービスを提供、ため、ユーザーはいかなる保証、サービスがその要件に準拠して、サービスが中断されないまたはエラー無料から結果をサービスの使用に表示されません。期待が一致します。<br>いずれかの当事者が一方的、いつでも撤回できるから協力。 さらにユーザーはそれぞれの交流サイトに API キーを削除することでサービスの利用を拒否する権利。
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="privacyPolicyModal" tabindex="-1" role="dialog" aria-labelledby="privacyPolicyModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyPolicyModalLongTitle">プライバシー ポリシー</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                This privacy policy has been compiled to better serve those who are concerned with how their Personally Identifiable Information (PII) is being used online. PII, as described in US privacy law and information security, is information that can be used on its own or with other information to identify, contact, or locate a single person, or to identify an individual in context. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with our website.<br><strong>What personal information do we collect from the people that visit our blog, website or app?</strong><br>When registering on our site, as appropriate, you may be asked to enter your name, email address, phone number  or other details to help you with your experience.<br><strong>When do we collect information?</strong><br>We collect information from you when you register on our site or enter information on our site.<br><strong>How do we use your information? </strong><br>We may use the information we collect from you when you register, make a purchase, sign up for our newsletter, respond to a survey or marketing communication, surf the website, or use certain other site features to quickly process your transactions.<br><strong>How do we protect your information?</strong><br>Our website is scanned on a regular basis for security holes and known vulnerabilities in order to make your visit to our site as safe as possible. We use regular Malware Scanning. Your personal information is contained behind secured networks and is only accessible by a limited number of persons who have special access rights to such systems, and are required to keep the information confidential. In addition, all sensitive/credit information you supply is encrypted via Secure Socket Layer (SSL) technology. We implement a variety of security measures when a user enters, submits, or accesses their information to maintain the safety of your personal information. All transactions are processed through a gateway provider and are not stored or processed on our servers.<br><strong>Do we use cookies?</strong><br>Yes. Cookies are small files that a site or its service provider transfers to your computers hard drive through your Web browser (if you allow) that enables the sites or service providers systems to recognize your browser and capture and remember certain information. For instance, we use cookies to help us remember and process the items in your shopping cart. They are also used to help us understand your preferences based on previous or current site activity, which enables us to provide you with improved services. We also use cookies to help us compile aggregate data about site traffic and site interaction so that we can offer better site experiences and tools in the future.  We use cookies to  understand and save users preferences for future visits.<br>You can choose to have your computer warn you each time a cookie is being sent, or you can choose to turn off all cookies. You do this through your browser settings. Since browser is a little different, look at your browsers Help Menu to learn the correct way to modify your cookies. If you turn cookies off, It wont affect the users experience .<br><strong>Third-party disclosure</strong> We do not sell, trade, or otherwise transfer to outside parties your Personally Identifiable Information unless we provide users with advance notice. This does not include website hosting partners and other parties who assist us in operating our website, conducting our business, or serving our users, so long as those parties agree to keep this information confidential. We may also release information when its release is appropriate to comply with the law, enforce our site policies, or protect ours or others rights, property or safety. However, non-personally identifiable visitor information may be provided to other parties for marketing, advertising, or other uses. We do not include or offer third-party products or services on our website.<br><strong>California Online Privacy Protection Act</strong><br>CalOPPA is the first state law in the nation to require commercial websites and online services to post a privacy policy.  The laws reach stretches well beyond California to require any person or company in the United States (and conceivably the world) that operates websites collecting Personally Identifiable Information from California consumers to post a conspicuous privacy policy on its website stating exactly the information being collected and those individuals or companies with whom it is being shared. -   <strong>According to CalOPPA, we agree to the following:</strong> Users can visit our site anonymously. Once this privacy policy is created, we will add a link to it on our home page or as a minimum, on the first significant page after entering our website. Our Privacy Policy link includes the word Privacy and can easily be found on the page specified above.<br>You will be notified of any Privacy Policy changes on our Privacy Policy Page<br>You can change your personal information by logging in to your account<br><strong>How does our site handle Do Not Track signals?</strong><br>We honor Do Not Track signals and Do Not Track, plant cookies, or use advertising when a Do Not Track (DNT) browser mechanism is in place. <br><strong>Does our site allow third-party behavioral tracking?</strong><br>Its also important to note that we do not allow third-party behavioral tracking<br><strong>COPPA (Children Online Privacy Protection Act)</strong>When it comes to the collection of personal information from children under the age of 13 years old, the Childrens Online Privacy Protection Act (COPPA) puts parents in control.  The Federal Trade Commission, United States consumer protection agency, enforces the COPPA Rule, which spells out what operators of websites and online services must do to protect childrens privacy and safety online. We do not specifically market to children under the age of 13 years old and do not let third-parties, including ad networks or plug-ins collect PII from children under 13<br><strong>Fair Information Practices</strong><br>The Fair Information Practices Principles form the backbone of privacy law in the United States and the concepts they include have played a significant role in the development of data protection laws around the globe. Understanding the Fair Information Practice Principles and how they should be implemented is critical to comply with the various privacy laws that protect personal information.<br>In order to be in line with Fair Information Practices we will take the following responsive action, should a data breach occur: We will notify the users via in-site notification within 7 business days.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signInModalLongTitle">로그인</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="loginForm" action="/login">
+                    
+                    <p>로그인
+                        <br><input type="text" id="login" name="login" class="txt">
+                    </p>
+                    
+                    <p>암호
+                        <small>
+                            (<a href="#" data-toggle="modal" id="showForgotModal" data-target="#forgotModal" data-dismiss="modal">
+                            비밀 번호 복구?
+                        </a>)
+                        </small>
+                        <br/>
+                        <input type="password" id="password" class="txt" name="password" value=""><br/>
+                        <label for="forg">
+                            <input type="checkbox" name="remember-me" id="forg"/>
+                            <small>나를 기억합니다</small>
+                        </label>
+                    </p>
+                    
+                    
+                    
+                    <p id="codeBlock" style="display: none">
+                        전보 코드
+                        <br/><input type="text" name="code" id="code" value="">
+                        <span class="btn btn-primary send-new-code ">Send new</span>
+                    </p>
+                    
+                    <p id="googleCodeBlock" style="display: none">
+                        Google 2 fa コード
+                        <br/><input type="text" name="googleCode" id="googleCode" value="">
+                    </p>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <button type="submit" class="btn btn-primary" id="loginBtn">입력</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgotModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotModalLongTitle">パスワードを回復</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="forgotForm" action="/indexOld/forgotPassword">
+                    
+                    <p>
+                        <label class="control-label">登録時に指定した電子メール アドレスを入力します。</label><br/>
+                        <input class="txt sendCode" type="text" id="forgotEmail" name="forgotEmail"/>
+                    </p>
+                    
+                    <p id="forgotTelegramBlock" style="display: none">
+                        <label class="control-label">Code (telegram)</label><br/>
+                        <input class="txt sendCode" type="text" id="forgotTelegramVerificationCode" name="forgotTelegramVerificationCode"/>
+                        <button class="btn btn-primary" type="button" id="forgotTelegramRequestCodeBtn">Get the code</button>
+                        <img id="forgotTelegramRequestCodeInd" src="/images/indicator.gif" style="display: none;"/>
+                    </p>
+                    
+                    <p id="forgotGoogleBlock" style="display: none">
+                        <label class="control-label">Code (google)</label><br/>
+                        <input class="txt sendCode" type="text" id="forgotGoogleVerificationCode" name="forgotGoogleVerificationCode"/>
+                    </p>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <button type="submit" class="btn btn-primary" id="forgotBtn">입력</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="signUpModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signUpModalLongTitle">등록하세요</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="닫기">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="regForm" action="/indexOld/register">
+                            
+                        <table cellspacing="0" cellpadding="5px" border="0" id="regTable">
+                            <tr>
+                                <td>로그인</td>
+                                <td>
+                                    <input type="text" maxlength="200" name="login" id="regLogin" alt="&gt;0" class="inputArea"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>메일 주소</td>
+                                <td>
+                                    <input type="text" maxlength="200" name="email" id="regEmail" alt="&gt;0, email" class="inputArea"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>암호</td>
+                                <td>
+                                    <input type="password" maxlength="200" name="password" id="regPassword" value="" alt="&gt;5, pwd1" class="checkpass" id="ex1"/>
+                                    <br/>
+                                    <small style="padding-left: 5px">(이상 6 기호)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>암호 확인</td>
+                                <td><input type="password" maxlength="200" name="password2" id="regConfirmPassword" alt="&gt;5, pwd2" class="inputArea"/></td>
+                            </tr>
+                                
+                            <tr class="spacer"><td></td></tr>
+                            <tr class="spacer"><td></td></tr>
+                            <tr style="display: none">
+                                <td>이름</td>
+                                <td><input type="text" name="name" id="regName" maxlength="200" class="inputArea"/></td>
+                            </tr>
+                            <tr style="display: none">
+                                <td>성</td>
+                                <td><input type="text" maxlength="200" name="surname" id="regSurname" class="inputArea"/></td>
+                            </tr>
+                            <tr style="display: none">
+                                <td>전화 번호</td>
+                                <td>
+                                    <input type="text" maxlength="200" name="phoneNumber" id="regPhoneNumber" class="inputArea"/>
+                                    <br/>
+                                    <small style="padding-left: 5px">(for example: +19517041032)</small>
+                                </td>
+                            </tr>
+                            <tr style="display: none">
+                                <td>Skype:</td>
+                                <td><input type="text" name="skype" id="regSkype" maxlength="200" class="inputArea"/></td>
+                            </tr>
+                            <tr>
+                                <td>Telegram:</td>
+                                <td><input type="text" name="telegram" id="regTelegram" maxlength="200" class="inputArea"/></td>
+                            </tr>
+                            <tr>
+                                <td>リファラー (ID):</td>
+                                <td><input type="text" name="referrerId" id="referrerId" maxlength="200" class="inputArea" value=""  /></td>
+                            </tr>
+                                
+                            
+                        </table>
+                        <img id="regInd" src="/images/indicator.gif" style="display: none;"/>
+                    </form>
+                </div>
+                    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <button type="submit" class="btn btn-primary" id="regBtn">등록 완료</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/js/bundle.js?v=1650052154362"></script>
+<script src="/js/jquery-3.1.1.min.js?v=1650052154362"></script>
+<script src="/js/plugins/jquery.lazyloadxt.extra.min.js?v=1650052154362"></script>
+<script src="/at.messages.js?lang=KR&v=1650052154362"></script>
+<script src="/js/indexOld.js?v=1650052154362"></script>
+
+</body>
+</html>

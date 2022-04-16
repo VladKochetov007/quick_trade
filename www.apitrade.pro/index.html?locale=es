@@ -1,0 +1,1679 @@
+
+
+
+
+
+<html>
+<head>
+    <title>ApiTrade - Servicio de trading automático y arbitraje en crypto-exchanges</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico?v=1650052149611" type="image/x-icon">
+
+    <link href="/web-resources/css/main.min.css?v=1650052149611" rel="stylesheet">
+</head>
+<body class="new-index">
+<nav id="navbar" class="navbar navbar-dark fixed-top">
+
+    <span class="navbar-brand logo-icon"></span>
+
+    
+    <div class="dropdown">
+        <div class="own-nav-group"
+             type="button"
+             id="dropdownMenuButton"
+             data-toggle="dropdown"
+             aria-haspopup="true"
+             aria-expanded="false">
+            <button class="language spain"></button>
+            <span class="arrow"></span>
+        </div>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            
+                <a href="/?locale=en"
+                   class="lang-item ">
+                    <span class="language united-states"></span>
+                    <span>en</span>
+                    
+                </a>
+            
+                <a href="/?locale=ru"
+                   class="lang-item ">
+                    <span class="language russia"></span>
+                    <span>ru</span>
+                    
+                </a>
+            
+                <a href="/?locale=de"
+                   class="lang-item ">
+                    <span class="language germany"></span>
+                    <span>de</span>
+                    
+                </a>
+            
+                <a href="/?locale=es"
+                   class="lang-item active">
+                    <span class="language spain"></span>
+                    <span>es</span>
+                    
+                        <span class="active-icon"></span>
+                    
+                </a>
+            
+                <a href="/?locale=fr"
+                   class="lang-item ">
+                    <span class="language france"></span>
+                    <span>fr</span>
+                    
+                </a>
+            
+                <a href="/?locale=zh"
+                   class="lang-item ">
+                    <span class="language china"></span>
+                    <span>zh</span>
+                    
+                </a>
+            
+                <a href="/?locale=ja"
+                   class="lang-item ">
+                    <span class="language japan"></span>
+                    <span>ja</span>
+                    
+                </a>
+            
+                <a href="/?locale=ko"
+                   class="lang-item ">
+                    <span class="language south-korea"></span>
+                    <span>ko</span>
+                    
+                </a>
+            
+        </div>
+    </div>
+
+    <button class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="menu-icon"></span>
+    </button>
+</nav>
+
+
+<div class="nav-wrap links-list navbar-dark">
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <span class="logo-icon"></span>
+
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item active">
+                <a class="nav-link" data-scroll href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#technologies">Exchanges</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#advantages">Advantages</a>
+            </li>
+            
+            
+            
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#faq">FAQ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#affilate">Affiliate</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#competition">Competition</a>
+            </li>
+            
+            
+            
+            
+            
+            
+        </ul>
+        <form class="form-inline">
+            
+
+            <div class="social-links">
+                <div class="only-for-mob">Write to us, join us</div>
+                <div class="btn-wrap">
+                    <a href="https://t.me/joinchat/AAAAAETgTtLIc84BpWGuvA" class="socials telegram" data-name="Telegram"></a>
+                </div>
+                <div class="btn-wrap">
+                    <a href="https://discord.gg/P3PY7Vu" class="socials discord" data-name="Discord"></a>
+                </div>
+                <div class="btn-wrap">
+                    <a href="https://www.facebook.com/apitraderu/" class="socials facebook" data-name="Facebook"></a>
+                </div>
+                <div class="btn-wrap">
+                    <a href="https://twitter.com/apitrade" class="socials twitter" data-name="Twitter"></a>
+                </div>
+                
+            </div>
+
+            
+
+
+
+
+
+
+
+
+
+<div class="group" role="group">
+    
+    
+        
+        
+            
+            <button type="button" data-toggle="modal" id="showSignInModal" data-target="#signInModal" class="btn auth-group sign-in">
+                <span>Sign In</span>
+            </button>
+            
+            <button type="button" data-toggle="modal" id="showSignUpModal" data-target="#signUpModal" class="btn auth-group sign-up">
+                <span>Sign Up</span>
+            </button>
+        
+    
+</div>
+
+        </form>
+
+        <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="close-icon"></span>
+        </button>
+    </div>
+</div>
+
+
+<a href="https://t.me/joinchat/AAAAAETgTtLIc84BpWGuvA" class="btn-wrap telegram-chat-wrap">
+    <span class="socials telegram-chat"></span>
+    <span>Join to Telegram</span>
+</a>
+
+<div id="intro" class="intro container-fluid container-fluid--fill overflow-hidden text-center bg-primary">
+
+    <div id="pseudo-for-intro-view"></div>
+
+    <div class="intro-inner-wrapper">
+        <div class="intro--content">
+
+            <span class="logo-icon"></span>
+            <span class="intro-own-logotype">
+                <span class="main">Apitrade</span>
+                <span class="secondary">.pro</span>
+            </span>
+            <h1>Automated Crypto Currency Trading</h1>
+            <h3><b>Revolutionary</b> platform that does hundreds of profitable trades for you on crypto exchanges (Binance, etc.) automatically. Makes money while you sleep with no subscription fee!</h3>
+
+            <button class="btn btn-lg auth-group sign-up" type="button" data-toggle="modal" id="introShowSignUpModal" data-target="#signUpModal" >
+                <span>
+                    Join Apitrade now!
+                </span>
+            </button>
+        </div>
+
+        <div class="intro--cover__image lazy-img" data-bg="/web-resources/bg/intro-img.jpg"></div>
+
+        
+            <div id="introCover" class="intro--cover">
+                <div class="cover-video">
+                    <video loop="" muted="" autoplay="">
+                        <source data-src="/movies/compressed/intro.mp4" type="video/mp4" />
+                    </video>
+                </div>
+            </div>
+        
+
+        <div class="text-center">
+            <a href="#features">Learn more</a><br/>
+            <span class="own-arrow-down"></span>
+        </div>
+    </div>
+</div>
+
+<div class="site-content-wrap">
+
+<div id="features" class="features_container container-fluid text-center">
+    <div class="container-fluid--fit_center">
+        <div class="slider-on-mobile slide-advantages ">
+    <div class="slider row slider-wrapper">
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-risks"></span>
+            <h4>Low risk</h4>
+            <span>The service uses the most advanced trading algorithms and <b>arbitrage</b> with minimum risk levels, based on machine learning.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-positions"></span>
+            <h4>Stable income</h4>
+            <span>ApiTrade goes through all possible exchanges to find you the most profitable deals that will make you a little but stable income on a daily basis.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-comission"></span>
+            <h4>No sign-up or monthly fees</h4>
+            <span>ApiTrade makes money from profitable trades only, charging you a percentage. There is no monthly or daily fee whatsoever. You pay only from what you make.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-security"></span>
+            <h4>Security</h4>
+            <span>We do not accept and/or store your funds on our accounts. We do not have access to your funds withdrawals either.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-moneyback"></span>
+            <h4>Guarantees</h4>
+            <span>There is 100% Money Back Guarantee within 7 day period in case you are not satisfied with services we offer.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-participation"></span>
+            <h4>All is easy!</h4>
+            <span>You do not need to set up any sort of parameters and constantly control whats going on. Just click the button and there you go, profits all the way.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-support"></span>
+            <h4>Client is always right!</h4>
+            <span>We offer fast and easy client support via Telegram.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-graph"></span>
+            <h4>Total transparency</h4>
+            <span>You can track any of the profitable trades, see exact profits and time it took to establish any of those profitable trades.</span>
+        </div>
+
+    </div>
+
+    <div class="slider__switch slider__switch--prev" data-slider-dir="prev"></div>
+    <div class="slider__switch slider__switch--next" data-slider-dir="next"></div>
+</div>
+    </div>
+</div>
+
+
+<div id="technologies" class="technologies_container container-fluid">
+    
+    <div class="container-fluid--fit_center">
+        
+            
+            
+        
+        <div class="row">
+        <div class="col-10">
+            <h2>A single interface for all crypto exchanges.</h2>
+            <h5>At this moment we have 25 crypto exchanges working with us to provide crypto prices via API interface in real time.
+                <br><br>
+                For auto-trading and arbitrage, there are 3 most popular exchanges added to the system. We are more than happy to add more exchanges by request, but most of them arent good enough to handle serious clientele.</h5>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-12 orbita-placeholder orbita">
+            <div class="orbita_circle orbita_circle--first"></div>
+            <div class="orbita_circle orbita_circle--second"></div>
+            <div class="orbita_circle orbita_circle--third"></div>
+            <div class="orbita_planet orbita_planet--ripple">
+                <span class="orbita-planet"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--first_circle orbita_sattelite--first_circle1" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Binance - the biggest crypto exchange with a turnover above $1 billion, has very low commissions and big number of trading pairs.">
+                <div class="orbita_sattelite_name">Binance</div>
+                <span class="orbita-binance"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--first_circle orbita_sattelite--first_circle3" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Bittrex - well known U.S. based crypto exchange, opened in 2014. Its turnover is above $300 million a day. Has lots of trading pairs.">
+                <div class="orbita_sattelite_name">Bittrex</div>
+                <span class="orbita-bittrex"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle5" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Poloniex - oldest U.S. based crypto exchange with a turnover above $100 million a day, in 2017 bought out by Circles, that belongs to Goldman Sachs.">
+                <div class="orbita_sattelite_name">Poloniex</div>
+                <span class="orbita-poloniex"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle1" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Bit-Z - exchange with a turnover of about $ 200 million a day, created in 2016.">
+                <div class="orbita_sattelite_name">Bit Z</div>
+                <span class="orbita-bit"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle3" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Bitfinex - biggest crypto exchange for professional traders with deposits above $10,000">
+                <div class="orbita_sattelite_name">Bitfinex</div>
+                <span class="orbita-bitfinex"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle4" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Kraken - one of the oldest and well respected crypto exchanges with a turnover above half a billion USD per day, despite all other exchanges, Kraken has real USD pairs.">
+                <div class="orbita_sattelite_name">Kraken</div>
+                <span class="orbita-kraken"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--first_circle orbita_sattelite--first_circle2" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Huobi - top5 exchange with turnover over $1 billion per day">
+                <div class="orbita_sattelite_name">Huobi</div>
+                <span class="orbita-huobi"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle3" data-toggle="tooltip" data-placement="auto" title="" data-original-title="KuCoin  - one of the fastest growing crypto exchanges with a current turnover above $40 million a day and usually first one to add new promising coins. Has low fees.">
+                <div class="orbita_sattelite_name">KuCoin</div>
+                <span class="orbita-kucoin"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle2" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Bitmax">
+                <div class="orbita_sattelite_name">Bitmax</div>
+                <span class="orbita-cryptopia"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle1" data-toggle="tooltip" data-placement="auto" title="" data-original-title="OKEx (OkCoin) - big exchange from Hong-Kong with turnover above $1 billion.">
+                <div class="orbita_sattelite_name">OKEx</div>
+                <span class="orbita-kcoin"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle4" data-toggle="tooltip" data-placement="auto" title="" data-original-title="GDAX (Coinbase) - biggest U.S. government regulated crypto exchange with a turnover above $500 million a day, compared to all existing exchanges has the lowest number of trading pairs.">
+                <div class="orbita_sattelite_name">GDax</div>
+                <span class="orbita-gdax"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle2" data-toggle="tooltip" data-placement="auto" title="" data-original-title="BitMEX is a Peer-to-Peer Trading Platform that offers leveraged contracts that are bought and sold in Bitcoin">
+                <div class="orbita_sattelite_name">BitMex</div>
+                <span class="orbita-bitstamp"></span>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<div id="advantages" class="advantages_container container-fluid">
+    
+    <div class="container-fluid--fit_center">
+        <div class="row">
+        <div class="col-24">
+            <h2>
+                User income is generated by thousands of instant trades throughout the day using well known algorithms.
+                <span class="heading-ribbon"></span>
+            </h2>
+            <h4>Market conditions are changing very fast, algorithms that worked yesterday are not necessarily working the same way today. Keeping this in mind we are always working to change and improve trading strategies manually and using machine learning.</h4>
+            <h5>According to statistics, we can clearly see that the system does mostly profitable trades on a daily basis, such profits can be around 0.5% per day (not guaranteed) in a growing market. A 1BTC deposit rising with a rate of 0.5% per day that you hold on crypto exchange website can turn into 6BTC in a year. Despite banks and funds, ApiTrade does not hold onto your funds.</h5>
+            <script type="text/javascript" async="" src="https://www.gstatic.com/recaptcha/api2/v1523554879111/recaptcha__ru.js"></script>
+            <script>
+                window.series = [
+                    [1,1.6, 3.9, 9.5 , 23, 57, 144]
+                ]
+            </script>
+            <div class="advantages-media"></div>
+            <h2>
+                Trading methods compared
+            </h2>
+            <div class="table-responsive mob-only-one-col column-1">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col" data-col-index="1"></th>
+                        <th scope="col" data-col-index="1" class="bg-primary"><span class="for-small">ApiTrade</span></th>
+                        <th scope="col" data-col-index="2"><span class="for-small">Manual</span> Trading</th>
+                        <th scope="col" data-col-index="3"><span class="for-small">Bot</span> Trading</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Predictable daily profits</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Minimum Risk</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Zero set up and constant control</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Automated selection of trading pairs</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Arbitrage</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>High Frequency Trading (HFT)</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>No sign-up or monthly fees</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+        <div class="row auth-block">
+            <div class="col-24 col--ruler"></div>
+            <div class="short-about-us">
+                Having 10 years of experience in developing complex highly loaded systems, financial services, aggregators, stock exchanges.
+    We have invested all our knowledge and experience in the development of our new service ApiTrade.
+            </div>
+
+            <div class="auth-btn-block text-right">
+                
+
+
+
+
+
+
+
+
+
+<div class="group" role="group">
+    
+    
+        
+        
+            
+            <button type="button" data-toggle="modal" id="showSignInModal" data-target="#signInModal" class="btn auth-group sign-in">
+                <span>Sign In</span>
+            </button>
+            
+            <button type="button" data-toggle="modal" id="showSignUpModal" data-target="#signUpModal" class="btn auth-group sign-up">
+                <span>Sign Up</span>
+            </button>
+        
+    
+</div>
+            </div>
+            <div class="col-24 col--ruler"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div id="faq" class="faq_container container-fluid">
+    <div class="container-fluid--fit_center">
+        <h2 class="text-left">Answers to frequently asked questions</h2>
+        <div class="row">
+            <div class="col-md-4 col-6 col-sm-12">
+                <div class="list-group">
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action " data-toggle="collapse"
+                           data-target="#commonQuestions">
+                            Preguntas generales
+                        </a>
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                           data-target="#serviceQuestions">
+                            Trabajar con el servicio
+                        </a>
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                           data-target="#financeQuestions">
+                            Cuestiones financieras
+                        </a>
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                           data-target="#exchangeQuestions">
+                            Acerca de intercambios
+                        </a>
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                           data-target="#differencesQuestions">
+                            Diferencias de análogos y bots
+                        </a>
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                           data-target="#problemsQuestions">
+                            Los riesgos y los posibles problemas
+                        </a>
+                    
+                </div>
+            </div>
+            <div class="col-md-8 col-18 col-sm-12" id="questions">
+                
+                    
+                    
+                    <div id="commonQuestions" class="collapse show" data-parent="#questions">
+                        <h2 class="text-left mb-2">Preguntas generales</h2>
+                        <div>
+                            
+                        </div>
+                    </div>
+                
+                    
+                    
+                    <div id="serviceQuestions" class="collapse " data-parent="#questions">
+                        <h2 class="text-left mb-2">Trabajar con el servicio</h2>
+                        <div>
+                            
+                        </div>
+                    </div>
+                
+                    
+                    
+                    <div id="financeQuestions" class="collapse " data-parent="#questions">
+                        <h2 class="text-left mb-2">Cuestiones financieras</h2>
+                        <div>
+                            
+                        </div>
+                    </div>
+                
+                    
+                    
+                    <div id="exchangeQuestions" class="collapse " data-parent="#questions">
+                        <h2 class="text-left mb-2">Acerca de intercambios</h2>
+                        <div>
+                            
+                        </div>
+                    </div>
+                
+                    
+                    
+                    <div id="differencesQuestions" class="collapse " data-parent="#questions">
+                        <h2 class="text-left mb-2">Diferencias de análogos y bots</h2>
+                        <div>
+                            
+                        </div>
+                    </div>
+                
+                    
+                    
+                    <div id="problemsQuestions" class="collapse " data-parent="#questions">
+                        <h2 class="text-left mb-2">Los riesgos y los posibles problemas</h2>
+                        <div>
+                            
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="affilate" class="affilate_container container-fluid container-fluid--primary">
+    <div class="bg-img lazy-img" data-bg="/images/primary-bg.png"></div>
+    <div class="container-fluid--fit_center">
+        
+        <div class="row">
+        <div class="col-14">
+            <h2><b>Affilate</b> program</h2>
+            <h5>
+                Join our affiliate program and make 10% of all deposits, lifetime!
+            </h5>
+            <h4>
+                This is the best way to make money doing nothing and with zero capital involved.
+            </h4>
+            <h5 class="affilate-points"><span class="count">1</span>Register an ApiTrade account and create a unique referral link</h5>
+            <h5 class="affilate-points"><span class="count">2</span>Send referral link to your friend.</h5>
+            <h5 class="affilate-points"><span class="count">3</span>Your friend clicks the link.</h5>
+            <h5 class="affilate-points"><span class="count">4</span>He registers at ApiTrade and you make 10% of his income, lifetime.</h5>
+        </div>
+        <div class="col-10 affilate-media">
+            <div class="lazy-img" data-bg="/images/affilate-bg-new.svg"></div>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<div id="competition" class="competition_container container-fluid">
+    <div class="container-fluid--fit_center">
+        <h2>Competition</h2>
+        <div class="bg-muted p-sm">
+            Competition
+        </div>
+        <div class="table-responsive" style="overflow-y:auto;height:600px;">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Partner</th>
+                    <th>Income</th>
+                </tr>
+                </thead>
+                <tbody>
+                
+                    
+                        <tr>
+                            <td>1</td>
+                            <td>Zykov</td>
+                            <td><span class="text-nowrap">12921,25</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>2</td>
+                            <td>bitcoinjesus.net</td>
+                            <td><span class="text-nowrap">10117,31</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>3</td>
+                            <td>355</td>
+                            <td><span class="text-nowrap">9703,19</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>4</td>
+                            <td>https://t.me/ApiTradeSecrets | Telegram: @ApiTradeSecrets | API Trade Affiliate Program Secrets | Секреты Партнерской Программы API Trade</td>
+                            <td><span class="text-nowrap">8699,79</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>5</td>
+                            <td>Тупа шобы айфон выиграть</td>
+                            <td><span class="text-nowrap">5397,74</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>6</td>
+                            <td>Raketa</td>
+                            <td><span class="text-nowrap">4908,21</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>7</td>
+                            <td>4027</td>
+                            <td><span class="text-nowrap">4350,51</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>8</td>
+                            <td>50139</td>
+                            <td><span class="text-nowrap">3753,39</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>9</td>
+                            <td>Crypto Gang 42 | To the moon and back | ‹^› ‹(•_•)› ‹^›</td>
+                            <td><span class="text-nowrap">2614,43</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>10</td>
+                            <td>DD</td>
+                            <td><span class="text-nowrap">2414,38</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>11</td>
+                            <td>46179</td>
+                            <td><span class="text-nowrap">1408,26</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>12</td>
+                            <td>9605</td>
+                            <td><span class="text-nowrap">1355,28</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>13</td>
+                            <td>7182</td>
+                            <td><span class="text-nowrap">1300,61</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>14</td>
+                            <td>Я знаю как выжать максимум @AndyApi</td>
+                            <td><span class="text-nowrap">1267,33</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>15</td>
+                            <td>3274</td>
+                            <td><span class="text-nowrap">1266,54</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>16</td>
+                            <td>touringo</td>
+                            <td><span class="text-nowrap">1084,05</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>17</td>
+                            <td>11184</td>
+                            <td><span class="text-nowrap">1036,99</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>18</td>
+                            <td>Mr John</td>
+                            <td><span class="text-nowrap">996,96</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>19</td>
+                            <td>Владимир Иосипенко</td>
+                            <td><span class="text-nowrap">988,53</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>20</td>
+                            <td>49991</td>
+                            <td><span class="text-nowrap">973,99</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>21</td>
+                            <td>761</td>
+                            <td><span class="text-nowrap">943,12</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>22</td>
+                            <td>3921</td>
+                            <td><span class="text-nowrap">921,81</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>23</td>
+                            <td>https://digex.io/about-digex.htm</td>
+                            <td><span class="text-nowrap">893,05</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>24</td>
+                            <td>Yaroslav4400</td>
+                            <td><span class="text-nowrap">872,2</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>25</td>
+                            <td>25066</td>
+                            <td><span class="text-nowrap">866,1</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>26</td>
+                            <td>Gearing</td>
+                            <td><span class="text-nowrap">862,06</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>27</td>
+                            <td>2404</td>
+                            <td><span class="text-nowrap">857,84</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>28</td>
+                            <td>@perfectearningz</td>
+                            <td><span class="text-nowrap">856,37</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>29</td>
+                            <td>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; 1000р бонус всем!!! | мой блог с отчетами -&gt; apitrade1.ru | Помогаю всем! )))))) | мой телеграмм @GreatAndrei &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</td>
+                            <td><span class="text-nowrap">821,69</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>30</td>
+                            <td>16$ рефбек при регистрации-от 1 биткоина бонус 20$ - @AlexanderCryptoProfit</td>
+                            <td><span class="text-nowrap">808,15</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>31</td>
+                            <td>50293</td>
+                            <td><span class="text-nowrap">745,04</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>32</td>
+                            <td>866</td>
+                            <td><span class="text-nowrap">733,76</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>33</td>
+                            <td>18781</td>
+                            <td><span class="text-nowrap">723,68</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>34</td>
+                            <td>ID 1784  логин vaninevgeny - мой курс по торговле ботами https://totalcryptobot.ru</td>
+                            <td><span class="text-nowrap">698,02</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>35</td>
+                            <td>11766</td>
+                            <td><span class="text-nowrap">694,62</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>36</td>
+                            <td>50294</td>
+                            <td><span class="text-nowrap">670,05</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>37</td>
+                            <td>31583</td>
+                            <td><span class="text-nowrap">666,22</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>38</td>
+                            <td>6663</td>
+                            <td><span class="text-nowrap">654,75</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>39</td>
+                            <td>14734</td>
+                            <td><span class="text-nowrap">652,26</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>40</td>
+                            <td>12496</td>
+                            <td><span class="text-nowrap">626,05</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>41</td>
+                            <td> Залетел в декабре по 19к$, оказываю психологическую помощь/ t.me/FuckFiat :)</td>
+                            <td><span class="text-nowrap">581,54</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>42</td>
+                            <td>4078</td>
+                            <td><span class="text-nowrap">570,82</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>43</td>
+                            <td>Пишу ежедневные отчеты https://vk.com/cparock | Бонус всем 16$ | + рефбек от меня!</td>
+                            <td><span class="text-nowrap">566,44</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>44</td>
+                            <td>22920</td>
+                            <td><span class="text-nowrap">511,55</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>45</td>
+                            <td>WhiteNights</td>
+                            <td><span class="text-nowrap">508,99</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>46</td>
+                            <td>23873</td>
+                            <td><span class="text-nowrap">505,5</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>47</td>
+                            <td>API</td>
+                            <td><span class="text-nowrap">488,38</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>48</td>
+                            <td>51722</td>
+                            <td><span class="text-nowrap">462,52</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>49</td>
+                            <td>🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀   Руководство по туземунь бота     https://youtu.be/kdmbvDsGw5o        🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀</td>
+                            <td><span class="text-nowrap">461,29</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>50</td>
+                            <td>13</td>
+                            <td><span class="text-nowrap">454,14</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>51</td>
+                            <td>86</td>
+                            <td><span class="text-nowrap">449,13</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>52</td>
+                            <td>339</td>
+                            <td><span class="text-nowrap">427,28</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>53</td>
+                            <td>50640</td>
+                            <td><span class="text-nowrap">423,07</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>54</td>
+                            <td>3155</td>
+                            <td><span class="text-nowrap">422,04</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>55</td>
+                            <td>Who&#039;s your daddy ^.^</td>
+                            <td><span class="text-nowrap">420,03</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>56</td>
+                            <td>o_0 who&#039;s here? 0_o</td>
+                            <td><span class="text-nowrap">419,35</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>57</td>
+                            <td>apitrade.wordpress.com</td>
+                            <td><span class="text-nowrap">415,57</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>58</td>
+                            <td>MoneyRoom ⚡ Support - @MRoomIDs ⚡</td>
+                            <td><span class="text-nowrap">406</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>59</td>
+                            <td>Войду в 20ку по любому!</td>
+                            <td><span class="text-nowrap">395,91</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>60</td>
+                            <td>https://t.me/JpShip Помогаю своим рефам. Пополню ваш баланс в АТ (0.8 за 1 USD, приму BUSD, USDT, возможны варианты)</td>
+                            <td><span class="text-nowrap">378,06</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>61</td>
+                            <td>44040</td>
+                            <td><span class="text-nowrap">371,42</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>62</td>
+                            <td>25404</td>
+                            <td><span class="text-nowrap">363,01</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>63</td>
+                            <td>50482</td>
+                            <td><span class="text-nowrap">339,35</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>64</td>
+                            <td>7605</td>
+                            <td><span class="text-nowrap">337,6</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>65</td>
+                            <td>260</td>
+                            <td><span class="text-nowrap">335,41</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>66</td>
+                            <td>10704</td>
+                            <td><span class="text-nowrap">335,41</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>67</td>
+                            <td>!!!</td>
+                            <td><span class="text-nowrap">333,67</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>68</td>
+                            <td>31522</td>
+                            <td><span class="text-nowrap">319,93</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>69</td>
+                            <td>2734</td>
+                            <td><span class="text-nowrap">317,2</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>70</td>
+                            <td>3813</td>
+                            <td><span class="text-nowrap">315,15</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>71</td>
+                            <td>565</td>
+                            <td><span class="text-nowrap">313,07</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>72</td>
+                            <td>12258</td>
+                            <td><span class="text-nowrap">312,1</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>73</td>
+                            <td>18</td>
+                            <td><span class="text-nowrap">311,98</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>74</td>
+                            <td>4971</td>
+                            <td><span class="text-nowrap">311,38</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>75</td>
+                            <td>robotfarm.ru</td>
+                            <td><span class="text-nowrap">304,08</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>76</td>
+                            <td>23818</td>
+                            <td><span class="text-nowrap">303,53</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>77</td>
+                            <td>3981</td>
+                            <td><span class="text-nowrap">302,26</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>78</td>
+                            <td>53795</td>
+                            <td><span class="text-nowrap">299,79</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>79</td>
+                            <td>29780</td>
+                            <td><span class="text-nowrap">293,18</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>80</td>
+                            <td>K Kruts , телега @ kkruts - любые вопросы по работе сервиса задавайте, чем смогу помогу без всяких обязательств</td>
+                            <td><span class="text-nowrap">287,12</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>81</td>
+                            <td>12882</td>
+                            <td><span class="text-nowrap">280,56</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>82</td>
+                            <td>24877</td>
+                            <td><span class="text-nowrap">276,38</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>83</td>
+                            <td>718</td>
+                            <td><span class="text-nowrap">273,81</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>84</td>
+                            <td>8629</td>
+                            <td><span class="text-nowrap">273,19</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>85</td>
+                            <td>pct</td>
+                            <td><span class="text-nowrap">268,55</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>86</td>
+                            <td>6753</td>
+                            <td><span class="text-nowrap">264,37</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>87</td>
+                            <td>1567</td>
+                            <td><span class="text-nowrap">262,85</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>88</td>
+                            <td>11102</td>
+                            <td><span class="text-nowrap">257,48</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>89</td>
+                            <td>Webmister</td>
+                            <td><span class="text-nowrap">254,19</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>90</td>
+                            <td>993</td>
+                            <td><span class="text-nowrap">251,78</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>91</td>
+                            <td>282</td>
+                            <td><span class="text-nowrap">251,63</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>92</td>
+                            <td>2682</td>
+                            <td><span class="text-nowrap">242,52</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>93</td>
+                            <td>4645</td>
+                            <td><span class="text-nowrap">235,23</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>94</td>
+                            <td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="345d5a525b74475d5944585157464d44405b404655505d5a531a575b59">[email&#160;protected]</a></td>
+                            <td><span class="text-nowrap">235,11</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>95</td>
+                            <td>NATASHA</td>
+                            <td><span class="text-nowrap">229,89</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>96</td>
+                            <td>51966</td>
+                            <td><span class="text-nowrap">227,62</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>97</td>
+                            <td>2310</td>
+                            <td><span class="text-nowrap">223,15</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>98</td>
+                            <td>9886</td>
+                            <td><span class="text-nowrap">220,37</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>99</td>
+                            <td>52474</td>
+                            <td><span class="text-nowrap">218,99</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>100</td>
+                            <td>Отдаю бонусы каждому! Как только увижу биржи и минимальный баланс на вашем аккаунте.</td>
+                            <td><span class="text-nowrap">201,89</span></td>
+                        </tr>
+                    
+                
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<footer id="news" class="footer_container container-fluid">
+    <div class="footer-backward">
+        <div class="backward"></div>
+    </div>
+    <div class="container-fluid--fit_center">
+        <div class="row">
+        <h2 class="text-left">Answers to frequently asked questions</h2>
+    </div>
+        <div id="news" class="row">
+        <div class="col-12 news_block news_block-first">
+            <div class="icon lazy-img" data-bg="/web-resources/bg/news_block-first-img.png"></div>
+            <h4>
+                <a href="#">
+                    Start TRADING BY of ApiTrade →
+                </a>
+            </h4>
+            <div class="news_block_content">
+                In General, the purpose of the service is to increase your income and save your time and nerves.
+                With the help of ApiTrade you will be able to trade cryptocurrencies on all major crypto-exchanges in a single window mode (the system
+                automatically selects the exchange with the best price).
+                But more importantly, the system will allow you to have significant passive income after turning on high-speed automated trading function and
+                automatic arbitrage, regardless of the rise or decline of the market.
+                Also by using the service, you will be able to easily monitor your cryptocurrency portfolio.
+            </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-11 news_block news_block-second">
+            <div class="icon lazy-img" data-bg="/web-resources/bg/news_block-second-img.png"></div>
+            <h4>
+                <a href="#">
+                    STOP SUFFERING →
+                </a>
+            </h4>
+            <div class="news_block_content">
+                In General, the purpose of the service is to increase your income and save your time and nerves.
+                With the help of ApiTrade you will be able to trade cryptocurrencies on all major crypto-exchanges in a single window mode (the system
+                automatically selects the exchange with the best price).
+                But more importantly, the system will allow you to have significant passive income after turning on high-speed automated trading function and
+                automatic arbitrage, regardless of the rise or decline of the market.
+                Also by using the service, you will be able to easily monitor your cryptocurrency portfolio.
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h2 class="text-left col-16">
+            Ready to go?<br>
+            <b>Get in touch</b> with us
+        </h2>
+</div>
+
+        <div class="row our-socials">
+            <div class="col-10">
+                
+
+
+
+
+
+
+
+
+
+<div class="group" role="group">
+    
+    
+        
+        
+            
+            <button type="button" data-toggle="modal" id="showSignInModal" data-target="#signInModal" class="btn auth-group sign-in">
+                <span>Sign In</span>
+            </button>
+            
+            <button type="button" data-toggle="modal" id="showSignUpModal" data-target="#signUpModal" class="btn auth-group sign-up">
+                <span>Sign Up</span>
+            </button>
+        
+    
+</div>
+            </div>
+
+            <div class="col-14">
+                <a href="https://t.me/apitradepro">
+                    <span class="footer-telegram"></span><span>Telegram</span>
+                </a>
+                <a href="https://discord.gg/P3PY7Vu">
+                    <span class="footer-discord"></span><span>Discord</span>
+                </a>
+                <a href="https://www.facebook.com/apitraderu/">
+                    <span class="footer-facebook"></span><span>Facebook</span>
+                </a>
+                <a href="https://twitter.com/apitrade">
+                    <span class="footer-twitter"></span><span>Twitter</span>
+                </a>
+                
+            </div>
+        </div>
+
+        
+        <div class="row">
+        <div class="col-24">
+            <hr>
+        </div>
+</div>
+        <div id="contacts" class="row">
+        <div class="col-12">
+            <div class="copyright">© 2018-2021 ApiTrade</div>
+            <div class="proudly-icon">
+                <span class="proudly-based"></span>
+                <span></span>
+            </div>
+            <div class="psi-icon">
+                <span class="pci-dss"></span>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <a href="http://tx.me/ApiTrade_Support_Bot">
+                <span class="footer-support"></span><span>Support</span>
+            </a>
+            <a href="javascript:;" data-toggle="modal" id="showTermsOfUseModal" data-target="#termsOfUseModal">
+                <u>Website Terms of Use</u>
+            </a>
+            <a href="javascript:;" data-toggle="modal" id="showPrivacyPolicyModal" data-target="#privacyPolicyModal">
+                <u>Privacy Policy</u>
+            </a></div>
+</div>
+    </div>
+</footer>
+</div>
+
+
+<div class="modal fade" id="termsOfUseModal" tabindex="-1" role="dialog" aria-labelledby="termsOfUseModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsOfUseModalLongTitle">Sitio términos de uso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Todos los términos de servicio se describen en detalle en la sección "Preguntas frecuentes". El servicio no acepta depósitos, no cobra interés sobre ellos y no presenta el pago (reembolso depósitos). Fondos de los clientes almacenados en las bolsas en la elección del usuario. Responsabilidad de la seguridad de estas herramientas en su propio riesgo y el intercambio apropiado. Servicio no tiene acceso a la retirada de fondos de bolsas de valores. <br><br>servicio no será responsable por pérdidas resultantes del robo de fondos de bolsas, bolsas, explotan los errores técnicos de bolsas, bolsas de Freddie, cerraduras cuentas en bolsas de valores, fuertes caída de cursos y usuarios. servicio no garantiza un rendimiento en el futuro, ya que depende de la volatilidad, liquidez en intercambios, corrección y puntualidad de los trabajos del software. El servicio proporciona estadísticas de períodos anteriores, sobre la base de que el usuario pueda tomar decisiones. Todas las decisiones de los usuarios toman bajo su propio riesgo. El servicio es provisto sobre una base "tal cual", y por lo tanto, los usuarios no parecen ser ningún tipo de garantía que el servicio se ajusta a sus necesidades, el servicio será ininterrumpido o libre de errores, los resultados de usan del servicio coincidirá con las expectativas. <br>en cualquier momento, podrá retirar unilateralmente ninguna de las partes de más cooperación el usuario tiene el derecho a denegar el uso del servicio mediante la eliminación de las claves de API en los sitios de las respectivas bolsas.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="privacyPolicyModal" tabindex="-1" role="dialog" aria-labelledby="privacyPolicyModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyPolicyModalLongTitle">Política de privacidad</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    This privacy policy has been compiled to better serve those who are concerned with how their Personally Identifiable Information (PII) is being used online. PII,
+    as described in US privacy law and information security, is information that can be used on its own or with other information to identify, contact, or locate
+    a single person, or to identify an individual in context. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect
+    or otherwise handle your Personally Identifiable Information in accordance with our website.<br><strong>What personal information do we collect from the people
+    that visit our blog, website or app?</strong><br>When registering on our site, as appropriate, you may be asked to enter your name, email address, phone number
+    or other details to help you with your experience.<br><strong>When do we collect information?</strong><br>We collect information from you when you register on
+    our site or enter information on our site.<br><strong>How do we use your information? </strong><br>We may use the information we collect from you when you register,
+    make a purchase, sign up for our newsletter, respond to a survey or marketing communication, surf the website, or use certain other site features to quickly process
+    your transactions.<br><strong>How do we protect your information?</strong><br>Our website is scanned on a regular basis for security holes and known vulnerabilities
+    in order to make your visit to our site as safe as possible. We use regular Malware Scanning. Your personal information is contained behind secured networks and
+    is only accessible by a limited number of persons who have special access rights to such systems, and are required to keep the information confidential. In
+    addition, all sensitive/credit information you supply is encrypted via Secure Socket Layer (SSL) technology. We implement a variety of security measures when a
+    user enters, submits, or accesses their information to maintain the safety of your personal information. All transactions are processed through a gateway provider
+    and are not stored or processed on our servers.<br><strong>Do we use cookies?</strong><br>Yes. Cookies are small files that a site or its service provider transfers
+    to your computers hard drive through your Web browser (if you allow) that enables the sites or service providers systems to recognize your browser and capture
+    and remember certain information. For instance, we use cookies to help us remember and process the items in your shopping cart. They are also used to help us
+    understand your preferences based on previous or current site activity, which enables us to provide you with improved services. We also use cookies to help us
+    compile aggregate data about site traffic and site interaction so that we can offer better site experiences and tools in the future.  We use cookies to  understand
+    and save users preferences for future visits.<br>You can choose to have your computer warn you each time a cookie is being sent, or you can choose to turn off all
+    cookies. You do this through your browser settings. Since browser is a little different, look at your browsers Help Menu to learn the correct way to modify your
+    cookies. If you turn cookies off, It wont affect the users experience .<br><strong>Third-party disclosure</strong> We do not sell, trade, or otherwise transfer to
+    outside parties your Personally Identifiable Information unless we provide users with advance notice. This does not include website hosting partners and other
+    parties who assist us in operating our website, conducting our business, or serving our users, so long as those parties agree to keep this information confidential.
+    We may also release information when its release is appropriate to comply with the law, enforce our site policies, or protect ours or others rights, property or
+    safety. However, non-personally identifiable visitor information may be provided to other parties for marketing, advertising, or other uses. We do not include or
+    offer third-party products or services on our website.<br><strong>California Online Privacy Protection Act</strong><br>CalOPPA is the first state law in the nation
+    to require commercial websites and online services to post a privacy policy.  The laws reach stretches well beyond California to require any person or company
+    in the United States (and conceivably the world) that operates websites collecting Personally Identifiable Information from California consumers to post a
+    conspicuous privacy policy on its website stating exactly the information being collected and those individuals or companies with whom it is being shared. -
+    <strong>According to CalOPPA, we agree to the following:</strong> Users can visit our site anonymously. Once this privacy policy is created, we will add a link
+    to it on our home page or as a minimum, on the first significant page after entering our website. Our Privacy Policy link includes the word Privacy and can easily
+    be found on the page specified above.<br>You will be notified of any Privacy Policy changes on our Privacy Policy Page<br>You can change your personal information
+    by logging in to your account<br><strong>How does our site handle Do Not Track signals?</strong><br>We honor Do Not Track signals and Do Not Track, plant cookies,
+    or use advertising when a Do Not Track (DNT) browser mechanism is in place. <br><strong>Does our site allow third-party behavioral tracking?</strong><br>Its also
+    important to note that we do not allow third-party behavioral tracking<br><strong>COPPA (Children Online Privacy Protection Act)</strong>When it comes to the
+    collection of personal information from children under the age of 13 years old, the Childrens Online Privacy Protection Act (COPPA) puts parents in control.  The
+    Federal Trade Commission, United States consumer protection agency, enforces the COPPA Rule, which spells out what operators of websites and online services must
+    do to protect childrens privacy and safety online. We do not specifically market to children under the age of 13 years old and do not let third-parties, including
+    ad networks or plug-ins collect PII from children under 13<br><strong>Fair Information Practices</strong><br>The Fair Information Practices Principles form the
+    backbone of privacy law in the United States and the concepts they include have played a significant role in the development of data protection laws around the
+    globe. Understanding the Fair Information Practice Principles and how they should be implemented is critical to comply with the various privacy laws that protect
+    personal information.<br>In order to be in line with Fair Information Practices we will take the following responsive action, should a data breach occur: We will
+    notify the users via in-site notification within 7 business days.
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="dt-bg-img"></div>
+        <div class="modal-content only-humans">
+            <div class="modal-header">
+                <span class="logo-icon"></span>
+                <h5 class="modal-title" id="signInModalLongTitle">Inicia sesión</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true" class="close-icon"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="loginForm" action="/login" class="clearfix">
+                
+                    <div class="form-group">
+                        <label for="login">Login</label>
+                        <input type="text" id="login" name="login" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="checkpass form-control" name="password"  value="">
+                        <small class="form-text text-muted">
+                            <a href="javascript:;" data-toggle="modal" id="showForgotModal" data-target="#forgotModal" data-dismiss="modal">
+                                Recuperación?
+                            </a>
+                        </small>
+                        <span class="toggle-password-view hidden-pass"></span>
+                    </div>
+                    
+                        
+                        
+                            
+                            
+                        
+                    
+                    
+                    <div class="error"></div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <div class="form-group">
+                    <small class="form-text text-muted mb-15">
+                        If you can not log in, then use the
+  <a href="/indexOld#signIn" id="canNotSignIn">old page</a>
+                    </small>
+                    <button type="submit" class="btn btn-primary human-submit auth-group sign-up" id="loginBtn">
+                        Entrar en
+                        <div class="indicator lds-spinner" id="logInd" style="display: none;">
+                            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                        </div>
+                    </button>
+                    <small>Dont have an Apitrade account? <a href="javascript:;" data-toggle="modal" id="showSignUpModal" data-target="#signUpModal" data-dismiss="modal">Sign Up</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgotModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="dt-bg-img"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="logo-icon"></span>
+                <h5 class="modal-title" id="forgotModalLongTitle">Recuperación de contraseña</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true" class="close-icon"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="forgotForm" action="/forgotPassword" class="clearfix">
+                    
+                    <div class="error"></div>
+                    <div class="checker"></div>
+                    
+                    <div class="form-group">
+                        <label for="forgotEmail">Introduzca la dirección de correo electrónico especificada durante el registro:</label>
+                        <div class="col-lg-4">
+                            <input type="text" id="forgotEmail" name="forgotEmail" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary auth-group sign-up" id="forgotBtn">Entrar en</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="signUpModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="dt-bg-img"></div>
+            <div class="modal-content only-humans">
+                <div class="modal-header">
+                    <span class="logo-icon"></span>
+                    <h5 class="modal-title" id="signUpModalLongTitle">Registrarse</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true" class="close-icon"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="regForm" action="/register">
+                        
+                        <div class="error"></div>
+                        <div id="regTable" class="clearfix">
+                            <div class="form-group">
+                                <label for="regName">Login</label>
+                                <input type="text" maxlength="200" name="login" id="regLogin" alt="&gt;0" class="inputArea form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="regEmail">E-mail</label>
+                                <input type="text" maxlength="200" name="email" id="regEmail" alt="&gt;0, email" class="inputArea form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="regPassword">Contraseña</label>
+                                <input type="password" maxlength="200" name="password" id="regPassword" value="" alt="&gt;5, pwd1" class="checkpass form-control"/>
+                                <small class="form-text text-muted">más de 6 símbolos</small>
+                                <span class="toggle-password-view hidden"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="regConfirmPassword">Confirmar contraseña</label>
+                                <input type="password" maxlength="200" name="password2" id="regConfirmPassword" alt="&gt;5, pwd2" class="inputArea form-control"/>
+                            </div>
+                                
+                            <div class="spacer"></div>
+                            <div class="spacer"></div>
+                            <div class="form-group" style="display: none">
+                                <label for="regName">Nombre</label>
+                                <input type="text" name="name" id="regName" maxlength="200" class="inputArea form-control"/>
+                            </div>
+                            <div class="form-group" style="display: none">
+                                <label for="regSurname">Apellido</label>
+                                <input type="text" maxlength="200" name="surname" id="regSurname" class="inputArea form-control" />
+                            </div>
+                            <div class="form-group" style="display: none">
+                                <label for="regPhoneNumber">Número de teléfono</label>
+                                <input type="text" maxlength="200" name="phoneNumber" id="regPhoneNumber" class="inputArea form-control"/>
+                                <small class="form-text text-muted" style="padding-left: 5px">(for example: +19517041032)</small>
+                            </div>
+                            <div class="form-group" style="display: none">
+                                <label for="regSkype">Skype:</label>
+                                <input type="text" name="skype" id="regSkype" maxlength="200" class="inputArea form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="regTelegram">Telegram:</label>
+                                <input type="text" name="telegram" id="regTelegram" maxlength="200" class="inputArea form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="referrerId">Referente (ID):</label>
+                                <input type="text" name="referrerId" id="referrerId" maxlength="200" class="inputArea form-control" value=""  />
+                            </div>
+                            
+                        </div>
+
+                        <div class="indicator lds-spinner" id="regInd" style="display: none;">
+                            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                        </div>
+                    </form>
+                </div>
+                    
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary human-submit auth-group sign-up" id="regBtn">Completar el registro</button>
+                        <small>Already have an Apitrade account? <a href="javascript:;" data-toggle="modal" id="showSignInModal" data-target="#signInModal" data-dismiss="modal">Sign In</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/at.messages.js?lang=ES&v=1650052149611"></script>
+<script src="/web-resources/js/app.bundle.js?v=1650052149611"></script>
+
+</body>
+</html>

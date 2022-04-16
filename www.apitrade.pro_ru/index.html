@@ -1,0 +1,2467 @@
+
+
+
+
+
+<html>
+<head>
+    <title>ApiTrade - Сервис автоматической торговли и арбитража на криптобиржах</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico?v=1650051543407" type="image/x-icon">
+
+    <link href="/web-resources/css/main.min.css?v=1650051543407" rel="stylesheet">
+</head>
+<body class="new-index">
+<nav id="navbar" class="navbar navbar-dark fixed-top">
+
+    <span class="navbar-brand logo-icon"></span>
+
+    
+    <div class="dropdown">
+        <div class="own-nav-group"
+             type="button"
+             id="dropdownMenuButton"
+             data-toggle="dropdown"
+             aria-haspopup="true"
+             aria-expanded="false">
+            <button class="language russia"></button>
+            <span class="arrow"></span>
+        </div>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            
+                <a href="/?locale=en"
+                   class="lang-item ">
+                    <span class="language united-states"></span>
+                    <span>en</span>
+                    
+                </a>
+            
+                <a href="/?locale=ru"
+                   class="lang-item active">
+                    <span class="language russia"></span>
+                    <span>ru</span>
+                    
+                        <span class="active-icon"></span>
+                    
+                </a>
+            
+                <a href="/?locale=de"
+                   class="lang-item ">
+                    <span class="language germany"></span>
+                    <span>de</span>
+                    
+                </a>
+            
+                <a href="/?locale=es"
+                   class="lang-item ">
+                    <span class="language spain"></span>
+                    <span>es</span>
+                    
+                </a>
+            
+                <a href="/?locale=fr"
+                   class="lang-item ">
+                    <span class="language france"></span>
+                    <span>fr</span>
+                    
+                </a>
+            
+                <a href="/?locale=zh"
+                   class="lang-item ">
+                    <span class="language china"></span>
+                    <span>zh</span>
+                    
+                </a>
+            
+                <a href="/?locale=ja"
+                   class="lang-item ">
+                    <span class="language japan"></span>
+                    <span>ja</span>
+                    
+                </a>
+            
+                <a href="/?locale=ko"
+                   class="lang-item ">
+                    <span class="language south-korea"></span>
+                    <span>ko</span>
+                    
+                </a>
+            
+        </div>
+    </div>
+
+    <button class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="menu-icon"></span>
+    </button>
+</nav>
+
+
+<div class="nav-wrap links-list navbar-dark">
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <span class="logo-icon"></span>
+
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item active">
+                <a class="nav-link" data-scroll href="#features">Возможности</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#technologies">Биржи</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#advantages">Доходы</a>
+            </li>
+            
+            
+            
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#faq">Вопросы</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#affilate">Партнерка</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-scroll href="#competition">Конкурс</a>
+            </li>
+            
+            
+            
+            
+            
+            
+        </ul>
+        <form class="form-inline">
+            
+
+            <div class="social-links">
+                <div class="only-for-mob">Пишите нам, присоединяйтесь в соц. сетях:</div>
+                <div class="btn-wrap">
+                    <a href="https://t.me/joinchat/AAAAAETgTtLIc84BpWGuvA" class="socials telegram" data-name="Telegram"></a>
+                </div>
+                <div class="btn-wrap">
+                    <a href="https://discord.gg/P3PY7Vu" class="socials discord" data-name="Discord"></a>
+                </div>
+                <div class="btn-wrap">
+                    <a href="https://www.facebook.com/apitraderu/" class="socials facebook" data-name="Facebook"></a>
+                </div>
+                <div class="btn-wrap">
+                    <a href="https://twitter.com/apitrade" class="socials twitter" data-name="Twitter"></a>
+                </div>
+                
+                    <div class="btn-wrap">
+                        <a href="https://vk.com/apitrade_official" class="socials vk" data-name="VK"></a>
+                    </div>
+                
+            </div>
+
+            
+
+
+
+
+
+
+
+
+
+<div class="group" role="group">
+    
+    
+        
+        
+            
+            <button type="button" data-toggle="modal" id="showSignInModal" data-target="#signInModal" class="btn auth-group sign-in">
+                <span>Войти</span>
+            </button>
+            
+            <button type="button" data-toggle="modal" id="showSignUpModal" data-target="#signUpModal" class="btn auth-group sign-up">
+                <span>Регистрация</span>
+            </button>
+        
+    
+</div>
+
+        </form>
+
+        <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="close-icon"></span>
+        </button>
+    </div>
+</div>
+
+
+<a href="https://t.me/joinchat/AAAAAETgTtLIc84BpWGuvA" class="btn-wrap telegram-chat-wrap">
+    <span class="socials telegram-chat"></span>
+    <span>Присоединиться к Telegram</span>
+</a>
+
+<div id="intro" class="intro container-fluid container-fluid--fill overflow-hidden text-center bg-primary">
+
+    <div id="pseudo-for-intro-view"></div>
+
+    <div class="intro-inner-wrapper">
+        <div class="intro--content">
+
+            <span class="logo-icon"></span>
+            <span class="intro-own-logotype">
+                <span class="main">Apitrade</span>
+                <span class="secondary">.pro</span>
+            </span>
+            <h1>Приумножает Ваши капиталы,<br>даже когда Вы спите</h1>
+            <h3><b>Революционная</b> платформа, которая совершает для Вас по API на Binance <b>прибыльные</b> сделки на автомате без абонентской платы</h3>
+
+            <button class="btn btn-lg auth-group sign-up" type="button" data-toggle="modal" id="introShowSignUpModal" data-target="#signUpModal" >
+                <span>
+                    Присоединяйтесь к нам сейчас!
+                </span>
+            </button>
+        </div>
+
+        <div class="intro--cover__image lazy-img" data-bg="/web-resources/bg/intro-img.jpg"></div>
+
+        
+            <div id="introCover" class="intro--cover">
+                <div class="cover-video">
+                    <video loop="" muted="" autoplay="">
+                        <source data-src="/movies/compressed/intro.mp4" type="video/mp4" />
+                    </video>
+                </div>
+            </div>
+        
+
+        <div class="text-center">
+            <a href="#features">Узнать больше</a><br/>
+            <span class="own-arrow-down"></span>
+        </div>
+    </div>
+</div>
+
+<div class="site-content-wrap">
+
+<div id="features" class="features_container container-fluid text-center">
+    <div class="container-fluid--fit_center">
+        <div class="slider-on-mobile slide-advantages ">
+    <div class="slider row slider-wrapper">
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-risks"></span>
+            <h4>Низкие риски</h4>
+            <span>Сервис использует самые продвинутые алгоритмы торговли и <b>арбитража</b> с минимальным уровнем риска, основанные на машинном обучении.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-positions"></span>
+            <h4>Регулярный доход</h4>
+            <span>Сервис находит в каждой бирже самые выгодные условия для тысяч сделок с прибылью, что обеспечивает небольшой, но регулярный уровень дохода практически каждый день.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-comission"></span>
+            <h4>Без абонентской платы</h4>
+            <span>Сервис зарабатывает только комиссию с прибыльных автоматических сделок. Нет абонентской платы, комиссии за Ваши собственные сделки и платы за вход.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-security"></span>
+            <h4>Безопасность</h4>
+            <span>Мы не принимаем и не храним Ваши средства, не имеем доступа к выводу из Ваших аккаунтов в биржах.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-moneyback"></span>
+            <h4>Гарантии</h4>
+            <span>Мы уверены в качестве наших услуг, поэтому предлагаем 100% moneyback 7 дней, если вас что-то не устроит.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-participation"></span>
+            <h4>Все просто!</h4>
+            <span>Вам не требуется настраивать различные параметры и постоянно контролировать, достаточно нажать одну кнопку.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-support"></span>
+            <h4>Клиент всегда прав!</h4>
+            <span>Мы предоставляем оперативную и дружелюбную службу поддержки в тикетах и Telegram.</span>
+        </div>
+
+        <div class="col-6 slider__item">
+            <span class="rounded-circle features-graph"></span>
+            <h4>Полная прозрачность</h4>
+            <span>Вы сможете наблюдать каждую из тысяч сделок, видеть суммы, продолжительность, прибыль с каждой сделки.</span>
+        </div>
+
+
+    </div>
+
+    <div class="slider__switch slider__switch--prev" data-slider-dir="prev"></div>
+    <div class="slider__switch slider__switch--next" data-slider-dir="next"></div>
+</div>
+    </div>
+</div>
+
+
+<div id="technologies" class="technologies_container container-fluid">
+    
+    <div class="container-fluid--fit_center">
+        
+            
+            
+        
+        <div class="row">
+        <div class="col-10">
+            <h2>ApiTrade объединяет все биржи в один интерфейс.</h2>
+            <h5>
+                <br><br>
+                На данный момент к сервису подключены 25 крупнейших бирж по API для получения цен криптовалют в реальном времени. Для полностью автоматической торговли и арбитража подключены 4 крупные биржи. Мы регулярно подключаем новые биржи по просьбам наших пользователей.</h5>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-12 orbita-placeholder orbita">
+            <div class="orbita_circle orbita_circle--first"></div>
+            <div class="orbita_circle orbita_circle--second"></div>
+            <div class="orbita_circle orbita_circle--third"></div>
+            <div class="orbita_planet orbita_planet--ripple">
+                <span class="orbita-planet"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--first_circle orbita_sattelite--first_circle1" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Binance - крупнейшая биржа криптовалют с оборотом более $1 млрд, имеет очень низкие комиссии и большое число торговых пар">
+                <div class="orbita_sattelite_name">Binance</div>
+                <span class="orbita-binance"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--first_circle orbita_sattelite--first_circle3" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Bittrex - крупная американская биржа, работающая с 2014 года и имеющая оборот около $300 млн в день и  большое количество торговых пар">
+                <div class="orbita_sattelite_name">Bittrex</div>
+                <span class="orbita-bittrex"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle5" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Poloniex - старейшая американская биржа с оборотом более $100 млн в день, в февраля 2017 куплено стартапом Circle, принадлежащим Goldman Sachs">
+                <div class="orbita_sattelite_name">Poloniex</div>
+                <span class="orbita-poloniex"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle1" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Bit-Z - биржа с оборотом около $200 млн в день, созданная в 2016 году.">
+                <div class="orbita_sattelite_name">Bit Z</div>
+                <span class="orbita-bit"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle3" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Bitfinex - крупнейшая биржа, ориентированная на професcиональных трейдеров с депозитом от 10000 USD">
+                <div class="orbita_sattelite_name">Bitfinex</div>
+                <span class="orbita-bitfinex"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle4" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Kraken - старейшая и уважаемая биржа, имеющая оборот около $0.5 млрд в день и, в отличие от других бирж, имеющая торговые пары с настоящим USD.">
+                <div class="orbita_sattelite_name">Kraken</div>
+                <span class="orbita-kraken"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--first_circle orbita_sattelite--first_circle2" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Huobi - крупнейшая криптовалютная биржа из Сингапура, входящая в топ3 бирж с оборотом в $1 млрд в день">
+                <div class="orbita_sattelite_name">Huobi</div>
+                <span class="orbita-huobi"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle3" data-toggle="tooltip" data-placement="auto" title="" data-original-title="KuCoin  - это одна из самых быстроразвивающихся бирж, имеющая оборот около 40 млн долларов в день и одна из первых добавляющая новые перспективные криптовалюты. Имеет низкие комиссии.">
+                <div class="orbita_sattelite_name">KuCoin</div>
+                <span class="orbita-kucoin"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle2" data-toggle="tooltip" data-placement="auto" title="" data-original-title="Bitmax">
+                <div class="orbita_sattelite_name">Bitmax</div>
+                <span class="orbita-cryptopia"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle1" data-toggle="tooltip" data-placement="auto" title="" data-original-title="OKEx (OkCoin) - крупная биржа из Гонконга">
+                <div class="orbita_sattelite_name">OKEx</div>
+                <span class="orbita-kcoin"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--third_circle orbita_sattelite--third_circle4" data-toggle="tooltip" data-placement="auto" title="" data-original-title="GDAX (Coinbase) - крупнейшая американская регулируемая биржа с оборотом около $500 млн в день, имеет небольшое число пар.">
+                <div class="orbita_sattelite_name">GDax</div>
+                <span class="orbita-gdax"></span>
+            </div>
+
+            <div class="orbita_sattelite orbita_sattelite--second_circle orbita_sattelite--second_circle2" data-toggle="tooltip" data-placement="auto" title="" data-original-title="BitMex - старейшая биржа биткойн деривативов, работающая с 2011 года, имеющая оборот более $1 млрд в день">
+                <div class="orbita_sattelite_name">BitMex</div>
+                <span class="orbita-bitstamp"></span>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<div id="advantages" class="advantages_container container-fluid">
+    
+    <div class="container-fluid--fit_center">
+        <div class="row">
+        <div class="col-24">
+            <h2>
+                <b>Доходы</b> пользователей формируются за счет проведения тысяч быстрых, в основном, мгновенных сделок по купле-продаже криптовалют в течение дня по продвинутым алгоритмам.
+                <span class="heading-ribbon"></span>
+            </h2>
+            <h4>Мы не гарантируем определенный уровень дохода, т.к. рынок постоянно меняется.</h4>
+            <h5>При доходности в 0.5% в день (достаточно пессимистичный сценарий в период растущего рынка) депозит в размере всего 1 биткойна, размещенный сегодня на биржах криптовалют может превратиться в 6 биткойнов через год, при этом и курс биткойна может значительно вырасти (почему - читайте в нашем FAQ). Причем, в отличие от банков и фондов, ApiTrade не принимает и не хранит Ваши депозиты, они всегда находятся в вашем полном распоряжении.</h5>
+            <script type="text/javascript" async="" src="https://www.gstatic.com/recaptcha/api2/v1523554879111/recaptcha__ru.js"></script>
+            <script>
+                window.series = [
+                    [1,1.6, 3.9, 9.5 , 23, 57, 144]
+                ]
+            </script>
+            <div class="advantages-media"></div>
+            <h2>
+                <b>Сравнительная таблица</b> преимуществ и недостатков разных способов торговли
+            </h2>
+            <div class="table-responsive mob-only-one-col column-1 ru-table">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col" data-col-index="1"></th>
+                        <th scope="col" data-col-index="1" class="bg-primary"><span class="for-small">ApiTrade</span></th>
+                        <th scope="col" data-col-index="2"><span class="for-small">Ручная</span> торговля</th>
+                        <th scope="col" data-col-index="3"><span class="for-small">Боты</span>Торговля с помощью ботов</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Регулярный доход</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Минимальный риск</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Не требует настройки и постоянного контроля</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Автоматический выбор торговых пар</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Межбиржевой и внутрибиржевой арбитраж</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Высокочастотная торговля (HFT)</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Без абонентской платы</td>
+                        <td class="bg-primary"><span class="yes-icon"></span></td>
+                        <td><span class="yes-icon"></span></td>
+                        <td><span class="no-icon"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+        <div class="row auth-block">
+            <div class="col-24 col--ruler"></div>
+            <div class="short-about-us">
+                Имея 10-летний опыт в разработке сложных высоконагруженных систем, финансовых сервисов, агрегаторов, бирж,
+    мы вложили все свои знания и опыт в разработку нашего нового сервиса ApiTrade.
+            </div>
+
+            <div class="auth-btn-block text-right">
+                
+
+
+
+
+
+
+
+
+
+<div class="group" role="group">
+    
+    
+        
+        
+            
+            <button type="button" data-toggle="modal" id="showSignInModal" data-target="#signInModal" class="btn auth-group sign-in">
+                <span>Войти</span>
+            </button>
+            
+            <button type="button" data-toggle="modal" id="showSignUpModal" data-target="#signUpModal" class="btn auth-group sign-up">
+                <span>Регистрация</span>
+            </button>
+        
+    
+</div>
+            </div>
+            <div class="col-24 col--ruler"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div id="faq" class="faq_container container-fluid">
+    <div class="container-fluid--fit_center">
+        <h2 class="text-left">Мы собрали самые <b>частые</b> вопросы и подробно отвечаем:</h2>
+        <div class="row">
+            <div class="col-md-4 col-6 col-sm-12">
+                <div class="list-group">
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action " data-toggle="collapse"
+                           data-target="#commonQuestions">
+                            Частые вопросы
+                        </a>
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                           data-target="#serviceQuestions">
+                            Работа с сервисом
+                        </a>
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                           data-target="#financeQuestions">
+                            Финансовые вопросы
+                        </a>
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                           data-target="#exchangeQuestions">
+                            О биржах
+                        </a>
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                           data-target="#differencesQuestions">
+                            Отличия от аналогов и ботов
+                        </a>
+                    
+                        
+                        <a href="#faq" data-scroll class="list-group-item list-group-item-action collapsed" data-toggle="collapse"
+                           data-target="#problemsQuestions">
+                            Возможные проблемы и риски
+                        </a>
+                    
+                </div>
+            </div>
+            <div class="col-md-8 col-18 col-sm-12" id="questions">
+                
+                    
+                    
+                    <div id="commonQuestions" class="collapse show" data-parent="#questions">
+                        <h2 class="text-left mb-2">Частые вопросы</h2>
+                        <div>
+                            
+                                <div class="card">
+                                    <div class="card-header " data-toggle="collapse"
+                                         data-target="#problemsQuestion49">
+                                        <h4>Что такое криптовалюты и почему биткойн будет расти?</h4>
+                                    </div>
+                                    <div id="problemsQuestion49" class="collapse"
+                                         data-parent="#commonQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Криптовалюты - это самое безопасное на сегодняшний день средство перевода денег, без каких-либо ограничений и посредников. Биткойн и технология блокчейн, на которой он основан, по мнению многих - величайшее изобретение человечества в 21-ом веке, по значимости сравнимое с изобретением телевидения, радио, интернета в 20-м веке. Ниже Вы сможете прочитать о предпосылках возникновения криптовалют и их преимуществах.<br><br>Вероятно, Вы замечали, что если Вы положили свои деньги в банк, то зачастую банк начинает относиться к деньгам на Вашем счете или вкладе, как с своим собственным. В любой момент банк может заблокировать ваш счёт, запросить огромное количество подтверждающих документов об источниках происхождения средств, остановить и отменить Ваш перевод, списать с Вашего счёта средства в безакцептном порядке. Если Вы вдруг захотите забрать вклад и получить большую сумму наличными, то банк может запросить договор купли-продажи недвижимости или автомобиля, на который Вы хотите потратить собственные средства. Если какой-то банк просто откажет Вам в открытии счета (например, Вы не понравитесь банковскому сотруднику), то после отказа Вас сразу же занесут в общий "черный банковский список" (с 2017 года в РФ действует такой список - 550п) и другие банки также начнут отказывать Вам в открытии счетов и операциях. Банк может просто разориться - за последний год разорилось большое количество достаточно крупных банков. Даже в случае, если Вы успели снять вклад до отзыва у него лицензии, через годы, как выяснилось, Агентство по страхованию вкладов может подать на Вас в суд и взыскать эти средства, ссылаясь на то, что Вы могли знать, что у банка проблемы. Комиссии, которые банки взимают за оплату банковскими картами с продавцов, составляют в среднем 2-3% с каждого платежа, что часто составляет значительную часть прибыли продавцов. Проценты по вкладам, которые банки платят пользователям - минимальные. Если Вы решите отправить деньги заграницу, то подготовка документов и проведение перевода может занять очень много времени без гарантии положительного результата. Таким образом, традиционная банковская система имеет очень много ограничений. К сожалению, с каждым годом ограничений становится все больше. Понимая это, Сатоши Накамото в 2009 году создал первую криптовалюту биткойн, основанную на технологии блокчейн.<br><br>Благодаря этой технологии можно переводить средства другим людям напрямую, без каких либо посредников в виде банков. Никто не может заблокировать Ваш счёт, Ваш перевод не может потеряться (если Вы сами не ошиблись в реквизитах перевода), т.к. любой желающий может увидеть его в блокчейне (публичной распределенной базе данных переводов, которую невозможно изменить задним числом). Переводы с помощью криптовалют практически мгновенны, очень экономичны и не имеют никаких ограничений. Особенно удобно делать переводы людям и организациям в других странах. Преимущества как для обычных людей, так и для бизнесов, очевидны. <br><br>Поэтому мы уверены, что рынок криптовалют будет расти по мере того, как все больше людей начнёт ими пользоваться и оценят их преимущества (например, по нашей информации, уже сейчас значительная доля платежей за поставки китайским производителям производится с помощью биткойна). Биткойн - это первая и основная криптовалюта, де факто стандарт, признанный во всем мире. Биткойн - это основная точка входа на криптовалютный рынок для большинства новых пользователей. В связи с тем, что количество биткойнов ограничено (21 млн), а спрос на биткойн со стороны пользователей будет увеличиваться, рост его курса в долгосрочной перспективе неизбежен. <br><br>Безусловно, будут временные падения в два раза и более, как это было неоднократно, это связано с молодостью рынка и его относительно низкой капитализацией (на порядок ниже капитализации золота). Большинство "обвалов" являются манипуляциями крупных игроков с целью скупить больше биткойнов во время искусственно созданной с помощью подконтрольных СМИ паники (ведь если бы цена постоянно росла, то практически никто бы не хотел продавать биткойны), а также со стороны банков и правительств, которые понимают, что с ростом популярности биткойна теряют контроль над переводами граждан. Увеличивая волатильность биткойна, они пытаются замедлить рост его популярности, но это бессмысленно. Всеобщее распространение этой технологии неизбежно, как ранее было неизбежно распространение интернета.<br><br>Кстати, искуственно созданная крупными игроками, СМИ, банками, правительствами нестабильность курса биткойна помогает нашему сервису быстрее преумножать капиталы наших пользователей. Это будет работать до тех пор, пока  капитализация рынка криптовалют не вырастет на порядки и их курсами не станет намного сложнее манипулировать (но даже тогда наш сервис будет ежесекундно находить неэффективности рынков и исправлять их, параллельно преумножая капиталы пользователей).<br><br>За последние месяцы переводы биткойна благодаря улучшению технологии стали очень быстрыми и практически бесплатными. Все это благоприятно сказывается на спросе на биткойн.<br><br>Что касается других криптовалют, то у многих из них есть уникальные особенности, которые также увеличивают их популярность. Например, ETH (эфир) поддерживает смарт-контракты, он является точкой входа инвесторов в большинство ICO (новый способ привлечения частных средств для инновационных проектов), что также будет способствовать увеличению спроса на него, и соответственно, его цены. Есть криптовалюты, которые имеют такие преимущества, как повышенная анонимность (например, Monero), мгновенные и беспроцентные переводы (Nano) и т.д. По мере роста их распространенности, их капитализация также будет расти.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion1">
+                                        <h4>Для чего нужен наш сервис? Чем он полезен?</h4>
+                                    </div>
+                                    <div id="problemsQuestion1" class="collapse"
+                                         data-parent="#commonQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>В целом, наш сервис нужен пользователям для преумножения их капиталов с помощью криптовалют и для экономии времени и нервов. Наш сервис, построенный на основе продвинутых алгоритмов и машинного обучения, используя экстремальную волатильность криптовалют, проводит большое количество быстрых, в основном, почти мгновенных, прибыльных сделок.<br><br>Сервис очень полезен для всего криптовалютного рынка: он сглаживает волатильность криптовалют (со временем это будет все более заметно), увеличивает ликвидность бирж, уменьшает сквизы, то есть резкие падения цен монет. Кроме того, наш сервис, привлекает <b>на рынок криптовалют тысячи новых пользователей</b>, которые раньше никогда не торговали криптовалютами, но узнают от своих знакомых о новом выгодном и надежном способе приумножения своих капиталов, являющемся достойной альтернативой банковским вкладам.
+<br><br>После запуска бота с помощью одного клика, без каких-либо настроек, сервис начнет в автоматическом режиме преумножать средства в Ваших аккаунтах на бирже криптовалют путем проведения низкорисковых сделок (без плеча и риска ликвидации), извлекая выгоду за счет волатильности криптовалют. Сервис работает эффективно независимо от роста или падения рынка. Редкие случаи, когда сервис не может работать эффективно, как впрочем и любые другие боты - это долгое падение курсов всех криптовалют без "отскоков", а также "флэт", то есть полное отсутствие изменений курсов, но рынок криптовалют это в ближайшем будущем не ожидает.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion19">
+                                        <h4>Насколько просто пользоваться сервисом?</h4>
+                                    </div>
+                                    <div id="problemsQuestion19" class="collapse"
+                                         data-parent="#commonQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Мы постарались создать сервис, которым пользоваться действительно просто: мы специально избавили пользователей от необходимости что-либо настраивать, т.к. неправильные настройки приводят к убыткам или недополученной прибыли. Все параметры у нас определяются системой,  основываясь на автоматическом анализе эффективности и машинном обучении, а также используя весь накопленный опыт наших специалистов.<br><br>Фактически, в сервисе есть опция запуска автоматической торговли, а также добавление определенных криптовалют в черный или белый список (при желании). Есть ручные настройки для опытных пользователей, имеющих какие-то определенные цели, но на автоматических настройках система работает оптимально. Также мы самостоятельно ведем системный черный список сомнительных монет, сделки по покупке которых система совершать не будет.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion3">
+                                        <h4>Почему нам можно доверять?</h4>
+                                    </div>
+                                    <div id="problemsQuestion3" class="collapse"
+                                         data-parent="#commonQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Мы накопили многолетний опыт в области сложных высоконагруженных проектов, бирж, финансовых сервисов, электронных денег, партнерских программ. Наши проекты насчитывают сотни тысяч зарегистрированных пользователей. Наша группа компаний достаточно известна в русскоязычном интернете с 2001 года. <a href="https://www.facebook.com/dmitry.sazonov.5">Основатель сервиса</a> еще в 2004 году был признан "Человеком года в электронной коммерции" по версии Рамблера. <a href="https://www.facebook.com/dmitry.samorukov.7">Руководитель разработки</a> ранее руководил разработкой таких проектов как Moneyman, Carfix.ru, ApiShops и т.д.<br>
+Среди наших собственных проектов: ApiShops.com - проект, получивший премию "Стартап года 2013" - дропшиппинг платформа, которая за год смогла вырасти с 0 до 9 тысяч заказов в день (см. <a target=_blank href="https://youtu.be/mnT2zCXunuc">видео</a>), Context.ApiShops.com - система автоматизации контекстной рекламы, Liex.ru - популярный сервис размещения сотен тысяч рекламных статей с автоматическими выплатами, который существует уже более 10 лет, сервис iDomen.ru, который с 2006 года обслуживает десятки тысяч доменов и многие другие сервисы. Подробнее Вы можете прочитать на нашем <a target=_blank href="https://t.me/apitraderu">телеграм-канале</a> или обсудить с другими пользователями в <a target=_blank href="https://t.me/spacearbitrage">телеграм-чате</a>.
+<br><br>
+Как Вы видите, мы полностью открыты для сотрудничества. Вы можете начать сотрудничество с небольших сумм пополнений, чтобы убедиться в том, что нам можно доверять. Вы даже можете запросить через тикет в техподдержку начисление средств на баланс для теста. Вам не нужно доверять сервису свои средства - работа происходит в ваших собственных аккаунтах бирж, при этом у сервиса нет паролей и прав на вывод ваших средств из биржи. Пополнение баланса за услуги сервиса по автоматической торговле и арбитражу происходит на сайте сервиса, как только заканчивается баланс - сервис прекращает сделки и ваш баланс на биржах перестает расти. <br><br>
+Вокруг сервиса сформировалось мощное коммьюнити - Вы можете пообщаться с тысячами других пользователей в <a target=_blank href="https://t.me/spacearbitrage">телеграм-чате</a>, в соцсетях и на специализированных форумах.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion67">
+                                        <h4>Как правильно убедиться, что сервис работает и приносит плюс, а не минус?</h4>
+                                    </div>
+                                    <div id="problemsQuestion67" class="collapse"
+                                         data-parent="#commonQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Некоторые новые пользователи не верят чужим скриншотам доходов, которые в большом количестве публикуют наши текущие пользователи в соцсетях и телеграм-чате <a  target=_blank href="https://t.me/spacearbitrage">https://t.me/spacearbitrage</a>, и хотят проверить сами, что сервис работает и приносит плюс. Однако большинство делает это <b>неправильно</b>. Например, они переводят на биржу разные монеты, включают систему и наблюдают за расчетной стоимостью депозита в долларах или btc на бирже. Когда они видят, что в какой-то момент расчетная стоимость уменьшается, они думают, что система торгует в минус, не понимая, что расчетная стоимость депозита в долларах или btc на бирже никак не показывает эффективность работы системы, а показывает, в основном, изменение курсов изначальных валют, которые выбрал пользователь. Система со временем увеличивает число изначальных монет, но на их текущие рыночные курсы к доллару или биткойну никак повлиять не может. <br><br>Мы предлагаем самый простой способ проверить, что система действительно работает: <br><br>
+<b>1) Если Вы хотите увеличения депозита в биткойнах (самый популярный и эффективный вариант!):</b> Положите на биржу Binance хотя бы 0.1 BTC (меньшего депозита хватит лишь 1-4 одновременные сделки и результат будет носить, во-многом, случайный характер) и запускайте алгоритм "Волны", только в этом случае расчетную стоимость депозита нужно смотреть не в долларах (в которых она будет падать при снижении курса биткойна), а в BTC.<br><br>
+<b>2) Если Вы хотите увеличения депозита в эфире:</b> Положите на биржу минимум 3 ETH  (меньшего депозита хватит лишь на 1-3 торговые пары и результат будет носить, во многом, случайный характер) и запускайте алгоритм "Волны", расчетную стоимость депозита нужно смотреть не в долларах или биткойнах (в которых она будет падать при снижении курса ETH), а в ETH в сервисе (на бирже не показывается).<br><br>
+<b>3) Если Вы хотите увеличения депозита в долларах</b>: Положите на биржу минимум 1000 USDT или BUSD (меньшего депозита хватит лишь на 1-4 одновременные сделки и результат будет носить случайный характер) и запускайте алгоритм "Волны", расчетную стоимость депозита смотрите в системе только в долларах. В системе расчетная стоимость депозита рассчитывается более точно, чем на бирже. На бирже она рассчитывается по заниженным ценам при мгновенной "панической" продаже, смысла в которой нет, и часто без учета мелких хвостов монет. Во время резких (от 3-10% в день) обвалов криптовалют <b>депозит в долларах будет падать</b>, т.к. в это время абсолютно все криптовалюты падают к доллару, в эти периоды смотреть на баланс на бирже бессмысленно, т.к. система будет в это время выгодно закупаться, чтобы продать дороже, когда отскочит цена.<br><br>
+Не стоит для теста класть <b>несколько монет</b> - Вы не сможете оценить результат. Не стоит для теста пытаться увеличить альткойны - в связи с тем, что с ними на биржах имеется обычно всего 2-3 торговые пары, эффективность их наращивания будет на порядок ниже, чем наращивание биткойна или эфира, с которыми имеются несколько сотен торговых пар, среди которых каждый день система может выбирать наиболее прибыльные.<br><br>В системе расчетная стоимость депозита считается по средним закупочным ценам без прибыли. Это чуть меньше той цены, которую Вы в реальности получите при завершении сделок. На бирже поначалу Вы можете увидеть <b>снижение баланса</b> в первые дни закупок монет (или в периоды общих обвалов), это нормально, т.к. идут активные закупки монет,  вычлась комиссия биржи, но есть много незавершенных сделок, прибыль по которым еще не получена, но абсолютное большинство сделок успешно завершаются в течение 100 дней. Если Вы хотите увидеть точную цифру депозита на бирже, то нужно остановить проект кнопкой "Пауза" и подождать до того момента, как все открытые сделки закроются.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion78">
+                                        <h4>Я хочу, чтобы у меня увеличивался баланс в BTC, как это сделать?</h4>
+                                    </div>
+                                    <div id="problemsQuestion78" class="collapse"
+                                         data-parent="#commonQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>1) Положите на биржу хотя бы 0.1 btc. Меньшего объема хватит для работы только с 1-3 торговыми парами, что повышает риски и делает результат более случайным. Если у Вас на балансе биржи есть другие валюты, то обменяйте их все на btc, это можно сделать в разделе "Монеты" одним кликом.<br><br>
+2) Включайте алгоритм "Волны" (все настройки по умолчанию) и запускайте систему кнопкой "Play". Если депозит очень небольшой (меньше 0.07 btc), то в настройках "Волн" запустите только "Сквиз-бот" и отключите "открытие сделок по индикаторам" и "покупку самых быстрорастущих монет".<br><br>
+3) Вы можете увидеть снижение баланса в первые дни закупок монет, это нормально, т.к. вычлась комиссия биржи на покупку, но прибыль еще не получена, а также некоторые монеты немного снизились в цене, что дает отличную возможность их закупить еще.<br><br>
+4) По мере закрытия сделок расчетная стоимость депозита в BTC начнет расти (в периоды обвалов она будет немного падать, но лишь из-за более активных закупок в это время). В системе расчетная стоимость депозита рассчитывается более точно, чем на бирже. На бирже она рассчитывается по заниженным ценам при мгновенной "панической" продаже, смысла в которой нет (т.к. даже в течение дня курс часто изменяется на 2-10%), и часто без учета мелких хвостов монет. В системе расчетная стоимость депозита считается по средним закупочным ценам без прибыли. Это чуть меньше той цены, которую Вы в реальности получите при завершении сделок. <br><br>
+5) Если Вы хотите увидеть точную цифру депозита в BTC на бирже, то нужно остановить проект кнопкой "Пауза" и подождать до того момента, как все открытые сделки закроются (абсолютное большинство сделок по статистике закрываются за 14 дней, если какая-то сделка не закроется, то Вы сможете через 100 дней после открытия сделки воспользоваться кнопкой "Panic sell" с начислением от системы Api-токенов).</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion79">
+                                        <h4>Я хочу приумножать определенный альткойн, как это сделать?</h4>
+                                    </div>
+                                    <div id="problemsQuestion79" class="collapse"
+                                         data-parent="#commonQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5><b>Важно:</b> пользуйтесь системой для приумножения вашего депозита с помощью Вашего альткойна, используя алгоритма "Волны" только в том случае, если Вы <b>не ожидаете</b> резкого взлета ("пампа") его цены в ближайшее время, иначе во время этого взлета система полностью обменяет его на BTC/ETH/BNB/USDT и купит обратно (по цене ниже средней) только после снижения цены этого альткойна по отношению к BTC/ETH/BNB/USDT.<br>Учтите, что т.к. у альткойна обычно всего 2-4 торговые пары на бирже (по сравнению с сотнями пар у BTC), то эффективность его наращивания будет на порядок ниже, чем если бы Вы обменяли все на биткойн и наращивали биткойн.<br><br>
+1) Положите на биржу альткойн (экивалентом минимум 0.02 btc). Если у вас на балансе биржи есть другие валюты, то для удобства учета Вы можете обменять их все на данный альткойн, это можно сделать в разделе "Монеты" одним кликом.<br><br>
+2) Включайте алгоритм "Волны", ручные настройки осторожности <b>до конца влево (риск на 0%)</b>, а также по желанию алгоритм "Кольца", и запускайте систему кнопкой "Play". Система начнет обменивать Ваш альткойн на BTC, ETH, BNB, USDT и чуть позже менять обратно на то же количество альткойна по более низкой цене, прибыль будет накапливаться на BTC, ETH, BNB, USDT.<br><br>
+3) Вы увидите снижение баланса в альткойне в первые дни закупок монет, это нормально, т.к. вычлась комиссия биржи на покупку, но прибыль еще не получена.<br><br>
+4) По мере закрытия сделок расчетная стоимость депозита в альткойне начнет расти (при условии что в это время не произошел памп этого альткойна, иначе ждать придется дольше). <br><br>
+5) Если Вы хотите увидеть точную цифру депозита в альткойне на бирже, то нужно остановить проект кнопкой "Пауза" и подождать до того момента, как все открытые сделки закроются (абсолютное большинство сделок по статистике закрываются за 14 дней, если какая-то сделка не закроется, то Вы сможете воспользоваться кнопкой "Panic sell" с компенсацией от системы).</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion15">
+                                        <h4>Как можно заработать на привлечении пользователей? (реферальная программа)</h4>
+                                    </div>
+                                    <div id="problemsQuestion15" class="collapse"
+                                         data-parent="#commonQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Да, у нас действует очень выгодная реферальная программа, которую сервис оплачивает за свой счет. Комиссия начисляется в реальном времени за каждую завершенную сделку купли-продажи Вашего клиента. Например, если Вы привлечете в сервис нового клиента и он потратит на комиссию сервиса денежные средства в размере $1000, то вам будут начислены на баланс в сервисе 100 долларов.<br><br>Также будет начисляться реферальная комиссия второго уровня: 10% от заработка Вашего партнера первого уровня от реферальной программы. Важно: запрещается регистрироваться самостоятельно под своей рефссылкой для получения скидки за услуги сервиса. Вы можете потратить начисленные средства на услуги сервиса. Если же Вы захотите заказать выплату денежных средств, то сделать это можно через службу поддержки, вывод возможен при условии, если Вы в течение последних 6 месяцев продолжали активно привлекать пользователей, которые добавляли в сервис биржи и пополняли счет в сервисе. Возможные способы оплаты партнерского вознаграждения: BTC, ETH, ЯД, комиссия за перевод (tx fee) вычитается из суммы перевода.  Также Вы можете без комиссии перевести средства любому другому клиенту (например, своему рефералу). Супер-партнеры, которые могут в ежедневном режиме привлекать большое число пользователей, могут рассчитывать на специальные условия (свяжитесь с администрацией системы через тикет).
+<br><br>Кнопка "начислить бонус" появляется у партнера в разделе "Рефералы" в случае, если реферал подключил биржу Binance и пополнил ее на сумму более 0.02 btc в одной монете, при условии что партнер уже имеет более 7 активных рефералов, иначе за бонусом реферал может обратиться с помощью тикету в поддержку.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion84">
+                                        <h4>Расскажите о бонусах за долгие сделки</h4>
+                                    </div>
+                                    <div id="problemsQuestion84" class="collapse"
+                                         data-parent="#commonQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Многие новые пользователи не понимают, как работает торговля, и в первый день или неделю в панике удаляют api-ключи, не давая роботу успешно завершить все сделки в плюс. Они паникуют, как только увидят в момент временных флуктуаций, что виртуальная стоимость их портфеля (состоящего из незавершенных сделок) в биткойнах или другой валюте на бирже снижается. Объяснить им, что депозит увеличивается волнами (в моменты закупок - вниз, в моменты продаж - вверх), практически невозможно.<br><br>«Рынок - это место, где деньги от суетливых перетекают к терпеливым» - Уоррен Баффет, один из богатейших людей в мире, который заработал своё состояние с помощью инвестиций (состояние $100 млрд.)
+<br><br>
+Система разделяет с пользователями половину прибылей и убытков, поэтому через 100 дней после начала сделки мы предоставляем возможность завершить сделку кнопкой "Panic sell" с компенсацией 50% убытка на баланс системы в виде API-токенов.
+<br><br>
+Мы не рекомендуем использовать кнопку "panic sell" за исключением случая, когда Вы точно знаете, что монета не вернется на прежний уровень после разворота рынка. В дальнейшем Вы можете использовать API-токен для оплаты до 50% от комиссии сервиса или для вывода на биржу Digex.io (воспользовавшись <a target="_blank" href="https://apitrade.pro/finances/withdrawtokens">разделом</a>, где API-токен можно продать или положить на стейкинг с высоким ежедневным доходом. Подробнее про API-токены можно прочитать в <a target="_blank" href="https://t.me/apitraderu/306">официальном телеграм канале</a> сервиса.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                
+                    
+                    
+                    <div id="serviceQuestions" class="collapse " data-parent="#questions">
+                        <h2 class="text-left mb-2">Работа с сервисом</h2>
+                        <div>
+                            
+                                <div class="card">
+                                    <div class="card-header " data-toggle="collapse"
+                                         data-target="#problemsQuestion2">
+                                        <h4>Как работает режим автоматической торговли?</h4>
+                                    </div>
+                                    <div id="problemsQuestion2" class="collapse"
+                                         data-parent="#serviceQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Система использует несколько наиболее низкорисковых стратегий, описание которых вы увидите в интерфейсе. Система в реальном времени выявляет выгодные ситуации для покупки монет, мгновенно совершает сделки и выставляет ордер на продажу с прибылью, постоянно увеличивая ваш депозит на биржах. Чем больше волатильность - тем больше ваш доход. Система  автоматически совершая большое количество сделок, зарабатывает для вас на каждой сделке в среднем 0.3-5% (с учетом того, чтобы каждая сделка приносила прибыль за вычетом комиссий бирж). </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion4">
+                                        <h4>Как начать работу?</h4>
+                                    </div>
+                                    <div id="problemsQuestion4" class="collapse"
+                                         data-parent="#serviceQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Для начала работы вам нужно:<br>
+1) зарегистрироваться в нашем сервисе<br>
+2) зарегистрировать отдельный аккаунт в бирже <a href=https://www.binance.com/?ref=21901959 target=_blank>Binance</a> и по желанию <a href=https://www.huobi.pro target=_blank>Huobi</a>  (менее выгодно, т.к. комиссия биржи в 4 раза выше) и включить 2FA  авторизацию<br>
+3) предоставить сервису доступ к API на бирже (Подробнее см. в разделе FAQ "Биржи" - "как получить API-ключи")<br>
+4) Пополнить баланс на бирже (например, биткойнами) на сумму от 0.1 btc (минимум от 0.02 - этого хватит лишь на 1 "Волну", сделки будут редкими)<br>
+5) Пополнить баланс сервиса на любую сумму (если он не положительный).<br>
+6) Включить алгоритмы в разделе "Алгоритмы"<br>
+7) Нажать на кнопку Play в списке бирж для запуска алгоритмов.
+<br><br>Мы рекомендуем регистрировать отдельные аккаунты на биржах специально для работы через сервис (работать напрямую в бирже в этих аккаунтах, или с помощью других сервисов одновременно с работой нашего сервиса не нужно, т.к. это может привести к ошибкам, это можно делать только после отключения сервиса).<br><br>Всегда указывайте разные пароли в каждой бирже и включайте 2FA-авторизацию для входа в целях безопасности. 2FA-авторизация нужна для того, чтобы при взлома вашего E-mail ваши средства не пострадали. Также вы можете зарегистрировать в одной бирже несколько аккаунтов в целях удобства учета и безопасности. Например, в одном из аккаунтов вы можете приращивать биткойны, в другом - доллары.<br><br>Первыми для автоматической торговли мы подключили крупные биржи, в которых не ограничена регистрация и можно достаточно быстро при необходимости пройти верификацию: <a href=https://www.binance.com/?ref=21901959 target=_blank>Binance</a>, <a href=https://www.huobi.pro target=_blank>Huobi</a>.<br><br>
+После подключения бирж и пополнения баланса любых монет в биржах Вы сможете одним кликом включить функцию автоматической торговли и арбитража для увеличения вашего депозита в биржах. В настоящее время мы тестируем сервис одновременного пополнения всех нужных бирж через наш сервис, пока пополнять биржи вам нужно самостоятельно.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion36">
+                                        <h4>Может ли система продать в минус?</h4>
+                                    </div>
+                                    <div id="problemsQuestion36" class="collapse"
+                                         data-parent="#serviceQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>В систему заложено правило: она должна совершать сделки в плюс. Система не будет <b>намеренно</b> продавать в минус, фиксируя убыток (за исключением функции "стоп-лосс", которую пользователь может включить (не рекомендуется), или функции "auto-panicsell", которая срабатывает более чем через год после начала сделки (отключить ее можно с помощью тикета). <br><br>При сделках по рыночной цене (маркет-ордеры) небольшой процент сделок может быть убыточным из-за задержек в выполнении ордеров со стороны бирж или резкого изменения цены в момент отправки ордера. Пользователь может включить "лимитный закрывающий ордер" в настройках "Волн".<br><br>Алгоритм "Волны" использует волатильность внутри одной пары в одной бирже, покупая монету, когда ее все продают, по относительно низкой цене, и продавая монету, когда все покупают, на пике. Если после покупки цена монеты резко упадет, и ненужная монета останется висеть на депозите в бирже, то:<br><br>
+1) система будет закупать эту монету еще дешевле после падения ее цены в случае возобновления ее роста<br><br>
+2) система в случае необходимости снизит требуемую с данной сделки прибыль до минимальной, чтобы завершить ее быстрее<br><br>
+Если же вы все же решите избавиться от этой монеты, то вы сможете продать ее вручную нажав кнопку "Panic sell", зафиксировав убыток на бирже, но мы не рекомендуем этого делать (хотя и начисляем бонус на баланс сервиса). Некоторые пользователи считают, что иногда выгоднее высвободить часть депозита для того, чтобы купить новые монеты, добавив ранее купленную монету в черный список, и отбить полученный минус с помощью дальнейшей торговли. Но решение остается за пользователем, мы не рекомендуем принимать поспешные решения, т к очень велика вероятность того, что монета вырастет снова, тем более, что ее средняя закупочная цена благодаря последующим закупкам стала значительно ниже, и достаточно даже небольшого повышения ("отскока", который практически всегда происходит после падения), чтобы монета продалась с прибылью. На рынке криптовалют волатильность очень высокая и небольшой "отскок" не заставит себя долго ждать. А в случае, если монета сильно упала, то алгоритм "Торнадо" будет ее шортить и Вы сможете зарабатывать на ней в ежедневном режиме даже в этом случае.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion60">
+                                        <h4>Расскажите подробнее о разных алгоритмах</h4>
+                                    </div>
+                                    <div id="problemsQuestion60" class="collapse"
+                                         data-parent="#serviceQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>В системе пользователь может выбрать несколько разных алгоритмов для увеличения своего капитала. Для краткости мы назвали алгоритмы <b>"Волны"</b>, <b>"Сквиз-бот"</b> (разновидность "Волн"), <b>"Ураган"</b> (включается администрацией). За простыми названиями скрываются наиболее продвинутые на сегодня алгоритмы автоматической торговли. Расскажем об этих алгоритмах подробнее:<br><br>
+<b>Алгоритм "Волны"</b> - наиболее часто используемый алгоритм в системе - использует волатильность внутри одной пары на одной бирже, покупая монету по относительно низкой в данный момент цене, и продавая монету, когда ее на 1-5% дороже. Особенно большую прибыль этот алгоритм приносит при снижении и колебаниях курсов. Данный алгоритм приспосабливается к динамике изменения рынка, и в зависимости от нее совершает дальнейшие закупки и продажи. Разновидностью "Волн" является "Сквиз-бот", который покупает монеты на сквизах - резких обвалах цен и выставляет ордер на их продажу на 2-5% дороже. Алгоритм "Сквиз-бот" является рекомендуемым алгоритмом для любого типа рынка - как падающего, так и растущего (в этом случае сделки происходят реже, только во время локальных коррекций, которые обычно происходят раз в несколько дней). Включать опции "Открытие сделок по индикаторам" и "Покупка самых быстрорастущих монет" не рекомендуется, за исключением случая, когда Вы уверены, что в настоящее время происходит альт-сезон, доминация биткойна снижается, и что он находится не на своей завершающей стадии. Включать опцию "Шорт" не рекомендуется, за исключением длительного нисходящего тренда.
+<br>Недостатки:<br>
+Хотя абсолютное большинство сделок сквиз-бота завершается за минуты, есть риск, что завершение сделки произойдет не сразу и сделка займет больше времени, чем Вы рассчитываете, в случае неблагоприятного развития ситуации. Нежелательные монеты можно заранее заносить в черный список, чтобы сделки с ними не совершались. Данный алгоритм хуже подходит для приращивания монет, по отношению к которым все другие монеты долгое время падают (например BNB, ETH). Если наращиваемая монета резко вырастет по отношению ко всем остальным (например, произойдет памп BNB или ETH), возможно временное снижение расчетного баланса "panic sell" на бирже до коррекции после пампа.
+<br> 
+<br><br>Алгоритм "Ураган" - высокочастотный алгоритм, торгующий фьючерсами. Для пользователей, стремящихся к получению высокого дохода (в среднем 3-10% в день) и склонных к высокому риску. Открывается администрацией по инвайтам, на условиях, описанных в официальном телеграм-канале @apitraderu. Кроме того, всем пользователям алгоритма предоставляется доступ к приватному телеграм-чату из более 300 самых опытных пользователей Apitrade, которые являются первыми пользователями алгоритма.
+<br><br>
+Мы постоянно ищем и тестируем новые алгоритмы, которые способы обеспечить стабильный доход при минимальных рисках и планируем регулярно добавлять в систему дополнительные алгоритмы по предложениям наших пользователей. <br>Также у нас действует система очень щедрых бонусов для пользователей, предложивших проверенные ими прибыльные низкорисковые алгоритмы, в случае добавления их в систему. </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion18">
+                                        <h4>Насколько безопасен наш сервис?</h4>
+                                    </div>
+                                    <div id="problemsQuestion18" class="collapse"
+                                         data-parent="#serviceQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Мы уделяем безопасности крайне высокое внимание:<br><br>
+1) <b>2FA-авторизация</b>. Наш сервис - первый, который предложил клиентам возможность включить 2-х факторную авторизацию с помощью Telegram, случаев взлома которого до сих пор зафиксировано не было, то есть войти в ваш аккаунт в сервисе постороннему будет практически невозможно.<br><br>
+2) <b>Ограничение по IP</b>. Вы можете ограничить вход в ваш аккаунт по IP или подсети.<br><br>
+3) <b>Работа только в ваших аккаунтах</b>. Средства хранятся на ваших собственных аккаунтах в биржах. Мы не храним ваши средства.<br><br>
+4) <b>API-доступ без вывода</b>. Вы не предоставляете сервису доступ к выводу ваших средств с бирж, пароли к вашим аккаунтам на биржах. Вы полностью распоряжаетесь своими средствами. <br><br>
+5) <b>SSL</b>. Наш сайт работает с SSL сертификатом, весь трафик зашифрован.<br><br>
+6) <b>API-ключи</b> зашифрованы. Мы не храним ваши API ключи в открытом виде в базе данных. Они зашифрованы по самому совершенному на сегодняшний день алгоритму, и даже кража базы данных не позволит злоумышленникам ими воспользоваться. К тому же, сервер, на котором хранятся API-ключи, не имеет внешнего IP-адреса, то есть недоступен из интернета.<br><br>
+7) <b>PCI DSS сертификация</b>. Наша компания TNX Corporation, зарегистрированная в США и успешно работающая на он-лайн рынке более 10 лет, получила сертификацию PCI DSS от Visa/Mastercard, что также говорит о нашем особом отношении к безопасности.<br><br>
+8) <b>Многолетний опыт</b>. Наши сервисы (см.выше) работают с 2006 года, имеют сотни тысяч пользователей и безупречную репутацию. Мы имеем огромный опыт работы с API крупных интернет-сервисов, бирж, финансовых организаций.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion72">
+                                        <h4>Когда стоит включать ручной режим в Волнах</h4>
+                                    </div>
+                                    <div id="problemsQuestion72" class="collapse"
+                                         data-parent="#serviceQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>После включения алгоритма "Волны" Вы можете включить ручной режим "осторожности" (от высокой осторожности и малой прибыльности до большой рискованности и высокой прибыльности). Мы категорически не рекомендуем это делать новичкам. Дайте системе поработать с настройками по умолчанию, понаблюдайте за работой системы в разных ситуациях (падение, рост). Когда вы полностью поймете, как работает система, то можете попробовать включить ручные настройки при необходимости. Обратите внимание, что при этом система перестает подстраиваться под изменение рыночных условий, Вы самостоятельно будете регулировать, насколько сильно система будет рисковать.
+<br><br>
+Когда Вы ставите прибыльность на минимум (осторожность на максимум), то начинается практически высокочастотная торговля, даже при прибыли 0.1-0.2% система будет закрывать сделку. При этом остается неиспользованным очень большой запас депозита на случай резких падений. То есть в данном режиме риск остаться с зависшими монетами сводится практически к нулю (при включении режима до закупки).<br><br>
+Когда Вы ставите прибыльность на максимум - система ждет прибыли по несколько процентов с каждой сделки, использует почти весь депозит под закупки. В случае резкого обвала цен Вы станете "инвестором" в купленные до этого монеты до возвращения их цены к первоначальным уровням. Ставить такие настройки стоит только если Вы абсолютно уверены, что рынок будет резко расти в ближайшие часы и дни, и если Вы не хотите упустить высокие проценты роста.<br><br>
+Вы также можете выбрать любое промежуточное значение между осторожностью и прибыльностью.<br><br>
+Система по умолчанию осторожна, но не в крайней степени.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion76">
+                                        <h4>Как работает кнопка принудительной продажи или Panic sell?</h4>
+                                    </div>
+                                    <div id="problemsQuestion76" class="collapse"
+                                         data-parent="#serviceQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>В разделе "Сделки" для некоторых сделок алгоритма "Волны" Вы можете заметить кнопку принудительной продажи. Она появляется в двух случаях:<br><br>
+1) Если текущая рыночная цена выгоднее, чем средняя цена закупки монеты, но не достигла целевой цены, при которой система завершает сделку. Тогда с помощью этой кнопки можно продать монету с прибылью, не дожидаясь пока ее продаст система по целевой цене. Но мы не рекомендуем этого делать, т.к. скорее всего, Вы недополучите прибыль. Это стоит делать только если Вы уверены, что это пиковая цена, которая скоро снизится.
+<br><br>
+2) Если после закупки монеты ее цена в течение 30 дней значительно снизилась без каких-либо "отскоков", что не позволило системе продать ее с прибылью, несмотря на усреднения. Это редкий случай, т.к. большинство монет продаются с прибылью. В этом случае Вы имеете возможность принудительно продать монету и зафиксировать убыток, при этом на Ваш баланс в системе будет начислен бонус в размере 50% от убытка (что будет достаточно для увеличения баланса на бирже на 100% от убытка в дальнейшем). То есть система делит с пользователями не только прибыли, но и убытки. Но мы рекомендуем использовать эту опцию только в крайнем случае - только если Вы уверены, что цена не восстановится в ближайшем будущем (если купленная монета не имеет никаких перспектив). Бонусы начисляются в виде API-токенов. При желании API-токены можно перевести другому пользователю, вывести на биржу digex.io для продажи или для того чтобы положить на стейкинг с высокой ежедневной доходностью.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion81">
+                                        <h4>Что будет, если я пополню какую-то монету на бирже в процессе работы?</h4>
+                                    </div>
+                                    <div id="problemsQuestion81" class="collapse"
+                                         data-parent="#serviceQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Система автоматически подхватит ее и начнет использовать для сделок в случае, если этой монеты достаточно для работы алгоритмов. В алгоритме "Волны" сделки будут происходить в случае, если суммарный объем данной монеты на бирже более 0.02 btc.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion92">
+                                        <h4>Расскажите про ручные настройки алгоритма </h4>
+                                    </div>
+                                    <div id="problemsQuestion92" class="collapse"
+                                         data-parent="#serviceQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5><b>Дополнительные ордеры на продажу/покупку при падении цены/росте цены</b> - разрешает дозакупку при росте (для лонга) или при падении цены (для шорта). Сумма каждой дозакупки немного меньше первого ордера в сделке. Дозакупка производится по индикаторам в случае продолжения роста монеты.<br>
+<b>Разрешить Шорт в Волнах (продажу монеты с целью последующей покупки ее дешевле)</b> - включайте, если ваш депозит состоит из альткойнов, и Вы хотите чтобы открывались обратные "Волны", то есть за ваши альткойны покупались BTC, USDT, ETH, BNB (прибыль будет накапливаться в той же монете), чтобы позже купить на них то же количество альткойна дешевле. Не рекомендуется включать данную опцию в фазу сильно растущего рынка и частых пампов монет.<br>
+<b>Разрешить покупку альткойнов в лонг с целью последующей продажи с прибылью</b> Обязательно нужно включить для наращивания BTC, USDT, ETH, BNB.<br>
+<b>Покупать самые быстрорастущие монеты из системного белого списка</b> - если данная опция включена, то будут такие монеты будут покупаться не обязательно после локальных минимумов.<br>
+<b>Защита от покупки после начала пампа</b> - система не будет закупать монету, если она выросла слишком сильно за последний час (например, более чем на 20%)<br>
+<b>Включить стоп-лоссы</b> - система будет закрывать сделку в минус в случае если убыток превысит определенное значение. Не рекомендуется включать эту опцию совместно с усреднением во избежание потерь.<br> 
+<b>Индивидуальный белый список монет для "Волн" (отменяет системный белый список)</b> - Вы можете самостоятельно выбрать монеты, которые будет покупать и продавать алгоритм "Волны". Не рекомендуется, если вы не планируете каждый день редактировать этот белый список. В качестве альтернативы Вы можете использовать "Черный список монет".<br>
+<b>Включить ручные настройки волн</b> - при включении ручных настроек перестают действовать и обновляться системные настройки усреднения. Для того, чтобы восстановить системные настройки, отключите ручные настройки волн.<br>
+<b>Число усредняющих ордеров</b> - сколько максимум будет куплено ордеров дешевле цены закупки для лонга или дороже цены закупки для шорта для усреднения закупочной цены и более быстрого закрытия Волны.<br>
+<b>Расстояние между усредняющими ордерами</b> - если выбрано расстояние 1%, то каждый следующий усредняющий ордер будет размещаться на 1% дешевле предыдущего для лонга или на 1% дороже предыдущего для шорта<br>
+<b>Коэффициент увеличения расстояния между усредняющими ордерами</b> - например, коэффициент 2 при расстоянии между усредняющими ордерами 1 означает, что каждый последующий усредняющий ордер будет вдвое дальше от предыдущего - через 2%, 4%, 8%.<br>
+<b>Коэффициент для размера 1-го усредняющего ордера</b> - определяет насколько первый усредняющий ордер больше, чем открывающий Волну ордер.</br>
+<b>Коэффициент увеличения размера каждого следующего усредняющего ордера</b> (коэффициент мартингейла) - например, коэффициент 2 означает, что каждый последующий усредняющий ордер будет вдвое больше предыдущего.</br>
+<b>
+Поправка к скорости открытия</b> - позволяет немного (на 10-20%) увеличить скорость открытия Волн путем ослабления некоторых фильтров по индикаторам (скорость открытия сделок зависит от точности совпадения нескольких индикаторов). Скорее всего при изменении данного параметры Вы не почувствуете изменения, т.к. значительно больше на скорость открытия влияют ручные настройки риска, а также параметр "Открывать одновременно более 1 волны с одинаковыми парами".<br>
+<b>Коэффициент максимального размера волны</b> - позволяет увеличить максимальный размер Волны, который по умолчанию составляет 0.02 btc или 200 USDT или 0.4 ETH в 2-5 раз. Используйте данный параметр только если у вас очень большой депозит или  если это требуется для работы ваших настроек усреднения (например, вы хотите использовать больше трех усредняющих ордеров и высокий коэффициент мартингейла, а первый ордер получается при таких настройках меньше минимального ордера на бирже (например на Бинансе это 0.001 btc, 10 USDT, 1 BNB или 0.01 ETH).<br>
+<b>Продать сразу при росте цены более чем на</b> - позволяет мгновенно завершить сделку с определенной прибылью, не дожидаясь начала падения цены после роста, необходимого для завершения сделки по механизму трейлинга, работающего по умолчанию. Если Вы установите данный параметр на слишком низком уровне (от 0.5%) то сделки будут очень частыми.
+</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                
+                    
+                    
+                    <div id="financeQuestions" class="collapse " data-parent="#questions">
+                        <h2 class="text-left mb-2">Финансовые вопросы</h2>
+                        <div>
+                            
+                                <div class="card">
+                                    <div class="card-header " data-toggle="collapse"
+                                         data-target="#problemsQuestion40">
+                                        <h4>Это не пирамида?</h4>
+                                    </div>
+                                    <div id="problemsQuestion40" class="collapse"
+                                         data-parent="#financeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Любая пирамида принимает взносы и хранит их у себя, и делает выплаты за счет взносов новых членов (хотя может и утверждать обратное, но проверить это нельзя никаким образом). <br><br>Мы же:<br><br>
+1) <b>не принимаем депозиты</b> - Вы пополняете Ваш собственный аккаунт на самой крупной криптобирже -  Binance<br><br>
+2) <b>не храним Ваши средства</b> - все Ваши средства находятся в Вашем полном распоряжении, мы лишь с помощью API выгодно обмениваем Вашу основную монету на другие монеты и обратно по продвинутым алгоритмам с целью их приумножения<br><br>
+3) <b>не делаем выплаты</b> - в сервисе даже нет кнопки вывода средств<br><br>
+4) <b>зарабатываем только на комиссии с прибыльных сделок</b> по обмену, то есть мы так же, как и Вы, заинтересованы в приумножении Вашего капитала в Ваших собственных аккаунтах в биржах, причем зарабатываем неплохие деньги - 25-50% от чистой прибыли, поэтому нам значительно выгоднее работать честно - в долгосрочной перспективе (за несколько лет) мы заработаем во много раз больше, чем суммарная стоимость депозитов пользователей на текущий момент.<br><br>
+5) <b>не скрываемся</b>, наши онлайн сервисы успешно работают с сотнями тысяч пользователей уже более 10 лет (смотрите раздел "Почему нам можно доверять").<br>
+6)<b>полностью открыты и прозрачны</b>, в телеграме (@spacearbitrage) существует мощное коммьюнити пользователей, где можно пообщаться с опытными пользователями системы, как и во многих других соцсетях и на специализированных форумах, а на официальном телеграм-канале @apitraderu мы ведем трансляцию сделок бота с настройками по умолчанию (в том числе сквиз-бота) со скриншотами сделок бота, которые подтверждаются API-ключами на чтение (можно запросить через тикет и проверить).
+<br><br>
+Мы пришли на этот рынок всерьез и надолго. Нашим сервисом уже пользуются десятки тысяч пользователей с 2018 года.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion5">
+                                        <h4>Для чего нужно пополнять счет и каким способом?</h4>
+                                    </div>
+                                    <div id="problemsQuestion5" class="collapse"
+                                         data-parent="#financeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Важно: пополнение счета нужно только для списания комиссии сервиса за прибыльные сделки (т.к. сам сервис не имеет доступа к переводу средств из биржи и не может самостоятельно списать комиссию за услуги с вашего депозита на бирже).
+<br><br>Деньги, которыми вы пополните баланс нашего сервиса, мы не переводим в биржи, где ведется торговля (а тратим на аренду серверов и на оплату разработчикам), покупать криптовалюты нужно отдельно и самостоятельно переводить их на биржи. В случае затруднений обратитесь в нашу службу поддержки за рекомендациями, как купить криптовалюты с наименьшими рисками и потерями. <br><br>Пополнение баланса в сервисе возможно с помощью криптовалют (перевести их можно в том числе с биржи, на которой Вы наращиваете депозит, со страницы "Withdraw"). При выводе с биржи обратите внимание, что нужно выбирать основную сеть монеты, например для BTC - BTC, для ETH - ETH (erc20), для LTC - LTC, для BCH - BCH, для TRX - Tron(TRX trc20), для ZEC - Zcash (если Вы отправите средства не на основную сеть, то они будут утеряны).</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion7">
+                                        <h4>На чем зарабатывает сам сервис?</h4>
+                                    </div>
+                                    <div id="problemsQuestion7" class="collapse"
+                                         data-parent="#financeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Сервис не берет абонентскую плату. Сервис зарабатывает 25-50% от прибыли, полученной в результате автоматических сделок, открытых сервисом, причем сервис зарабатывает после завершения сделки и получения прибыли. Сервис проводит большое количество мелких (в большинстве своем очень быстрых) сделок, и на каждой сделке зарабатывает для вас (и для себя) небольшую прибыль. Из своей части прибыли сервис оплачивает расходы на серверы, выполняющие сложные расчеты, размещение оборудования рядом с биржей (для быстрой реакции на любые изменения), работу разработчиков и прочих сотрудников, а также маркетинговые расходы и проценты по реферальной программе (до 20% от прибыли). Для тех пользователей, которые не хотят платить 50% от прибыли, есть возможность сэкономить с помощью покупки API-токенов на бирже digex.io (API-токенами можно оплатить половину комиссии сервиса).</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion20">
+                                        <h4>Как повысить доходы при использовании сервиса?</h4>
+                                    </div>
+                                    <div id="problemsQuestion20" class="collapse"
+                                         data-parent="#financeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Повысить ваш доход от автоматической торговли можно не изменением параметров (практически все параметры в сервисе автоматически настраиваются и не требуют изменения), а путем:<br><br>
+1) <b>путем увеличения депозита на бирже</b> (часто депозита не хватает для входа во все подходящие сделки и в результате выгодные возможности будут пропущены.<br><br>
+3) <b>путем диверсификации депозита</b> -  размещения депозита на бирже в большем количестве валют. Например, на бирже Binance существуют торговые пары с: BTC, ETH, USDT, BUSD и BNB, RUB, EUR. С каждой из этих валют есть свои торговые пары, поэтому чаще возникают выгодные условия для входа в сделку. Однако существует риск падения курса той валюты, в которой вы разместите депозит. Сервис не несет за это ответственность, поэтому выбирайте изначальные валюты, в которых вы разместите депозит, тщательно взвесив все за и против. Сервис использует ваш изначальный депозит для увеличения его объема, изначальное распределение депозита вы выбираете самостоятельно вне сервиса. Обязательно регистрируйте на бирже отдельные аккаунты (на разные е-мейлы) под каждую валюту для простоты учета. Ограничений на количество аккаунтов на биржах нет. Не забывайте устанавливать основную монету для каждого аккаунта биржи в разделе "Алгоритмы".<br><br>
+<br><br>
+Что касается настроек, то вы можете занести определенные криптовалюты в черный список, в этом случае сервис не станет совершать с ними новых сделок. Также Вы сможете настроить стратегии по вашему усмотрению (для профессионалов), если по каким-то причинам считаете системные настройки не оптимальными (это может быть BTC, ETH, USDT, BUSD и BNB, RUB, EUR). Рекомендуемые основные монеты: BUSD (по умолчанию), BTC.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion22">
+                                        <h4>Какую прибыль вы гарантируете?</h4>
+                                    </div>
+                                    <div id="problemsQuestion22" class="collapse"
+                                         data-parent="#financeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Мы не гарантируем определенный уровень прибыльности, так как это было бы нечестно и некорректно по отношению к пользователям. Ведь рынок очень быстро меняется, и то, что работало в прошлом и работает сейчас, не обязательно будет работать в будущем. Именно поэтому мы постоянно перенастраиваем наши алгоритмы и добавляем новые стратегии, а также улучшаем функции машинного обучения.<br><br>Что мы можем гарантировать - это то, что мы приложим все усилия для того чтобы своевременно адаптировать наше программное обеспечение под происходящие изменения и постоянно улучшать наши алгоритмы для достижения максимально возможного результата по пожеланиям наших пользователей. По статистике мы видим, что система практически ежедневно совершает прибыльные сделки, и прирост депозита пользователей на биржах составляет в среднем <b>0.1-3% в сутки</b> (в зависимости от волатильности в течение дня).</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion31">
+                                        <h4>Есть ли ограничения по размеру депозита?</h4>
+                                    </div>
+                                    <div id="problemsQuestion31" class="collapse"
+                                         data-parent="#financeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Что касается минимального депозита в ваших аккаунтах на биржах, то у бирж есть определенные ограничения по минимальному ордеру (а ордеров в одной сделке может быть много), в связи с чем мы рекомендуем на каждой бирже иметь минимум эквивалент 0.05-0.1 btc для наибольшей эффективности. Большой депозит нужен для того, чтобы система при резком снижении цены могла делать дополнительные закупки для "усреднения" закупочной цены, причем с каждым снижением - закупки все большего объема. Для снижения рисков система создает много мелких "Волн", каждая из которых занимает максимум 0.02 btc (при свободном депозите от 3000 долларов - в несколько раз больше).
+<br><br>Что касается максимального депозита пользователя на биржах, то в настоящее время мы его ограничиваем в размере 10 BTC на каждой бирже. Мы знаем, что есть владельцы больших депозитов в размере 1000-10000 биткойнов, которые также хотят увеличить свой депозит, но на данном этапе мы хотим получать обратную связь от пользователей (в том числе, в нашем телеграм-чате) и сформировать Community с целью улучшения эффективности и доходности нашего сервиса. Не нужно регистрировать в сервисе несколько аккаунтов. Вы можете обратиться к администрации, если это ограничение вас не устраивает.<br><br>
+Что касается ограничений по балансу в нашем сервисе, с которого списывается комиссия за прибыльные сделки, то такого ограничения нет. </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion34">
+                                        <h4>Я не верю в рост криптовалют. Могу ли я увеличивать депозит в биржах в долларах или евро?</h4>
+                                    </div>
+                                    <div id="problemsQuestion34" class="collapse"
+                                         data-parent="#financeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Да, вы можете занести нужные валюты в черный список, пополнить баланс в бирже на выбор: в BUSD (стейбл-койн от биржи Binance, обеспечен долларами на банковском счету),  USDT (это криптовалюта компании Tether, привязанная к доллару, но не полностью обеспеченная долларами на банковском счету), EUR (привязан к евро), RUB (привязан к рублю), после этого система будет совершать сделки только с целью увеличения вашего депозита в долларах. Однако мы рекомендуем все же часть средств держать в других крупных криптовалютах (BTC, ETH, BNB), т к в парах с ними выгодные ситуации для сделок могут возникать чаще, к тому же есть долгосрочная тенденция к ежегодному росту стоимости криптовалют, несмотря на временные падения, присущие этому рынку в связи с его молодостью. Не забывайте, что для каждой основной валюты нужно создавать отдельный аккаунт Binance и добавлять его в Apitrade.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion33">
+                                        <h4>Зачем вы делитесь таким прибыльным сервисом, фактически кнопкой бабло, с окружающими? Сами бы использовали!</h4>
+                                    </div>
+                                    <div id="problemsQuestion33" class="collapse"
+                                         data-parent="#financeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Конечно, мы используем наш сервис сами, но объемы рынка, количество бирж, волатильность и частота возникновения выгодных условий для сделок таковы, что предоставляя возможности сервиса тысячам пользователей, мы заработаем больше, т.к. зарабатываем с каждой прибыльной сделки. Со временем эффективность текущих алгоритмов будет снижаться, но будут появляться новые. Мы рассчитываем, что обратная связь от пользователей поможет нам сделать сервис более эффективным. </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion69">
+                                        <h4>25-50% комиссия, мне кажется, это слишком много!</h4>
+                                    </div>
+                                    <div id="problemsQuestion69" class="collapse"
+                                         data-parent="#financeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5><b>Во-первых,</b> Вы можете вообще не пополнять систему, если привлечете несколько рефералов, комиссия с их доходов будет покрывать комиссию системы.<br><br>
+<b>Во-вторых,</b> мы компенсируем убыточные сделки (API-токенами), а это значит, что реальная комиссия может составить <b>гораздо меньше 50%</b>!<br><br>
+<b>Во-третьих,</b> это справедливо. И такой процент принят при доверительном управлении финансами, риски при котором значительно более высокие, и где убытки не компенсируются.<br><br>
+<b>В-четвертых,</b> Ваша чистая прибыль больше зависит не от комиссии того, кто торгует, а от эффективности его торгов. Одно дело - платить 50% с хорошей предсказуемой прибыли, другое дело - платить 10% и получать убытки. Поэтому нужно сравнивать конечный результат и его предсказуемость.<br><br>
+<b>В-пятых,</b> это оправданно: разработка и поддержание такого сервиса стоит очень немалых денег. Это и большая команда профессиональных разработчиков, и дорогостоящее оборудование рядом с биржами, трафик, поддержка, продвижение и многое другое.<br><br>
+<b>В-шестых,</b> это хорошая мотивация работать на Ваши личные интересы.
+<br><br><b>В-седьмых,</b> Вы можете <b>сэкономить почти половину от комиссии</b>, купив на бирже digex.io API-токены за 10-20% от их стоимости и переведя их в Apitrade. API-токены продают первые пользователи сервиса, у которых их излишек из-за того что они запаникселлили старые сделки, открытые, в основном, в мае 2018 года (тогда рынок упал на порядок).</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion70">
+                                        <h4>Рост портфеля 0.5% в день - много это или мало?</h4>
+                                    </div>
+                                    <div id="problemsQuestion70" class="collapse"
+                                         data-parent="#financeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Часто мы сталкиваемся с тем, что некоторые пользователи, попробовав систему и увидев, что рост их депозита в биткойнах или долларах составляет, например, 0.5% в день (в периоды, когда рынок "зеленый", то есть альткойны, в основном, растут), высказывают недовольство, что это слишком мало. Однако, следует помнить, что если принимать во внимание сложный процент, то портфель 1000 USDT сейчас при росте 0.5% в день превращается в 6170 USDT через год, 38130 USDT через 2 года или 235420 USDT через 3 года. Если Вы сравните это с банковскими вкладами, то поймете, что это очень высокий процент. Напомним, что мы не можем гарантировать какой-то определенный процент дохода, т.к. он зависит от изменения рыночной ситуации и волотильности в будущем. Рынок не может быть всегда "зеленым", часть времени в течение он "красный", в это время, естественно, доход меньше, в какие-то дни вообще могут отсутствовать завершенные сделки из-за того, что все криптовалюты снижаются и система занимается закупками и усреднением закупочных цен. Поэтому мы рекомендуем выводить с биржи часть полученной благодаря системе прибыли и тратить эти деньги на свои нужды. В этом случае, даже если в какой-то момент в течение трех лет эффективность упадет или стоимость депозита из-за резкого обвала всех курсов сократится (что вполне возможно и происходило с курсом криптовалют много раз), все равно Вы потеряете на порядок меньше первоначального депозита, причем, потеряете, скорее всего, временно (ведь за каждым падением следует рост).</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion85">
+                                        <h4>Как пополнить баланс Apitrade криптовалютой? (инструкция)</h4>
+                                    </div>
+                                    <div id="problemsQuestion85" class="collapse"
+                                         data-parent="#financeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>На балансе Apitrade нужно постоянно иметь более 1-2% от суммы депозитов на биржах для продолжения открытия выгодных сделок. Рассмотрим пополнение баланса Apitrade с помощью перевода из вашего депозита на бирже Binance:<br><br> 
+1. Сначала зайдите в раздел "Монеты" и увидите, какая монета свободная (не занятая). Обычно баланс пополняют с помощью основной монеты - BTC, т.к. практически всегда есть свободная часть. Но вывод BTC стоит на бирже около $5, есть и более выгодные способа пополнения - например NEO (от 2 NEO, вывод без комиссии), XRP, Waves, Verge. Если у вас нет подобных монет, то при желании вы можете купить их в разделе "Монеты".<br><br> Пример перевода 23 XRP (23XRP, минус комиссия биржи 0.25XRP - это минимальное количество для вывода с биржи) с привязанного аккаунта Binance на счёт ApiTrade:<br> 
+1. в ApiTrade заносим XRP в черный список (чтобы сделки с этой монетой не совершались до перевода с биржи);<br>
+2. на Binance переходим в раздел Актив > Снять наличные > выбираем XRP;<br>
+3. подставляем 23 в поле "Количество" и смотрим итоговую сумму за минусом комиссии - 22.75XRP. Выделяем и копируем эту сумму;<br>
+4. в ApiTrade: Финансы > Пополнение счета > Пополнить криптовалютами;<br>
+5. заполняем окошки формы: 22.75 и в ниспадающем меню "XRP" > нажимаем Continue;
+6. выбираем картинку с нужной монетой (XRP) > Complete payment;
+7. на странице "Статус платежа" под "Send To Address:" копируем адрес кошелька, переходим на страницу вывода биржи и вставляем его в поле "XRP адрес". Возвращаемся на страницу "Статус платежа" копируем Tag - снова переходим на страницу вывода биржи и вставляем в поле "XRP снятие Tag". Ещё раз всё проверяем и нажимаем на бирже желтую кнопку "Представлене".
+8. вводим Google 2FA код, проверяем почту для подтверждения транзакции и подтверждаем вывод;
+9. поступление наблюдаем на странице где был указан адрес кошелька для платежа;
+10. после появления надписи "Received So Far: 22.75000000 XRP (30/30 подтверждено)" проверяем баланс счёта в ApiTrade;  
+11. в ApiTrade убираем XRP из черного списка
+12. Если Вы ошиблись в сумме и платеж не зачислился - напишите тикет.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                
+                    
+                    
+                    <div id="exchangeQuestions" class="collapse " data-parent="#questions">
+                        <h2 class="text-left mb-2">О биржах</h2>
+                        <div>
+                            
+                                <div class="card">
+                                    <div class="card-header " data-toggle="collapse"
+                                         data-target="#problemsQuestion17">
+                                        <h4>В скольких биржах мне нужно регистрироваться и пополнять депозит?</h4>
+                                    </div>
+                                    <div id="problemsQuestion17" class="collapse"
+                                         data-parent="#exchangeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>На данный момент наиболее эффективно сервис работает на ведущей бирже <a href=https://www.binance.com>Binance</a>. Ранее в сервисе мы подключили большое количество бирж, однако мы обнаружили, что у них низкая ликвидность и большие комиссии, что снижает доходы пользователей и сервиса, поэтому мы приняли решение отключить их.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion50">
+                                        <h4>Как найти API ключ в биржах криптовалют?</h4>
+                                    </div>
+                                    <div id="problemsQuestion50" class="collapse"
+                                         data-parent="#exchangeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Рассмотрим получение API-ключа на примере подключенных к сервису бирж Binance, Huobi, Kucoin.<br><br>
+1) <b>Binance</b>: После регистрации на бирже Вам будет предложено подключить двухфакторную авторизацию (2FA) удобным вам способом, подключите ее. В интерфейсе пользователя перейдите в раздел "Account" и нажмите кнопку "API setting". Введите любое название для вашего нового ключа и нажмите кнопку "Create New Key". Скопируйте  API key и secret в соответствующие поля в нашем сервисе. Убедитесь, что в настройках API-ключа на бирже стоит галочка рядом с "Trade enabled" и не стоит галочка рядом с "Enable Withdrawals". Нажмите кнопку "Save" на странице биржи.<br><br>
+2) <b>Huobi</b>: В интерфейсе пользователя наведите курсор мыши на ваш логин и нажмите на ссылку "API management" ("Управление API") в ниспадающем меню. Введите любое название для вашего нового ключа и нажмите кнопку "Create" ("Создать"). Скопируйте полученный API-ключ Access Key и секретный ключ Private key (это можно сделать только в момент создания ключа, обратите внимание!) в соответствующие поля в нашем сервисе. API-ключ в данной бирже действует 3 месяца, не забудьте его обновить. Нажмите кнопку "Confirm". Также в разделе "Account and security" обязательно включите двухфакторную авторизацию с помощью телефона или Google authenticator.<br><br>
+3) <b>Kucoin</b>:  В интерфейсе пользователя после регистрации на бирже Вам будет предложено подключить двухфакторную авторизацию (2FA) удобным Вам способом, подключите ее. В интерфейсе пользователя перейдите в раздел "Account" и нажмите кнопку "API Keys" ("API Ключи"). Нажмите кнопку "Create" ("Создать"). Скопируйте API key и secret в соответствующие поля в нашем сервисе. Важно: в настоящее время в функционале биржи Kucoin нет возможности ограничения вывода средств по API. Мы обратились в Kucoin с предложением о его введении. В ближайшее время подобный функционал должен появиться, о чем наши пользователи будут проинформированы дополнительно. В связи с этим мы не рекомендуем пока пополнять биржу Kucoin на существенные суммы.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion24">
+                                        <h4>Могу ли я самостоятельно совершать сделки на биржах?</h4>
+                                    </div>
+                                    <div id="problemsQuestion24" class="collapse"
+                                         data-parent="#exchangeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Вы предоставляете сервису доступ к аккаунту (API-ключ), где он самостоятельно совершает тысячи сделок, Вы не должны в это время совершать в этом аккаунте в бирже какие-то другие сделки, иначе работа сервиса будет нарушена. Но вы можете в любой момент отключить сервис, дождаться завершения всех операций сервисом, сделать нужные операции (например вывести средства), после чего перезапустить сервис снова. Кроме того, вы можете добавить в "черный список" в сервисе определенные криптовалюты, операции с которыми сервис производить не будет (но лучше не хранить эти криптовалюты на бирже, а выводить на ваш собственный кошелек, т.к. любая биржа подвержена риску). В этом случае сервис не будет производить новые сделки с участием этих криптовалют. Также вы можете зарегистрировать на биржах отдельные аккаунты для сделок вручную. Кстати, Вам не обязательно совершать какие-либо операции по купле-продаже монет на сайтах бирж, подключенных к сервису, ведь Вы сможете совершенно бесплатно совершать эти же операции в сервисе в едином интерфейсе без необходимости отдельно авторизоваться в каждой бирже, причем сервис автоматически покажет лучшие условия из всех подключенных бирж. </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion38">
+                                        <h4>Требуется ли верификация (KYC/AML)?</h4>
+                                    </div>
+                                    <div id="problemsQuestion38" class="collapse"
+                                         data-parent="#exchangeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Верификацию пользователей при необходимости проводят сами биржи, куда поступают и где хранятся средства пользователей. Каждая из бирж имеет свою политику в области верификации, описанную на сайте биржи. Мы не храним средства пользователей, поэтому необходимости в верификации пользователей в нашем сервисе в настоящее время нет. Однако в случае, если вы запросите через поддержку вывод средств из нашего сервиса (что возможно в течение 7 дней с момента ввода), то в целях безопасности и защиты от несанкционированного вывода средств мы можем запросить верификацию.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion71">
+                                        <h4>Можно ли добавить одну и ту же биржу несколько раз?</h4>
+                                    </div>
+                                    <div id="problemsQuestion71" class="collapse"
+                                         data-parent="#exchangeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Вы можете добавить в свой аккаунт в нашей системе одну и ту же биржу несколько раз, но только в случае, если это разные аккаунты в одной бирже. Если это один и тот же аккаунт, но разные ключи, то делать этого нельзя. Дело в том, что биржа по API не передает данные о том, что это один и тот же аккаунт, поэтому система будет действовать как будто торгует в разных аккаунтах, то есть пытаться потратить вдвое больше, чем есть на аккаунте, что приведет к непредвиденным последствиям. Если Вы случайно добавили один и тот же аккаунт одной биржи в свой аккаунт в ApiTrade - удалите на бирже оба API-ключа, сгенерируйте новый API-ключ и добавьте в систему как новую биржу.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion77">
+                                        <h4>Сколько нужно купить BNB для оплаты комиссии в Binance? Это обязательно?</h4>
+                                    </div>
+                                    <div id="problemsQuestion77" class="collapse"
+                                         data-parent="#exchangeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Для оплаты комиссии биржи в бирже Binance нужно обязательно покупать монету BNB (обменивая на нее ту монету, которая у вас приращивается). По каждой сделке Binance списывает 0.05% в BNB. <br><br>Сделок может быть сотни и даже тысячи в день, в зависимости от вашего баланса на бирже. Поэтому лучше всегда иметь на счету хотя бы 1-4 BNB. Предсказать точный расход невозможно, т.к. это зависит от волатильности рынка.
+<br><br>Достаточно следить за наличием BNB раз в день. При отсутствии BNB могут возникнуть глюки: т.к. биржа по API не передает информацию о списываемой комиссии, система не сможет корректно рассчитать сумму сделки и сделка может быть не проведена биржей.
+<br><br>Вы можете занести BNB в "Черный список", чтобы сделки с этой монетой не совершались, но это не обязательно. Система не будет совершать с BNB сделки если их остается мало.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion82">
+                                        <h4>Можно ли создавать несколько аккаунтов на одной бирже?</h4>
+                                    </div>
+                                    <div id="problemsQuestion82" class="collapse"
+                                         data-parent="#exchangeQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Да, это возможно - мы не встречали подобных ограничений со стороны бирж. Поддержка биржи Binance это так же разрешает.<br><br>
+Если Вы столкнетесь с какими-либо ограничениями по этому поводу, то, пожалуйста, напишите нам об этом в тикете.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                
+                    
+                    
+                    <div id="differencesQuestions" class="collapse " data-parent="#questions">
+                        <h2 class="text-left mb-2">Отличия от аналогов и ботов</h2>
+                        <div>
+                            
+                                <div class="card">
+                                    <div class="card-header " data-toggle="collapse"
+                                         data-target="#problemsQuestion41">
+                                        <h4>Чем ваш сервис отличается от различных конструкторов ботов?</h4>
+                                    </div>
+                                    <div id="problemsQuestion41" class="collapse"
+                                         data-parent="#differencesQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>В настоящее время появилось огромное количество различных ботов, которые продаются или сдаются в аренду за абонентскую плату. Алгоритмы их работы  достаточно примитивны. В большинстве случаев алгоритмов торговли вообще нет и сервис предлагает пользователю самостоятельно придумать алгоритм. Создатели ботов не заинтересованы в увеличении вашей прибыли, т к получают деньги (за покупку бота или абонентскую плату) независимо от вашего результата. Если вы потеряете деньги, то создатели ботов скажут, что бот всего лишь инструмент, а деньги вы потеряли из-за неправильной настройки.
+<br>Вот отличия нашей системы от подобных ботов:<br><br>
+<b>1)</b> Вам не нужно ничего настраивать - система берет это на себя<br>
+<b>2)</b> Вам не нужно постоянно следить за ботом и перенастраивать<br>
+<b>3)</b> Вам не нужно выбирать подходящие торговые пары и параметры<br>
+<b>4)</b> Бот может зависнуть/сломаться, наша система постоянно мониторится, разработчики готовы отреагировать практически мгновенно<br> 
+<b>5)</b> Не нужно ничего устанавливать на своем компьютере и держать его включенным (по сравнению с десктопными ботами)<br>
+<b>6)</b> Наша система работает на высокопроизводительных серверах, которые находятся рядом с биржами, поэтому все сделки выполняются быстрее<br>
+<b>7)</b> Алгоритмы системы значительно более продвинутые, чем примитивные правила ботов<br>
+<b>8)</b>Система самообучается в процессе работы и принимает решения в зависимости от развития ситуации, бот же работает по одному и тому же алгоритму вне зависимости от развития ситуации<br>
+<b>8)</b> Наш новейший алгоритм "сквиз-бот" доступен только в нашем сервисе<br>
+<b>9)</b> Система обеспечивает стабильный доход при минимальном риске<br>
+<b>10)</b> Простота использования<br> несравнима - в системе достаточно подключить ваши аккаунты бирж и нажать кнопку запуска<br>
+<b>11)</b> Многие боты для работы требуют наличия большого депозита на бирже, система же может работать и с небольшими депозитами<br>
+<b>12)</b> В ботах есть ограничения на количество пар, в системе их нет.<br>
+<b>13)</b> Мы отвечаем перед пользователями за ошибки (см.вопрос "сервис совершил ошибку" в FAQ).
+<b>14)</b> Кнопка "Panic sell" позволяет получить компенсацию в Апитокенах за неудачную сделку, что позволит использовать в дальнейшем сервис без оплаты, что мотивирует разработчиков постоянно улучшать алгоритмы и сводить число неудачных сделок к минимуму. Кроме того, Апитокены можно продать на бирже или положить на стейкинг.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion42">
+                                        <h4>Чем ваша система отличается от сервисов, копирующих действия трейдера?</h4>
+                                    </div>
+                                    <div id="problemsQuestion42" class="collapse"
+                                         data-parent="#differencesQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>В настоящее время появились системы "копитрейдинга", которые предлагают опытным трейдерам заработать, получая прибыль от того, что система будет копировать действия трейдера в аккаунтах новичков.<br><br>При такой системе трейдер совершает сделки первым, основываясь либо на какой-то инсайдерской информации, либо на техническом анализе. Если трейдер закупает монету на большую сумму, то цена монеты резко растёт, далее монета закупается одновременно всеми повторяющими за ним по более высокой цене. После роста цены трейдер фиксирует прибыль и продаёт монету по высокой цене, в результате чего цена резко снижается, а повторяющие продают ее уже по более низкой цене. Чем больше повторяющих и их бюджеты - тем меньше прибыль повторявших, на каком-то этапе их прибыль может стать отрицательной. Если трейдер ошибется в выборе монеты и ее курс начнет резко падать, трейдер может продать ее в минус и баланс у пользователей, повторяющих за ним, уменьшится. Конечно, ни трейдер, ни система не несут за это никакой ответственности.<br><br>
+Средний трейдер совершает всего несколько операций в месяц. Рынок постоянно меняется, и если в этом месяце тактика трейдера давала хорошую прибыль, то далеко не факт, что в следующем месяце он сможет ее повторить. Получается, что недостатков у копирования за трейдерами, поставленного на поток, достаточно много.<br><br> 
+Наша система работает по другому принципу. Вместо того, чтобы надеяться на удачу, или совершать сделки на основании инсайдерской информации, пытаясь увеличить депозит во много раз за несколько сделок, система работает по низкорисковым алгоритмам, проверенным на тычячах сделок, принося небольшой, но стабильный доход. Она совершает множество операций, причём у каждого пользователя операции уникальные, в результате система не создаёт дополнительную волатильность, а наоборот, снижает ее, параллельно на этом зарабатывая. Вы будете видеть динамику изменения вашего портфеля каждый день, вне зависимости от человеческого фактора.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                
+                    
+                    
+                    <div id="problemsQuestions" class="collapse " data-parent="#questions">
+                        <h2 class="text-left mb-2">Возможные проблемы и риски</h2>
+                        <div>
+                            
+                                <div class="card">
+                                    <div class="card-header " data-toggle="collapse"
+                                         data-target="#problemsQuestion21">
+                                        <h4>Насколько рискованна автоматическая торговля?</h4>
+                                    </div>
+                                    <div id="problemsQuestion21" class="collapse"
+                                         data-parent="#problemsQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Алгоритмы, используемые в сервисе при автоматической торговле характеризуются минимальными рисками.<br><br>
+Однако не всегда биржи работают идеально, иногда бывают задержки в выполнении сделок, глюки бирж, резкие изменения курсов определенных криптовалют из-за выхода негативных новостей.<br><br>
+Но эти риски разделяются на большое число криптовалют. Худшее, что может произойти - это то, что из-за резкого обвала курса сервис не сможет быстро продать какую-то монету с прибылью (из многих, которые успевает быстро продать), и она останется в Вашем портфеле на какое-то время (при этом эта монета все равно может использоваться сервисом для увеличения вашего депозита с помощью алгоритма "Торнадо"). В сервисе можно настроить "Черный список" криптовалют, покупать которые сервис не будет. В любом случае, нужно помнить, что пока сделка завершена, сделка не является ни прибыльной, ни убыточной, если вы только самостоятельно не зафиксируете убыток. Не стоит смотреть на расчетный баланс депозита по незавершенным сделкам на бирже, он часто вводит новичков за заблуждение, т.к. не отражает реальную ситуацию.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion39">
+                                        <h4>Почему после торгов остаются остатки различных монет?</h4>
+                                    </div>
+                                    <div id="problemsQuestion39" class="collapse"
+                                         data-parent="#problemsQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Это нормально, такое происходит и при сделках вручную. Например, вы меняете 100 монет на другую монету и обратно, в результате получаете 99 монет и небольшой остаток на другой монете. В целом ваш суммарный депозит на бирже увеличился, но небольшая часть средств находится на остатках (из-за того, что при умножении курса на количество монет в бирже происходит округление из-за недостаточного количества знаков после запятой). При первых сделках это чувствительно, однако так как наша система проводит тысячи частых сделок с разными валютами, эти остатки в дальнейшем накапливаются и Вы сможете их поменять одним кликом в разделе "Монеты". Также мы запустили специального робота, который автоматически обменивает свободные остатки на BNB (в случае биржи Бинанс) для оплаты комиссии.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion47">
+                                        <h4>Почему мой баланс на бирже (в долларах/биткойнах) мог уменьшиться за день?</h4>
+                                    </div>
+                                    <div id="problemsQuestion47" class="collapse"
+                                         data-parent="#problemsQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Сервис увеличивает изначальное число монет в вашем аккаунте в бирже. Например, если изначально вы положили на биржу криптовалюту ETH (эфир), то задачей сервиса будет увеличение именно количества ETH. Если же вы считаете сумму ваших средств в долларах или биткойнах, то, естественно, каждый день он может изменяться, в том числе падать при снижении курса эфира. Так как никто не может быть на 100% уверен, какая криптовалюта вырастет больше всего через год, большинство наших пользователей переводят на биржи 3-5 основных валют, включая BTC и ETH и сервис занимается увеличением их количества. Это не страхует от периодического снижения цены всего портфеля в долларах в случае общего снижения капитализации криптовалют. Если вы не уверены в том, что со временем рынок криптовалют будет расти, то вы можете положить на биржу только USDT, тогда ваш депозит на бирже в долларах сможет практически ежедневно расти.<br><br>
+Важно: При включении пользователем алгоритма "Волны" (при котором система покупает в моменты, когда все продают и цена снижается, и продает на пике, когда все покупают), в первые дни его работы, когда система настраивается и делает закупки разных криптовалют, а также в периоды затяжных падений сразу всех криптовалют возможно временное падение общего размера депозита на бирже. В такие периоды система автоматически делает дополнительные закупки криптовалют, снижая тем самым закупочную цену и повышая вероятность дальнейшей продажи с прибылью даже при небольшом отскоке. Это нормально, и не стоит переживать по этому поводу.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion68">
+                                        <h4>Почему на бирже расчетная стоимость депозита не соответствует вашему сервису?</h4>
+                                    </div>
+                                    <div id="problemsQuestion68" class="collapse"
+                                         data-parent="#problemsQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Есть несколько способов расчета стоимости депозита:<br>
+<b>1)</b> По "маркет ценам" при мгновенной "панической" продаже (на бирже и у нас в сервисе в разделе "Монеты")<br>
+<b>2)</b> По цене продажи без убытка (если рыночная цена снижается, то цена продажи без убытка тоже снижается благодаря постоянному усреднению (закупке новых ордеров) - у нас в сервисе на главной странице интерфейса по умолчанию<br>
+<b>3)</b> По ценам будущей продажи открытых ордеров с ожидаемой прибылью.<br><br>
+У бирж расчетная стоимость формируется первым способом, поэтому эта стоимость сильно занижена. Мы же на главной странице интерфейса рассчитываем стоимость по умолчанию вторым способом, который по нашему мнению более точен и справедлив - ведь пользователь может подождать, пока все сделки будут закрыты. При желании пользователь может изменить способ расчета баланса на главной странице на "Panic sell" (баланс при панической продаже на бирже по невыгодным ценам) или "с прибылью" (приблизительный баланс, который Вы получите после завершения всех сделок с прибылью).</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion87">
+                                        <h4>Цена достигала целевой, почему робот не завершает сделку?</h4>
+                                    </div>
+                                    <div id="problemsQuestion87" class="collapse"
+                                         data-parent="#problemsQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Это может иметь несколько объяснений:<br>
+1) по данной цене нельзя было продать на бирже (а можно было только купить), на графике биржи этого не видно<br>
+2) робот ждет повышения цены, целевая цена это минимум, но робот продает не по ней, а выше (трейлинг), после того, как цена начала снижение, но если цена очень резко снизится, то робот постарается не завершать сделку в убыток, а подождет следующего роста<br>
+3) если по данной паре открыта сделка алгоритмом "торнадо". <br><br>
+Нужно понимать, что робот не должен продавать при достижении целевой цены, целевая цена - это минимум, реальная цена сделки обычно более выгодная. Если после достижения целевой цены Вы хотите завершить сделку, а не ждать дальнейшего роста и снижения, то Вы можете нажать кнопку "Panic sell". Также вы можете включить в "Волнах" опцию "лимитный закрывающий ордер", тогда сделки будут всегда закрываться при достижении цены лимитного ордера на бирже.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion73">
+                                        <h4>Я остановил торговлю, но сделки все равно происходят! (как работает кнопка «пауза»)</h4>
+                                    </div>
+                                    <div id="problemsQuestion73" class="collapse"
+                                         data-parent="#problemsQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>В системе есть кнопка «пауза». Она останавливает новые закупки по новым сделкам (парам), но по уже закупленным парам продолжает по возможности закупать дополнительные количества монет по более низкой цене с целью снижения средней закупочной цены сделки и скорейшего ее закрытия с минимальной прибылью. Не нужно паниковать, если после нажатия кнопки "Пауза" Вы видите, что сделки продолжаются. Это нормально, нужно  просто дать системе возможность завершить сделки. <br><br>Если какие-то сделки система не сможет завершить в течение 100 дней, то появится кнопка "Panic sell", при нажатии которой сделки будут закрываться принудительно, а 50% от полученного в результате неудачной сделки убытка будет компенсировано системой на баланс Апитокенов в сервисе, которыми можно оплатить половину комиссии сервиса. Определенный процент неудачных сделок это нормально, т.к. никто и никогда не может <b>точно</b> предсказать, куда пойдет цена. Иногда цена закупленной монеты падает слишком стремительно и без отскоков, это очень редкий случай, но именно для таких случаев и предусмотрена такая возможность. В качестве альтернативы кнопке "Пауза" можно занести определенные монеты в "Черный список". При этом с ними будет происходить то же самое, что со всем проектом при "Паузе", но сделки будут происходить с обычной прибылью, а не минимальной. Обратите внимание: алгоритм "Торнадо" работает и при паузе, если не отключен.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion74">
+                                        <h4>Я хочу пополнить биржу/вывести средства с биржи/обменять одну монету на другую, что нужно сделать?</h4>
+                                    </div>
+                                    <div id="problemsQuestion74" class="collapse"
+                                         data-parent="#problemsQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Вы можете в любой момент пополнять баланс монет в бирже, система сразу это заметит и начнет по возможности использовать эти монеты для торговли (если они не занесены в Черный список). Останавливать сервис для этого не требуется.<br><br>
+Если же вы хотите вывести средства с биржи или обменять одну монета на другую, то может потребоваться остановка торговли. Остановить торговлю данной монетой можно с помощью Черного списка или Паузы (тогда остановится вся торговля сервиса на бирже). Перед выводом занесите монету, с которой будете выводить средства, в Черный список, новые сделки по ней прекратятся, а старые будут завершаться (если есть). После завершения всех сделок, что Вы сможете увидеть в разделе "История сделок", Вы сможете без последствий вывести данную монету с биржи или ее часть. Альтернатива - "Пауза" всего проекта. Если же Вы сделаете обмен/вывод монеты (например, BTC) с биржи при наличии незавершенных сделок с ней, то это может привести к тому, что при попытке закупки дополнительного количества другой монеты (с помощью BTC) система столкнется с недостатком средств, в результате закупочная цена не будет снижена и другая монета может зависнуть на балансе до того момента, пока цена на нее не вернется.
+<br><br>
+Иногда бывают ситуации, когда вам срочно нужно вручную провести определенную операцию по монете, по которой открыты сделки, не дожидаясь их закрытия. В этом случае система определит при попытке закрытия сделки, что монеты нет на депозите и отменит сделку.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion75">
+                                        <h4>Можно ли выключать компьютер/закрывать сайт системы во время ее работы?</h4>
+                                    </div>
+                                    <div id="problemsQuestion75" class="collapse"
+                                         data-parent="#problemsQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Как ни странно, нам часто задают вопрос, можно ли выключать компьютер/закрывать сайт системы во время ее работы. Конечно, можно, т.к. система работает на собственных серверах и компьютер пользователя никак не используется.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion48">
+                                        <h4>Сервис допустил ошибку. Могу ли я рассчитывать на компенсацию?</h4>
+                                    </div>
+                                    <div id="problemsQuestion48" class="collapse"
+                                         data-parent="#problemsQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Да, конечно, если сервис действительно допустил ошибку, не предусмотренную алгоритмами сервиса и его логикой работы, то обратитесь в поддержку для начисления компенсации на баланс сервиса, причём ее размер вас приятно удивит, так как ее исправление позволит нам увеличить общую прибыль пользователей и сервиса. Мы благодарны всем пользователям, которые помогают нам улучшать наш сервис и исправлять его недостатки. Однако обратите внимание, что возможен небольшой процент неприбыльных сделок. Это не является ошибкой. Компенсации могут быть начислены только на баланс в сервисе для дальнейшего использования в сервисе.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion23">
+                                        <h4>Можно ли будет запросить возврат/выплату средств?</h4>
+                                    </div>
+                                    <div id="problemsQuestion23" class="collapse"
+                                         data-parent="#problemsQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>До начала использования сервиса у каждого пользователя есть возможность запросить с помощью тикета в поддержку бонус $5 на счет сервиса, который позволит со временем увеличить баланс на бирже на $10. Сервис будет закрывать старые сделки независимо от того, пополните ли Вы счет.<br>
+<b>Возвраты</b>: выплата средств с баланса сервиса (в том числе, компенсаций) не производится, за исключением двух случаев:<br><br>
+1) Выплата партнерской комиссии по реферальной программе<br>
+2) Возврат ошибочного перевода, запрос на который должен быть обязательно подан в течение 7 дней с момента перевода. Как и сервис coinpayments (используемый сервис по приему платежей), наш сервис взимает "8% manual processing/recovery fee" за ручную обработку, минимум $20. Ошибочный перевод - это пополнение баланса сервиса вместо биржи, предупреждение написано жирным текстом на странице пополнения счета сервиса. Об ошибочном переводе нужно обязательно сообщить в тикет в течение 7 дней после платежа, с указанием кошелька для возврата. Возврат производится в той же валюте и по тому же курсу, который был в момент платежа. Возможен вывод только оплаченных нам средств, при этом из суммы вывода вычитаются бонусы, начисленные за нажатие кнопки «Panic sell» (которые мы не можем вывести, т к не получаем их от биржи), а также стартовый бонус. Для вывода данной суммы нужно указать в тикете txid первоначального платежа, а также кошелек того же типа, которым было пополнение, для возврата.
+<br><br>
+Если Вы не уверены, стоит ли пополнять сервис - запросите бонус для тестирования, дождитесь завершения старых сделок, не пополняя счет, а счет сервиса пополните из прибыли, полученной на бирже. Не нужно пополнять сервис на большие суммы - более чем 1-5% от вашего депозита на бирже. Если Вы пополнили баланс в сервисе - то Вы сможете только его потратить на услуги сервиса, получив в итоге на бирже вдвое больше.<br><br>
+Чтобы прекратить пользоваться сервисом достаточно поставить биржи на паузу и обязательно удалить на биржах созданные Api-ключи. </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header collapsed" data-toggle="collapse"
+                                         data-target="#problemsQuestion25">
+                                        <h4>За что сервис не отвечает? (ограничение ответственности)</h4>
+                                    </div>
+                                    <div id="problemsQuestion25" class="collapse"
+                                         data-parent="#problemsQuestions">
+                                        <div class="card-body pt-0">
+                                            <h5>Ограничение ответственности: сервис не несет ответственность за потери, связанные с кражей средств у бирж, взломами бирж, техническими ошибками бирж, банкротствами бирж, блокировками аккаунтов в биржах, резкие падения курсов и действия пользователей. Также сервис не гарантирует определенную доходность в будущем, т.к. она зависит от волатильности, ликвидности на биржах, корректности и своевременности работы программного обеспечения бирж. Сервис  предоставляет статистику за прошедшие периоды, на основании которой пользователь может принимать решения. Все решения пользователи принимают на свой страх и риск. Сервис предоставляется на условиях «как есть», в связи с чем пользователям не представляются какие-либо гарантии, что сервис будет соответствовать их требованиям, услуги будут предоставляться непрерывно и без ошибок, результаты от использования сервиса будут соответствовать ожиданиям.</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="affilate" class="affilate_container container-fluid container-fluid--primary">
+    <div class="bg-img lazy-img" data-bg="/images/primary-bg.png"></div>
+    <div class="container-fluid--fit_center">
+        
+        <div class="row">
+        <div class="col-14">
+            <h2><b>Партнерская</b> программа</h2>
+            <h5>
+                Присоединяйтесь к реферальной программе ApiTrade сейчас, пока о нашем сервисе еще не начали говорить везде, и зарабатывайте 10% комиссию пожизненно! Это лучший способ заработка, не требующий никакого начального капитала.
+            </h5>
+            <h4>
+                Ваш доход полностью зависит от вас!
+            </h4>
+            <h5 class="affilate-points"><span class="count">1</span>Зарегистрируйтесь у нас и сформируйте уникальную реферальную ссылку</h5>
+            <h5 class="affilate-points"><span class="count">2</span>Отправьте реферальную ссылку своему другу</h5>
+            <h5 class="affilate-points"><span class="count">3</span>Ваш друг кликает на реферальную ссылку.</h5>
+            <h5 class="affilate-points"><span class="count">4</span>Он регистрируется в ApiTrade и Вы получаете 10% с его доходов пожизненно!</h5>
+        </div>
+        <div class="col-10 affilate-media">
+            <div class="lazy-img" data-bg="/images/affilate-bg-new.svg"></div>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<div id="competition" class="competition_container container-fluid">
+    <div class="container-fluid--fit_center">
+        <h2>Конкурс</h2>
+        <div class="bg-muted p-sm">
+            Конкурс
+        </div>
+        <div class="table-responsive" style="overflow-y:auto;height:600px;">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Партнер</th>
+                    <th>Доход</th>
+                </tr>
+                </thead>
+                <tbody>
+                
+                    
+                        <tr>
+                            <td>1</td>
+                            <td>Zykov</td>
+                            <td><span class="text-nowrap">12921,25</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>2</td>
+                            <td>bitcoinjesus.net</td>
+                            <td><span class="text-nowrap">10117,31</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>3</td>
+                            <td>355</td>
+                            <td><span class="text-nowrap">9703,19</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>4</td>
+                            <td>https://t.me/ApiTradeSecrets | Telegram: @ApiTradeSecrets | API Trade Affiliate Program Secrets | Секреты Партнерской Программы API Trade</td>
+                            <td><span class="text-nowrap">8699,79</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>5</td>
+                            <td>Тупа шобы айфон выиграть</td>
+                            <td><span class="text-nowrap">5397,74</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>6</td>
+                            <td>Raketa</td>
+                            <td><span class="text-nowrap">4908,21</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>7</td>
+                            <td>4027</td>
+                            <td><span class="text-nowrap">4350,51</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>8</td>
+                            <td>50139</td>
+                            <td><span class="text-nowrap">3753,39</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>9</td>
+                            <td>Crypto Gang 42 | To the moon and back | ‹^› ‹(•_•)› ‹^›</td>
+                            <td><span class="text-nowrap">2614,43</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>10</td>
+                            <td>DD</td>
+                            <td><span class="text-nowrap">2414,38</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>11</td>
+                            <td>46179</td>
+                            <td><span class="text-nowrap">1408,26</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>12</td>
+                            <td>9605</td>
+                            <td><span class="text-nowrap">1355,28</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>13</td>
+                            <td>7182</td>
+                            <td><span class="text-nowrap">1300,61</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>14</td>
+                            <td>Я знаю как выжать максимум @AndyApi</td>
+                            <td><span class="text-nowrap">1267,33</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>15</td>
+                            <td>3274</td>
+                            <td><span class="text-nowrap">1266,54</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>16</td>
+                            <td>touringo</td>
+                            <td><span class="text-nowrap">1084,05</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>17</td>
+                            <td>11184</td>
+                            <td><span class="text-nowrap">1036,99</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>18</td>
+                            <td>Mr John</td>
+                            <td><span class="text-nowrap">996,96</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>19</td>
+                            <td>Владимир Иосипенко</td>
+                            <td><span class="text-nowrap">988,53</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>20</td>
+                            <td>49991</td>
+                            <td><span class="text-nowrap">973,99</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>21</td>
+                            <td>761</td>
+                            <td><span class="text-nowrap">943,12</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>22</td>
+                            <td>3921</td>
+                            <td><span class="text-nowrap">921,81</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>23</td>
+                            <td>https://digex.io/about-digex.htm</td>
+                            <td><span class="text-nowrap">893,05</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>24</td>
+                            <td>Yaroslav4400</td>
+                            <td><span class="text-nowrap">872,2</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>25</td>
+                            <td>25066</td>
+                            <td><span class="text-nowrap">866,1</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>26</td>
+                            <td>Gearing</td>
+                            <td><span class="text-nowrap">862,06</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>27</td>
+                            <td>2404</td>
+                            <td><span class="text-nowrap">857,84</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>28</td>
+                            <td>@perfectearningz</td>
+                            <td><span class="text-nowrap">856,37</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>29</td>
+                            <td>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; 1000р бонус всем!!! | мой блог с отчетами -&gt; apitrade1.ru | Помогаю всем! )))))) | мой телеграмм @GreatAndrei &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</td>
+                            <td><span class="text-nowrap">821,69</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>30</td>
+                            <td>16$ рефбек при регистрации-от 1 биткоина бонус 20$ - @AlexanderCryptoProfit</td>
+                            <td><span class="text-nowrap">808,15</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>31</td>
+                            <td>50293</td>
+                            <td><span class="text-nowrap">745,04</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>32</td>
+                            <td>866</td>
+                            <td><span class="text-nowrap">733,76</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>33</td>
+                            <td>18781</td>
+                            <td><span class="text-nowrap">723,68</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>34</td>
+                            <td>ID 1784  логин vaninevgeny - мой курс по торговле ботами https://totalcryptobot.ru</td>
+                            <td><span class="text-nowrap">698,02</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>35</td>
+                            <td>11766</td>
+                            <td><span class="text-nowrap">694,62</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>36</td>
+                            <td>50294</td>
+                            <td><span class="text-nowrap">670,05</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>37</td>
+                            <td>31583</td>
+                            <td><span class="text-nowrap">666,22</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>38</td>
+                            <td>6663</td>
+                            <td><span class="text-nowrap">654,75</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>39</td>
+                            <td>14734</td>
+                            <td><span class="text-nowrap">652,26</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>40</td>
+                            <td>12496</td>
+                            <td><span class="text-nowrap">626,05</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>41</td>
+                            <td> Залетел в декабре по 19к$, оказываю психологическую помощь/ t.me/FuckFiat :)</td>
+                            <td><span class="text-nowrap">581,54</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>42</td>
+                            <td>4078</td>
+                            <td><span class="text-nowrap">570,82</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>43</td>
+                            <td>Пишу ежедневные отчеты https://vk.com/cparock | Бонус всем 16$ | + рефбек от меня!</td>
+                            <td><span class="text-nowrap">566,44</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>44</td>
+                            <td>22920</td>
+                            <td><span class="text-nowrap">511,55</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>45</td>
+                            <td>WhiteNights</td>
+                            <td><span class="text-nowrap">508,99</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>46</td>
+                            <td>23873</td>
+                            <td><span class="text-nowrap">505,5</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>47</td>
+                            <td>API</td>
+                            <td><span class="text-nowrap">488,38</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>48</td>
+                            <td>51722</td>
+                            <td><span class="text-nowrap">462,52</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>49</td>
+                            <td>🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀   Руководство по туземунь бота     https://youtu.be/kdmbvDsGw5o        🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀</td>
+                            <td><span class="text-nowrap">461,29</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>50</td>
+                            <td>13</td>
+                            <td><span class="text-nowrap">454,14</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>51</td>
+                            <td>86</td>
+                            <td><span class="text-nowrap">449,13</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>52</td>
+                            <td>339</td>
+                            <td><span class="text-nowrap">427,28</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>53</td>
+                            <td>50640</td>
+                            <td><span class="text-nowrap">423,07</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>54</td>
+                            <td>3155</td>
+                            <td><span class="text-nowrap">422,04</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>55</td>
+                            <td>Who&#039;s your daddy ^.^</td>
+                            <td><span class="text-nowrap">420,03</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>56</td>
+                            <td>o_0 who&#039;s here? 0_o</td>
+                            <td><span class="text-nowrap">419,35</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>57</td>
+                            <td>apitrade.wordpress.com</td>
+                            <td><span class="text-nowrap">415,57</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>58</td>
+                            <td>MoneyRoom ⚡ Support - @MRoomIDs ⚡</td>
+                            <td><span class="text-nowrap">406</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>59</td>
+                            <td>Войду в 20ку по любому!</td>
+                            <td><span class="text-nowrap">395,91</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>60</td>
+                            <td>https://t.me/JpShip Помогаю своим рефам. Пополню ваш баланс в АТ (0.8 за 1 USD, приму BUSD, USDT, возможны варианты)</td>
+                            <td><span class="text-nowrap">378,06</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>61</td>
+                            <td>44040</td>
+                            <td><span class="text-nowrap">371,42</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>62</td>
+                            <td>25404</td>
+                            <td><span class="text-nowrap">363,01</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>63</td>
+                            <td>50482</td>
+                            <td><span class="text-nowrap">339,35</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>64</td>
+                            <td>7605</td>
+                            <td><span class="text-nowrap">337,6</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>65</td>
+                            <td>260</td>
+                            <td><span class="text-nowrap">335,41</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>66</td>
+                            <td>10704</td>
+                            <td><span class="text-nowrap">335,41</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>67</td>
+                            <td>!!!</td>
+                            <td><span class="text-nowrap">333,67</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>68</td>
+                            <td>31522</td>
+                            <td><span class="text-nowrap">319,93</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>69</td>
+                            <td>2734</td>
+                            <td><span class="text-nowrap">317,2</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>70</td>
+                            <td>3813</td>
+                            <td><span class="text-nowrap">315,15</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>71</td>
+                            <td>565</td>
+                            <td><span class="text-nowrap">313,07</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>72</td>
+                            <td>12258</td>
+                            <td><span class="text-nowrap">312,1</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>73</td>
+                            <td>18</td>
+                            <td><span class="text-nowrap">311,98</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>74</td>
+                            <td>4971</td>
+                            <td><span class="text-nowrap">311,38</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>75</td>
+                            <td>robotfarm.ru</td>
+                            <td><span class="text-nowrap">304,08</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>76</td>
+                            <td>23818</td>
+                            <td><span class="text-nowrap">303,53</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>77</td>
+                            <td>3981</td>
+                            <td><span class="text-nowrap">302,26</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>78</td>
+                            <td>53795</td>
+                            <td><span class="text-nowrap">299,79</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>79</td>
+                            <td>29780</td>
+                            <td><span class="text-nowrap">293,18</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>80</td>
+                            <td>K Kruts , телега @ kkruts - любые вопросы по работе сервиса задавайте, чем смогу помогу без всяких обязательств</td>
+                            <td><span class="text-nowrap">287,12</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>81</td>
+                            <td>12882</td>
+                            <td><span class="text-nowrap">280,56</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>82</td>
+                            <td>24877</td>
+                            <td><span class="text-nowrap">276,38</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>83</td>
+                            <td>718</td>
+                            <td><span class="text-nowrap">273,81</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>84</td>
+                            <td>8629</td>
+                            <td><span class="text-nowrap">273,19</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>85</td>
+                            <td>pct</td>
+                            <td><span class="text-nowrap">268,55</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>86</td>
+                            <td>6753</td>
+                            <td><span class="text-nowrap">264,37</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>87</td>
+                            <td>1567</td>
+                            <td><span class="text-nowrap">262,85</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>88</td>
+                            <td>11102</td>
+                            <td><span class="text-nowrap">257,48</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>89</td>
+                            <td>Webmister</td>
+                            <td><span class="text-nowrap">254,19</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>90</td>
+                            <td>993</td>
+                            <td><span class="text-nowrap">251,78</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>91</td>
+                            <td>282</td>
+                            <td><span class="text-nowrap">251,63</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>92</td>
+                            <td>2682</td>
+                            <td><span class="text-nowrap">242,52</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>93</td>
+                            <td>4645</td>
+                            <td><span class="text-nowrap">235,23</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>94</td>
+                            <td><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="11787f777e5162787c617d7472636861657e65637075787f763f727e7c">[email&#160;protected]</a></td>
+                            <td><span class="text-nowrap">235,11</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>95</td>
+                            <td>NATASHA</td>
+                            <td><span class="text-nowrap">229,89</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>96</td>
+                            <td>51966</td>
+                            <td><span class="text-nowrap">227,62</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>97</td>
+                            <td>2310</td>
+                            <td><span class="text-nowrap">223,15</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>98</td>
+                            <td>9886</td>
+                            <td><span class="text-nowrap">220,37</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>99</td>
+                            <td>52474</td>
+                            <td><span class="text-nowrap">218,99</span></td>
+                        </tr>
+                    
+                        <tr>
+                            <td>100</td>
+                            <td>Отдаю бонусы каждому! Как только увижу биржи и минимальный баланс на вашем аккаунте.</td>
+                            <td><span class="text-nowrap">201,89</span></td>
+                        </tr>
+                    
+                
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<footer id="news" class="footer_container container-fluid">
+    <div class="footer-backward">
+        <div class="backward"></div>
+    </div>
+    <div class="container-fluid--fit_center">
+        <div class="row">
+        <h2 class="text-left">Мы собрали самые <b>частые</b> вопросы и подробно отвечаем:</h2>
+    </div>
+        <div id="news" class="row">
+        <div class="col-12 news_block news_block-first">
+            <div class="icon lazy-img" data-bg="/web-resources/bg/news_block-first-img.png"></div>
+            <h4>
+                <a target="_blank" href="https://searchengines.guru/showthread.php?t=988899">
+                    16.03.2018: Старт Конкурса по привлечению пользователей →
+                </a>
+            </h4>
+            <div class="news_block_content">
+                Сегодня мы объявляем конкурс по привлечению клиентов в АpiTrade с помощью нашей реферальной программы. 10 победителей получат по Apple iPhone X. Топ "рефоводов" можно увидеть во всем мире. Напоминаем, что ApiTrade - это международный сервис, и вы можете привлекать не только русскоязычных пользователей.
+            </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-11 news_block news_block-second">
+            <div class="icon lazy-img" data-bg="/web-resources/bg/news_block-second-img.png"></div>
+            <h4>
+                <a href="#">
+                   15.03.2018. Запуск бета-версии сервиса →
+                </a>
+            </h4>
+            <div class="news_block_content">
+                Сегодня мы объявляем об официальном запуске бета-версии сервиса ApiTrade. Сервис уже позволяет включить одной кнопкой автоматическую торговлю в ваших аккаунтах и арбитраж криптовалют, что позволяет получать небольшой, но стабильный доход в ежедневном режиме.
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+        <h2 class="text-left col-24">
+            Готовы начать?<br>
+            <b>Зарегистрируйтесь</b> в нашем сервисе или свяжитесь с нами
+        </h2>
+</div>
+
+        <div class="row our-socials">
+            <div class="col-10">
+                
+
+
+
+
+
+
+
+
+
+<div class="group" role="group">
+    
+    
+        
+        
+            
+            <button type="button" data-toggle="modal" id="showSignInModal" data-target="#signInModal" class="btn auth-group sign-in">
+                <span>Войти</span>
+            </button>
+            
+            <button type="button" data-toggle="modal" id="showSignUpModal" data-target="#signUpModal" class="btn auth-group sign-up">
+                <span>Регистрация</span>
+            </button>
+        
+    
+</div>
+            </div>
+
+            <div class="col-14">
+                <a href="https://t.me/apitradepro">
+                    <span class="footer-telegram"></span><span>Telegram</span>
+                </a>
+                <a href="https://discord.gg/P3PY7Vu">
+                    <span class="footer-discord"></span><span>Discord</span>
+                </a>
+                <a href="https://www.facebook.com/apitraderu/">
+                    <span class="footer-facebook"></span><span>Facebook</span>
+                </a>
+                <a href="https://twitter.com/apitrade">
+                    <span class="footer-twitter"></span><span>Twitter</span>
+                </a>
+                
+                    <a href="https://vk.com/apitrade_official">
+                        <span class="footer-vk"></span><span>Vkontacte</span>
+                    </a>
+                
+            </div>
+        </div>
+
+        
+        <div class="row">
+        <div class="col-24">
+            <hr>
+        </div>
+</div>
+        <div id="contacts" class="row">
+        <div class="col-12">
+            <div class="copyright">© 2018-2021 ApiTrade</div>
+            <div class="proudly-icon">
+                <span class="proudly-based"></span>
+                <span></span>
+            </div>
+            <div class="psi-icon">
+                <span class="pci-dss"></span>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <a href="http://tx.me/ApiTrade_Support_Bot">
+                <span class="footer-support"></span><span>Служба поддержки</span>
+            </a>
+            <a href="javascript:;" data-toggle="modal" id="showTermsOfUseModal" data-target="#termsOfUseModal">
+                <u>Условия использования</u>
+            </a>
+            <a href="javascript:;" data-toggle="modal" id="showPrivacyPolicyModal" data-target="#privacyPolicyModal">
+                <u>Уведомление о конфиденциальности</u>
+            </a>
+        </div>
+</div>
+    </div>
+</footer>
+</div>
+
+
+<div class="modal fade" id="termsOfUseModal" tabindex="-1" role="dialog" aria-labelledby="termsOfUseModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsOfUseModalLongTitle">Условия использования</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Все условия использования сервиса подробно описаны в разделе "FAQ". Сервис не принимает депозиты, не начисляет на них проценты и не осуществляет выплаты (возврат депозитов). Все средства клиентов хранятся на биржах криптовалют на выбор пользователя, ответственность за сохранность этих средств несет пользователь и соответствующие биржи. Сервис не имеет доступа к выводу средств из бирж.<br><br>Сервис не несет ответственность за потери, связанные с кражей средств у бирж, взломами бирж, техническими ошибками бирж, банкротствами бирж, блокировками аккаунтов в биржах, резкие падения курсов и действия пользователей. Также сервис не гарантирует определенную доходность в будущем, т.к. она зависит от волатильности, ликвидности на биржах, корректности и своевременности работы программного обеспечения бирж. Сервис предоставляет статистику за прошедшие периоды, на основании которой пользователь может принимать решения. Все решения пользователи принимают на свой страх и риск. Сервис предоставляется на условиях «как есть», в связи с чем пользователям не представляются какие-либо гарантии, что сервис будет соответствовать их требованиям, услуги будут предоставляться непрерывно и без ошибок, результаты от использования сервиса будут соответствовать ожиданиям.<br>В любой момент любая сторона может в одностороннем порядке отказаться от дальнейшего сотрудничества. Пользователь имеет право отказаться от использования сервиса путем удаления API-ключей на сайтах соответствующих бирж криптовалют.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="privacyPolicyModal" tabindex="-1" role="dialog" aria-labelledby="privacyPolicyModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyPolicyModalLongTitle">Уведомление о конфиденциальности</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    Эта политика конфиденциальности была составлена ​​для того, чтобы лучше обслуживать тех, кто занимается тем, как их Лично идентифицируемая информация (PII) используется в Интернете. PII,
+    как описано в Законе США о конфиденциальности и безопасности информации, представляет собой информацию, которая может использоваться сама по себе или с другой информацией для идентификации, контакта или нахождения
+    одного человека или идентифицировать человека в контексте. Пожалуйста, внимательно ознакомьтесь с нашей политикой конфиденциальности, чтобы получить четкое представление о том, как мы собираем, используем, защищаем
+    или иным образом обрабатывать вашу Лично идентифицируемую информацию в соответствии с нашим сайтом. <br><strong>Какую личную информацию мы собираем у людей
+    которые посещают наш блог, сайт или приложение? </strong><br>При регистрации на нашем сайте, в зависимости от ситуации, вас могут попросить ввести ваше имя, адрес электронной почты, номер телефона
+    или другие детали, чтобы помочь вам в вашем опыте. <br><strong>Когда мы собираем информацию? </strong><br>Мы собираем информацию у вас, когда вы регистрируетесь
+    наш сайт или введите информацию на нашем сайте. <br><strong>Как мы используем вашу информацию? </strong><br>Мы можем использовать информацию, которую мы собираем у вас при регистрации,
+    совершении покупки, подписке на нашу рассылку, ответы на опросы или маркетинговую коммуникацию, просматр веб-сайта или использование некоторых других функции сайта, чтобы быстро обрабатывать
+    ваши транзакции. <br><strong>Как мы защищаем вашу информацию? </strong><br>Наш сайт регулярно проверяется на наличие ошибок в безопасности и известных уязвимостей
+    чтобы сделать ваш визит на наш сайт максимально безопасным. Мы используем регулярное сканирование вредоносных программ. Ваша личная информация содержится в защищенных сетях и
+    доступно только ограниченному числу лиц, которые имеют особые права доступа к таким системам и обязаны хранить информацию в тайне. В
+    дополнение, вся конфиденциальная / кредитная информация, которую вы поставляете, зашифровывается с помощью технологии Secure Socket Layer (SSL). Мы применяем различные меры безопасности, когда
+    пользователь вводит, отправляет или получает доступ к своей информации для обеспечения безопасности вашей личной информации. Все транзакции обрабатываются через поставщика шлюза
+    и не сохраняются и не обрабатываются на наших серверах. <br><strong>Используем ли мы файлы cookie? </strong><br>Да. Файлы cookie - это небольшие файлы, которые передает сайт или поставщик услуг
+    на ваш компьютер жесткий диск через ваш веб-браузер (если разрешено), что позволяет сайтам или системам поставщиков услуг распознавать ваш браузер и захватывать
+    и запомнить определенную информацию. Например, мы используем файлы cookie, чтобы помочь нам запомнить и обработать элементы в вашей корзине покупок. Они также используются, чтобы помочь нам
+    понимайть ваши предпочтения на основе предыдущей или текущей активности сайта, что позволяет нам предоставлять вам улучшенные услуги. Мы также используем файлы cookie, чтобы помочь нам
+    компилировать агрегированные данные о трафике сайта и взаимодействии с сайтом, чтобы мы могли в будущем предлагать лучшие возможности и инструменты сайта. Мы используем cookie для понимания
+    и сохранить предпочтения пользователей для будущих посещений. <br>Вы можете выбрать, чтобы ваш компьютер предупреждал вас каждый раз, когда отправляется куки-файл, или вы можете отключить все
+    cookies. Вы делаете это через настройки своего браузера. Поскольку браузер немного отличается, посмотрите в меню справки браузеров, чтобы узнать правильный способ изменить
+    cookies. Если вы отключите cookies, это не повлияет на опыт пользователей. <br><strong>Стороннее раскрытие </strong>Мы не продаем и не передаем другим способом
+    за пределами вашей Лично идентифицируемой информации, если мы не предоставим пользователям предварительное уведомление. Это не включает партнеров по хостингу веб-сайтов и других
+    Мы также можем высвобождать информацию, когда ее выпуск соответствует требованиям закона, обеспечивать соблюдение наших правил сайта или защищать наши или другие права, собственность или
+    безопасность. Тем не менее, личная информация о посетителях может быть предоставлена ​​другим сторонам для маркетинга, рекламы или других видов использования. Мы не включаем или
+    предлагать сторонние продукты или услуги на нашем сайте. <br><strong>Закон о защите конфиденциальности в Интернете в Калифорнии </strong><br>CalOPPA является первым государственным законом в стране
+    требующим, чтобы коммерческие веб-сайты и онлайн-службы опубликовали политику конфиденциальности. Законы простираются далеко за пределы Калифорнии, чтобы требовать от любого лица или компании
+    в США (и, возможно, в мире), который управляет веб-сайтами, собирающими личную информацию от потребителей Калифорнии, чтобы опубликовать
+    заметную политику конфиденциальности на своем веб-сайте, в которой указаны именно собираемая информация и тех лиц или компаний, с которыми она делится.
+    - <strong>Согласно CalOPPA, мы соглашаемся на следующее: </strong>Пользователи могут анонимно посетить наш сайт. Когда эта политика конфиденциальности будет создана, мы добавим ссылку
+    к нему на нашей домашней странице или, как минимум, на первой важной странице после входа на наш сайт. Наша политика конфиденциальности включает в себя слово «Конфиденциальность» и может легко
+    можно найти на странице, указанной выше. <br>Вы будете уведомлены о любых изменениях Политики конфиденциальности в нашей Политике конфиденциальности<br>Вы можете изменить свою личную информацию
+    путем входа в вашу учетную запись <br><strong>Как обрабатывается наш сайт Do Not Track сигналы? </strong><br>Мы чтим Не отслеживать сигналы и не отслеживать,
+    или использовать рекламу, когда установлен механизм браузера Do Not Track (DNT). <br><strong>Поддерживает ли наш сайт отслеживание поведения сторонних разработчиков? </strong><br>Его также
+    важно отметить, что мы не разрешаем отслеживание поведения сторонних разработчиков <br><strong>COPPA (Закон о защите детей в Интернете)</strong>. Когда дело доходит до
+    сбор личной информации от детей в возрасте до 13 лет, Закон о защите конфиденциальности детей в Интернете (COPPA) ставит родителей под контроль.
+    Федеральная торговая комиссия, агентство по защите прав потребителей Соединенных Штатов, применяет правило COPPA, в котором говорится, какие операторы веб-сайтов и онлайн-сервисов должны
+    чтобы защитить конфиденциальность и безопасность детей в Интернете. Мы не специализируемся на рынке для детей в возрасте до 13 лет и не допускаем третьих лиц, в том числе
+    рекламные сети или плагины собирают PII от детей до 13 лет <br><strong>Справедливая практика информации</strong>. Принципы честной информационной практики формируют
+    основ законодательства о неприкосновенности частной жизни в Соединенных Штатах, а также концепции, которые они включают, сыграли значительную роль в разработке законов о защите данных вокруг
+    земной шар. Понимание принципов справедливой практики информации и то, как они должны быть реализованы, имеет решающее значение для соблюдения различных законов о конфиденциальности, которые защищают
+    личную информацию. <br>Чтобы соответствовать принципам честной информации, мы предпримем следующие ответные действия, если произойдет нарушение данных: мы будем уведомлять пользователей через уведомление на месте в течение 7 рабочих дней.
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="dt-bg-img"></div>
+        <div class="modal-content only-humans">
+            <div class="modal-header">
+                <span class="logo-icon"></span>
+                <h5 class="modal-title" id="signInModalLongTitle">Войти в кабинет</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                    <span aria-hidden="true" class="close-icon"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="loginForm" action="/login" class="clearfix">
+                
+                    <div class="form-group">
+                        <label for="login">Логин</label>
+                        <input type="text" id="login" name="login" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" id="password" class="checkpass form-control" name="password"  value="">
+                        <small class="form-text text-muted">
+                            <a href="javascript:;" data-toggle="modal" id="showForgotModal" data-target="#forgotModal" data-dismiss="modal">
+                                восстановить?
+                            </a>
+                        </small>
+                        <span class="toggle-password-view hidden-pass"></span>
+                    </div>
+                    
+                        
+                        
+                            
+                            
+                        
+                    
+                    
+                    <div class="error"></div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <div class="form-group">
+                    <small class="form-text text-muted mb-15">
+                        Если Вы не можете войти или не видите поле для 2FA кода, то 
+  <a href="/indexOld#signIn" id="canNotSignIn">войдите здесь</a>
+                    </small>
+                    <button type="submit" class="btn btn-primary human-submit auth-group sign-up" id="loginBtn">
+                        Вход
+                        <div class="indicator lds-spinner" id="logInd" style="display: none;">
+                            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                        </div>
+                    </button>
+                    <small>Нет аккаунта в ApiTrade? <a href="javascript:;" data-toggle="modal" id="showSignUpModal" data-target="#signUpModal" data-dismiss="modal">Зарегистрироваться</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgotModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="dt-bg-img"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="logo-icon"></span>
+                <h5 class="modal-title" id="forgotModalLongTitle">Восстановление пароля</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                    <span aria-hidden="true" class="close-icon"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="forgotForm" action="/forgotPassword" class="clearfix">
+                    
+                    <div class="error"></div>
+                    <div class="checker"></div>
+                    
+                    <div class="form-group">
+                        <label for="forgotEmail">Введите E-mail, указанный при регистрации:</label>
+                        <div class="col-lg-4">
+                            <input type="text" id="forgotEmail" name="forgotEmail" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary auth-group sign-up" id="forgotBtn">Вход</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="signUpModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="dt-bg-img"></div>
+            <div class="modal-content only-humans">
+                <div class="modal-header">
+                    <span class="logo-icon"></span>
+                    <h5 class="modal-title" id="signUpModalLongTitle">Зарегистрироваться</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                        <span aria-hidden="true" class="close-icon"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="regForm" action="/register">
+                        
+                        <div class="error"></div>
+                        <div id="regTable" class="clearfix">
+                            <div class="form-group">
+                                <label for="regName">Логин</label>
+                                <input type="text" maxlength="200" name="login" id="regLogin" alt="&gt;0" class="inputArea form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="regEmail">E-mail</label>
+                                <input type="text" maxlength="200" name="email" id="regEmail" alt="&gt;0, email" class="inputArea form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="regPassword">Пароль</label>
+                                <input type="password" maxlength="200" name="password" id="regPassword" value="" alt="&gt;5, pwd1" class="checkpass form-control"/>
+                                <small class="form-text text-muted">не менее 6 символов</small>
+                                <span class="toggle-password-view hidden"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="regConfirmPassword">Подтверждение пароля</label>
+                                <input type="password" maxlength="200" name="password2" id="regConfirmPassword" alt="&gt;5, pwd2" class="inputArea form-control"/>
+                            </div>
+                                
+                            <div class="spacer"></div>
+                            <div class="spacer"></div>
+                            <div class="form-group" style="display: none">
+                                <label for="regName">Имя</label>
+                                <input type="text" name="name" id="regName" maxlength="200" class="inputArea form-control"/>
+                            </div>
+                            <div class="form-group" style="display: none">
+                                <label for="regSurname">Фамилия</label>
+                                <input type="text" maxlength="200" name="surname" id="regSurname" class="inputArea form-control" />
+                            </div>
+                            <div class="form-group" style="display: none">
+                                <label for="regPhoneNumber">Телефон</label>
+                                <input type="text" maxlength="200" name="phoneNumber" id="regPhoneNumber" class="inputArea form-control"/>
+                                <small class="form-text text-muted" style="padding-left: 5px">(пример: +74951041032)</small>
+                            </div>
+                            <div class="form-group" style="display: none">
+                                <label for="regSkype">Skype:</label>
+                                <input type="text" name="skype" id="regSkype" maxlength="200" class="inputArea form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="regTelegram">Telegram:</label>
+                                <input type="text" name="telegram" id="regTelegram" maxlength="200" class="inputArea form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="referrerId">Партнер (ID):</label>
+                                <input type="text" name="referrerId" id="referrerId" maxlength="200" class="inputArea form-control" value=""  />
+                            </div>
+                            
+                        </div>
+
+                        <div class="indicator lds-spinner" id="regInd" style="display: none;">
+                            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                        </div>
+                    </form>
+                </div>
+                    
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary human-submit auth-group sign-up" id="regBtn">Завершить регистрацию</button>
+                        <small>У Вас уже есть аккаунт в ApiTrade? <a href="javascript:;" data-toggle="modal" id="showSignInModal" data-target="#signInModal" data-dismiss="modal">Войти</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/at.messages.js?lang=RU&v=1650051543407"></script>
+<script src="/web-resources/js/app.bundle.js?v=1650051543407"></script>
+
+</body>
+</html>

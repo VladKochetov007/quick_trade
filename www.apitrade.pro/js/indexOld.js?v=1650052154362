@@ -1,0 +1,301 @@
+var reCaptchaSignInWidget, reCaptchaSignUpWidget;
+// var reCaptchaSiteKey;
+
+
+if($('video').length){
+    $(document).on('lazyshow', 'video', function (e, $el) {
+        document.querySelector('video').playbackRate = 0.6;
+    });
+}
+
+$(document).ready(function () {
+    // $.get("/recaptchaSiteKey", function (data) {
+    //     reCaptchaSiteKey = data;
+    // });
+
+    // SignIn.
+    $("#showSignInModal").click(function (event) {
+        $("#codeBlock").hide();
+        $("#googleCodeBlock").hide();
+        $("input[name=code]").val("");
+        $("input[name=googleCode]").val("");
+        $("input[name=password]").val("");
+        reCaptchaCommand("showCaptcha", reCaptchaSignInWidget);
+        $("#signInModal").show();
+    });
+
+    $("#loginBtn").click(function () {
+        if ($("#codeBlock").is(":visible") || $("#googleCodeBlock").is(":visible")) {
+            $("#loginForm").submit();
+        } else {
+            var recaptcha = reCaptchaCommand("get", reCaptchaSignInWidget);
+            if (recaptcha != null) {
+                $.post("/indexOld/code", {login: $("#login").val(), password: $("#password").val()}, function (data) {
+                    if (data.google2FAAuthEnabled) {
+                        $("#googleCodeBlock").show();
+                    }
+                    if (data.telegramAuthEnabled) {
+                        $("#codeBlock").show();
+                    }
+                    if (!data.google2FAAuthEnabled && !data.telegramAuthEnabled) {
+                        $("#loginForm").submit();
+                    }
+                })
+            }
+        }
+    });
+
+    $(".send-new-code").click(function () {
+        $.post("/indexOld/code", {login: $("#login").val(), password: $("#password").val()}, function (data) {
+           console.log("new code was send");
+        })
+    });
+
+    $("#showForgotModal").click(function (event) {
+        $("#signInModal").hide();
+
+        $("input[name=forgotTelegramVerificationCode]").val("");
+        $("input[name=forgotGoogleVerificationCode]").val("");
+
+        $("#forgotTelegramBlock").hide();
+        $("#forgotGoogleBlock").hide();
+
+        $("#forgotModal").show();
+    });
+
+    $("#forgotBtn").click(function () {
+        if ($("#forgotTelegramBlock").is(":visible") || $("#forgotGoogleBlock").is(":visible")) {
+            $("#forgotForm").submit();
+        } else {
+            $.post("/forgotCode", {email: $("#forgotEmail").val()}, function (data) {
+                if (data.google2FAAuthEnabled) {
+                    $("#forgotGoogleBlock").show();
+                }
+                if (data.telegramAuthEnabled) {
+                    $("#forgotTelegramBlock").show();
+                }
+                if (!data.google2FAAuthEnabled && !data.telegramAuthEnabled) {
+                    $("#forgotForm").submit();
+                }
+            })
+        }
+    });
+
+    $("#forgotTelegramRequestCodeBtn").click(function () {
+        $("#requestCodeInd").show();
+        var btn = $(this);
+        $.get('/sendTelegramCode',{email: $("#forgotEmail").val()}, function (answer) {
+            if (answer.value) {
+            } else {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'slideDown',
+                    timeOut: 4000
+                };
+                toastr.error(AT_MESSAGES['telegram.fail.send.message'], 'ApiTrade.pro');
+            }
+            $("#requestCodeInd").hide();
+        }, 'json');
+    });
+
+    // SignUp.
+    var registerCheckElements = [$("#regLogin"), $("#regEmail"), $("#regPassword"), $("#regConfirmPassword")];
+    var regInd = $("#regInd");
+    $("#showSignUpModal, #introShowSignUpModal").click(function (event) {
+        resetRegisterForm(registerCheckElements);
+        $("input[name=regPassword]").val("");
+        $("input[name=regConfirmPassword]").val("");
+        regInd.hide();
+        reCaptchaCommand("showCaptcha", reCaptchaSignUpWidget);
+        $("#signUpModal").show();
+    });
+
+    $("#regBtn").click(function () {
+        resetRegisterForm(registerCheckElements);
+
+        var recaptcha = reCaptchaCommand("get", reCaptchaSignUpWidget);
+        if (!recaptcha) {
+            return;
+        }
+
+        if (!checkIsValid(registerCheckElements)) {
+            alert(AT_MESSAGES['index.signup.correct.fields']);
+            return;
+        }
+
+        // if (!checkNumber(registerCheckElements[5])) {
+        //     alert(AT_MESSAGES['signup.incorrect.phoneNumber']);
+        //     return;
+        // }
+
+        regInd.show();
+        var login = registerCheckElements[0].val();
+        var email = registerCheckElements[1].val();
+        $.post("/indexOld/checkLoginParams", {email: email, login: login}, function (data) {
+            if (data.email) {
+                markError(registerCheckElements[1]);
+                alert(AT_MESSAGES['signup.email.exists']);
+            } else {
+                unmarkError(registerCheckElements[1]);
+            }
+            if (data.login) {
+                markError(registerCheckElements[0]);
+                alert(AT_MESSAGES['signup.login.exists']);
+            } else {
+                unmarkError(registerCheckElements[0]);
+            }
+            if (!data.email && !data.login) {
+                $("#regForm").submit();
+            } else {
+                regInd.hide();
+            }
+        })
+    });
+
+    if(location.hash === "#signIn"){
+        $("#showSignInModal").click();
+        location.hash = "";
+    }
+});
+
+function onReCaptchaSingInSuccessCallback() {
+    reCaptchaCommand("hideError", reCaptchaSignInWidget);
+}
+
+function onReCaptchaSingUpSuccessCallback() {
+    reCaptchaCommand("hideError", reCaptchaSignUpWidget);
+}
+
+function onReCaptchaSignInExpiredCallback() {
+    reCaptchaCommand("showError", reCaptchaSignInWidget, "reCaptcha has expired. Please solve a new reCaptcha");
+}
+
+function onReCaptchaSignUpExpiredCallback() {
+    reCaptchaCommand("showError", reCaptchaSignUpWidget, "reCaptcha has expired. Please solve a new reCaptcha");
+}
+
+//////////////////// reCaptcha.
+
+function onLoadRecaptchaCallback() {
+    var reCaptchaSiteKey = $("#reCaptchaSiteKey").html();
+
+    reCaptchaSignInWidget = grecaptcha.render('reCaptchaSignIn', {
+        "sitekey": reCaptchaSiteKey,
+        "data-callback": onReCaptchaSingInSuccessCallback,
+        "data-expired-callback": onReCaptchaSignInExpiredCallback,
+        "callback": onReCaptchaSingInSuccessCallback
+    });
+
+    reCaptchaSignUpWidget = grecaptcha.render('reCaptchaSignUp', {
+        "sitekey": reCaptchaSiteKey,
+        "data-callback": onReCaptchaSingUpSuccessCallback,
+        "data-expired-callback": onReCaptchaSignUpExpiredCallback,
+        "callback": onReCaptchaSingUpSuccessCallback
+    });
+}
+
+function reCaptchaCommand(command, widget, text) {
+    // console.log("reCaptchaCommand", command, widget, text);
+    var name = "#reCaptchaSign";
+    if (widget === reCaptchaSignInWidget) name += "In"; else name += "Up";
+    var captchaDiv = $(name);
+    var errorDiv = $(name + "Error");
+
+    if (command === "get") {
+        if (typeof grecaptcha !== "undefined") {
+            var resp = grecaptcha.getResponse(widget);
+            if (resp.length === 0) {
+                // reCaptchaCommand("showError", widget, "Please verify that you are not a robot.");
+                return "(recaptcha not found)";
+            }
+            return resp;
+        }
+        return "(recaptcha disabled)";
+    }
+
+    if (command === "hideAll") {
+        captchaDiv.hide();
+        errorDiv.hide();
+        return;
+    }
+
+    if (command === "showCaptcha") {
+        captchaDiv.show();
+        errorDiv.hide();
+        return;
+    }
+
+    if (command === "showError") {
+        errorDiv.html(text).show();
+        grecaptcha.reset(widget);
+        return;
+    }
+
+    if (command === "hideError") {
+        errorDiv.hide();
+        return;
+    }
+
+    console.log("Unknown command", command, widget, text);
+}
+
+/////////////////// Register.
+
+function checkNumber(phoneEl) {
+    var phone = phoneEl.val();
+    if (phone && phone.length > 7 && phone.charAt(0) === "+") {
+        phone = phone.substr(1);
+        if (isNumeric(phone)) {
+            // Russia.
+            if (phone.charAt(0) === "7") {
+                return (phone.length === 11);
+            }
+            // Ukraine or Belarus.
+            var prefix = phone.substr(0, 3);
+            if (prefix === "380" || prefix === "375") {
+                return phone.length === 10;
+            }
+            // Other.
+            if (phone.length < 16) {
+                return true;
+            }
+        }
+    }
+
+    markError(phoneEl);
+    return false;
+}
+
+function checkIsValid(inputElements) {
+    var ret = true;
+    for (var i = 0; i < inputElements.length; i++) {
+        var el = inputElements[i];
+        if (el.val()) {
+            unmarkError(el);
+        } else {
+            ret = false;
+            markError(el);
+        }
+    }
+    return ret;
+}
+
+function markError(el) {
+    el.css("background-color", "#FFA090");
+}
+
+function resetRegisterForm(inputElements) {
+    for (var i = 0; i < inputElements.length; i++) {
+        unmarkError(inputElements[i]);
+    }
+}
+
+function unmarkError(el) {
+    el.css("background-color", "");
+}
+
+function isNumeric(string) {
+    var numericExpression = /^[0-9]+$/;
+    return string.match(numericExpression);
+}

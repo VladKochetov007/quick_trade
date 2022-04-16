@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+        <!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+        <!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+        <!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+        <!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+        <!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+        <!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+        <!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+        <!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+        <!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+        ]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="518px" height="506px" viewBox="0 0 518 506" style="enable-background:new 0 0 518 506;"
+	 xml:space="preserve">
+<style type="text/css">
+<![CDATA[
+	.st0{fill:#4DBDFC;}
+	.st1{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;}
+	.st2{fill:#2C4CA7;enable-background:new    ;}
+	.st3{fill:#FFFFFF;}
+	.st4{fill:none;stroke:#2C4CA7;stroke-width:2;stroke-miterlimit:10;enable-background:new    ;}
+	.st5{font-family:'Lato-Bold';}
+	.st6{fill:none;stroke:#2C4CA7;stroke-miterlimit:10;}
+	.st7{font-size:20;}
+	.st8{fill:none;stroke:#FFFFFF;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:10;}
+	.st9{fill:none;stroke:#FFFFFF;stroke-width:3;stroke-miterlimit:10;}
+	.st10{fill:none;stroke:#2C4CA7;stroke-width:2;stroke-miterlimit:10;}
+
+    .coins {
+        animation-iteration-count: infinite;
+        transtion: 0.2s all;
+        animation-timing-function: ease-in;
+    }
+	.coin_top {
+	    animation-name: hideshow;
+        animation-duration: 10s;
+        animation-delay: 0s;
+    }
+	.coin_bottom {
+	    animation-name: hideshow2;
+        animation-duration: 10s;
+        animation-delay: 0s;
+    }
+
+    .hand {
+        animation-iteration-count: infinite;
+        transtion: 0.2s all;
+        animation-timing-function: ease-in;
+	    animation-name: hand;
+        animation-duration: 10s;
+        animation-delay: 0s;
+    }
+
+    .okay {
+        animation-iteration-count: infinite;
+        transtion: 0.2s all;
+        animation-timing-function: ease-in;
+	    animation-name: okay;
+        animation-duration: 10s;
+        animation-delay: 0s;
+    }
+
+    .st8
+        {
+          fill: none;
+          stroke-width: 4px;
+          stroke-dasharray: 5px;
+          -webkit-animation: dashoffset 1s linear infinite;
+          -moz-animation: dashoffset 1s linear infinite;
+          -o-animation: dashoffset 1s linear infinite;
+          animation: dashoffset 1s linear infinite;
+        }
+
+        @-webkit-keyframes dashoffset {
+          0% {
+            stroke-dashoffset: 0
+          }
+
+          100% {
+            stroke-dashoffset: -20px
+          }
+        }
+
+        @-moz-keyframes dashoffset {
+          0% {
+            stroke-dashoffset: 0
+          }
+
+          100% {
+            stroke-dashoffset: -20px
+          }
+        }
+
+        @-ms-keyframes dashoffset {
+          0% {
+            stroke-dashoffset: 0
+          }
+
+          100% {
+            stroke-dashoffset: -20px
+          }
+        }
+
+        @keyframes dashoffset {
+          0% {
+            stroke-dashoffset: 0
+          }
+
+          100% {
+            stroke-dashoffset: -20px
+          }
+        }
+
+
+
+        @keyframes hideshow {
+          0% {
+             opacity: 1;
+             transform: translateY(0px);
+          }
+
+          60%
+          {
+            opacity: 1;
+            transform: translateY(0px);
+          }
+
+          60.1% {
+             opacity: 0;
+             transform: translateY(-150px);
+          }
+
+          65%, 100%
+          {
+            transform: translateY(0px);
+            opacity: 1;
+          }
+        }
+
+        @keyframes hideshow2 {
+          0% {
+             opacity: 1;
+             transform: translateY(0px);
+          }
+
+          60%
+          {
+            opacity: 1;
+            transform: translateY(0px);
+          }
+
+          60.1% {
+             opacity: 0;
+             transform: translateY(-150px);
+          }
+
+          70%, 100%
+          {
+            transform: translateY(0px);
+            opacity: 1;
+          }
+        }
+
+
+
+        @keyframes hand {
+          0% {
+             opacity: 0;
+             transform: translateY(150px);
+          }
+
+          10%
+          {
+            transform: translateY(0px);
+            opacity: 1;
+          }
+
+          100%
+          {
+            transform: translateY(0px);
+            opacity: 1;
+          }
+        }
+
+
+        @keyframes okay {
+          0% {
+             opacity: 0;
+             transform: scale(3);
+          }
+
+          20%
+          {
+            transform: scale(1);
+            opacity: 0.5;
+          }
+
+          100%
+          {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+
+
+]]>
+</style>
+<metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.3-c011 66.145661, 2012/02/06-14:56:27        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description rdf:about=""
+            xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+            xmlns:xmpGImg="http://ns.adobe.com/xap/1.0/g/img/">
+         <xmp:CreatorTool>Adobe Illustrator CS6 (Macintosh)</xmp:CreatorTool>
+         <xmp:CreateDate>2018-03-06T15:59:49+02:00</xmp:CreateDate>
+         <xmp:MetadataDate>2018-03-06T15:59:49+02:00</xmp:MetadataDate>
+         <xmp:ModifyDate>2018-03-06T15:59:49+02:00</xmp:ModifyDate>
+         <xmp:Thumbnails>
+            <rdf:Alt>
+               <rdf:li rdf:parseType="Resource">
+                  <xmpGImg:width>256</xmpGImg:width>
+                  <xmpGImg:height>256</xmpGImg:height>
+                  <xmpGImg:format>JPEG</xmpGImg:format>
+                  <xmpGImg:image>/9j/4AAQSkZJRgABAgEASABIAAD/7QAsUGhvdG9zaG9wIDMuMAA4QklNA+0AAAAAABAASAAAAAEA&#xA;AQBIAAAAAQAB/+4ADkFkb2JlAGTAAAAAAf/bAIQABgQEBAUEBgUFBgkGBQYJCwgGBggLDAoKCwoK&#xA;DBAMDAwMDAwQDA4PEA8ODBMTFBQTExwbGxscHx8fHx8fHx8fHwEHBwcNDA0YEBAYGhURFRofHx8f&#xA;Hx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8f/8AAEQgBAAEAAwER&#xA;AAIRAQMRAf/EAaIAAAAHAQEBAQEAAAAAAAAAAAQFAwIGAQAHCAkKCwEAAgIDAQEBAQEAAAAAAAAA&#xA;AQACAwQFBgcICQoLEAACAQMDAgQCBgcDBAIGAnMBAgMRBAAFIRIxQVEGE2EicYEUMpGhBxWxQiPB&#xA;UtHhMxZi8CRygvElQzRTkqKyY3PCNUQnk6OzNhdUZHTD0uIIJoMJChgZhJRFRqS0VtNVKBry4/PE&#xA;1OT0ZXWFlaW1xdXl9WZ2hpamtsbW5vY3R1dnd4eXp7fH1+f3OEhYaHiImKi4yNjo+Ck5SVlpeYmZ&#xA;qbnJ2en5KjpKWmp6ipqqusra6voRAAICAQIDBQUEBQYECAMDbQEAAhEDBCESMUEFURNhIgZxgZEy&#xA;obHwFMHR4SNCFVJicvEzJDRDghaSUyWiY7LCB3PSNeJEgxdUkwgJChgZJjZFGidkdFU38qOzwygp&#xA;0+PzhJSktMTU5PRldYWVpbXF1eX1RlZmdoaWprbG1ub2R1dnd4eXp7fH1+f3OEhYaHiImKi4yNjo&#xA;+DlJWWl5iZmpucnZ6fkqOkpaanqKmqq6ytrq+v/aAAwDAQACEQMRAD8A9U4q7FXYq7FXYq7FXYq7&#xA;FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7F&#xA;XYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FX&#xA;Yq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXYq7FXY&#xA;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</xmpGImg:image>
+               </rdf:li>
+            </rdf:Alt>
+         </xmp:Thumbnails>
+      </rdf:Description>
+      <rdf:Description rdf:about=""
+            xmlns:xmpTPg="http://ns.adobe.com/xap/1.0/t/pg/"
+            xmlns:stDim="http://ns.adobe.com/xap/1.0/sType/Dimensions#"
+            xmlns:stFnt="http://ns.adobe.com/xap/1.0/sType/Font#"
+            xmlns:xmpG="http://ns.adobe.com/xap/1.0/g/">
+         <xmpTPg:MaxPageSize rdf:parseType="Resource">
+            <stDim:w>518.000000</stDim:w>
+            <stDim:h>506.000000</stDim:h>
+            <stDim:unit>Points</stDim:unit>
+         </xmpTPg:MaxPageSize>
+         <xmpTPg:NPages>1</xmpTPg:NPages>
+         <xmpTPg:HasVisibleTransparency>False</xmpTPg:HasVisibleTransparency>
+         <xmpTPg:HasVisibleOverprint>False</xmpTPg:HasVisibleOverprint>
+         <xmpTPg:Fonts>
+            <rdf:Bag>
+               <rdf:li rdf:parseType="Resource">
+                  <stFnt:fontName>Lato-Bold</stFnt:fontName>
+                  <stFnt:fontFamily>Lato</stFnt:fontFamily>
+                  <stFnt:fontFace>Bold</stFnt:fontFace>
+                  <stFnt:fontType>TrueType</stFnt:fontType>
+                  <stFnt:versionString>Version 2.007; 2014-02-27</stFnt:versionString>
+                  <stFnt:composite>False</stFnt:composite>
+                  <stFnt:fontFileName>Lato-Bold.ttf</stFnt:fontFileName>
+               </rdf:li>
+            </rdf:Bag>
+         </xmpTPg:Fonts>
+         <xmpTPg:PlateNames>
+            <rdf:Seq>
+               <rdf:li>Cyan</rdf:li>
+               <rdf:li>Magenta</rdf:li>
+            </rdf:Seq>
+         </xmpTPg:PlateNames>
+         <xmpTPg:SwatchGroups>
+            <rdf:Seq>
+               <rdf:li rdf:parseType="Resource">
+                  <xmpG:groupName>Default Swatch Group</xmpG:groupName>
+                  <xmpG:groupType>0</xmpG:groupType>
+               </rdf:li>
+            </rdf:Seq>
+         </xmpTPg:SwatchGroups>
+      </rdf:Description>
+      <rdf:Description rdf:about=""
+            xmlns:dc="http://purl.org/dc/elements/1.1/">
+         <dc:format>image/svg+xml</dc:format>
+      </rdf:Description>
+      <rdf:Description rdf:about=""
+            xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/"
+            xmlns:stRef="http://ns.adobe.com/xap/1.0/sType/ResourceRef#"
+            xmlns:stEvt="http://ns.adobe.com/xap/1.0/sType/ResourceEvent#">
+         <xmpMM:DerivedFrom rdf:parseType="Resource">
+            <stRef:instanceID>xmp.iid:0480117407206811822AD1A11162131C</stRef:instanceID>
+            <stRef:documentID>xmp.did:0480117407206811822AD1A11162131C</stRef:documentID>
+            <stRef:originalDocumentID>xmp.did:0380117407206811822AD1A11162131C</stRef:originalDocumentID>
+         </xmpMM:DerivedFrom>
+         <xmpMM:DocumentID>xmp.did:0580117407206811822AD1A11162131C</xmpMM:DocumentID>
+         <xmpMM:InstanceID>xmp.iid:0580117407206811822AD1A11162131C</xmpMM:InstanceID>
+         <xmpMM:OriginalDocumentID>xmp.did:0380117407206811822AD1A11162131C</xmpMM:OriginalDocumentID>
+         <xmpMM:History>
+            <rdf:Seq>
+               <rdf:li rdf:parseType="Resource">
+                  <stEvt:action>saved</stEvt:action>
+                  <stEvt:instanceID>xmp.iid:0380117407206811822AD1A11162131C</stEvt:instanceID>
+                  <stEvt:when>2018-03-06T15:50:30+02:00</stEvt:when>
+                  <stEvt:softwareAgent>Adobe Illustrator CS6 (Macintosh)</stEvt:softwareAgent>
+                  <stEvt:changed>/</stEvt:changed>
+               </rdf:li>
+               <rdf:li rdf:parseType="Resource">
+                  <stEvt:action>saved</stEvt:action>
+                  <stEvt:instanceID>xmp.iid:0580117407206811822AD1A11162131C</stEvt:instanceID>
+                  <stEvt:when>2018-03-06T15:59:49+02:00</stEvt:when>
+                  <stEvt:softwareAgent>Adobe Illustrator CS6 (Macintosh)</stEvt:softwareAgent>
+                  <stEvt:changed>/</stEvt:changed>
+               </rdf:li>
+            </rdf:Seq>
+         </xmpMM:History>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?xpacket end="w"?>
+	</metadata>
+<g id="circle">
+	<path class="st9" d="M455.678,247.158c0,106.104-86.417,192.082-193,192.082c-106.583,0-193-85.979-193-192.082
+		c0-106.089,86.416-192.099,193-192.099C369.261,55.06,455.678,141.069,455.678,247.158z"/>
+	<ellipse class="st0" cx="69.5" cy="261.25" rx="62" ry="63.75"/>
+	<ellipse class="st0" cx="452.167" cy="265.583" rx="62" ry="63.75"/>
+	<ellipse class="st3" cx="264" cy="94.25" rx="62" ry="62"/>
+	<path class="st9" d="M305.333,226.333c0,6.627-2.373,8-9,8H269.5c-6.627,0-9-1.373-9-8V182.5c0-6.627,2.373-8,9-8h26.833
+		c6.627,0,9,1.373,9,8V226.333z"/>
+	<path class="st1" d="M266.166,228.833h33.167c0,0,0.167-6.5,0-10.167s-11.5-6-11.5-6l-4.667,7l-6-7c0,0-11,1.834-11,5.167
+		S266.166,228.833,266.166,228.833z"/>
+	<path class="st1" d="M291.333,192.356c0-4.616-3.844-8.357-8.583-8.357l0,0c-4.74,0-8.584,3.741-8.584,8.357v8.62
+		c0,4.616,3.844,8.357,8.584,8.357l0,0c4.739,0,8.583-3.741,8.583-8.357V192.356z"/>
+	<line class="st1" x1="277.166" y1="212.666" x2="279.206" y2="208.581"/>
+	<line class="st1" x1="287.833" y1="212.666" x2="285.465" y2="208.899"/>
+	<g>
+		<path class="st1" d="M274.833,194.666c5.833-0.333,10.632-4.333,10.632-4.333s0.535,2.666,5.035,5.333"/>
+	</g>
+	<path class="st9" d="M246.333,290.666c0,6.627-2.373,8-9,8H210.5c-6.627,0-9-1.373-9-8v-43.834c0-6.627,2.373-8,9-8h26.833
+		c6.627,0,9,1.373,9,8V290.666L246.333,290.666z"/>
+	<path class="st1" d="M207.166,293.166h33.167c0,0,0.167-6.5,0-10.167s-11.5-6-11.5-6l-4.667,7l-6-7c0,0-11,1.834-11,5.167
+		S207.166,293.166,207.166,293.166z"/>
+	<path class="st1" d="M232.333,256.689c0-4.615-3.844-8.357-8.583-8.357l0,0c-4.74,0-8.584,3.742-8.584,8.357v8.619
+		c0,4.615,3.844,8.356,8.584,8.356l0,0c4.739,0,8.583-3.741,8.583-8.356V256.689L232.333,256.689z"/>
+	<line class="st1" x1="218.166" y1="276.999" x2="220.206" y2="272.914"/>
+	<line class="st1" x1="228.833" y1="276.999" x2="226.464" y2="273.232"/>
+	<g>
+		<path class="st1" d="M215.833,258.999c5.833-0.333,10.632-4.333,10.632-4.333s0.535,2.666,5.035,5.333"/>
+	</g>
+	<path class="st9" d="M342.722,333.973c0,6.627-2.373,8-9,8h-26.833c-6.627,0-9-1.373-9-8v-43.834c0-6.627,2.373-8,9-8h26.833
+		c6.627,0,9,1.373,9,8V333.973z"/>
+	<path class="st1" d="M303.555,336.473h33.167c0,0,0.167-6.5,0-10.166c-0.167-3.668-11.5-6-11.5-6l-4.667,7l-6-7
+		c0,0-11,1.834-11,5.166C303.555,328.807,303.555,336.473,303.555,336.473z"/>
+	<path class="st1" d="M328.722,299.995c0-4.615-3.844-8.356-8.583-8.356l0,0c-4.739,0-8.584,3.741-8.584,8.356v8.62
+		c0,4.615,3.845,8.355,8.584,8.355l0,0c4.739,0,8.583-3.74,8.583-8.355V299.995z"/>
+	<line class="st1" x1="314.555" y1="320.307" x2="316.595" y2="316.221"/>
+	<line class="st1" x1="325.222" y1="320.307" x2="322.854" y2="316.538"/>
+	<g>
+		<path class="st1" d="M312.222,302.307c5.833-0.334,10.632-4.334,10.632-4.334s0.535,2.666,5.035,5.334"/>
+	</g>
+	<circle class="st3" cx="258.332" cy="416.75" r="62"/>
+	<g id="Layer_4">
+		<polygon class="st3" points="450.271,204.833 460,185.25 431.5,191.75 		"/>
+		<polygon class="st3" points="85.27,318.916 78.25,337.5 102,327.333 		"/>
+	</g>
+	<text transform="matrix(1 0 0 1 34.832 268.749)" class="st3 st5 st7">Clients</text>
+	<text transform="matrix(1 0 0 1 205.166 499)" class="st3 st5 st7">Earn money</text>
+	<text transform="matrix(1 0 0 1 242.832 20.5)" class="st3 st5 st7">Join</text>
+	<text transform="matrix(1 0 0 1 415.832 273.2324)" class="st3 st5 st7">ApiTrade</text>
+</g>
+<line id="affilate-bg2" class="st8" x1="305.999" y1="210.782" x2="394.474" y2="242.192"/>
+<line id="affilate-bg3" class="st8" x1="131.5" y1="263.665" x2="200.666" y2="263.998"/>
+<line id="affilate-bg4" class="st8" x1="246.333" y1="263.998" x2="390.196" y2="263.665"/>
+<line id="affilate-bg5" class="st8" x1="342.722" y1="326.998" x2="397.729" y2="296.118"/>
+<line id="affilate-bg6" class="st8" x1="129.193" y1="278.536" x2="296.166" y2="331.998"/>
+<line id="affilate-bg1" class="st8" x1="129.193" y1="242.192" x2="256" y2="208.899"/>
+<g id="join">
+	<path class="st4" d="M234.667,118.333c-6.627,0-8-1.373-8-8V64c0-6.627,1.373-7,8-7h62.167c6.627,0,7,0.373,7,7v46.333
+		c0,6.627-0.373,8-7,8H275.75"/>
+	<line class="st10" x1="226.667" y1="70.667" x2="303.834" y2="70.5"/>
+	<ellipse class="st6" cx="232.249" cy="64.166" rx="2.583" ry="2.667"/>
+	<ellipse class="st6" cx="240.249" cy="64.166" rx="2.583" ry="2.667"/>
+	<ellipse class="st6" cx="248.258" cy="64.166" rx="2.583" ry="2.667"/>
+	<path class="st6" d="M299.498,64.166c0,1.473-1.194,2.667-2.667,2.667h-37.906c-1.473,0-2.667-1.194-2.667-2.667l0,0
+		c0-1.473,1.194-2.667,2.667-2.667h37.906C298.304,61.5,299.498,62.693,299.498,64.166L299.498,64.166z"/>
+	<path class="st10" d="M291.562,86.167h0.937c3.684,0,3.667,2.985,3.667,6.667l0,0c0,3.682,0.016,6.667-3.667,6.667h-33.873"/>
+	<path class="st10" d="M244.625,99.5h-6.126c-3.682,0-3.667-2.985-3.667-6.667l0,0c0-3.682-0.015-6.667,3.667-6.667h40.751"/>
+	<path id="hand" class="hand st10" d="M248.258,117.167V96.333c0,0-0.008-2.083,2.583-2.083c2.658,0,3.49-0.084,3.49,8.75
+		s0,9.667,0,9.667s0.356-3.72,3.333-3.667c3.522,0.063,2.835,4.333,2.835,4.333s0.438-3.021,3.178-3.167
+		c4.008-0.213,3.01,5.125,3.01,5.125s0.949-2.897,2.125-2.917c2.427-0.041,2.353,1.812,2.353,4.792c0,4.167,0.165,9.5,0,10.667
+		s-2,1.5-2.5,3.833s-0.5,4.667-0.5,4.667h-18c0,0-0.061-6.729-3.728-11.896s-8.482-10.021-8.772-10.604s1.772-4.167,5.772-1.833
+		L248.258,117.167z"/>
+	<g id="okay" class="okay">
+		<line class="st10" x1="273.25" y1="90.688" x2="277.878" y2="94.688"/>
+		<line class="st10" x1="277.395" y1="95.625" x2="290.25" y2="82.125"/>
+	</g>
+</g>
+<g id="earn_x5F_money">
+	<path class="st10" d="M282.083,462.668h-38.25c0,0-6.583-1.001-12.25-4.917s-12.25-9.667-9.5-12.75s5.917-0.5,8.667,2.667
+		c2.192,2.524,3.629,3.082,9.583,3.61c2.499,0.222,4.492-0.385,6.5-0.527c10.583-0.751,12.667-1.599,8.583-6.083
+		c-2.303-2.529-6.084-5.814-3.639-8.234c2.597-2.569,5.389-1.684,10.556,4.067c4.968,5.529,8.5,6.75,10.25,7.917
+		s9.334,0.734,9.334,0.734L282.083,462.668z"/>
+	<path class="st10" d="M241.75,450.917c-0.917-2.666-5.127-12.75-8.667-10.167c-3.327,2.428-0.438,8.696-0.438,8.696"/>
+	<path class="st10" d="M296.583,464.416c0,4.004-2.333,4.584-7.25,4.25l0,0c-4.833,0.334-7.25-0.246-7.25-4.25v-16.583
+		c0-5.197,3.5-4.316,7.25-4.25l0,0c5.75-0.096,7.25,0.246,7.25,4.25V464.416z"/>
+	<g id="coin_x5F_bottom" class="coins coin_top">
+		<path class="st2" d="M236.575,421.104c0.902,0.461,2.17,0.923,3.566,0.923c1.225,0,2.062-0.462,2.062-1.301
+			c0-0.797-0.688-1.28-2.277-1.825c-2.32-0.734-3.889-1.805-3.889-3.84c0-1.847,1.332-3.314,3.652-3.734v-1.993h2.105v1.847
+			c1.418,0.062,2.406,0.377,3.115,0.692l-0.623,2.37c-0.559-0.23-1.547-0.713-3.094-0.713c-1.396,0-1.826,0.587-1.826,1.175
+			c0,0.692,0.752,1.133,2.557,1.805c2.557,0.859,3.588,2.035,3.588,3.944c0,1.867-1.354,3.44-3.803,3.86v2.14h-2.127v-1.993
+			c-1.439-0.042-2.857-0.44-3.652-0.902L236.575,421.104z"/>
+		<ellipse class="st10" cx="241.292" cy="417.499" rx="15.375" ry="14.917"/>
+		<g>
+			<line class="st10" x1="236.616" y1="381.582" x2="236.616" y2="398.082"/>
+		</g>
+		<line class="st10" x1="242.417" y1="391.582" x2="242.417" y2="398.082"/>
+	</g>
+	<g id="coin_x5F_top" class="coins coin_bottom">
+		<path class="st2" d="M254.757,386.478c0.581,0.296,1.396,0.592,2.294,0.592c0.788,0,1.327-0.296,1.327-0.834
+			c0-0.512-0.442-0.821-1.465-1.171c-1.493-0.472-2.502-1.157-2.502-2.463c0-1.185,0.857-2.127,2.35-2.396v-1.279h1.355v1.185
+			c0.912,0.041,1.547,0.242,2.004,0.444l-0.4,1.521c-0.36-0.147-0.996-0.457-1.991-0.457c-0.899,0-1.175,0.377-1.175,0.753
+			c0,0.444,0.484,0.728,1.645,1.158c1.645,0.552,2.309,1.305,2.309,2.53c0,1.197-0.871,2.207-2.447,2.476v1.373h-1.369v-1.278
+			c-0.926-0.027-1.838-0.283-2.35-0.579L254.757,386.478z"/>
+		<ellipse class="st10" cx="257.375" cy="384.249" rx="10.792" ry="10.75"/>
+		<line class="st10" x1="255" y1="362.082" x2="255" y2="370.166"/>
+		<line class="st10" x1="260.25" y1="356" x2="260.25" y2="370.166"/>
+	</g>
+</g>
+</svg>

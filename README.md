@@ -4,7 +4,6 @@
     - accounts
       - subaccounts
         - trading bots
-          - 
           - conservative
             - strategies)
               - parameters)
@@ -73,6 +72,7 @@
   - data
     - Charts
       - symbol)
+      - timeframe
       - candles)
         - open)
         - high)
@@ -80,4 +80,16 @@
         - close)
         - volume)
         - start_time)
+        - index
   - Plotting
+  - Trades
+    - status:
+      - ACTIVE
+      - CLOSED
+    - start:
+      - price
+      - candle
+    - end
+      - price
+      - candle
+    - sub-trades
