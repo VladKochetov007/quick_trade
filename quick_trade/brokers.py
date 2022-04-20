@@ -29,14 +29,7 @@ class TradingClient(object):
                      reduce_only: bool = False):
         quote = ticker.split('/')[1]
         base = ticker.split('/')[0]
-        utils.logger.info('quantity: %f, side: %s, ticker: %s, balance: %f%s (%f%s)',
-                          quantity,
-                          side,
-                          ticker,
-                          self.get_balance(quote),
-                          quote,
-                          self.get_balance(quote) / self.get_ticker_price(ticker),
-                          base)
+
         if quantity != 0:
             if quantity < 0:
                 side = 'Buy' if side == 'Sell' else 'Sell'
@@ -54,8 +47,6 @@ class TradingClient(object):
             self.ordered = True
             if counting:
                 self._add_order_count()
-        else:
-            utils.logger.error('The trade was not opened due to the zero value of "quantity"')
 
     @utils.wait_success
     def get_ticker_price(self,
@@ -102,7 +93,6 @@ class TradingClient(object):
 
     def exit_last_order(self):
         if self.ordered:
-            utils.logger.info('client exit')
             bet = self.__quantity__
             if bet != 0:
                 if self.__side__ == 'Sell':
@@ -127,9 +117,7 @@ class TradingClient(object):
     @classmethod
     def _add_order_count(cls):
         cls.cls_open_orders += 1
-        utils.logger.info('new order (total: %d)', cls.cls_open_orders)
 
     @classmethod
     def _sub_order_count(cls):
         cls.cls_open_orders -= 1
-        utils.logger.info('order closed (total: %d)', cls.cls_open_orders)

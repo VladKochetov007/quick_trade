@@ -10,7 +10,6 @@ from plotly.subplots import make_subplots
 from . import utils
 
 
-@utils.assert_logger
 def make_figure(height: Union[int, float] = 900,
                width: Union[int, float] = 1300,
                template: str = 'plotly_dark',
@@ -158,7 +157,6 @@ class TraderGraph(BasePlotlyGraph):
     def connect_trader(self, trader):
         self.trader = trader
         self.trader.fig = self
-        utils.logger.info('new %s graph', self.trader)
 
     def plot_deposit(self):
         deposit_start = self.trader.deposit_history[0]

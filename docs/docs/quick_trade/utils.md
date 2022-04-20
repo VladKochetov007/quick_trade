@@ -164,10 +164,6 @@ Function for calculating the coefficient of exponential growth of a deposit when
 | deposit_list | Sequence[float] | exponential growth history |
 | returns | float | Growth rate with every step |
 
-## assert_logger
-
-Decorator. If AssertionError was called, then first the error is written to the log with the "critical" level, and then the program stops.
-
 ## get_diff
 
 Function for getting the price movement from the current one to TP or SL.

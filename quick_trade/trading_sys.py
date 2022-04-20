@@ -79,9 +79,6 @@ class Trader(object):
         self._converted = utils.convert(self.returns)
 
     def deposit_history_update(self):
-        if self.trades == 0:
-            utils.logger.critical('0 trades in %s', self)
-
         all_characteristics = utils.strategy_characteristics(equity=self.deposit_history,
                                                              trades=self.trades,
                                                              profit_trades=self.profits,
@@ -113,7 +110,6 @@ class Trader(object):
                                       self.max_drawdown,
                                       self.profit_deviation_ratio)
 
-    @utils.assert_logger
     def __init__(self,
                  ticker: str = 'BTC/USDT',
                  df: pd.DataFrame = pd.DataFrame(),
@@ -128,7 +124,6 @@ class Trader(object):
         self.ticker = ticker
         self.interval = interval
         self._profit_calculate_coef, self._sec_interval = utils.get_coef_sec(interval)
-        utils.logger.info('new trader: %s', self)
 
     def __repr__(self):
         return f'{self.ticker} {self.interval} trader'
@@ -175,7 +170,6 @@ class Trader(object):
         return {'stop': _stop_loss,
                 'take': take}
 
-    @utils.assert_logger
     def sl_tp_adder(self,
                     add_stop_loss: Union[float, int] = 0.0,
                     add_take_profit: Union[float, int] = 0.0) -> Tuple[List[float], List[float]]:
@@ -188,7 +182,6 @@ class Trader(object):
         assert isinstance(add_stop_loss, (int, float)) and isinstance(add_take_profit, (int, float)), \
             'Arguments to this function can only be <float> or <int>.'
 
-        utils.logger.debug('add stop-loss: %f pips, take-profit: %s pips', add_stop_loss, add_take_profit)
         stop_losses = []
         take_profits = []
         for stop_loss_price, take_profit_price, price, sig in zip(self.stop_losses,
@@ -237,7 +230,6 @@ class Trader(object):
 
         return df
 
-    @utils.assert_logger
     def crossover(self, fast: Iterable, slow: Iterable):
         assert isinstance(fast, Iterable) and isinstance(slow, Iterable), \
             'The arguments to this function must be iterable.'
@@ -254,7 +246,6 @@ class Trader(object):
         self.set_open_stop_and_take()
         return self.returns
 
-    @utils.assert_logger
     def inverse_strategy(self, swap_stop_take: bool = True) -> utils.PREDICT_TYPE_LIST:
         """
         makes signals inverse:
@@ -280,7 +271,6 @@ class Trader(object):
             self.stop_losses, self.take_profits = self.take_profits, self.stop_losses
         return self.returns
 
-    @utils.assert_logger
     def backtest(self,
                  deposit: Union[float, int] = 10_000.0,
                  bet: Union[float, int] = np.inf,
@@ -469,7 +459,6 @@ class Trader(object):
 
         if pass_math:
             warn('The deal was opened out of range!')
-            utils.logger.error('(%s) The deal was opened out of range! (candle=%d)', self, e)
             self.winrate = 0.0
             self.year_profit = 0.0
             self.losses = 0
@@ -478,7 +467,6 @@ class Trader(object):
 
         if print_out:
             print(self._info)
-        utils.logger.info('(%s) trader info: %s', self, self._info)
         self.backtest_out = pd.DataFrame(
             (self.deposit_history, self.stop_losses, self.take_profits, self.returns,
              self.open_lot_prices, data_column, self.average_growth, self.net_returns),
@@ -502,7 +490,6 @@ class Trader(object):
         self._multi_converted_ = False
         return self.backtest_out
 
-    @utils.assert_logger
     def multi_backtest(self,
                        test_config: Dict[str, List[Dict[str, Dict[str, Any]]]],
                        limit: int = 1000,
@@ -590,7 +577,6 @@ class Trader(object):
                 "returns",
             ]).T
 
-        utils.logger.info('(%s) trader multi info: %s', self, self._info)
         if print_out:
             print(self._info)
         if plot:
@@ -600,7 +586,6 @@ class Trader(object):
             self.fig.show()
         return self.backtest_out
 
-    @utils.assert_logger
     def connect_graph(self,
                       graph: TraderGraph = None):
         """
@@ -613,7 +598,6 @@ class Trader(object):
         self.fig = graph
         self.fig.connect_trader(self)
 
-    @utils.assert_logger
     def strategy_collider(self,
                           first_returns: utils.PREDICT_TYPE_LIST,
                           second_returns: utils.PREDICT_TYPE_LIST,
@@ -761,7 +745,6 @@ class Trader(object):
             open_new_order = (not np.isnan(self._converted[-1])) or (not np.isnan(conv_cred_lev[-1]))
 
         if open_new_order:
-            utils.logger.info('(%s) open trade %s', self, predict)
             if self.client.trading:
                 with utils.locker:
                     if predict == 'Exit':
@@ -784,7 +767,6 @@ class Trader(object):
                         self.client.order_create(predict,
                                                  self.ticker,
                                                  bet * self.credit_leverages[-1])  # entry new position
-        utils.logger.debug("(%s) returning prediction", self)
         return {
             'predict': predict,
             'open trade price': self._open_price,
@@ -794,7 +776,6 @@ class Trader(object):
             'credit leverage': self.credit_leverages[-1]
         }
 
-    @utils.assert_logger
     def realtime_trading(self,
                          strategy,
                          start_time: datetime,
@@ -839,16 +820,13 @@ class Trader(object):
         open_time = time()
         while True:
             self.df = self.client.get_data_historical(ticker=self.ticker, limit=limit, interval=self.interval)
-            utils.logger.debug("(%s) new dataframe loaded", self)
 
             strategy(*strategy_args, **strategy_kwargs)
-            utils.logger.debug("(%s) strategy used", self)
 
             prediction = self.get_trading_predict(
                 bet_for_trading_on_client=bet_for_trading_on_client)
 
             index = f'{self.ticker}, {ctime()}'
-            utils.logger.info("(%s) trading prediction at %s: %s", self, index, prediction)
             if print_out:
                 print(index, prediction)
             while True:
@@ -858,11 +836,8 @@ class Trader(object):
                         price = self.client.get_ticker_price(ticker)
                         min_ = min(self.__last_stop_loss, self.__last_take_profit)
                         max_ = max(self.__last_stop_loss, self.__last_take_profit)
-                        utils.logger.debug('(%s) checking SL/TP', self)
                         if (not (min_ < price < max_)) and prediction["predict"] != 'Exit':
-                            utils.logger.info('(%s) exit trade', self)
                             index = f'{self.ticker}, {ctime()}'
-                            utils.logger.info("(%s) trading prediction exit in sleeping at %s: %s", self, index, prediction)
                             if print_out:
                                 print("(%s) trading prediction exit in sleeping at %s: %s" % (self, index, prediction))
                             if self.client.trading:
@@ -874,7 +849,6 @@ class Trader(object):
                 elif strategy_in_sleep:
                     break
 
-    @utils.assert_logger
     def multi_realtime_trading(self,
                                trade_config: Dict[str, List[Dict[str, Dict[str, Any]]]],
                                start_time: datetime,  # LOCAL TIME
@@ -958,19 +932,15 @@ class Trader(object):
     def log_data(self):
         self.fig.log_y(_row=self.fig.data_row,
                        _col=self.fig.data_col)
-        utils.logger.info('(%s) log data', self)
 
     def log_deposit(self):
         self.fig.log_y(_row=self.fig.deposit_row,
                        _col=self.fig.deposit_col)
-        utils.logger.info('(%s) log deposit', self)
 
     def log_returns(self):
         self.fig.log_y(_row=self.fig.returns_row,
                        _col=self.fig.returns_col)
-        utils.logger.info('(%s) log returns', self)
 
-    @utils.assert_logger
     def set_client(self, client: TradingClient):
         """
         :param client: trading client
@@ -978,9 +948,7 @@ class Trader(object):
         assert isinstance(client, TradingClient), 'client must be of type <TradingClient>'
 
         self.client = client
-        utils.logger.info('(%s) set client', self)
 
-    @utils.assert_logger
     def convert_signal(self,
                        old: utils.PREDICT_TYPE = utils.SELL,
                        new: utils.PREDICT_TYPE = utils.EXIT) -> utils.PREDICT_TYPE_LIST:
@@ -992,10 +960,8 @@ class Trader(object):
         for pos, val in enumerate(self.returns):
             if val == old:
                 self.returns[pos] = new
-        utils.logger.info("(%s) signals converted: %s >> %s", self, old, new)
         return self.returns
 
-    @utils.assert_logger
     def set_open_stop_and_take(self,
                                take_profit: Union[float, int] = np.inf,
                                stop_loss: Union[float, int] = np.inf,
@@ -1045,9 +1011,7 @@ class Trader(object):
                 self.take_profits.append(take_flag)
             if set_stop:
                 self.stop_losses.append(stop_flag)
-        utils.logger.debug('(%s) stop loss: %f pips, trader take profit: %f pips', self, stop_loss, take_profit)
 
-    @utils.assert_logger
     def set_credit_leverages(self, credit_lev: Union[float, int] = 1.0):
         """
         Sets the leverage for bets.
@@ -1056,7 +1020,6 @@ class Trader(object):
         assert isinstance(credit_lev, (float, int)), 'credit_lev must be of type <float> or <int>'
 
         self.credit_leverages = [credit_lev for i in range(len(self.df['Close']))]
-        utils.logger.debug('(%s) credit leverage: %f', self, credit_lev)
 
     def get_support_resistance(self) -> Dict[str, Dict[int, float]]:
         lows = self.df['Low'].values
@@ -1069,7 +1032,6 @@ class Trader(object):
         return {'resistance': self.resistances,
                 'supports': self.supports}
 
-    @utils.assert_logger
     def strategy_diff(self, frame_to_diff: pd.Series) -> utils.PREDICT_TYPE_LIST:
         """
         frame_to_diff:  |   pd.pd.Series  |  example:  Trader.df['Close']

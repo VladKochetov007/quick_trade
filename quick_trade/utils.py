@@ -224,17 +224,6 @@ __credits__: List[str] = [
 ]
 
 logger = getLogger(__name__)
-getLogger('ccxt').setLevel(30)
-getLogger('urllib3').setLevel(30)
-logger.setLevel(10)
-
-basicConfig(level=0,
-            filename='trading.log',
-            format='%(asctime)s [%(levelname)s]\n%(message)s\n'
-                   f'[QUICK_TRADE VERSION: {__version__}] [FUNCTION: %(funcName)s] [FILE "%(module)s", '
-                   'LINE %(lineno)d] %(name)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] '
-                   '[FILEPATH: %(pathname)s]\n')
-
 TUNER_INDENT: int = 2
 
 TUNER_CODECONF: Dict[str, str] = {
@@ -390,7 +379,6 @@ def wait_success(func):
                 if not isinstance(e, KeyboardInterrupt):
                     if WAIT_SUCCESS_PRINT:
                         print(f'An error occurred: {e}, repeat request')
-                    logger.error(f'An error occurred. args: {args}, kwargs: {kwargs}', exc_info=True)
                     sleep(WAIT_SUCCESS_SLEEP)
                     continue
                 else:
@@ -401,18 +389,6 @@ def wait_success(func):
 
 def profit_factor(deposit_list: Sequence[float]) -> float:
     return deposit_list[1] / deposit_list[0]
-
-
-def assert_logger(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except AssertionError as AE:
-            logger.critical(AE)
-            raise AE
-
-    return wrapper
 
 
 def get_diff(price: float,
