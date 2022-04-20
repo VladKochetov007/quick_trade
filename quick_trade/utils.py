@@ -162,17 +162,28 @@ LOWER_BB_COLOR: str = '#ff0000'
 LOWER_BB_WIDTH: float = 2
 LOWER_BB_ALPHA: float = 1.0
 
-STOP_BEFORE_TRAIN_NAME: str = 'train'
-STOP_BEFORE_TRAIN_COLOR: str = 'red'
-STOP_BEFORE_TRAIN_WIDTH: float = 1.0
-STOP_BEFORE_TRAIN_ALPHA: float = 1.0
+VALIDATION_ANALYSIS_TRAIN_NAME: str = 'train'
+VALIDATION_ANALYSIS_TRAIN_COLOR: str = 'red'
+VALIDATION_ANALYSIS_TRAIN_WIDTH: float = 1.0
+VALIDATION_ANALYSIS_TRAIN_ALPHA: float = 1.0
 
-STOP_BEFORE_VAL_NAME: str = 'validation'
-STOP_BEFORE_VAL_COLOR: str = 'green'
-STOP_BEFORE_VAL_WIDTH: float = 1.0
-STOP_BEFORE_VAL_ALPHA: float = 1.0
+VALIDATION_ANALYSIS_VAL_NAME: str = 'validation'
+VALIDATION_ANALYSIS_VAL_COLOR: str = 'green'
+VALIDATION_ANALYSIS_VAL_WIDTH: float = 1.0
+VALIDATION_ANALYSIS_VAL_ALPHA: float = 1.0
 
-STOP_BEFORE_INTEGER_AS_INDEX: bool = True
+VALIDATION_ANALYSIS_INTEGER_AS_INDEX: bool = True
+
+PRICE_CHANNEL_LOWER_NAME: str = 'price channel lower'
+PRICE_CHANNEL_LOWER_COLOR: str = 'green'
+PRICE_CHANNEL_LOWER_WIDTH: float = 1.0
+PRICE_CHANNEL_LOWER_ALPHA: float = 1.0
+
+PRICE_CHANNEL_UPPER_NAME: str = 'price channel upper'
+PRICE_CHANNEL_UPPER_COLOR: str = 'red'
+PRICE_CHANNEL_UPPER_WIDTH: float = 1.0
+PRICE_CHANNEL_UPPER_ALPHA: float = 1.0
+
 
 RESERVE: float = 0.99  # squeeze-protect
 
@@ -188,7 +199,7 @@ calmar ratio: {}
 max drawdown: {}%
 profit/deviation ratio: {}"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.9.0"
+__version__: str = "7.9.1"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",

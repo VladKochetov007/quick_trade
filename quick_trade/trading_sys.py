@@ -1152,6 +1152,14 @@ class Trader(object):
                 sl = sl_before
             self.stop_losses[i] = sl
 
+    def profit_distribution(self, steps: int = 100) -> pd.Series:
+        equity = np.array(self.deposit_history)
+        x_returns = equity[:-1] / equity[1:]
+
+        hist = np.histogram(x_returns, steps)
+        return pd.Series(hist[0], index=hist[1][:-1])
+
+
 class ExampleStrategies(Trader):
 
     def _window_(self,
@@ -1911,7 +1919,8 @@ class ExampleStrategies(Trader):
     def strategy_price_channel(self,
                                support_period: int = 20,
                                resistance_period: int = 20,
-                               channel_part: float = 0.8):
+                               channel_part: float = 0.8,
+                               plot: bool = True):
         PC = indicators.PriceChannel(high=self.df['High'],
                                      low=self.df['Low'],
                                      support_period=support_period,
@@ -1926,3 +1935,18 @@ class ExampleStrategies(Trader):
             elif price < low:
                 flag = utils.BUY
             self.returns.append(flag)
+        if plot:
+            self.fig.plot_line(PC.lower_line(),
+                               width=utils.PRICE_CHANNEL_LOWER_WIDTH,
+                               color=utils.PRICE_CHANNEL_LOWER_COLOR,
+                               name=utils.PRICE_CHANNEL_LOWER_NAME,
+                               opacity=utils.PRICE_CHANNEL_LOWER_ALPHA,
+                               _row=self.fig.data_row,
+                               _col=self.fig.data_col)
+            self.fig.plot_line(PC.higher_line(),
+                               width=utils.PRICE_CHANNEL_UPPER_WIDTH,
+                               color=utils.PRICE_CHANNEL_UPPER_COLOR,
+                               name=utils.PRICE_CHANNEL_UPPER_NAME,
+                               opacity=utils.PRICE_CHANNEL_UPPER_ALPHA,
+                               _row=self.fig.data_row,
+                               _col=self.fig.data_col)

@@ -11,14 +11,15 @@ from quick_trade.tuner import Arange, Linspace, QuickTradeTuner
 
 ticker = 'BTC/USDT'
 timeframe = '1h'
-validation_split = 0.
+validation_split = 0
+sort_by = 'profit/deviation ratio'
 
 fig = BasePlotlyGraph(make_figure(rows=2))
 client = BinanceTradingClient()
 df = client.get_data_historical(ticker, interval=timeframe)
-df = df[:len(df)*2//3]
 
-chunk_len = len(df)//10
+
+chunk_len = len(df)//15
 
 splits = slice_frame(df, validation_split=validation_split)
 df_train = splits['train']
@@ -35,11 +36,11 @@ WF_val = WalkForward(client=val_client,
 tuner_configs = [
     {
         'strategy_bollinger_breakout':
-             [
+            [
                  {'window_dev': 1,
                   'plot': False,
-                  'window': Arange(20, 100, 5)}
-             ]
+                  'window': Arange(5, 200, 10)}
+            ]
     }
 ]
 for cfg in tuner_configs:
@@ -55,7 +56,7 @@ for i, config in enumerate(copy.deepcopy(tuner_configs)):
                           config=config,
                           tuner_instance=QuickTradeTuner,
                           trader_instance=ExampleStrategies,
-                          sort_by='profit/deviation ratio',
+                          sort_by=sort_by,
                           commission=0.12)
     results.append(WF_train.profit_deviation_ratio)
     trains.append(WF_train)
@@ -70,7 +71,7 @@ if validation_split:
                         config=best_config,
                         tuner_instance=QuickTradeTuner,
                         trader_instance=ExampleStrategies,
-                        sort_by='profit/deviation ratio',
+                        sort_by=sort_by,
                         commission=0.12)
     print(WF_val.info())
 

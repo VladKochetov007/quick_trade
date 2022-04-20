@@ -1,10 +1,12 @@
 import numpy as np
 import pandas as pd
+import ta.volatility
 from numpy import nan
 from pandas import DataFrame
 from pandas import Series
 from ta.volatility import AverageTrueRange
 from .utils import BUY, SELL
+from typing import Union
 
 class Indicator:
     pass
@@ -102,16 +104,14 @@ class PriceChannel(Indicator):
         self._part = channel_part
         self._run()
 
-    def __run_lev(self, func, period):
-        channel = [np.nan] * period
-        for roll in self._low.rolling(period):
+    @staticmethod
+    def _run_lev(func, period, prices):
+        channel = []
+        for roll in prices.rolling(period):
             channel.append(func(roll))
         return channel
 
-    def _run(self):
-        support = self.__run_lev(lambda x: x.min(), self._support_period)
-        resistance = self.__run_lev(lambda x: x.max(), self._resistance_period)
-
+    def _handle_levels(self, support, resistance):
         self.high = []
         self.low = []
 
@@ -124,6 +124,16 @@ class PriceChannel(Indicator):
 
             self.high.append(new_high)
             self.low.append(new_low)
+
+    def _run(self):
+        support = self._run_lev(lambda x: x.min(),
+                                self._support_period,
+                                self._low)
+        resistance = self._run_lev(lambda x: x.max(),
+                                   self._resistance_period,
+                                   self._high)
+        self._handle_levels(support=support,
+                            resistance=resistance)
 
     def higher_line(self):
         return self.high

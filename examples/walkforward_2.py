@@ -1,6 +1,6 @@
 from quick_trade.tuner.avoid_overfitting import WalkForward
 from quick_trade.trading_sys import ExampleStrategies
-from quick_trade.tuner import Arange
+from quick_trade.tuner import Arange, Linspace
 from custom_client import BinanceTradingClient
 
 from quick_trade.plots import BasePlotlyGraph, make_figure
@@ -10,16 +10,19 @@ config = {
         [
             {
                 'plot': False,
-                'window': Arange(10, 200, 20),
+                'window': Arange(10, 200, 5),
                 'window_dev': 1
             }
         ]
 }
+sample_length = 2*24*30*2
 
 graph = BasePlotlyGraph(make_figure(700, 1400))
 
 client = BinanceTradingClient()
-walkforward_optimizer = WalkForward(client=client)
+walkforward_optimizer = WalkForward(client=client,
+                                    chunk_length=sample_length,
+                                    insample_chunks=4)
 
 walkforward_optimizer.run_analysis('ETH/USDT',
                                    '30m',
@@ -35,7 +38,8 @@ graph.plot_line(line=walkforward_optimizer.equity(),
                 color='white')
 graph.plot_line(line=walkforward_optimizer.average_growth,
                 width=2,
-                color='blue')
+                color='blue',
+                name='exponential regression')
 print(walkforward_optimizer.info())
 graph.log_y()
 graph.show()

@@ -96,6 +96,8 @@ class QuickTradeTuner(object):
             else:
                 df = DataFrame()
                 frames = {t: self._get_df(ticker=t, interval=interval, limit=limit) for t in ticker}
+                if '_dataframes' in backtest_kwargs:
+                    backtest_kwargs['_dataframes'] = frames
             for strategy, kwargs in self._strategies:
                 trader = trading_class(ticker='ALL/ALL' if self.multi_test else ticker, df=df, interval=interval)
                 trader.set_client(self.client)
@@ -106,7 +108,6 @@ class QuickTradeTuner(object):
                     for ticker_ in ticker:
                         kwargs_m[ticker_] = [{strategy: kwargs}]
                     trader.multi_backtest(test_config=kwargs_m,
-                                          _dataframes=frames,
                                           **backtest_kwargs)
                 else:
                     trader._get_attr(strategy)(**kwargs)

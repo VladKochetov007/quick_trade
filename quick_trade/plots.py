@@ -298,24 +298,24 @@ class ValidationAnalysisGraph(BasePlotlyGraph):
         self.analyzer.fig = self
 
     def plot_frame(self):
-        if utils.STOP_BEFORE_INTEGER_AS_INDEX:
+        if utils.VALIDATION_ANALYSIS_INTEGER_AS_INDEX:
             index = None
         else:
             index = self.analyzer.profit_keys
         self.plot_line(line=self.analyzer.frame['train'],
                        index=index,
-                       width=utils.STOP_BEFORE_TRAIN_WIDTH,
-                       opacity=utils.STOP_BEFORE_TRAIN_ALPHA,
-                       color=utils.STOP_BEFORE_TRAIN_COLOR,
-                       name=utils.STOP_BEFORE_TRAIN_NAME,
+                       width=utils.VALIDATION_ANALYSIS_TRAIN_WIDTH,
+                       opacity=utils.VALIDATION_ANALYSIS_TRAIN_ALPHA,
+                       color=utils.VALIDATION_ANALYSIS_TRAIN_COLOR,
+                       name=utils.VALIDATION_ANALYSIS_TRAIN_NAME,
                        _row=self.test_row,
                        _col=self.test_col)
 
         self.plot_line(line=self.analyzer.frame['validation'],
                        index=index,
-                       width=utils.STOP_BEFORE_VAL_WIDTH,
-                       opacity=utils.STOP_BEFORE_VAL_ALPHA,
-                       color=utils.STOP_BEFORE_VAL_COLOR,
-                       name=utils.STOP_BEFORE_VAL_NAME,
+                       width=utils.VALIDATION_ANALYSIS_VAL_WIDTH,
+                       opacity=utils.VALIDATION_ANALYSIS_VAL_ALPHA,
+                       color=utils.VALIDATION_ANALYSIS_VAL_COLOR,
+                       name=utils.VALIDATION_ANALYSIS_VAL_NAME,
                        _row=self.test_row,
                        _col=self.test_col)
