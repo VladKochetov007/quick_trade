@@ -6,7 +6,7 @@ from distutils.core import setup
 with open('README.md') as file:
     long_desc = file.read()
 
-__version__ = "7.9.1"
+__version__ = "7.9.2"
 
 setup(
     name='quick_trade',

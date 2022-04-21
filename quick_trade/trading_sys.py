@@ -563,7 +563,9 @@ class Trader(object):
         self.winrate = float(np.mean(winrates))
 
         for enum, elem in enumerate(depos):
-            depos[enum] = utils.get_multipliers(pd.Series(elem[-min(lens_dep):]))
+            depos[enum] = utils.get_multipliers(
+                pd.Series(elem[-min(lens_dep):])
+            )
 
         multipliers: pd.Series = sum(depos) / len(depos)
         multipliers[0] = deposit
@@ -695,10 +697,13 @@ class Trader(object):
         return return_list
 
     @staticmethod
-    def _collide_super(l1: utils.PREDICT_TYPE_LIST, l2: utils.PREDICT_TYPE_LIST) -> utils.PREDICT_TYPE_LIST:
+    def _collide_super(l1: utils.PREDICT_TYPE_LIST,
+                       l2: utils.PREDICT_TYPE_LIST) -> utils.PREDICT_TYPE_LIST:
         return_list: utils.PREDICT_TYPE_LIST = []
         for first, sec in zip(utils.convert(l1), utils.convert(l2)):
-            if (not np.isnan(first)) and (not np.isnan(sec)) and first is not sec:
+            if ((not np.isnan(first)) and
+                    (not np.isnan(sec))
+                    and first is not sec):
                 return_list.append(utils.EXIT)
             elif first is sec:
                 return_list.append(first)
@@ -706,9 +711,12 @@ class Trader(object):
                 return_list.append(sec)
             else:
                 return_list.append(first)
-        return list(map(lambda x: utils.PREDICT_TYPE(x), utils.anti_convert(return_list)))
+        return list(map(lambda x: utils.PREDICT_TYPE(x),
+                        utils.anti_convert(return_list)))
 
-    def multi_strategy_collider(self, *strategies, mode: str = 'minimalist') -> utils.PREDICT_TYPE_LIST:
+    def multi_strategy_collider(self,
+                                *strategies,
+                                mode: str = 'minimalist') -> utils.PREDICT_TYPE_LIST:
         self.strategy_collider(strategies[0], strategies[1], mode=mode)
         if len(strategies) >= 3:
             for ret in strategies[2:]:
@@ -753,7 +761,9 @@ class Trader(object):
                     else:
                         self.client.exit_last_order()  # exit from previous trade (signal)
 
-                        moneys = self.client.get_balance(self.ticker.split('/')[1])
+                        moneys = self.client.get_balance(
+                            self.ticker.split('/')[1]
+                        )
                         ticker_price = self.client.get_ticker_price(self.ticker)
                         if bet_for_trading_on_client is not np.inf:
                             bet = bet_for_trading_on_client
@@ -894,7 +904,9 @@ class Trader(object):
                                     bet_for_trading_on_client: Union[float, int] = np.inf,
                                     ) -> Dict[str, Union[str, float]]:
                 with utils.locker:
-                    balance = self.client.get_balance(self.ticker.split('/')[1])
+                    balance = self.client.get_balance(
+                        self.ticker.split('/')[1]
+                    )
                     bet = bet_for_trading_on_client_copy
                     if bet_for_trading_on_client is np.inf:
                         if TradingClient.cls_open_orders != can_orders:

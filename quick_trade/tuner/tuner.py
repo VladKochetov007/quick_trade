@@ -121,8 +121,6 @@ class QuickTradeTuner(object):
                     strat_kw = trader._registered_strategy
                 self.strategies_and_kwargs.append(strat_kw)
 
-                utils.logger.debug('testing %s ... :', strat_kw)
-
                 for filter_name, filter_attr in utils.TUNER_CODECONF.items():
                     self.result_tunes[ticker][interval][limit][strat_kw][filter_name] = trader._get_attr(filter_attr)
 
@@ -153,7 +151,6 @@ class QuickTradeTuner(object):
         return self.result_tunes
 
     def sort_tunes(self, sort_by: str = 'percentage year profit', drop_na: bool = True) -> dict:
-        utils.logger.debug('sorting tunes')
         not_filt = self.result_tunes
         self.result_tunes = dict()
         for ticker, tname in zip(not_filt.values(), not_filt):
@@ -168,12 +165,10 @@ class QuickTradeTuner(object):
         return self.result_tunes
 
     def save_tunes(self, path: str = 'returns.json'):
-        utils.logger.debug('saving tunes in "%s"', path)
         _saving.write_json(data=self.result_tunes, path=path, indent=utils.TUNER_INDENT)
 
     def load_tunes(self, path: str = 'returns.json', data: dict = {}):
         not_empty_dict = len(data.items())
-        utils.logger.debug('loading tunes from "%s"', path if not_empty_dict else 'dict')
         if not_empty_dict:
             self.result_tunes = data
         else:

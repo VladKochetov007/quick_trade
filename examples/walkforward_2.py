@@ -1,6 +1,6 @@
 from quick_trade.tuner.avoid_overfitting import WalkForward
 from quick_trade.trading_sys import ExampleStrategies
-from quick_trade.tuner import Arange, Linspace
+from quick_trade.tuner import Arange
 from custom_client import BinanceTradingClient
 
 from quick_trade.plots import BasePlotlyGraph, make_figure

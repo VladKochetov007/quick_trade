@@ -1,7 +1,5 @@
 import threading
 from functools import wraps
-from logging import basicConfig
-from logging import getLogger
 from time import sleep
 from typing import Any
 from typing import List
@@ -199,7 +197,7 @@ calmar ratio: {}
 max drawdown: {}%
 profit/deviation ratio: {}"""  # .format(Trader.losses, Trader.trades, ...)
 
-__version__: str = "7.9.1"
+__version__: str = "7.9.2"
 __author__: str = 'Vlad Kochetov'
 __credits__: List[str] = [
     "Hemerson Tacon -- Stack overflow",
@@ -223,7 +221,6 @@ __credits__: List[str] = [
     "https://stackoverflow.com/questions/1263451/python-decorators-in-classes"
 ]
 
-logger = getLogger(__name__)
 TUNER_INDENT: int = 2
 
 TUNER_CODECONF: Dict[str, str] = {

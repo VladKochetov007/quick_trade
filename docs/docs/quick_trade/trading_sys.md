@@ -363,6 +363,8 @@ The strategy issues its verdict based on the last change to the dataframe. If yo
 
 ### trailing_stop
 
+### profit_distribution
+
 ## ExampleStrategies
 
 Class with examples of strategies, inherited from the [`Trader`](#Trader) class
