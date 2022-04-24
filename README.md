@@ -7,6 +7,11 @@
 ![image](https://github.com/VladKochetov007/quick_trade/blob/master/img/logo_with_slogan_v2_UA.PNG?raw=true)
 
 
+
+PROJECT MOVED [HERE](https://github.com/quick-trade/quick_trade)
+
+
+
 ```
 Dependencies:
  ├──ta by Darío López Padial (Bukosabino   https://github.com/bukosabino/ta)
