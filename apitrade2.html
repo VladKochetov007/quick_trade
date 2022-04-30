@@ -1,0 +1,1507 @@
+<!doctype html >
+<!--[if IE 8]>    <html class="ie8" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="ru-RU"> <!--<![endif]-->
+<head>
+    <meta name="telderi" content="9604680e63fb232103cf2752e65afb98" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="pingback" href="https://oox.space/xmlrpc.php" />
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+<meta property="og:image" content="https://oox.space/wp-content/uploads/2018/05/5MSNI1ymNxA.jpg" /><link rel="icon" type="image/png" href="https://oox.space/wp-content/uploads/2018/11/small-e1543892099780.png"><link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://oox.space/wp-content/uploads/2018/11/small-1.png"/><meta property="og:title" content="Бот для автоматической торговли криптовалютой"/>
+<meta property="og:description" content="&quot;Зарабатывать биткоин на автомате нереально&quot; - так думал я, пока не попробовал этого бота. Настройки минимальные, ведь все сделки совершаются по низкорисковым стратегиям. Этот бот для торговли криптовалютой будет круглосуточно совершать микросделки, используя разные стратегии и увеличивать ваш депозит на бирже."/>
+<meta property="og:image" content="https://oox.space/wp-content/uploads/2018/05/5MSNI1ymNxA.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="720"/>
+<meta property="og:image:type" content="image/jpeg"/>
+<meta property="og:type" content="article"/>
+<meta property="og:article:published_time" content="2019-04-16 21:20:42"/>
+<meta property="og:article:modified_time" content="2019-04-29 13:47:13"/>
+<meta property="og:article:tag" content="Bitcoin"/>
+<meta property="og:article:tag" content="автоматизация торговли"/>
+<meta property="og:article:tag" content="биржи"/>
+<meta property="og:article:tag" content="трейдинг"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Бот для автоматической торговли криптовалютой"/>
+<meta name="twitter:description" content="&quot;Зарабатывать биткоин на автомате нереально&quot; - так думал я, пока не попробовал этого бота. Настройки минимальные, ведь все сделки совершаются по низкорисковым стратегиям. Этот бот для торговли криптовалютой будет круглосуточно совершать микросделки, используя разные стратегии и увеличивать ваш депозит на бирже."/>
+<meta name="twitter:image" content="https://oox.space/wp-content/uploads/2018/05/5MSNI1ymNxA.jpg"/>
+<meta name="author" content="Захар Пряников"/>
+
+	<!-- This site is optimized with the Yoast SEO plugin v17.9 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Бот для торговли криптовалютой Apitrade. Увеличиваем депо на бирже</title>
+	<meta name="description" content="Бот для торговли криптовалютой - это сервис, который совершает множество микросделок, тем самым увеличивая ваш депозит. Описание удобного торгового робота." />
+	<link rel="canonical" href="https://oox.space/trading/crypto-trade-bot-apitrade/" />
+	<meta property="og:url" content="https://oox.space/trading/crypto-trade-bot-apitrade/" />
+	<meta property="og:site_name" content="ooX.Space" />
+	<meta property="article:published_time" content="2019-04-16T16:20:42+00:00" />
+	<meta property="article:modified_time" content="2019-04-29T08:47:13+00:00" />
+	<meta property="og:image" content="https://oox.space/wp-content/uploads/2018/05/5MSNI1ymNxA.jpg" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="720" />
+	<meta property="og:image:type" content="image/jpeg" />
+	<meta name="twitter:label1" content="Написано автором" />
+	<meta name="twitter:data1" content="Захар Пряников" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://oox.space/#organization","name":"ooX.Space","url":"https://oox.space/","sameAs":[],"logo":{"@type":"ImageObject","@id":"https://oox.space/#logo","inLanguage":"ru-RU","url":"https://oox.space/wp-content/uploads/2018/06/oox-space-logo-1.svg","contentUrl":"https://oox.space/wp-content/uploads/2018/06/oox-space-logo-1.svg","caption":"ooX.Space"},"image":{"@id":"https://oox.space/#logo"}},{"@type":"WebSite","@id":"https://oox.space/#website","url":"https://oox.space/","name":"ooX.Space","description":"\u041a\u0440\u0438\u043f\u0442\u043e\u0432\u0430\u043b\u044e\u0442\u0430 \u0438 \u0411\u043b\u043e\u043a\u0447\u0435\u0439\u043d","publisher":{"@id":"https://oox.space/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://oox.space/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"ru-RU"},{"@type":"ImageObject","@id":"https://oox.space/trading/crypto-trade-bot-apitrade/#primaryimage","inLanguage":"ru-RU","url":"https://oox.space/wp-content/uploads/2018/05/5MSNI1ymNxA.jpg","contentUrl":"https://oox.space/wp-content/uploads/2018/05/5MSNI1ymNxA.jpg","width":1200,"height":720,"caption":"\u0411\u043e\u0442 \u0434\u043b\u044f \u0442\u043e\u0440\u0433\u043e\u0432\u043b\u0438 \u043a\u0440\u0438\u043f\u0442\u043e\u0432\u0430\u043b\u044e\u0442\u043e\u0439 \u043d\u0430 \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0435"},{"@type":"WebPage","@id":"https://oox.space/trading/crypto-trade-bot-apitrade/#webpage","url":"https://oox.space/trading/crypto-trade-bot-apitrade/","name":"\u0411\u043e\u0442 \u0434\u043b\u044f \u0442\u043e\u0440\u0433\u043e\u0432\u043b\u0438 \u043a\u0440\u0438\u043f\u0442\u043e\u0432\u0430\u043b\u044e\u0442\u043e\u0439 Apitrade. \u0423\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u043c \u0434\u0435\u043f\u043e \u043d\u0430 \u0431\u0438\u0440\u0436\u0435","isPartOf":{"@id":"https://oox.space/#website"},"primaryImageOfPage":{"@id":"https://oox.space/trading/crypto-trade-bot-apitrade/#primaryimage"},"datePublished":"2019-04-16T16:20:42+00:00","dateModified":"2019-04-29T08:47:13+00:00","description":"\u0411\u043e\u0442 \u0434\u043b\u044f \u0442\u043e\u0440\u0433\u043e\u0432\u043b\u0438 \u043a\u0440\u0438\u043f\u0442\u043e\u0432\u0430\u043b\u044e\u0442\u043e\u0439 - \u044d\u0442\u043e \u0441\u0435\u0440\u0432\u0438\u0441, \u043a\u043e\u0442\u043e\u0440\u044b\u0439 \u0441\u043e\u0432\u0435\u0440\u0448\u0430\u0435\u0442 \u043c\u043d\u043e\u0436\u0435\u0441\u0442\u0432\u043e \u043c\u0438\u043a\u0440\u043e\u0441\u0434\u0435\u043b\u043e\u043a, \u0442\u0435\u043c \u0441\u0430\u043c\u044b\u043c \u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u044f \u0432\u0430\u0448 \u0434\u0435\u043f\u043e\u0437\u0438\u0442. \u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u0443\u0434\u043e\u0431\u043d\u043e\u0433\u043e \u0442\u043e\u0440\u0433\u043e\u0432\u043e\u0433\u043e \u0440\u043e\u0431\u043e\u0442\u0430.","breadcrumb":{"@id":"https://oox.space/trading/crypto-trade-bot-apitrade/#breadcrumb"},"inLanguage":"ru-RU","potentialAction":[{"@type":"ReadAction","target":["https://oox.space/trading/crypto-trade-bot-apitrade/"]}]},{"@type":"BreadcrumbList","@id":"https://oox.space/trading/crypto-trade-bot-apitrade/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"\u0413\u043b\u0430\u0432\u043d\u0430\u044f \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0430","item":"https://oox.space/"},{"@type":"ListItem","position":2,"name":"\u0411\u043e\u0442 \u0434\u043b\u044f \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0439 \u0442\u043e\u0440\u0433\u043e\u0432\u043b\u0438 \u043a\u0440\u0438\u043f\u0442\u043e\u0432\u0430\u043b\u044e\u0442\u043e\u0439"}]},{"@type":"Article","@id":"https://oox.space/trading/crypto-trade-bot-apitrade/#article","isPartOf":{"@id":"https://oox.space/trading/crypto-trade-bot-apitrade/#webpage"},"author":{"@id":"https://oox.space/#/schema/person/1cea3135d4e8b47312170b26a57b1c42"},"headline":"\u0411\u043e\u0442 \u0434\u043b\u044f \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0439 \u0442\u043e\u0440\u0433\u043e\u0432\u043b\u0438 \u043a\u0440\u0438\u043f\u0442\u043e\u0432\u0430\u043b\u044e\u0442\u043e\u0439","datePublished":"2019-04-16T16:20:42+00:00","dateModified":"2019-04-29T08:47:13+00:00","mainEntityOfPage":{"@id":"https://oox.space/trading/crypto-trade-bot-apitrade/#webpage"},"wordCount":45,"commentCount":5,"publisher":{"@id":"https://oox.space/#organization"},"image":{"@id":"https://oox.space/trading/crypto-trade-bot-apitrade/#primaryimage"},"thumbnailUrl":"https://oox.space/wp-content/uploads/2018/05/5MSNI1ymNxA.jpg","keywords":["Bitcoin","\u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u0442\u043e\u0440\u0433\u043e\u0432\u043b\u0438","\u0431\u0438\u0440\u0436\u0438","\u0442\u0440\u0435\u0439\u0434\u0438\u043d\u0433"],"articleSection":["Featured","\u0422\u0440\u0435\u0439\u0434\u0438\u043d\u0433"],"inLanguage":"ru-RU","potentialAction":[{"@type":"CommentAction","name":"Comment","target":["https://oox.space/trading/crypto-trade-bot-apitrade/#respond"]}]},{"@type":"Person","@id":"https://oox.space/#/schema/person/1cea3135d4e8b47312170b26a57b1c42","name":"\u0417\u0430\u0445\u0430\u0440 \u041f\u0440\u044f\u043d\u0438\u043a\u043e\u0432","image":{"@type":"ImageObject","@id":"https://oox.space/#personlogo","inLanguage":"ru-RU","url":"https://oox.space/wp-content/uploads/2018/06/Bitcoin-Blockchain-150x150.jpg","contentUrl":"https://oox.space/wp-content/uploads/2018/06/Bitcoin-Blockchain-150x150.jpg","caption":"\u0417\u0430\u0445\u0430\u0440 \u041f\u0440\u044f\u043d\u0438\u043a\u043e\u0432"},"description":"\u041a\u043e\u0433\u0434\u0430-\u0442\u043e \u0434\u0430\u0432\u043d\u043e \u044f \u043a\u0443\u043f\u0438\u043b \u0431\u0438\u0442\u043a\u043e\u0438\u043d \u0437\u0430 10$ \u0438 \u043f\u043e\u0442\u043e\u043c \u043f\u0440\u043e\u0434\u0430\u043b \u0435\u0433\u043e \u0437\u0430 200$. \u0422\u043e\u0433\u0434\u0430 \u043c\u043d\u0435 \u043a\u0430\u0437\u0430\u043b\u043e\u0441\u044c, \u0447\u0442\u043e \u044d\u0442\u043e \u0431\u044b\u043b\u0430 \u0441\u0443\u043f\u0435\u0440 \u0441\u0434\u0435\u043b\u043a\u0430. \u0421\u0435\u0439\u0447\u0430\u0441 \u044f \u043f\u043e\u043d\u0438\u043c\u0430\u044e, \u043a\u0430\u043a \u044f \u043e\u0448\u0438\u0431\u0430\u043b\u0441\u044f \u0438 \u0442\u0435\u043f\u0435\u0440\u044c \u043c\u043e\u044f \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f - \u044d\u0442\u043e HODL!","url":"https://oox.space/author/pryanik/"}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="ooX.Space &raquo; Лента" href="https://oox.space/feed/" />
+<link rel="alternate" type="application/rss+xml" title="ooX.Space &raquo; Лента комментариев" href="https://oox.space/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="ooX.Space &raquo; Лента комментариев к &laquo;Бот для автоматической торговли криптовалютой&raquo;" href="https://oox.space/trading/crypto-trade-bot-apitrade/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/oox.space\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.8.4"}};
+			!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([10084,65039,8205,55357,56613],[10084,65039,8203,55357,56613])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='https://oox.space/wp-includes/css/dist/block-library/style.min.css?ver=5.8.4' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://oox.space/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.5.3' type='text/css' media='all' />
+<link rel='stylesheet' id='ppress-frontend-css'  href='https://oox.space/wp-content/plugins/wp-user-avatar/assets/css/frontend.min.css?ver=3.2.6' type='text/css' media='all' />
+<link rel='stylesheet' id='ppress-flatpickr-css'  href='https://oox.space/wp-content/plugins/wp-user-avatar/assets/flatpickr/flatpickr.min.css?ver=3.2.6' type='text/css' media='all' />
+<link rel='stylesheet' id='ppress-select2-css'  href='https://oox.space/wp-content/plugins/wp-user-avatar/assets/select2/select2.min.css?ver=5.8.4' type='text/css' media='all' />
+<link rel='stylesheet' id='ez-icomoon-css'  href='https://oox.space/wp-content/plugins/easy-table-of-contents/vendor/icomoon/style.min.css?ver=2.0.17' type='text/css' media='all' />
+<link rel='stylesheet' id='ez-toc-css'  href='https://oox.space/wp-content/plugins/easy-table-of-contents/assets/css/screen.min.css?ver=2.0.17' type='text/css' media='all' />
+<style id='ez-toc-inline-css' type='text/css'>
+div#ez-toc-container p.ez-toc-title {font-size: 100%;}div#ez-toc-container p.ez-toc-title {font-weight: 500;}div#ez-toc-container ul li {font-size: 95%;}
+</style>
+<link rel='stylesheet' id='td-plugin-newsletter-css'  href='https://oox.space/wp-content/plugins/td-newsletter/style.css?ver=9.7' type='text/css' media='all' />
+<link rel='stylesheet' id='td-plugin-multi-purpose-css'  href='https://oox.space/wp-content/plugins/td-composer/td-multi-purpose/style.css?ver=912d952a2b27ffdeee7e153ae13d721a' type='text/css' media='all' />
+<link crossorigin="anonymous" rel='stylesheet' id='google-fonts-style-css'  href='https://fonts.googleapis.com/css?family=Open+Sans%3A300italic%2C400%2C400italic%2C600%2C600italic%2C700%7CRoboto%3A300%2C400%2C400italic%2C500%2C500italic%2C700%2C900&#038;subset=cyrillic&#038;ver=9.7' type='text/css' media='all' />
+<link rel='stylesheet' id='tablepress-default-css'  href='https://oox.space/wp-content/plugins/tablepress/css/default.min.css?ver=1.14' type='text/css' media='all' />
+<link rel='stylesheet' id='td-theme-css'  href='https://oox.space/wp-content/themes/Newspaper/style.css?ver=9.7' type='text/css' media='all' />
+<style id='td-theme-inline-css' type='text/css'>
+    
+        @media (max-width: 767px) {
+            .td-header-desktop-wrap {
+                display: none;
+            }
+        }
+        @media (min-width: 767px) {
+            .td-header-mobile-wrap {
+                display: none;
+            }
+        }
+    
+	
+</style>
+<link rel='stylesheet' id='td-legacy-framework-front-style-css'  href='https://oox.space/wp-content/plugins/td-composer/legacy/Newspaper/assets/css/td_legacy_main.css?ver=912d952a2b27ffdeee7e153ae13d721a' type='text/css' media='all' />
+<link rel='stylesheet' id='tdb_front_style-css'  href='https://oox.space/wp-content/plugins/td-cloud-library/assets/css/tdb_less_front.css?ver=0efffdb5d54304d2033d0c415272a0e3' type='text/css' media='all' />
+<script type='text/javascript' src='https://oox.space/wp-includes/js/jquery/jquery.min.js?ver=3.6.0' id='jquery-core-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2' id='jquery-migrate-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-content/plugins/wp-user-avatar/assets/flatpickr/flatpickr.min.js?ver=5.8.4' id='ppress-flatpickr-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-content/plugins/wp-user-avatar/assets/select2/select2.min.js?ver=5.8.4' id='ppress-select2-js'></script>
+<link rel="https://api.w.org/" href="https://oox.space/wp-json/" /><link rel="alternate" type="application/json" href="https://oox.space/wp-json/wp/v2/posts/813" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://oox.space/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://oox.space/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 5.8.4" />
+<link rel='shortlink' href='https://oox.space/?p=813' />
+<link rel="alternate" type="application/json+oembed" href="https://oox.space/wp-json/oembed/1.0/embed?url=https%3A%2F%2Foox.space%2Ftrading%2Fcrypto-trade-bot-apitrade%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://oox.space/wp-json/oembed/1.0/embed?url=https%3A%2F%2Foox.space%2Ftrading%2Fcrypto-trade-bot-apitrade%2F&#038;format=xml" />
+<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+        <script>
+        window.tdb_globals = {"wpRestNonce":"58684c4327","wpRestUrl":"https:\/\/oox.space\/wp-json\/","permalinkStructure":"\/%category%\/%postname%\/","isAjax":false,"isAdminBarShowing":false,"autoloadScrollPercent":50,"origPostEditUrl":null};
+    </script>
+    			<script>
+				window.tdwGlobal = {"adminUrl":"https:\/\/oox.space\/wp-admin\/","wpRestNonce":"58684c4327","wpRestUrl":"https:\/\/oox.space\/wp-json\/","permalinkStructure":"\/%category%\/%postname%\/"};
+			</script>
+			<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>      <meta name="onesignal" content="wordpress-plugin"/>
+            <script>
+
+      window.OneSignal = window.OneSignal || [];
+
+      OneSignal.push( function() {
+        OneSignal.SERVICE_WORKER_UPDATER_PATH = "OneSignalSDKUpdaterWorker.js.php";
+                      OneSignal.SERVICE_WORKER_PATH = "OneSignalSDKWorker.js.php";
+                      OneSignal.SERVICE_WORKER_PARAM = { scope: "/" };
+        OneSignal.setDefaultNotificationUrl("https://oox.space");
+        var oneSignal_options = {};
+        window._oneSignalInitOptions = oneSignal_options;
+
+        oneSignal_options['wordpress'] = true;
+oneSignal_options['appId'] = '8499e4e3-c549-46c0-b1c9-67896240a0ca';
+oneSignal_options['allowLocalhostAsSecureOrigin'] = true;
+oneSignal_options['welcomeNotification'] = { };
+oneSignal_options['welcomeNotification']['title'] = "Мы не будем часто беспокоить вас!";
+oneSignal_options['welcomeNotification']['message'] = "Спасибо за подписку";
+oneSignal_options['welcomeNotification']['url'] = "https://oox.space";
+oneSignal_options['path'] = "https://oox.space/wp-content/plugins/onesignal-free-web-push-notifications/sdk_files/";
+oneSignal_options['safari_web_id'] = "web.onesignal.auto.542681a0-163f-4163-99a6-540b36eadb1c";
+oneSignal_options['persistNotification'] = true;
+oneSignal_options['promptOptions'] = { };
+oneSignal_options['promptOptions']['actionMessage'] = "Мы хотим сообщать вам о новых  статьях.  Обещаем только интересный контент!";
+oneSignal_options['promptOptions']['acceptButtonText'] = "Подписаться";
+oneSignal_options['promptOptions']['cancelButtonText'] = "Нет, спасибо";
+oneSignal_options['promptOptions']['siteName'] = "https://oox.space";
+oneSignal_options['promptOptions']['autoAcceptTitle'] = "Подписаться на новости";
+                OneSignal.init(window._oneSignalInitOptions);
+                      });
+
+      function documentInitOneSignal() {
+        var oneSignal_elements = document.getElementsByClassName("OneSignal-prompt");
+
+        var oneSignalLinkClickHandler = function(event) { OneSignal.push(['registerForPushNotifications']); event.preventDefault(); };        for(var i = 0; i < oneSignal_elements.length; i++)
+          oneSignal_elements[i].addEventListener('click', oneSignalLinkClickHandler, false);
+      }
+
+      if (document.readyState === 'complete') {
+           documentInitOneSignal();
+      }
+      else {
+           window.addEventListener("load", function(event){
+               documentInitOneSignal();
+          });
+      }
+    </script>
+<link rel="amphtml" href="https://oox.space/trading/crypto-trade-bot-apitrade/?amp">
+<!-- JS generated by theme -->
+
+<script>
+    
+    
+
+	    var tdBlocksArray = []; //here we store all the items for the current page
+
+	    //td_block class - each ajax block uses a object of this class for requests
+	    function tdBlock() {
+		    this.id = '';
+		    this.block_type = 1; //block type id (1-234 etc)
+		    this.atts = '';
+		    this.td_column_number = '';
+		    this.td_current_page = 1; //
+		    this.post_count = 0; //from wp
+		    this.found_posts = 0; //from wp
+		    this.max_num_pages = 0; //from wp
+		    this.td_filter_value = ''; //current live filter value
+		    this.is_ajax_running = false;
+		    this.td_user_action = ''; // load more or infinite loader (used by the animation)
+		    this.header_color = '';
+		    this.ajax_pagination_infinite_stop = ''; //show load more at page x
+	    }
+
+
+        // td_js_generator - mini detector
+        (function(){
+            var htmlTag = document.getElementsByTagName("html")[0];
+
+	        if ( navigator.userAgent.indexOf("MSIE 10.0") > -1 ) {
+                htmlTag.className += ' ie10';
+            }
+
+            if ( !!navigator.userAgent.match(/Trident.*rv\:11\./) ) {
+                htmlTag.className += ' ie11';
+            }
+
+	        if ( navigator.userAgent.indexOf("Edge") > -1 ) {
+                htmlTag.className += ' ieEdge';
+            }
+
+            if ( /(iPad|iPhone|iPod)/g.test(navigator.userAgent) ) {
+                htmlTag.className += ' td-md-is-ios';
+            }
+
+            var user_agent = navigator.userAgent.toLowerCase();
+            if ( user_agent.indexOf("android") > -1 ) {
+                htmlTag.className += ' td-md-is-android';
+            }
+
+            if ( -1 !== navigator.userAgent.indexOf('Mac OS X')  ) {
+                htmlTag.className += ' td-md-is-os-x';
+            }
+
+            if ( /chrom(e|ium)/.test(navigator.userAgent.toLowerCase()) ) {
+               htmlTag.className += ' td-md-is-chrome';
+            }
+
+            if ( -1 !== navigator.userAgent.indexOf('Firefox') ) {
+                htmlTag.className += ' td-md-is-firefox';
+            }
+
+            if ( -1 !== navigator.userAgent.indexOf('Safari') && -1 === navigator.userAgent.indexOf('Chrome') ) {
+                htmlTag.className += ' td-md-is-safari';
+            }
+
+            if( -1 !== navigator.userAgent.indexOf('IEMobile') ){
+                htmlTag.className += ' td-md-is-iemobile';
+            }
+
+        })();
+
+
+
+
+        var tdLocalCache = {};
+
+        ( function () {
+            "use strict";
+
+            tdLocalCache = {
+                data: {},
+                remove: function (resource_id) {
+                    delete tdLocalCache.data[resource_id];
+                },
+                exist: function (resource_id) {
+                    return tdLocalCache.data.hasOwnProperty(resource_id) && tdLocalCache.data[resource_id] !== null;
+                },
+                get: function (resource_id) {
+                    return tdLocalCache.data[resource_id];
+                },
+                set: function (resource_id, cachedData) {
+                    tdLocalCache.remove(resource_id);
+                    tdLocalCache.data[resource_id] = cachedData;
+                }
+            };
+        })();
+
+    
+    
+var td_viewport_interval_list=[{"limitBottom":767,"sidebarWidth":228},{"limitBottom":1018,"sidebarWidth":300},{"limitBottom":1140,"sidebarWidth":324}];
+var td_animation_stack_effect="type0";
+var tds_animation_stack=true;
+var td_animation_stack_specific_selectors=".entry-thumb, img";
+var td_animation_stack_general_selectors=".td-animation-stack img, .td-animation-stack .entry-thumb, .post img";
+var tdc_is_installed="yes";
+var td_ajax_url="https:\/\/oox.space\/wp-admin\/admin-ajax.php?td_theme_name=Newspaper&v=9.7";
+var td_get_template_directory_uri="https:\/\/oox.space\/wp-content\/themes\/Newspaper";
+var tds_snap_menu="smart_snap_always";
+var tds_logo_on_sticky="";
+var tds_header_style="2";
+var td_please_wait="\u041f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u043f\u043e\u0434\u043e\u0436\u0434\u0438\u0442\u0435...";
+var td_email_user_pass_incorrect="\u041d\u0435\u0432\u0435\u0440\u043d\u043e\u0435 \u0438\u043c\u044f \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f \u0438\u043b\u0438 \u043f\u0430\u0440\u043e\u043b\u044c!";
+var td_email_user_incorrect="\u041d\u0435\u0432\u0435\u0440\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u043e\u0439 \u043f\u043e\u0447\u0442\u044b \u0438\u043b\u0438 \u043f\u0430\u0440\u043e\u043b\u044c!";
+var td_email_incorrect="\u041d\u0435\u0432\u0435\u0440\u043d\u044b\u0439 \u0430\u0434\u0440\u0435\u0441 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u043e\u0439 \u043f\u043e\u0447\u0442\u044b!";
+var tds_more_articles_on_post_enable="";
+var tds_more_articles_on_post_time_to_wait="";
+var tds_more_articles_on_post_pages_distance_from_top=0;
+var tds_theme_color_site_wide="#4db2ec";
+var tds_smart_sidebar="enabled";
+var tdThemeName="Newspaper";
+var td_magnific_popup_translation_tPrev="\u041f\u0440\u0435\u0434\u044b\u0434\u0443\u0449\u0438\u0439 (\u041a\u043d\u043e\u043f\u043a\u0430 \u0432\u043b\u0435\u0432\u043e)";
+var td_magnific_popup_translation_tNext="\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 (\u041a\u043d\u043e\u043f\u043a\u0430 \u0432\u043f\u0440\u0430\u0432\u043e)";
+var td_magnific_popup_translation_tCounter="%curr% \u0438\u0437 %total%";
+var td_magnific_popup_translation_ajax_tError="\u0421\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u0435 %url% \u043d\u0435 \u043c\u043e\u0436\u0435\u0442 \u0431\u044b\u0442\u044c \u0437\u0430\u0433\u0440\u0443\u0436\u0435\u043d\u043e.";
+var td_magnific_popup_translation_image_tError="\u0418\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435 #%curr% \u043d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c.";
+var tdsDateFormat="l, F j, Y";
+var tdDateNamesI18n={"month_names":["\u042f\u043d\u0432\u0430\u0440\u044c","\u0424\u0435\u0432\u0440\u0430\u043b\u044c","\u041c\u0430\u0440\u0442","\u0410\u043f\u0440\u0435\u043b\u044c","\u041c\u0430\u0439","\u0418\u044e\u043d\u044c","\u0418\u044e\u043b\u044c","\u0410\u0432\u0433\u0443\u0441\u0442","\u0421\u0435\u043d\u0442\u044f\u0431\u0440\u044c","\u041e\u043a\u0442\u044f\u0431\u0440\u044c","\u041d\u043e\u044f\u0431\u0440\u044c","\u0414\u0435\u043a\u0430\u0431\u0440\u044c"],"month_names_short":["\u042f\u043d\u0432","\u0424\u0435\u0432","\u041c\u0430\u0440","\u0410\u043f\u0440","\u041c\u0430\u0439","\u0418\u044e\u043d","\u0418\u044e\u043b","\u0410\u0432\u0433","\u0421\u0435\u043d","\u041e\u043a\u0442","\u041d\u043e\u044f","\u0414\u0435\u043a"],"day_names":["\u0412\u043e\u0441\u043a\u0440\u0435\u0441\u0435\u043d\u044c\u0435","\u041f\u043e\u043d\u0435\u0434\u0435\u043b\u044c\u043d\u0438\u043a","\u0412\u0442\u043e\u0440\u043d\u0438\u043a","\u0421\u0440\u0435\u0434\u0430","\u0427\u0435\u0442\u0432\u0435\u0440\u0433","\u041f\u044f\u0442\u043d\u0438\u0446\u0430","\u0421\u0443\u0431\u0431\u043e\u0442\u0430"],"day_names_short":["\u0412\u0441","\u041f\u043d","\u0412\u0442","\u0421\u0440","\u0427\u0442","\u041f\u0442","\u0421\u0431"]};
+var td_ad_background_click_link="";
+var td_ad_background_click_target="";
+</script>
+
+
+<!-- Header style compiled by theme -->
+
+<style>
+    
+.td-footer-wrapper::before {
+        background-image: url('https://oox.space/wp-content/uploads/2018/06/1CvjclMDwgh9AqED_h5UVCA.jpeg');
+    }
+
+    
+    .td-footer-wrapper::before {
+        background-repeat: repeat;
+    }
+
+    
+    .td-footer-wrapper::before {
+        background-size: 100% auto;
+    }
+
+    
+    .td-footer-wrapper::before {
+        background-position: center center;
+    }
+
+    
+    .td-footer-wrapper::before {
+        opacity: 0.3;
+    }
+</style>
+
+<script data-ad-client="ca-pub-7992315248312303" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                    "@type": "WebSite",
+                    "@id": "https://oox.space/",
+                    "name": "Домой"
+                }
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                    "item": {
+                    "@type": "WebPage",
+                    "@id": "https://oox.space/category/trading/",
+                    "name": "Трейдинг"
+                }
+            }
+            ,{
+                "@type": "ListItem",
+                "position": 3,
+                    "item": {
+                    "@type": "WebPage",
+                    "@id": "https://oox.space/trading/crypto-trade-bot-apitrade/",
+                    "name": "Бот для автоматической торговли криптовалютой"                                
+                }
+            }    
+        ]
+    }
+</script>
+<link rel="icon" href="https://oox.space/wp-content/uploads/2019/04/cropped-small-e1543892099780-1-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://oox.space/wp-content/uploads/2019/04/cropped-small-e1543892099780-1-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://oox.space/wp-content/uploads/2019/04/cropped-small-e1543892099780-1-180x180.png" />
+<meta name="msapplication-TileImage" content="https://oox.space/wp-content/uploads/2019/04/cropped-small-e1543892099780-1-270x270.png" />
+
+<!-- Button style compiled by theme -->
+
+<style>
+    
+</style>
+
+	<style id="tdw-css-placeholder"></style>	<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(55732195, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/55732195" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-154496307-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-154496307-1');
+</script>
+
+</head>
+
+<body class="post-template-default single single-post postid-813 single-format-standard crypto-trade-bot-apitrade global-block-template-1 single_template_7 td-animation-stack-type0 td-full-layout" itemscope="itemscope" itemtype="https://schema.org/WebPage">
+
+        <div class="td-scroll-up"><i class="td-icon-menu-up"></i></div>
+    
+    <div class="td-menu-background"></div>
+<div id="td-mobile-nav">
+    <div class="td-mobile-container">
+        <!-- mobile menu top section -->
+        <div class="td-menu-socials-wrap">
+            <!-- socials -->
+            <div class="td-menu-socials">
+                
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://www.facebook.com/ooxspace/" title="Facebook">
+                <i class="td-icon-font td-icon-facebook"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://t.me/ooxspace" title="Telegram">
+                <i class="td-icon-font td-icon-telegram"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://twitter.com/OoxSpace" title="Twitter">
+                <i class="td-icon-font td-icon-twitter"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://www.youtube.com/channel/UCpR1RISMzDkyf8h3URvlKgQ" title="Youtube">
+                <i class="td-icon-font td-icon-youtube"></i>
+            </a>
+        </span>            </div>
+            <!-- close button -->
+            <div class="td-mobile-close">
+                <a href="#"><i class="td-icon-close-mobile"></i></a>
+            </div>
+        </div>
+
+        <!-- login section -->
+        
+        <!-- menu section -->
+        <div class="td-mobile-content">
+            <div class="menu-%d0%ba%d0%bd%d0%be%d0%bf%d0%ba%d0%b8-%d0%b2-%d1%88%d0%b0%d0%bf%d0%ba%d0%b5-container"><ul id="menu-%d0%ba%d0%bd%d0%be%d0%bf%d0%ba%d0%b8-%d0%b2-%d1%88%d0%b0%d0%bf%d0%ba%d0%b5" class="td-mobile-main-menu"><li id="menu-item-470" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-first menu-item-470"><a href="https://oox.space">Главная</a></li>
+<li id="menu-item-292" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-292"><a href="https://oox.space/category/x/">Биржи</a></li>
+<li id="menu-item-289" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-289"><a href="https://oox.space/category/coins/">Криптовалюты</a></li>
+<li id="menu-item-718" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-718"><a href="https://oox.space/category/analytics/">Аналитика</a></li>
+<li id="menu-item-1184" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1184"><a href="https://oox.space/category/trading/">Трейдинг</a></li>
+<li id="menu-item-2826" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2826"><a href="https://oox.space/category/guides/">Руководства</a></li>
+<li id="menu-item-2827" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2827"><a href="https://oox.space/category/mining/">Майнинг</a></li>
+<li id="menu-item-849" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-849"><a href="https://oox.space/hr/">Стать автором</a></li>
+</ul></div>        </div>
+    </div>
+
+    <!-- register/login section -->
+    </div>    <div class="td-search-background"></div>
+<div class="td-search-wrap-mob">
+	<div class="td-drop-down-search" aria-labelledby="td-header-search-button">
+		<form method="get" class="td-search-form" action="https://oox.space/">
+			<!-- close button -->
+			<div class="td-search-close">
+				<a href="#"><i class="td-icon-close-mobile"></i></a>
+			</div>
+			<div role="search" class="td-search-input">
+				<span>Поиск</span>
+				<input id="td-header-search-mob" type="text" value="" name="s" autocomplete="off" />
+			</div>
+		</form>
+		<div id="td-aj-search-mob"></div>
+	</div>
+</div>
+
+    <div id="td-outer-wrap" class="td-theme-wrap">
+    
+        
+            <div class="tdc-header-wrap ">
+
+            <!--
+Header style 2
+-->
+
+
+<div class="td-header-wrap td-header-style-2 ">
+    
+    <div class="td-header-top-menu-full td-container-wrap ">
+        <div class="td-container td-header-row td-header-top-menu">
+            
+    <div class="top-bar-style-1">
+        
+<div class="td-header-sp-top-menu">
+
+
+	        <div class="td_data_time">
+            <div style="visibility:hidden;">
+
+                Четверг, 14 апреля, 2022
+            </div>
+        </div>
+    </div>
+        <div class="td-header-sp-top-widget">
+    
+    
+        
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://www.facebook.com/ooxspace/" title="Facebook">
+                <i class="td-icon-font td-icon-facebook"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://t.me/ooxspace" title="Telegram">
+                <i class="td-icon-font td-icon-telegram"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://twitter.com/OoxSpace" title="Twitter">
+                <i class="td-icon-font td-icon-twitter"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://www.youtube.com/channel/UCpR1RISMzDkyf8h3URvlKgQ" title="Youtube">
+                <i class="td-icon-font td-icon-youtube"></i>
+            </a>
+        </span>    </div>    </div>
+
+<!-- LOGIN MODAL -->
+        </div>
+    </div>
+
+    <div class="td-header-menu-wrap-full td-container-wrap ">
+        
+        <div class="td-header-menu-wrap td-header-gradient ">
+            <div class="td-container td-header-row td-header-main-menu">
+                <div id="td-header-menu" role="navigation">
+    <div id="td-top-mobile-toggle"><a href="#"><i class="td-icon-font td-icon-mobile"></i></a></div>
+    <div class="td-main-menu-logo td-logo-in-header">
+        		<a class="td-mobile-logo td-sticky-disable" href="https://oox.space/">
+			<img src="https://oox.space/wp-content/uploads/2018/06/oox-space-logo-1.svg" alt="OOX.SPACE" title="OOX.SPACE"/>
+		</a>
+			<a class="td-header-logo td-sticky-disable" href="https://oox.space/">
+			<img class="td-retina-data" data-retina="https://oox.space/wp-content/uploads/2018/06/oox-space-logo-1.svg" src="https://oox.space/wp-content/uploads/2018/09/logo-1001-241.png" alt="OOX.SPACE" title="OOX.SPACE"/>
+		</a>
+	    </div>
+    <div class="menu-%d0%ba%d0%bd%d0%be%d0%bf%d0%ba%d0%b8-%d0%b2-%d1%88%d0%b0%d0%bf%d0%ba%d0%b5-container"><ul id="menu-%d0%ba%d0%bd%d0%be%d0%bf%d0%ba%d0%b8-%d0%b2-%d1%88%d0%b0%d0%bf%d0%ba%d0%b5-1" class="sf-menu"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-first td-menu-item td-normal-menu menu-item-470"><a href="https://oox.space">Главная</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category td-menu-item td-normal-menu menu-item-292"><a href="https://oox.space/category/x/">Биржи</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category td-menu-item td-normal-menu menu-item-289"><a href="https://oox.space/category/coins/">Криптовалюты</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category td-menu-item td-normal-menu menu-item-718"><a href="https://oox.space/category/analytics/">Аналитика</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent td-menu-item td-normal-menu menu-item-1184"><a href="https://oox.space/category/trading/">Трейдинг</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category td-menu-item td-normal-menu menu-item-2826"><a href="https://oox.space/category/guides/">Руководства</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category td-menu-item td-normal-menu menu-item-2827"><a href="https://oox.space/category/mining/">Майнинг</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page td-menu-item td-normal-menu menu-item-849"><a href="https://oox.space/hr/">Стать автором</a></li>
+</ul></div></div>
+
+
+    <div class="header-search-wrap">
+        <div class="td-search-btns-wrap">
+            <a id="td-header-search-button" href="#" role="button" class="dropdown-toggle " data-toggle="dropdown"><i class="td-icon-search"></i></a>
+            <a id="td-header-search-button-mob" href="#" class="dropdown-toggle " data-toggle="dropdown"><i class="td-icon-search"></i></a>
+        </div>
+
+        <div class="td-drop-down-search" aria-labelledby="td-header-search-button">
+            <form method="get" class="td-search-form" action="https://oox.space/">
+                <div role="search" class="td-head-form-search-wrap">
+                    <input id="td-header-search" type="text" value="" name="s" autocomplete="off" /><input class="wpb_button wpb_btn-inverse btn" type="submit" id="td-header-search-top" value="Поиск" />
+                </div>
+            </form>
+            <div id="td-aj-search"></div>
+        </div>
+    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="td-banner-wrap-full td-container-wrap ">
+        <div class="td-container td-header-row td-header-header">
+            <div class="td-header-sp-logo">
+                        <a class="td-main-logo" href="https://oox.space/">
+            <img class="td-retina-data" data-retina="https://oox.space/wp-content/uploads/2018/06/oox-space-logo-1.svg" src="https://oox.space/wp-content/uploads/2018/09/logo-1001-241.png" alt="OOX.SPACE" title="OOX.SPACE"/>
+            <span class="td-visual-hidden">ooX.Space</span>
+        </a>
+                </div>
+                            <div class="td-header-sp-recs">
+                    <div class="td-header-rec-wrap">
+    <div class="td-a-rec td-a-rec-id-header  td_uid_1_6257fc3abb670_rand td_block_template_1">
+<style>
+/* custom css */
+.td_uid_1_6257fc3abb670_rand.td-a-rec-img {
+				    text-align: left;
+				}
+				.td_uid_1_6257fc3abb670_rand.td-a-rec-img img {
+                    margin: 0 auto 0 0;
+                }
+</style><a target="_blank" href="https://www.binance.com/" onclick="this.href='https://www.binance.com/ru/register?ref=38739789'"><img class="alignnone size-full wp-image-432" src="https://oox.space/wp-content/uploads/2019/04/BINANCE.gif" alt="binance" width="970" height="90" /></a></div>
+</div>                </div>
+                    </div>
+    </div>
+
+</div>
+            </div>
+
+            
+
+<article id="post-813" class="td-post-template-7 post-813 post type-post status-publish format-standard has-post-thumbnail category-featured category-trading tag-bitcoin tag-22 tag-19 tag-trading td-container-wrap" itemscope itemtype="https://schema.org/Article">
+
+    <div class="td-full-screen-header-image-wrap">
+
+        <div class="td-container td-post-header">
+            <div class="td-crumb-container"><div class="entry-crumbs"><span><a title="" class="entry-crumb" href="https://oox.space/">Домой</a></span> <i class="td-icon-right td-bread-sep"></i> <span><a title="Просмотреть все посты в Трейдинг" class="entry-crumb" href="https://oox.space/category/trading/">Трейдинг</a></span> <i class="td-icon-right td-bread-sep td-bred-no-url-last"></i> <span class="td-bred-no-url-last">Бот для автоматической торговли криптовалютой</span></div></div>
+
+	        <div class="td-post-header-holder">
+
+		        <div class="td-parallax-header">
+
+	                <header class="td-post-title">
+
+	                    <ul class="td-category"><li class="entry-category"><a  style="background-color:rgba(115,26,178,0.69); color:#fff; border-color:rgba(115,26,178,0.69);" href="https://oox.space/category/trading/">Трейдинг</a></li></ul>	                    <h1 class="entry-title">Бот для автоматической торговли криптовалютой</h1>
+
+	                    	                        <p class="td-post-sub-title">Бот для торговли криптовалютой - это сервис, который совершает множество микросделок, тем самым увеличивая ваш депозит. Описание самого удобного и простого торгового робота, который можно себе представить.</p>
+	                    
+	                    <div class="td-module-meta-info">
+	                        <div class="td-post-author-name"><div class="td-author-by">От</div> <a href="https://oox.space/author/pryanik/">Захар Пряников</a></div>	                        	                        <div class="td-post-views"><i class="td-icon-views"></i><span class="td-nr-views-813">5417</span></div>	                        <div class="td-post-comments"><a href="https://oox.space/trading/crypto-trade-bot-apitrade/#comments"><i class="td-icon-comments"></i>5</a></div>	                    </div>
+
+	                </header>
+
+		            <div class="td-read-down"><a href="#"><i class="td-icon-read-down"></i></a></div>
+		        </div>
+            </div>
+
+        </div>
+
+        <div id="td-full-screen-header-image" class="td-image-gradient-style7">
+            <img class="td-backstretch" src="https://oox.space/wp-content/uploads/2018/05/5MSNI1ymNxA.jpg">
+        </div>
+    </div>
+
+    <div class="td-container">
+        <div class="td-pb-row">
+                                    <div class="td-pb-span8 td-main-content" role="main">
+                            <div class="td-ss-main-content">
+                                
+    <div class="td-post-sharing-top"><div id="td_social_sharing_article_top" class="td-post-sharing td-ps-bg td-ps-notext td-post-sharing-style1 "><div class="td-post-sharing-visible"><div class="td-social-sharing-button td-social-sharing-button-js td-social-handler td-social-share-text">
+                                        <div class="td-social-but-icon"><i class="td-icon-share"></i></div>
+                                        <div class="td-social-but-text">Поделиться</div>
+                                    </div><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-facebook" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Foox.space%2Ftrading%2Fcrypto-trade-bot-apitrade%2F">
+                                        <div class="td-social-but-icon"><i class="td-icon-facebook"></i></div>
+                                        <div class="td-social-but-text">Facebook</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-twitter" href="https://twitter.com/intent/tweet?text=%D0%91%D0%BE%D1%82+%D0%B4%D0%BB%D1%8F+%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9+%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8+%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9&url=https%3A%2F%2Foox.space%2Ftrading%2Fcrypto-trade-bot-apitrade%2F&via=ooX.Space">
+                                        <div class="td-social-but-icon"><i class="td-icon-twitter"></i></div>
+                                        <div class="td-social-but-text">Twitter</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-telegram" href="https://telegram.me/share/url?url=https://oox.space/trading/crypto-trade-bot-apitrade/&text=%D0%91%D0%BE%D1%82+%D0%B4%D0%BB%D1%8F+%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9+%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8+%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9">
+                                        <div class="td-social-but-icon"><i class="td-icon-telegram"></i></div>
+                                        <div class="td-social-but-text">Telegram</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-vk" href="https://vk.com/share.php?url=https://oox.space/trading/crypto-trade-bot-apitrade/">
+                                        <div class="td-social-but-icon"><i class="td-icon-vk"></i></div>
+                                        <div class="td-social-but-text">VK</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-googleplus" href="https://plus.google.com/share?url=https://oox.space/trading/crypto-trade-bot-apitrade/">
+                                        <div class="td-social-but-icon"><i class="td-icon-googleplus"></i></div>
+                                        <div class="td-social-but-text">Google+</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-whatsapp" href="whatsapp://send?text=%D0%91%D0%BE%D1%82+%D0%B4%D0%BB%D1%8F+%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9+%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8+%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9 %0A%0A https://oox.space/trading/crypto-trade-bot-apitrade/">
+                                        <div class="td-social-but-icon"><i class="td-icon-whatsapp"></i></div>
+                                        <div class="td-social-but-text">WhatsApp</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-reddit" href="https://reddit.com/submit?url=https://oox.space/trading/crypto-trade-bot-apitrade/&title=%D0%91%D0%BE%D1%82+%D0%B4%D0%BB%D1%8F+%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9+%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8+%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9">
+                                        <div class="td-social-but-icon"><i class="td-icon-reddit"></i></div>
+                                        <div class="td-social-but-text">ReddIt</div>
+                                    </a></div><div class="td-social-sharing-hidden"><ul class="td-pulldown-filter-list"></ul><a class="td-social-sharing-button td-social-handler td-social-expand-tabs" href="#" data-block-uid="td_social_sharing_article_top">
+                                    <div class="td-social-but-icon"><i class="td-icon-plus td-social-expand-tabs-icon"></i></div>
+                                </a></div></div></div>
+
+    <div class="td-post-content">
+        
+ <!-- A generated by theme --> 
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><div class="td-g-rec td-g-rec-id-content_top td_uid_2_6257fc3ac106e_rand td_block_template_1 ">
+
+<style>
+/* custom css */
+.td_uid_2_6257fc3ac106e_rand.td-a-rec-img {
+				    text-align: left;
+				}
+				.td_uid_2_6257fc3ac106e_rand.td-a-rec-img img {
+                    margin: 0 auto 0 0;
+                }
+</style><script type="text/javascript">
+var td_screen_width = window.innerWidth;
+
+                    if ( td_screen_width >= 1140 ) {
+                        /* large monitors */
+                        document.write('<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-7992315248312303" data-ad-slot="8489995196"></ins>');
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    }
+            
+	                    if ( td_screen_width >= 1019  && td_screen_width < 1140 ) {
+	                        /* landscape tablets */
+                        document.write('<ins class="adsbygoogle" style="display:inline-block;width:468px;height:60px" data-ad-client="ca-pub-7992315248312303" data-ad-slot="8489995196"></ins>');
+	                        (adsbygoogle = window.adsbygoogle || []).push({});
+	                    }
+	                
+                    if ( td_screen_width >= 768  && td_screen_width < 1019 ) {
+                        /* portrait tablets */
+                        document.write('<ins class="adsbygoogle" style="display:inline-block;width:468px;height:60px" data-ad-client="ca-pub-7992315248312303" data-ad-slot="8489995196"></ins>');
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    }
+                
+                    if ( td_screen_width < 768 ) {
+                        /* Phones */
+                        document.write('<ins class="adsbygoogle" style="display:inline-block;width:320px;height:100px" data-ad-client="ca-pub-7992315248312303" data-ad-slot="8489995196"></ins>');
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    }
+                </script>
+</div>
+
+ <!-- end A --> 
+
+<p>Вы наверное уже кое-что слышали про автоматизацию торговли криптовалютой на бирже. Обычно в таких случаях речь идет о каком-то сыром алгоритме, который требует настройки и для его работы нужно самостоятельно настроить Linux и <a href="https://profitserver.ru/vds/" target="_blank" rel="noopener noreferrer">арендовать виртуальный сервер</a>. Такие алгоритмы продаются на анонимных форумах и естественно, что не будет никакой техподдержки и гарантий. Задача продавца &#8212; получить с вас деньги один раз и оставить наедине со своим &#171;продуктом&#187;</p>
+<div id="ez-toc-container" class="ez-toc-v2_0_17 counter-hierarchy ez-toc-transparent">
+<div class="ez-toc-title-container">
+<p class="ez-toc-title">Содержание статьи</p>
+<span class="ez-toc-title-toggle"><a class="ez-toc-pull-right ez-toc-btn ez-toc-btn-xs ez-toc-btn-default ez-toc-toggle" style="display: none;"><i class="ez-toc-glyphicon ez-toc-icon-toggle"></i></a></span></div>
+<nav><ul class="ez-toc-list ez-toc-list-level-1"><li class="ez-toc-page-1 ez-toc-heading-level-2"><a class="ez-toc-link ez-toc-heading-1" href="#%D0%91%D0%BE%D1%82_%D0%B4%D0%BB%D1%8F_%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9_%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8_%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9_%D0%BD%D0%B0_%D0%B1%D0%B8%D1%80%D0%B6%D0%B5" title="Бот для автоматической торговли криптовалютой на бирже">Бот для автоматической торговли криптовалютой на бирже</a></li><li class="ez-toc-page-1 ez-toc-heading-level-2"><a class="ez-toc-link ez-toc-heading-2" href="#%D0%A2%D1%80%D0%B8_%D1%81%D1%82%D1%80%D0%B0%D1%82%D0%B5%D0%B3%D0%B8%D0%B8_%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9_%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8_%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9" title="Три стратегии автоматической торговли криптовалютой">Три стратегии автоматической торговли криптовалютой</a><ul class="ez-toc-list-level-3"><li class="ez-toc-heading-level-3"><a class="ez-toc-link ez-toc-heading-3" href="#%D0%9A%D0%BE%D0%BB%D1%8C%D1%86%D0%B0_%D0%B2%D0%BD%D1%83%D1%82%D1%80%D0%B8%D0%B1%D0%B8%D1%80%D0%B6%D0%B5%D0%B2%D0%BE%D0%B9_%D0%B0%D1%80%D0%B1%D0%B8%D1%82%D1%80%D0%B0%D0%B6" title="Кольца (внутрибиржевой арбитраж)">Кольца (внутрибиржевой арбитраж)</a></li><li class="ez-toc-page-1 ez-toc-heading-level-3"><a class="ez-toc-link ez-toc-heading-4" href="#%D0%92%D0%BE%D0%BB%D0%BD%D1%8B_%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9_%D1%82%D1%80%D0%B5%D0%B9%D0%B4%D0%B8%D0%BD%D0%B3" title="Волны (автоматический трейдинг)">Волны (автоматический трейдинг)</a></li><li class="ez-toc-page-1 ez-toc-heading-level-3"><a class="ez-toc-link ez-toc-heading-5" href="#%D0%97%D0%B5%D1%80%D0%BA%D0%B0%D0%BB%D0%B0" title="Зеркала">Зеркала</a></li></ul></li><li class="ez-toc-page-1 ez-toc-heading-level-2"><a class="ez-toc-link ez-toc-heading-6" href="#%D0%97%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5" title="Заключение">Заключение</a></li></ul></nav></div>
+<h2><span class="ez-toc-section" id="%D0%91%D0%BE%D1%82_%D0%B4%D0%BB%D1%8F_%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9_%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8_%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9_%D0%BD%D0%B0_%D0%B1%D0%B8%D1%80%D0%B6%D0%B5"></span>Бот для автоматической торговли криптовалютой на бирже<span class="ez-toc-section-end"></span></h2>
+<p>Сегодня речь пойдет о немного другой технологии, разработчики которой заинтересованы в постоянной прибыли, так как комиссия за сервис берется только с удачных сделок. Фактически, можно сказать, что вы берете этот алгоритм в аренду и платите за него только тогда, когда он приносит вам прибыль Это самый лучший и простой в настройке бот для автоматической торговли криптовалютой, которым мне довелось пользоваться. Данный торговый алгоритм автоматизации подключается по API  и активно увеличивает ваш баланс в BTC и ETH на криптовалютных биржах, даже когда вы спите.</p>
+<p>Главные преимущества торгового бота <a href="https://www.apitrade.pro/oox.htm" target="_blank" rel="noopener noreferrer">Apitrade</a>:</p>
+<ul>
+<li>Работает на своих серверах, которые физически расположены близко к серверам бирж</li>
+<li>Несколько стратегий заработка на выбор</li>
+<li>Комиссия за сервис берется только с удачных сделок</li>
+<li>Сервис компенсирует вероятные потери от форс мажора</li>
+<li>Для тестирования на баланс зачисляют <strong>16 USD</strong> для тестовых сделок</li>
+<li>Работает с криптобиржами: <a href="/binance" target="_blank" rel="noopener noreferrer">Binance,</a> <a href="/huobi" target="_blank" rel="noopener noreferrer">Huobi</a>, <a href="/kucoin" target="_blank" rel="noopener noreferrer">Kucoin</a>, Okex, <a href="/bitmex" target="_blank" rel="noopener noreferrer">BitMEX</a></li>
+</ul>
+<p style="text-align: center;"><a href="https://www.apitrade.pro/oox.htm" target="_blank" rel="noopener noreferrer"><span class="td_btn td_btn_md td_shadow_btn" style="color: #000000;">Перейти на сайт Apitrade и получить бонус $16</span></a></p>
+<h2><span class="ez-toc-section" id="%D0%A2%D1%80%D0%B8_%D1%81%D1%82%D1%80%D0%B0%D1%82%D0%B5%D0%B3%D0%B8%D0%B8_%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9_%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8_%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9"></span>Три стратегии автоматической торговли криптовалютой<span class="ez-toc-section-end"></span></h2>
+<p>Сервис автоматизации <a href="https://www.apitrade.pro/oox.htm">Apitrade</a> использует три независимых стратегии автоматического заработка на бирже. Вы можете включать их отдельно или сразу все три одновременно. У стратегий есть некоторый уровень настроек, но даже не вникая, вы можете просто добавить аккаунт биржи, включить бота и начать зарабатывать криптовалюту на автомате. Какие алгоритмы автоматического заработка есть в системе:</p>
+<h3><span class="ez-toc-section" id="%D0%9A%D0%BE%D0%BB%D1%8C%D1%86%D0%B0_%D0%B2%D0%BD%D1%83%D1%82%D1%80%D0%B8%D0%B1%D0%B8%D1%80%D0%B6%D0%B5%D0%B2%D0%BE%D0%B9_%D0%B0%D1%80%D0%B1%D0%B8%D1%82%D1%80%D0%B0%D0%B6"></span>Кольца (внутрибиржевой арбитраж)<span class="ez-toc-section-end"></span></h3>
+<p>В данном алгоритме автоматической торговли криптовалютой, бот ищет монеты, курс которых резко меняется по отношению к какой-то одной криптовалюте, но не успевает выровняться по отношению к другим монетам. В этот момент бот моментально совершает несколько сделок, как бы прогоняя коин по кольцу и выравнивая рынок. Таким образом, купив монету дешево по отношению к первой, он выгодно продаст ее по отношению ко второй, а затем обменяет на исходную монету. Например BTC-&gt;ETH-&gt;<a href="https://oox.space/coins/eos/" target="_blank" rel="noopener noreferrer">EOS</a>-&gt;BTC.</p>
+<p>Подобные операции невозможно делать вручную, так как нужно одновременно следить за курсом нескольких сотен криптовалют в реальном времени и молниеносно принимать решения. Торговый бот же делает это автоматически за секунду и без вашего участия.</p>
+<h3><span class="ez-toc-section" id="%D0%92%D0%BE%D0%BB%D0%BD%D1%8B_%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9_%D1%82%D1%80%D0%B5%D0%B9%D0%B4%D0%B8%D0%BD%D0%B3"></span>Волны (автоматический трейдинг)<span class="ez-toc-section-end"></span></h3>
+<p>Торговый бот совершает сделки внутри одной пары. Анализируя поведение рынка, он прогнозирует низкие точки входа и высокие точки продажи. Как заявляют разработчики, данный торговый алгоритм самостоятельно обучается наблюдая динамику на каждой конкретной паре. Таким образом, бот для торговли криптовалютой может находить паттерны, присущие именно этой торговой паре и на автомате зарабатывать для вас криптовалюту.</p>
+<p>Скрипт автоматизации, с торговым алгоритмом &#171;Волны&#187;, может совершать несколько сделок в секунду, что обычному живому трейдеру недоступно. Средняя суточная прибыль, при использовании данного алгоритма автоматизации составляет 0,5-3%. То есть если у вас на балансе биржи был 1 биткоин, то через сутки там будет 1,03 BTC. А через месяц будет сумма близкая к двум биткоинам.</p>
+<p>Бот для торговли криптовалютой работает 24 часа, совершая сотни небольших сделок в сутки, принося стабильную прибыль. Если вы храните монеты на криптовалютной бирже, то подключение такого бота &#8212; это отличный способ увеличить депозит без вложений.</p>
+<h4>Минусы алгоритма &#171;Волны&#187;</h4>
+<p>Из минусов алгоритма можно заметить минимальный баланс для запуска, который равняется 0.02 BTC (рекомендуемый размер депозита 0.1 BTC) и вероятность того, что по некоторым монетам сделка может длиться больше ожидаемого. В таком случае появляется кнопка Panic Sell, которая приведет к принудительному закрытию сделки и продажи криптовалюты. Разработчики настоятельно не рекомендуют прибегать к ручному закрытию сделки, так как скрипт автоматизации торговли закроет сделку в плюс позже без вашего участия.</p>
+<p><a href="https://oox.space/wp-content/uploads/2018/05/apitrade1.jpg"><img loading="lazy" class="size-full wp-image-815 aligncenter" src="https://oox.space/wp-content/uploads/2018/05/apitrade1.jpg" alt="Автоматическая торговля криптовалютой" width="2188" height="550" srcset="https://oox.space/wp-content/uploads/2018/05/apitrade1.jpg 2188w, https://oox.space/wp-content/uploads/2018/05/apitrade1-300x75.jpg 300w, https://oox.space/wp-content/uploads/2018/05/apitrade1-768x193.jpg 768w, https://oox.space/wp-content/uploads/2018/05/apitrade1-1024x257.jpg 1024w, https://oox.space/wp-content/uploads/2018/05/apitrade1-696x175.jpg 696w, https://oox.space/wp-content/uploads/2018/05/apitrade1-1068x268.jpg 1068w, https://oox.space/wp-content/uploads/2018/05/apitrade1-1671x420.jpg 1671w, https://oox.space/wp-content/uploads/2018/05/apitrade1-1920x483.jpg 1920w" sizes="(max-width: 2188px) 100vw, 2188px" /></a></p>
+<p>На данном скриншоте видно, что бот для торговли криптовалютой открыл три сделки, усиливая позицию по монете, ожидая, что цена достигнет прогнозируемой цели. Как видно, цена превысила целевое значение, но бот не продает, ожидая, что цена пойдет еще выше. Позже сделка была закрыта с прибылью 3%.</p>
+<p style="text-align: center;"><a href="https://www.apitrade.pro/oox.htm" target="_blank" rel="noopener noreferrer"><span class="td_btn td_btn_md td_shadow_btn" style="color: #000000;">Перейти на сайт Apitrade и получить бонус $16</span></a></p>
+<p>Вот как выглядит отчет по закрытым сделкам. В разделе &#171;Доход&#187; указана прибыль в USD по сделке, процент прибыли и зеленым выделена возможная годовая прибыль, при такой схеме работы.</p>
+<p><a href="https://oox.space/wp-content/uploads/2018/05/apitrade2.jpg"><img loading="lazy" class="aligncenter wp-image-817 size-full" src="https://oox.space/wp-content/uploads/2018/05/apitrade2.jpg" alt="Бот для торговли криптовалютой" width="1000" height="570" srcset="https://oox.space/wp-content/uploads/2018/05/apitrade2.jpg 1000w, https://oox.space/wp-content/uploads/2018/05/apitrade2-300x171.jpg 300w, https://oox.space/wp-content/uploads/2018/05/apitrade2-768x438.jpg 768w, https://oox.space/wp-content/uploads/2018/05/apitrade2-696x397.jpg 696w, https://oox.space/wp-content/uploads/2018/05/apitrade2-737x420.jpg 737w" sizes="(max-width: 1000px) 100vw, 1000px" /></a></p>
+<h3><span class="ez-toc-section" id="%D0%97%D0%B5%D1%80%D0%BA%D0%B0%D0%BB%D0%B0"></span>Зеркала<span class="ez-toc-section-end"></span></h3>
+<p>Другими словами эта стратегия называется <strong>пространственный арбитраж</strong>. Для ее работы необходимо подключить бота сразу к нескольким биржам, благо данный сервис работает с <a href="https://oox.space/x/luchshie-birji-kriptovalut/" target="_blank" rel="noopener noreferrer">лучшими криптовалютными биржами</a> (например <a href="/binance" target="_blank" rel="noopener noreferrer">Binance</a> и <a href="/huobi" target="_blank" rel="noopener noreferrer">Huobi</a>), где очень высокие объемы торгов. Бот для торговли криптовалютой анализирует курсы всех монет одновременно на нескольких биржах, и когда возникает существенный прекос в цене (монета сильно просела на одной бирже, а на других нет), он моментально покупает ее, продавая на другой бирже такое же количество в эквиваленте биткоина или эфира.</p>
+<p>В данном случае будет увеличиваться общее количество монет, при этом на биржах их количеству будет изменяться. Таким образом можно получить прирост по интересующим вас криптовалютам. Минимальный депозит для запуска работы алгоритма автоматизации &#171;Зеркала&#187; &#8212; всего 10 USD в каждой валюте, которая участвует в торгах.</p>
+<p>Кроме этого, в аккаунте сервиса бесплатно доступен отчет &#171;Арбитражные возможности&#187;, в котором удобно собирается статистика в реальном времени. Данная информация поможет организовать пространственный арбитраж или межбиржевой арбитраж.</p>
+<h2><span class="ez-toc-section" id="%D0%97%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5"></span>Заключение<span class="ez-toc-section-end"></span></h2>
+<p>Бот для торговли криптовалютой Apitrade &#8212; это инструмент не требующий настроек. Для того, чтобы начать зарабатывать биткоин или эфир на автомате, достаточно подключить одну или несколько бирж через API. Также следует позаботиться о том, чтобы на бирже был депозит минимум 0.02 BTC. При регистрации вы получите приветственный <strong>бонус от проекта в виде 16$</strong>, которые можно потратить на оплату прибыльных сделок.</p>
+<p>Интерфейс сервиса очень дружелюбный и будет понятен пользователю среднего уровня. Также разработчики предусмотрительно составили подробнейший ФАК.</p>
+<p>За три дня тестирования мной бота для трейдинга, я получил профит более 0.001 BTC, при изначальном балансе 0.02 BTC. Этот торговый алгоритм поможет тем, кто хранит крипту на бирже. Ваш депозит будет понемногу увеличиваться. По-моему неплохо зарабатывать биткоин на автомате. А вы как считаете?</p>
+<p style="text-align: center;"><a href="https://www.apitrade.pro/oox.htm" target="_blank" rel="noopener noreferrer"><span class="td_btn td_btn_md td_shadow_btn" style="color: #000000;">Перейти на сайт Apitrade и получить бонус $16</span></a></p>
+<div class="td-a-rec td-a-rec-id-content_bottom  td_uid_3_6257fc3ac1284_rand td_block_template_1">
+<style>
+/* custom css */
+.td_uid_3_6257fc3ac1284_rand.td-a-rec-img {
+				    text-align: left;
+				}
+				.td_uid_3_6257fc3ac1284_rand.td-a-rec-img img {
+                    margin: 0 auto 0 0;
+                }
+</style><!-- Yandex.RTB R-A-460023-1 -->
+<div id="yandex_rtb_R-A-460023-1"></div>
+<script type="text/javascript">
+    (function(w, d, n, s, t) {
+        w[n] = w[n] || [];
+        w[n].push(function() {
+            Ya.Context.AdvManager.render({
+                blockId: "R-A-460023-1",
+                renderTo: "yandex_rtb_R-A-460023-1",
+                async: true
+            });
+        });
+        t = d.getElementsByTagName("script")[0];
+        s = d.createElement("script");
+        s.type = "text/javascript";
+        s.src = "//an.yandex.ru/system/context.js";
+        s.async = true;
+        t.parentNode.insertBefore(s, t);
+    })(this, this.document, "yandexContextAsyncCallbacks");
+</script></div>    </div>
+
+
+    <footer>
+                
+        <div class="td-post-source-tags">
+                        <ul class="td-tags td-post-small-box clearfix"><li><span>ТЕГИ</span></li><li><a href="https://oox.space/tag/bitcoin/">Bitcoin</a></li><li><a href="https://oox.space/tag/%d0%b0%d0%b2%d1%82%d0%be%d0%bc%d0%b0%d1%82%d0%b8%d0%b7%d0%b0%d1%86%d0%b8%d1%8f-%d1%82%d0%be%d1%80%d0%b3%d0%be%d0%b2%d0%bb%d0%b8/">автоматизация торговли</a></li><li><a href="https://oox.space/tag/%d0%b1%d0%b8%d1%80%d0%b6%d0%b8/">биржи</a></li><li><a href="https://oox.space/tag/trading/">трейдинг</a></li></ul>        </div>
+
+        <div class="td-post-sharing-bottom"><div id="td_social_sharing_article_bottom" class="td-post-sharing td-ps-bg td-ps-notext td-post-sharing-style1 "><div class="td-post-sharing-visible"><div class="td-social-sharing-button td-social-sharing-button-js td-social-handler td-social-share-text">
+                                        <div class="td-social-but-icon"><i class="td-icon-share"></i></div>
+                                        <div class="td-social-but-text">Поделиться</div>
+                                    </div><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-facebook" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Foox.space%2Ftrading%2Fcrypto-trade-bot-apitrade%2F">
+                                        <div class="td-social-but-icon"><i class="td-icon-facebook"></i></div>
+                                        <div class="td-social-but-text">Facebook</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-twitter" href="https://twitter.com/intent/tweet?text=%D0%91%D0%BE%D1%82+%D0%B4%D0%BB%D1%8F+%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9+%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8+%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9&url=https%3A%2F%2Foox.space%2Ftrading%2Fcrypto-trade-bot-apitrade%2F&via=ooX.Space">
+                                        <div class="td-social-but-icon"><i class="td-icon-twitter"></i></div>
+                                        <div class="td-social-but-text">Twitter</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-telegram" href="https://telegram.me/share/url?url=https://oox.space/trading/crypto-trade-bot-apitrade/&text=%D0%91%D0%BE%D1%82+%D0%B4%D0%BB%D1%8F+%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9+%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8+%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9">
+                                        <div class="td-social-but-icon"><i class="td-icon-telegram"></i></div>
+                                        <div class="td-social-but-text">Telegram</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-vk" href="https://vk.com/share.php?url=https://oox.space/trading/crypto-trade-bot-apitrade/">
+                                        <div class="td-social-but-icon"><i class="td-icon-vk"></i></div>
+                                        <div class="td-social-but-text">VK</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-googleplus" href="https://plus.google.com/share?url=https://oox.space/trading/crypto-trade-bot-apitrade/">
+                                        <div class="td-social-but-icon"><i class="td-icon-googleplus"></i></div>
+                                        <div class="td-social-but-text">Google+</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-whatsapp" href="whatsapp://send?text=%D0%91%D0%BE%D1%82+%D0%B4%D0%BB%D1%8F+%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9+%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8+%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9 %0A%0A https://oox.space/trading/crypto-trade-bot-apitrade/">
+                                        <div class="td-social-but-icon"><i class="td-icon-whatsapp"></i></div>
+                                        <div class="td-social-but-text">WhatsApp</div>
+                                    </a><a class="td-social-sharing-button td-social-sharing-button-js td-social-network td-social-reddit" href="https://reddit.com/submit?url=https://oox.space/trading/crypto-trade-bot-apitrade/&title=%D0%91%D0%BE%D1%82+%D0%B4%D0%BB%D1%8F+%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9+%D1%82%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BB%D0%B8+%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D0%BE%D0%B2%D0%B0%D0%BB%D1%8E%D1%82%D0%BE%D0%B9">
+                                        <div class="td-social-but-icon"><i class="td-icon-reddit"></i></div>
+                                        <div class="td-social-but-text">ReddIt</div>
+                                    </a></div><div class="td-social-sharing-hidden"><ul class="td-pulldown-filter-list"></ul><a class="td-social-sharing-button td-social-handler td-social-expand-tabs" href="#" data-block-uid="td_social_sharing_article_bottom">
+                                    <div class="td-social-but-icon"><i class="td-icon-plus td-social-expand-tabs-icon"></i></div>
+                                </a></div></div></div>                <div class="author-box-wrap"><a href="https://oox.space/author/pryanik/"><img data-del="avatar" src='https://oox.space/wp-content/uploads/2018/06/Bitcoin-Blockchain-150x150.jpg' class='avatar pp-user-avatar avatar-96 photo ' height='96' width='96'/></a><div class="desc"><div class="td-author-name vcard author"><span class="fn"><a href="https://oox.space/author/pryanik/">Захар Пряников</a></span></div><div class="td-author-description">Когда-то давно я купил биткоин за 10$ и потом продал его за 200$. Тогда мне казалось, что это была супер сделка. Сейчас я понимаю, как я ошибался и теперь моя стратегия - это HODL!</div><div class="td-author-social"></div><div class="clearfix"></div></div></div>        <span class="td-page-meta" itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Захар Пряников"></span><meta itemprop="datePublished" content="2019-04-16T21:20:42+00:00"><meta itemprop="dateModified" content="2019-04-29T13:47:13+05:00"><meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="https://oox.space/trading/crypto-trade-bot-apitrade/"/><span class="td-page-meta" itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><span class="td-page-meta" itemprop="logo" itemscope itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="https://oox.space/wp-content/uploads/2018/09/logo-1001-241.png"></span><meta itemprop="name" content="ooX.Space"></span><meta itemprop="headline " content="Бот для автоматической торговли криптовалютой"><span class="td-page-meta" itemprop="image" itemscope itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="https://oox.space/wp-content/uploads/2018/05/5MSNI1ymNxA.jpg"><meta itemprop="width" content="1200"><meta itemprop="height" content="720"></span>    </footer>
+
+    <div class="td_block_wrap td_block_related_posts td_uid_4_6257fc3ac2335_rand td_with_ajax_pagination td-pb-border-top td_block_template_1"  data-td-block-uid="td_uid_4_6257fc3ac2335" ><script>var block_td_uid_4_6257fc3ac2335 = new tdBlock();
+block_td_uid_4_6257fc3ac2335.id = "td_uid_4_6257fc3ac2335";
+block_td_uid_4_6257fc3ac2335.atts = '{"limit":6,"ajax_pagination":"next_prev","live_filter":"cur_post_same_categories","td_ajax_filter_type":"td_custom_related","class":"td_uid_4_6257fc3ac2335_rand","td_column_number":3,"live_filter_cur_post_id":813,"live_filter_cur_post_author":"19","block_template_id":"","header_color":"","ajax_pagination_infinite_stop":"","offset":"","td_ajax_preloading":"","td_filter_default_txt":"","td_ajax_filter_ids":"","el_class":"","color_preset":"","border_top":"","css":"","tdc_css":"","tdc_css_class":"td_uid_4_6257fc3ac2335_rand","tdc_css_class_style":"td_uid_4_6257fc3ac2335_rand_style"}';
+block_td_uid_4_6257fc3ac2335.td_column_number = "3";
+block_td_uid_4_6257fc3ac2335.block_type = "td_block_related_posts";
+block_td_uid_4_6257fc3ac2335.post_count = "6";
+block_td_uid_4_6257fc3ac2335.found_posts = "22";
+block_td_uid_4_6257fc3ac2335.header_color = "";
+block_td_uid_4_6257fc3ac2335.ajax_pagination_infinite_stop = "";
+block_td_uid_4_6257fc3ac2335.max_num_pages = "4";
+tdBlocksArray.push(block_td_uid_4_6257fc3ac2335);
+</script><h4 class="td-related-title td-block-title"><a id="td_uid_5_6257fc3ac422e" class="td-related-left td-cur-simple-item" data-td_filter_value="" data-td_block_id="td_uid_4_6257fc3ac2335" href="#">ЭТО МОЖЕТ БЫТЬ ИНТЕРЕСНО</a><a id="td_uid_6_6257fc3ac4234" class="td-related-right" data-td_filter_value="td_related_more_from_author" data-td_block_id="td_uid_4_6257fc3ac2335" href="#">ЕЩЕ ОТ АВТОРА</a></h4><div id=td_uid_4_6257fc3ac2335 class="td_block_inner">
+
+	<div class="td-related-row">
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://oox.space/guides/8-ways-to-earn-bitcoin/" rel="bookmark" class="td-image-wrap" title="Как заработать Биткоин &#8212; 8 проверенных способов"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANoAAACWAQMAAACCSQSPAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABpJREFUWMPtwQENAAAAwiD7p7bHBwwAAAAg7RD+AAGXD7BoAAAAAElFTkSuQmCC" alt="Как заработать Биткоин - 8 способов" title="Как заработать Биткоин &#8212; 8 проверенных способов" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2019/05/bitcoin-girl-218x150.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2019/05/bitcoin-girl-436x300.jpg" width="218" height="150" /></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://oox.space/guides/8-ways-to-earn-bitcoin/" rel="bookmark" title="Как заработать Биткоин &#8212; 8 проверенных способов">Как заработать Биткоин &#8212; 8 проверенных способов</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 -->
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://oox.space/trading/margin-trading-ultimate-guide/" rel="bookmark" class="td-image-wrap" title="Маржинальная торговля криптовалютой &#8212; полное руководство для новичков"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANoAAACWAQMAAACCSQSPAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABpJREFUWMPtwQENAAAAwiD7p7bHBwwAAAAg7RD+AAGXD7BoAAAAAElFTkSuQmCC" alt="Маржинальная торговля криптовалютой" title="Маржинальная торговля криптовалютой &#8212; полное руководство для новичков" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2019/04/maxresdefault-218x150.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2019/04/maxresdefault-436x300.jpg" width="218" height="150" /></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://oox.space/trading/margin-trading-ultimate-guide/" rel="bookmark" title="Маржинальная торговля криптовалютой &#8212; полное руководство для новичков">Маржинальная торговля криптовалютой &#8212; полное руководство для новичков</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 -->
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://oox.space/guides/blockchain-terms/" rel="bookmark" class="td-image-wrap" title="Термины блокчейна и криптовалют, которые вы обязаны знать"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANoAAACWAQMAAACCSQSPAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABpJREFUWMPtwQENAAAAwiD7p7bHBwwAAAAg7RD+AAGXD7BoAAAAAElFTkSuQmCC" alt="" title="Термины блокчейна и криптовалют, которые вы обязаны знать" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/12/pepe-trader-218x150.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/12/pepe-trader-436x300.jpg" width="218" height="150" /></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://oox.space/guides/blockchain-terms/" rel="bookmark" title="Термины блокчейна и криптовалют, которые вы обязаны знать">Термины блокчейна и криптовалют, которые вы обязаны знать</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 --></div><!--./row-fluid-->
+
+	<div class="td-related-row">
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://oox.space/guides/5-reasons-to-use-vpn/" rel="bookmark" class="td-image-wrap" title="Четыре причины использовать VPN"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANoAAACWAQMAAACCSQSPAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABpJREFUWMPtwQENAAAAwiD7p7bHBwwAAAAg7RD+AAGXD7BoAAAAAElFTkSuQmCC" alt="VPN. Зачем его использовать" title="Четыре причины использовать VPN" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/11/Anonymous-Always-218x150.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/11/Anonymous-Always-436x300.jpg" width="218" height="150" /></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://oox.space/guides/5-reasons-to-use-vpn/" rel="bookmark" title="Четыре причины использовать VPN">Четыре причины использовать VPN</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 -->
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://oox.space/analytics/trading-crypto-rules/" rel="bookmark" class="td-image-wrap" title="Трейдинг криптовалют. Основные правила"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANoAAACWAQMAAACCSQSPAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABpJREFUWMPtwQENAAAAwiD7p7bHBwwAAAAg7RD+AAGXD7BoAAAAAElFTkSuQmCC" alt="crypto-rules" title="Трейдинг криптовалют. Основные правила" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/05/crypto-rules-218x150.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/05/crypto-rules-436x300.jpg" width="218" height="150" /></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://oox.space/analytics/trading-crypto-rules/" rel="bookmark" title="Трейдинг криптовалют. Основные правила">Трейдинг криптовалют. Основные правила</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 -->
+
+	<div class="td-related-span4">
+
+        <div class="td_module_related_posts td-animation-stack td_mod_related_posts">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://oox.space/analytics/how-to-find-job-in-crypto/" rel="bookmark" class="td-image-wrap" title="Как найти работу в криптоиндустрии"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANoAAACWAQMAAACCSQSPAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABpJREFUWMPtwQENAAAAwiD7p7bHBwwAAAAg7RD+AAGXD7BoAAAAAElFTkSuQmCC" alt="" title="Как найти работу в криптоиндустрии" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/07/laptop-coffee-2-218x150.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/07/laptop-coffee-2-436x300.jpg" width="218" height="150" /></a></div>                            </div>
+            <div class="item-details">
+                <h3 class="entry-title td-module-title"><a href="https://oox.space/analytics/how-to-find-job-in-crypto/" rel="bookmark" title="Как найти работу в криптоиндустрии">Как найти работу в криптоиндустрии</a></h3>            </div>
+        </div>
+        
+	</div> <!-- ./td-related-span4 --></div><!--./row-fluid--></div><div class="td-next-prev-wrap"><a href="#" class="td-ajax-prev-page ajax-page-disabled" id="prev-page-td_uid_4_6257fc3ac2335" data-td_block_id="td_uid_4_6257fc3ac2335"><i class="td-icon-font td-icon-menu-left"></i></a><a href="#"  class="td-ajax-next-page" id="next-page-td_uid_4_6257fc3ac2335" data-td_block_id="td_uid_4_6257fc3ac2335"><i class="td-icon-font td-icon-menu-right"></i></a></div></div> <!-- ./block -->
+	<div class="comments" id="comments">
+        
+            <div class="td-comments-title-wrap td_block_template_1">
+                <h4 class="td-comments-title block-title"><span>5 КОММЕНТАРИИ</span></h4>
+            </div>
+
+		        <ol class="comment-list ">
+                            <li class="comment " id="comment-4746">
+			<article>
+	            <footer>
+                    <img alt='' src='https://secure.gravatar.com/avatar/?s=50&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/?s=100&#038;d=mm&#038;r=g 2x' class='avatar avatar-50 photo avatar-default' height='50' width='50' loading='lazy'/>                    <cite>Игорь</cite>
+
+                    <a class="comment-link" href="#comment-4746">
+                        <time pubdate="1614977612">06.03.2021 at 01:53</time>
+                    </a>
+
+                                        
+                </footer>
+
+                <div class="comment-content">
+                    <p>Сквиз-бот приносит бабло, за что им спасибо большое.</p>
+                </div>
+
+	            <div class="comment-meta" id="comment-4746">
+                    <a rel='nofollow' class='comment-reply-link' href='#comment-4746' data-commentid="4746" data-postid="813" data-belowelement="comment-4746" data-respondelement="respond" data-replyto="Комментарий к записи Игорь" aria-label='Комментарий к записи Игорь'>Ответить</a>                </div>
+            </article>
+    </li><!-- #comment-## -->
+        <li class="comment " id="comment-1119">
+			<article>
+	            <footer>
+                    <img alt='' src='https://secure.gravatar.com/avatar/e7cea878d37834b879426b0565aa7e49?s=50&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/e7cea878d37834b879426b0565aa7e49?s=100&#038;d=mm&#038;r=g 2x' class='avatar avatar-50 photo' height='50' width='50' loading='lazy'/>                    <cite>Евгений</cite>
+
+                    <a class="comment-link" href="#comment-1119">
+                        <time pubdate="1560109097">10.06.2019 at 00:38</time>
+                    </a>
+
+                                        
+                </footer>
+
+                <div class="comment-content">
+                    <p>Бот [ссылка удалена] без абонентки, очень хорошо для новичков, саппорт поможет выбрать пару и все настроить, при депозите на бирже в эквиваленте 100-200 долларов получается +0.3-07% к прибыли, попробовать всегда можно, вы ничего не платите пока не заработаете. Оплата за бота — это комиссия с прибыли.<br />
+Скачать можно тут [ссылка удалена]</p>
+                </div>
+
+	            <div class="comment-meta" id="comment-1119">
+                    <a rel='nofollow' class='comment-reply-link' href='#comment-1119' data-commentid="1119" data-postid="813" data-belowelement="comment-1119" data-respondelement="respond" data-replyto="Комментарий к записи Евгений" aria-label='Комментарий к записи Евгений'>Ответить</a>                </div>
+            </article>
+    </li><!-- #comment-## -->
+        <li class="comment " id="comment-1014">
+			<article>
+	            <footer>
+                    <img alt='' src='https://secure.gravatar.com/avatar/08fe2d941c5cf5e566177da0f7739f63?s=50&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/08fe2d941c5cf5e566177da0f7739f63?s=100&#038;d=mm&#038;r=g 2x' class='avatar avatar-50 photo' height='50' width='50' loading='lazy'/>                    <cite>Алекс</cite>
+
+                    <a class="comment-link" href="#comment-1014">
+                        <time pubdate="1558228841">19.05.2019 at 06:20</time>
+                    </a>
+
+                                        
+                </footer>
+
+                <div class="comment-content">
+                    <p>сори за орфографию&#8230; конечно биржи)))</p>
+                </div>
+
+	            <div class="comment-meta" id="comment-1014">
+                    <a rel='nofollow' class='comment-reply-link' href='#comment-1014' data-commentid="1014" data-postid="813" data-belowelement="comment-1014" data-respondelement="respond" data-replyto="Комментарий к записи Алекс" aria-label='Комментарий к записи Алекс'>Ответить</a>                </div>
+            </article>
+    </li><!-- #comment-## -->
+        <li class="comment " id="comment-1013">
+			<article>
+	            <footer>
+                    <img alt='' src='https://secure.gravatar.com/avatar/08fe2d941c5cf5e566177da0f7739f63?s=50&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/08fe2d941c5cf5e566177da0f7739f63?s=100&#038;d=mm&#038;r=g 2x' class='avatar avatar-50 photo' height='50' width='50' loading='lazy'/>                    <cite>Алекс</cite>
+
+                    <a class="comment-link" href="#comment-1013">
+                        <time pubdate="1558228796">19.05.2019 at 06:19</time>
+                    </a>
+
+                                        
+                </footer>
+
+                <div class="comment-content">
+                    <p>Доброго дня.<br />
+Подскажите что прописать в поле API Password при регистрации биржы Okex на apitrade</p>
+                </div>
+
+	            <div class="comment-meta" id="comment-1013">
+                    <a rel='nofollow' class='comment-reply-link' href='#comment-1013' data-commentid="1013" data-postid="813" data-belowelement="comment-1013" data-respondelement="respond" data-replyto="Комментарий к записи Алекс" aria-label='Комментарий к записи Алекс'>Ответить</a>                </div>
+            </article>
+    <ul class="children">
+        <li class="comment " id="comment-1058">
+			<article>
+	            <footer>
+                    <img alt='' src='https://secure.gravatar.com/avatar/cb4f19cd33f00484d2e771faeab29c9d?s=50&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/cb4f19cd33f00484d2e771faeab29c9d?s=100&#038;d=mm&#038;r=g 2x' class='avatar avatar-50 photo' height='50' width='50' loading='lazy'/>                    <cite>Кирилл Хомяков</cite>
+
+                    <a class="comment-link" href="#comment-1058">
+                        <time pubdate="1559189320">30.05.2019 at 09:08</time>
+                    </a>
+
+                                        
+                </footer>
+
+                <div class="comment-content">
+                    <p>Полагаю, что лучше всего этот вопрос задать в саппорт Apitrade.</p>
+                </div>
+
+	            <div class="comment-meta" id="comment-1058">
+                    <a rel='nofollow' class='comment-reply-link' href='#comment-1058' data-commentid="1058" data-postid="813" data-belowelement="comment-1058" data-respondelement="respond" data-replyto="Комментарий к записи Кирилл Хомяков" aria-label='Комментарий к записи Кирилл Хомяков'>Ответить</a>                </div>
+            </article>
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+                </ol>
+                <div class="comment-pagination">
+                                                        </div>
+
+            	<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">ОСТАВЬТЕ ОТВЕТ <small><a rel="nofollow" id="cancel-comment-reply-link" href="/trading/crypto-trade-bot-apitrade/#respond" style="display:none;">Отменить ответ</a></small></h3><form action="https://oox.space/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate><div class="clearfix"></div>
+				<div class="comment-form-input-wrap td-form-comment">
+					<textarea placeholder="Комментарий:" id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea>
+					<div class="td-warning-comment">Please enter your comment!</div>
+				</div>
+		        <div class="comment-form-input-wrap td-form-author">
+			            <input class="" id="author" name="author" placeholder="Имя:" type="text" value="" size="30"  />
+			            <div class="td-warning-author">Please enter your name here</div>
+			         </div>
+<div class="comment-form-input-wrap td-form-email">
+			            <input class="" id="email" name="email" placeholder="Электронная почта:" type="text" value="" size="30"  />
+			            <div class="td-warning-email-error">You have entered an incorrect email address!</div>
+			            <div class="td-warning-email">Please enter your email address here</div>
+			         </div>
+<div class="comment-form-input-wrap td-form-url">
+			            <input class="" id="url" name="url" placeholder="Веб-Сайт:" type="text" value="" size="30" />
+                     </div>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" /><label for="wp-comment-cookies-consent">Сохранить данные для следующих комментариев</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Опубликовать Комментарий" /> <input type='hidden' name='comment_post_ID' value='813' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="a28aa3be9e" /></p><p style="display: none !important;"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js" name="ak_js" value="74"/><script>document.getElementById( "ak_js" ).setAttribute( "value", ( new Date() ).getTime() );</script></p></form>	</div><!-- #respond -->
+	    </div> <!-- /.content -->
+                            </div>
+                        </div>
+                        <div class="td-pb-span4 td-main-sidebar" role="complementary">
+                            <div class="td-ss-main-sidebar">
+                                <div class="td_block_wrap td_block_social_counter td_block_widget td_uid_7_6257fc3aca275_rand td-social-style5 td-social-boxed td-pb-border-top td_block_template_1"><div class="td-block-title-wrap"><h4 class="block-title td-block-title"><span class="td-pulldown-size">Мы в соцсетях</span></h4></div><div class="td-social-list"><div class="td_social_type td-pb-margin-side td_social_facebook"><div class="td-social-box"><div class="td-sp td-sp-facebook"></div><span class="td_social_info">11</span><span class="td_social_info td_social_info_name">Фанаты</span><span class="td_social_button"><a href="https://www.facebook.com/ooxspace"  >Мне нравится</a></span></div></div><div class="td_social_type td-pb-margin-side td_social_twitter"><div class="td-social-box"><div class="td-sp td-sp-twitter"></div><span class="td_social_info">13</span><span class="td_social_info td_social_info_name">Читатели</span><span class="td_social_button"><a href="https://twitter.com/OoxSpace"  >Читать</a></span></div></div><div class="td_social_type td-pb-margin-side td_social_youtube"><div class="td-social-box"><div class="td-sp td-sp-youtube"></div><span class="td_social_info">56</span><span class="td_social_info td_social_info_name">Подписчики</span><span class="td_social_button"><a href="https://www.youtube.com/channel/UCpR1RISMzDkyf8h3URvlKgQ"  >Подписаться</a></span></div></div></div></div> <!-- ./block --><aside class="widget_text td_block_template_1 widget widget_custom_html"><div class="textwidget custom-html-widget"><div class="tdm_block td_block_wrap tdn_block_newsletter_subscribe td_uid_8_6257fc3aca574_rand tds_newsletter4_block tdn-content-horiz-center td-pb-border-top td_block_template_1  td-fix-index"  data-td-block-uid="td_uid_8_6257fc3aca574" >
+<style>
+.td_uid_9_6257fc3acb928 .tdn-image-wrap {
+                    background-color: #fffbcf;
+                }
+
+
+                
+                .td_uid_8_6257fc3aca574_rand {
+                    border: 1px solid #eee;
+                }
+                
+                .td_uid_9_6257fc3acb928 button {
+                    background-color: #f3b700;
+                }
+                
+                .td_uid_9_6257fc3acb928 .av-checkbox+label .tdn-check:after {
+                    background-color: #f3b700;
+                }
+
+/* landscape */
+@media (min-width: 1019px) and (max-width: 1140px){
+.td_uid_8_6257fc3aca574_rand {
+                    border: 1px solid #eee;
+                }
+}
+
+/* portrait */
+@media (min-width: 768px) and (max-width: 1018px){
+.td_uid_8_6257fc3aca574_rand {
+                    border: 1px solid #eee;
+                }
+}
+
+/* phone */
+@media (max-width: 767px){
+.td_uid_8_6257fc3aca574_rand {
+                    border: 1px solid #eee;
+                }
+}
+</style><div class="tds-newsletter tds-newsletter4 td_uid_9_6257fc3acb928 tdn-input-bar-display-column tdn-style-bordered td-fix-index"><div class="tdn-image-wrap"><img src="https://oox.space/wp-content/uploads/tdn_pic_2.png" class="tdn-newsletter-image"></div><div class="tdn-info-wrap"><div class="tdn-info"><h3 class="tdn-title">Будь в курсе!</h3><p class="tdn-descr">Изредка мы будем присылать самые интересные статьи вам на почту )</p></div><form class="tdn-form" action="https://space.us19.list-manage.com/subscribe/post?u=ecf5c03d62db0bb16a8a4010e&amp;id=3333447083" method="post" name="mc-embedded-subscribe-form" target="_blank"><div class="tdn-email-bar"><div class="tdn-input-wrap"><input type="email" name="EMAIL" placeholder="Укажите ваш Email"></div><div class="tdn-btn-wrap"><button class="tdn-submit-btn" type="submit" name="subscribe" >Подписаться</button></div></div></form></div></div></div></div></aside><div class="td_block_wrap td_block_2 td_block_widget td_uid_10_6257fc3acc2a7_rand td-pb-border-top td_block_template_1 td-column-1 td_block_padding"  data-td-block-uid="td_uid_10_6257fc3acc2a7" ><script>var block_td_uid_10_6257fc3acc2a7 = new tdBlock();
+block_td_uid_10_6257fc3acc2a7.id = "td_uid_10_6257fc3acc2a7";
+block_td_uid_10_6257fc3acc2a7.atts = '{"custom_title":"\u041f\u043e\u043f\u0443\u043b\u044f\u0440\u043d\u044b\u0435 \u043c\u0430\u0442\u0435\u0440\u0438\u0430\u043b\u044b","custom_url":"","block_template_id":"","header_color":"#","header_text_color":"#","m2_tl":"","m2_el":"","m6_tl":"","limit":"6","offset":"","el_class":"","post_ids":"","category_id":"","category_ids":"","tag_slug":"","autors_id":"","installed_post_types":"","sort":"popular7","td_ajax_filter_type":"","td_ajax_filter_ids":"","td_filter_default_txt":"All","td_ajax_preloading":"","ajax_pagination":"","ajax_pagination_infinite_stop":"","class":"td_block_widget td_uid_10_6257fc3acc2a7_rand","separator":"","show_modified_date":"","f_header_font_header":"","f_header_font_title":"Block header","f_header_font_settings":"","f_header_font_family":"","f_header_font_size":"","f_header_font_line_height":"","f_header_font_style":"","f_header_font_weight":"","f_header_font_transform":"","f_header_font_spacing":"","f_header_":"","f_ajax_font_title":"Ajax categories","f_ajax_font_settings":"","f_ajax_font_family":"","f_ajax_font_size":"","f_ajax_font_line_height":"","f_ajax_font_style":"","f_ajax_font_weight":"","f_ajax_font_transform":"","f_ajax_font_spacing":"","f_ajax_":"","f_more_font_title":"Load more button","f_more_font_settings":"","f_more_font_family":"","f_more_font_size":"","f_more_font_line_height":"","f_more_font_style":"","f_more_font_weight":"","f_more_font_transform":"","f_more_font_spacing":"","f_more_":"","m2f_title_font_header":"","m2f_title_font_title":"Article title","m2f_title_font_settings":"","m2f_title_font_family":"","m2f_title_font_size":"","m2f_title_font_line_height":"","m2f_title_font_style":"","m2f_title_font_weight":"","m2f_title_font_transform":"","m2f_title_font_spacing":"","m2f_title_":"","m2f_cat_font_title":"Article category tag","m2f_cat_font_settings":"","m2f_cat_font_family":"","m2f_cat_font_size":"","m2f_cat_font_line_height":"","m2f_cat_font_style":"","m2f_cat_font_weight":"","m2f_cat_font_transform":"","m2f_cat_font_spacing":"","m2f_cat_":"","m2f_meta_font_title":"Article meta info","m2f_meta_font_settings":"","m2f_meta_font_family":"","m2f_meta_font_size":"","m2f_meta_font_line_height":"","m2f_meta_font_style":"","m2f_meta_font_weight":"","m2f_meta_font_transform":"","m2f_meta_font_spacing":"","m2f_meta_":"","m2f_ex_font_title":"Article excerpt","m2f_ex_font_settings":"","m2f_ex_font_family":"","m2f_ex_font_size":"","m2f_ex_font_line_height":"","m2f_ex_font_style":"","m2f_ex_font_weight":"","m2f_ex_font_transform":"","m2f_ex_font_spacing":"","m2f_ex_":"","m6f_title_font_header":"","m6f_title_font_title":"Article title","m6f_title_font_settings":"","m6f_title_font_family":"","m6f_title_font_size":"","m6f_title_font_line_height":"","m6f_title_font_style":"","m6f_title_font_weight":"","m6f_title_font_transform":"","m6f_title_font_spacing":"","m6f_title_":"","m6f_cat_font_title":"Article category tag","m6f_cat_font_settings":"","m6f_cat_font_family":"","m6f_cat_font_size":"","m6f_cat_font_line_height":"","m6f_cat_font_style":"","m6f_cat_font_weight":"","m6f_cat_font_transform":"","m6f_cat_font_spacing":"","m6f_cat_":"","m6f_meta_font_title":"Article meta info","m6f_meta_font_settings":"","m6f_meta_font_family":"","m6f_meta_font_size":"","m6f_meta_font_line_height":"","m6f_meta_font_style":"","m6f_meta_font_weight":"","m6f_meta_font_transform":"","m6f_meta_font_spacing":"","m6f_meta_":"","css":"","tdc_css":"","td_column_number":1,"color_preset":"","border_top":"","tdc_css_class":"td_uid_10_6257fc3acc2a7_rand","tdc_css_class_style":"td_uid_10_6257fc3acc2a7_rand_style"}';
+block_td_uid_10_6257fc3acc2a7.td_column_number = "1";
+block_td_uid_10_6257fc3acc2a7.block_type = "td_block_2";
+block_td_uid_10_6257fc3acc2a7.post_count = "6";
+block_td_uid_10_6257fc3acc2a7.found_posts = "134";
+block_td_uid_10_6257fc3acc2a7.header_color = "#";
+block_td_uid_10_6257fc3acc2a7.ajax_pagination_infinite_stop = "";
+block_td_uid_10_6257fc3acc2a7.max_num_pages = "23";
+tdBlocksArray.push(block_td_uid_10_6257fc3acc2a7);
+</script><div class="td-block-title-wrap"><h4 class="block-title td-block-title"><span class="td-pulldown-size">Популярные материалы</span></h4></div><div id=td_uid_10_6257fc3acc2a7 class="td_block_inner">
+
+	<div class="td-block-span12">
+
+        <div class="td_module_2 td_module_wrap td-animation-stack">
+            <div class="td-module-image">
+                <div class="td-module-thumb"><a href="https://oox.space/coins/waves/" rel="bookmark" class="td-image-wrap" title="Криптовалюта Waves"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUQAAACgAQMAAABOhoelAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAAB1JREFUWMPtwTEBAAAAwiD7p/ZdCGAAAAAAAAAQBxpAAAH8le3bAAAAAElFTkSuQmCC" alt="" title="Криптовалюта Waves" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/08/pplware_opera00-2-324x160.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/08/pplware_opera00-2-648x320.jpg" width="324" height="160" /></a></div>                <a href="https://oox.space/category/coins/" class="td-post-category">Криптовалюты</a>            </div>
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/coins/waves/" rel="bookmark" title="Криптовалюта Waves">Криптовалюта Waves</a></h3>
+
+            <div class="td-module-meta-info">
+                <span class="td-post-author-name"><a href="https://oox.space/author/resalient/">Александр Воеводин</a></span>                                <div class="td-module-comments"><a href="https://oox.space/coins/waves/#comments">2</a></div>            </div>
+
+
+            <div class="td-excerpt">
+                В мире цифровых валют очень востребована технология специализированных децентрализованных платформ. Такие площадки помогают создавать собственные активы в виде токенов для запуска ICO, а также проводить...            </div>
+
+            
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/coins/bitcoin-cash-bch/" rel="bookmark" class="td-image-wrap" title="Bitcoin Cash (BCH)"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="Bitcoin Cash (BCH) Logo" title="Bitcoin Cash (BCH)" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/09/bch-logo-100x70.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/09/bch-logo-200x140.jpg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/coins/bitcoin-cash-bch/" rel="bookmark" title="Bitcoin Cash (BCH)">Bitcoin Cash (BCH)</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/wallet/myetherwallet-fishing/" rel="bookmark" class="td-image-wrap" title="Как воруют криптовалюту Ethereum с кошелька MyEtherWallet"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="" title="Как воруют криптовалюту Ethereum с кошелька MyEtherWallet" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/05/iu-5-e1527155244994-100x70.jpeg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/05/iu-5-e1527155244994-200x140.jpeg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/wallet/myetherwallet-fishing/" rel="bookmark" title="Как воруют криптовалюту Ethereum с кошелька MyEtherWallet">Как воруют криптовалюту Ethereum с кошелька MyEtherWallet</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/analytics/three-ways-to-find-profit-crypto/" rel="bookmark" class="td-image-wrap" title="Три способа найти перспективную криптовалюту"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="" title="Три способа найти перспективную криптовалюту" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/05/905283962.jpg.0-100x70.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/05/905283962.jpg.0-200x140.jpg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/analytics/three-ways-to-find-profit-crypto/" rel="bookmark" title="Три способа найти перспективную криптовалюту">Три способа найти перспективную криптовалюту</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/analytics/how-reach-satoshi/" rel="bookmark" class="td-image-wrap" title="Сколько биткоинов у Сатоши Накамото?"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="" title="Сколько биткоинов у Сатоши Накамото?" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/07/4f7753-2-100x70.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/07/4f7753-2-200x140.jpg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/analytics/how-reach-satoshi/" rel="bookmark" title="Сколько биткоинов у Сатоши Накамото?">Сколько биткоинов у Сатоши Накамото?</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/x/okex/" rel="bookmark" class="td-image-wrap" title="Биржа OKEx. Полное руководство"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="" title="Биржа OKEx. Полное руководство" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/09/okex-review-100x70.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/09/okex-review-200x140.jpg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/x/okex/" rel="bookmark" title="Биржа OKEx. Полное руководство">Биржа OKEx. Полное руководство</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 --></div></div> <!-- ./block --><aside class="widget_text td_block_template_1 widget widget_custom_html"><div class="textwidget custom-html-widget"><a href="/binance" target="_blank" rel="noopener"><img class="alignnone size-full wp-image-432" src="https://oox.space/wp-content/uploads/2018/07/binance_300_250-min-300x250-2.jpg" alt="binance" width="470" height="840" /></a></div></aside><div class="td_block_wrap td_block_7 td_block_widget td_uid_11_6257fc3ad3ec9_rand td-pb-border-top td_block_template_1 td-column-1 td_block_padding"  data-td-block-uid="td_uid_11_6257fc3ad3ec9" ><script>var block_td_uid_11_6257fc3ad3ec9 = new tdBlock();
+block_td_uid_11_6257fc3ad3ec9.id = "td_uid_11_6257fc3ad3ec9";
+block_td_uid_11_6257fc3ad3ec9.atts = '{"custom_title":"\u0412\u044b\u0431\u043e\u0440 \u0440\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0430","custom_url":"","block_template_id":"","header_color":"#","header_text_color":"#","accent_text_color":"#","m6_tl":"","limit":"7","offset":"","el_class":"","post_ids":"","category_id":"68","category_ids":"","tag_slug":"","autors_id":"","installed_post_types":"","sort":"random_posts","td_ajax_filter_type":"td_category_ids_filter","td_ajax_filter_ids":"","td_filter_default_txt":"\u0412\u0441\u0435","td_ajax_preloading":"","ajax_pagination":"","ajax_pagination_infinite_stop":"","class":"td_block_widget td_uid_11_6257fc3ad3ec9_rand","separator":"","show_modified_date":"","f_header_font_header":"","f_header_font_title":"Block header","f_header_font_settings":"","f_header_font_family":"","f_header_font_size":"","f_header_font_line_height":"","f_header_font_style":"","f_header_font_weight":"","f_header_font_transform":"","f_header_font_spacing":"","f_header_":"","f_ajax_font_title":"Ajax categories","f_ajax_font_settings":"","f_ajax_font_family":"","f_ajax_font_size":"","f_ajax_font_line_height":"","f_ajax_font_style":"","f_ajax_font_weight":"","f_ajax_font_transform":"","f_ajax_font_spacing":"","f_ajax_":"","f_more_font_title":"Load more button","f_more_font_settings":"","f_more_font_family":"","f_more_font_size":"","f_more_font_line_height":"","f_more_font_style":"","f_more_font_weight":"","f_more_font_transform":"","f_more_font_spacing":"","f_more_":"","m6f_title_font_header":"","m6f_title_font_title":"Article title","m6f_title_font_settings":"","m6f_title_font_family":"","m6f_title_font_size":"","m6f_title_font_line_height":"","m6f_title_font_style":"","m6f_title_font_weight":"","m6f_title_font_transform":"","m6f_title_font_spacing":"","m6f_title_":"","m6f_cat_font_title":"Article category tag","m6f_cat_font_settings":"","m6f_cat_font_family":"","m6f_cat_font_size":"","m6f_cat_font_line_height":"","m6f_cat_font_style":"","m6f_cat_font_weight":"","m6f_cat_font_transform":"","m6f_cat_font_spacing":"","m6f_cat_":"","m6f_meta_font_title":"Article meta info","m6f_meta_font_settings":"","m6f_meta_font_family":"","m6f_meta_font_size":"","m6f_meta_font_line_height":"","m6f_meta_font_style":"","m6f_meta_font_weight":"","m6f_meta_font_transform":"","m6f_meta_font_spacing":"","m6f_meta_":"","css":"","tdc_css":"","td_column_number":1,"color_preset":"","border_top":"","tdc_css_class":"td_uid_11_6257fc3ad3ec9_rand","tdc_css_class_style":"td_uid_11_6257fc3ad3ec9_rand_style"}';
+block_td_uid_11_6257fc3ad3ec9.td_column_number = "1";
+block_td_uid_11_6257fc3ad3ec9.block_type = "td_block_7";
+block_td_uid_11_6257fc3ad3ec9.post_count = "7";
+block_td_uid_11_6257fc3ad3ec9.found_posts = "17";
+block_td_uid_11_6257fc3ad3ec9.header_color = "#";
+block_td_uid_11_6257fc3ad3ec9.ajax_pagination_infinite_stop = "";
+block_td_uid_11_6257fc3ad3ec9.max_num_pages = "3";
+tdBlocksArray.push(block_td_uid_11_6257fc3ad3ec9);
+</script><div class="td-block-title-wrap"><h4 class="block-title td-block-title"><span class="td-pulldown-size">Выбор редактора</span></h4><div class="td-pulldown-syle-default td-subcat-filter" id="td_pulldown_td_uid_11_6257fc3ad3ec9"><ul class="td-subcat-list" id="td_pulldown_td_uid_11_6257fc3ad3ec9_list"><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_12_6257fc3ad58af" data-td_filter_value="" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Все</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_13_6257fc3ad58b1" data-td_filter_value="68" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Featured</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_14_6257fc3ad58b2" data-td_filter_value="4" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">ICO</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_15_6257fc3ad58b3" data-td_filter_value="7" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Аналитика</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_16_6257fc3ad58b4" data-td_filter_value="2" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Биржи</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_17_6257fc3ad58b5" data-td_filter_value="29" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Кошельки</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_18_6257fc3ad58b6" data-td_filter_value="116" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Личности</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_19_6257fc3ad58b7" data-td_filter_value="70" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Майнинг</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_20_6257fc3ad58b8" data-td_filter_value="3" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Новости</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_21_6257fc3ad58b9" data-td_filter_value="72" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Прогнозы</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_22_6257fc3ad58ba" data-td_filter_value="105" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Руководства</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_23_6257fc3ad58bb" data-td_filter_value="18" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Трейдинг</a></li><li class="td-subcat-item"><a class="td-subcat-link" id="td_uid_24_6257fc3ad58bc" data-td_filter_value="71" data-td_block_id="td_uid_11_6257fc3ad3ec9" href="#">Форки</a></li></ul><div class="td-subcat-dropdown"><div class="td-subcat-more" aria-haspopup="true"><span>Подробнее</span><i class="td-icon-read-down"></i></div><ul class="td-pulldown-filter-list"></ul></div></div></div><div id=td_uid_11_6257fc3ad3ec9 class="td_block_inner">
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/analytics/three-ways-to-find-profit-crypto/" rel="bookmark" class="td-image-wrap" title="Три способа найти перспективную криптовалюту"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="" title="Три способа найти перспективную криптовалюту" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/05/905283962.jpg.0-100x70.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/05/905283962.jpg.0-200x140.jpg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/analytics/three-ways-to-find-profit-crypto/" rel="bookmark" title="Три способа найти перспективную криптовалюту">Три способа найти перспективную криптовалюту</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/analytics/how-to-get-profit-from-hardforks/" rel="bookmark" class="td-image-wrap" title="Как получить монеты форков биткоина"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="Как получить монеты форков биткоина" title="Как получить монеты форков биткоина" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/06/Bitcoin-Blockchain-100x70.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/06/Bitcoin-Blockchain-200x140.jpg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/analytics/how-to-get-profit-from-hardforks/" rel="bookmark" title="Как получить монеты форков биткоина">Как получить монеты форков биткоина</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/mining/biggest-world-mining-farms/" rel="bookmark" class="td-image-wrap" title="5 самых больших майнинг-ферм в мире"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="5 самых больших в мире майнинг-ферм" title="5 самых больших майнинг-ферм в мире" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/09/bitcoin-mining-farm-1-2-100x70.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/09/bitcoin-mining-farm-1-2-200x140.jpg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/mining/biggest-world-mining-farms/" rel="bookmark" title="5 самых больших майнинг-ферм в мире">5 самых больших майнинг-ферм в мире</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/analytics/how-reach-satoshi/" rel="bookmark" class="td-image-wrap" title="Сколько биткоинов у Сатоши Накамото?"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="" title="Сколько биткоинов у Сатоши Накамото?" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/07/4f7753-2-100x70.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/07/4f7753-2-200x140.jpg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/analytics/how-reach-satoshi/" rel="bookmark" title="Сколько биткоинов у Сатоши Накамото?">Сколько биткоинов у Сатоши Накамото?</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/wallet/myetherwallet-fishing/" rel="bookmark" class="td-image-wrap" title="Как воруют криптовалюту Ethereum с кошелька MyEtherWallet"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="" title="Как воруют криптовалюту Ethereum с кошелька MyEtherWallet" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/05/iu-5-e1527155244994-100x70.jpeg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/05/iu-5-e1527155244994-200x140.jpeg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/wallet/myetherwallet-fishing/" rel="bookmark" title="Как воруют криптовалюту Ethereum с кошелька MyEtherWallet">Как воруют криптовалюту Ethereum с кошелька MyEtherWallet</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/analytics/how-to-find-job-in-crypto/" rel="bookmark" class="td-image-wrap" title="Как найти работу в криптоиндустрии"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="" title="Как найти работу в криптоиндустрии" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/07/laptop-coffee-2-100x70.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/07/laptop-coffee-2-200x140.jpg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/analytics/how-to-find-job-in-crypto/" rel="bookmark" title="Как найти работу в криптоиндустрии">Как найти работу в криптоиндустрии</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 -->
+
+	<div class="td-block-span12">
+
+        <div class="td_module_6 td_module_wrap td-animation-stack">
+
+        <div class="td-module-thumb"><a href="https://oox.space/trading/crypto-trade-bot-apitrade/" rel="bookmark" class="td-image-wrap" title="Бот для автоматической торговли криптовалютой"><img class="entry-thumb" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABGAQMAAAAASKMqAAAAA1BMVEWurq51dlI4AAAAAXRSTlMmkutdmwAAABBJREFUKM9jGAWjYBQMKwAAA9QAAQWBn6cAAAAASUVORK5CYII=" alt="Бот для торговли криптовалютой на автомате" title="Бот для автоматической торговли криптовалютой" data-type="image_tag" data-img-url="https://oox.space/wp-content/uploads/2018/05/5MSNI1ymNxA-100x70.jpg" data-img-retina-url="https://oox.space/wp-content/uploads/2018/05/5MSNI1ymNxA-200x140.jpg" width="100" height="70" /></a></div>
+        <div class="item-details">
+            <h3 class="entry-title td-module-title"><a href="https://oox.space/trading/crypto-trade-bot-apitrade/" rel="bookmark" title="Бот для автоматической торговли криптовалютой">Бот для автоматической торговли криптовалютой</a></h3>            <div class="td-module-meta-info">
+                                                                            </div>
+        </div>
+
+        </div>
+
+        
+	</div> <!-- ./td-block-span12 --></div></div> <!-- ./block -->                            </div>
+                        </div>
+                            </div> <!-- /.td-pb-row -->
+    </div> <!-- /.td-container -->
+</article> <!-- /.post -->
+
+<!-- Instagram -->
+
+
+
+
+	<!-- Footer -->
+	<div class="td-footer-wrapper td-footer-container td-container-wrap td-footer-template-3 td_stretch_container td_stretch_content_1200">
+    <div class="td-container">
+
+	    <div class="td-pb-row">
+		    <div class="td-pb-span12">
+                		    </div>
+	    </div>
+
+        <div class="td-pb-row">
+
+            <div class="td-pb-span4">
+                <div class="td-footer-info"><div class="footer-logo-wrap"><a href="https://oox.space/"><img src="https://oox.space/wp-content/uploads/2018/06/oox-space-logo-1.svg" alt="OOX.SPACE" title="OOX.SPACE"/></a></div><div class="footer-text-wrap">ooX.Space следит за развитием технологии блокчейн и становлением нового мирового порядка - децентрализации. Мы приглашаем авторов разместить свои материалы и пресс релизы на страницах ресурса. <div class="footer-email-wrap">Свяжитесь с нами: <a href="mailto:welсome@oox.space">welсome@oox.space</a></div></div><div class="footer-social-wrap td-social-style-2">
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://www.facebook.com/ooxspace/" title="Facebook">
+                <i class="td-icon-font td-icon-facebook"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://t.me/ooxspace" title="Telegram">
+                <i class="td-icon-font td-icon-telegram"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://twitter.com/OoxSpace" title="Twitter">
+                <i class="td-icon-font td-icon-twitter"></i>
+            </a>
+        </span>
+        <span class="td-social-icon-wrap">
+            <a target="_blank" href="https://www.youtube.com/channel/UCpR1RISMzDkyf8h3URvlKgQ" title="Youtube">
+                <i class="td-icon-font td-icon-youtube"></i>
+            </a>
+        </span></div></div>            </div>
+
+            <div class="td-pb-span4">
+                <div class="td_block_wrap td_block_popular_categories td_block_widget td_uid_26_6257fc3ad77f9_rand widget widget_categories td-pb-border-top td_block_template_5"  data-td-block-uid="td_uid_26_6257fc3ad77f9" ><div class="td-block-title-wrap"><h4 class="td-block-title"><span class="td-pulldown-size">КАТЕГОРИИ САЙТА</span></h4></div><ul class="td-pb-padding-side"><li><a href="https://oox.space/category/coins/"><span class="td-cat-name">Криптовалюты</span><span class="td-cat-no">41</span></a></li><li><a href="https://oox.space/category/analytics/"><span class="td-cat-name">Аналитика</span><span class="td-cat-no">32</span></a></li><li><a href="https://oox.space/category/news/"><span class="td-cat-name">Новости</span><span class="td-cat-no">18</span></a></li><li><a href="https://oox.space/category/x/"><span class="td-cat-name">Биржи</span><span class="td-cat-no">11</span></a></li><li><a href="https://oox.space/category/guides/"><span class="td-cat-name">Руководства</span><span class="td-cat-no">10</span></a></li><li><a href="https://oox.space/category/ico/"><span class="td-cat-name">ICO</span><span class="td-cat-no">9</span></a></li><li><a href="https://oox.space/category/wallet/"><span class="td-cat-name">Кошельки</span><span class="td-cat-no">9</span></a></li><li><a href="https://oox.space/category/mining/"><span class="td-cat-name">Майнинг</span><span class="td-cat-no">9</span></a></li><li><a href="https://oox.space/category/trading/"><span class="td-cat-name">Трейдинг</span><span class="td-cat-no">8</span></a></li><li><a href="https://oox.space/category/analytics/predictions/"><span class="td-cat-name">Прогнозы</span><span class="td-cat-no">7</span></a></li><li><a href="https://oox.space/category/analytics/forks/"><span class="td-cat-name">Форки</span><span class="td-cat-no">4</span></a></li></ul></div> <!-- ./block -->            </div>
+
+            <div class="td-pb-span4">
+                <div class="td_block_wrap td_block_social_counter td_block_widget td_uid_27_6257fc3ad8313_rand td-social-style5 td-social-boxed td-pb-border-top td_block_template_5"><div class="td-block-title-wrap"><h4 class="td-block-title"><span class="td-pulldown-size">SOCIAL</span></h4></div><div class="td-social-list"><div class="td_social_type td-pb-margin-side td_social_facebook"><div class="td-social-box"><div class="td-sp td-sp-facebook"></div><span class="td_social_info">11</span><span class="td_social_info td_social_info_name">Фанаты</span><span class="td_social_button"><a href="https://www.facebook.com/ooxspace"  target="_blank" >Мне нравится</a></span></div></div><div class="td_social_type td-pb-margin-side td_social_twitter"><div class="td-social-box"><div class="td-sp td-sp-twitter"></div><span class="td_social_info">13</span><span class="td_social_info td_social_info_name">Читатели</span><span class="td_social_button"><a href="https://twitter.com/OoxSpace"  target="_blank" >Читать</a></span></div></div><div class="td_social_type td-pb-margin-side td_social_youtube"><div class="td-social-box"><div class="td-sp td-sp-youtube"></div><span class="td_social_info">56</span><span class="td_social_info td_social_info_name">Подписчики</span><span class="td_social_button"><a href="https://www.youtube.com/channel/UCpR1RISMzDkyf8h3URvlKgQ"  target="_blank" >Подписаться</a></span></div></div></div></div> <!-- ./block --><aside class="td_block_template_1 widget widget_nav_menu"><h4 class="block-title"><span>ВАЖНОЕ</span></h4><div class="menu-footer-links-container"><ul id="menu-footer-links" class="menu"><li id="menu-item-2918" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-first td-menu-item td-normal-menu menu-item-2918"><a href="https://oox.space/contact-us/">Связаться с нами</a></li>
+<li id="menu-item-2655" class="menu-item menu-item-type-post_type menu-item-object-page td-menu-item td-normal-menu menu-item-2655"><a href="https://oox.space/hr/">Стать автором</a></li>
+<li id="menu-item-2656" class="menu-item menu-item-type-custom menu-item-object-custom td-menu-item td-normal-menu menu-item-2656"><a href="https://electron.agency">Сделать такой сайт</a></li>
+</ul></div></aside>            </div>
+        </div>
+    </div>
+</div>
+	<!-- Sub Footer -->
+	    <div class="td-sub-footer-container td-container-wrap td_stretch_container td_stretch_content_1200">
+        <div class="td-container">
+            <div class="td-pb-row">
+                <div class="td-pb-span td-sub-footer-menu">
+                                    </div>
+
+                <div class="td-pb-span td-sub-footer-copy">
+                    &copy;  2022 ooX.Space. Копирование материалов без указания источника запрещено.                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div><!--close td-outer-wrap-->
+
+
+
+
+    <!--
+
+        Theme: Newspaper by tagDiv.com 2019
+        Version: 9.7 (rara)
+        Deploy mode: deploy
+        
+        uid: 6257fc3ad93c2
+    -->
+
+    <script type='text/javascript' src='https://oox.space/wp-includes/js/dist/vendor/regenerator-runtime.min.js?ver=0.13.7' id='regenerator-runtime-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0' id='wp-polyfill-js'></script>
+<script type='text/javascript' id='contact-form-7-js-extra'>
+/* <![CDATA[ */
+var wpcf7 = {"api":{"root":"https:\/\/oox.space\/wp-json\/","namespace":"contact-form-7\/v1"},"cached":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://oox.space/wp-content/plugins/contact-form-7/includes/js/index.js?ver=5.5.3' id='contact-form-7-js'></script>
+<script type='text/javascript' id='ppress-frontend-script-js-extra'>
+/* <![CDATA[ */
+var pp_ajax_form = {"ajaxurl":"https:\/\/oox.space\/wp-admin\/admin-ajax.php","confirm_delete":"Are you sure?","deleting_text":"Deleting...","deleting_error":"An error occurred. Please try again.","nonce":"877169e1b0","disable_ajax_form":"false"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://oox.space/wp-content/plugins/wp-user-avatar/assets/js/frontend.min.js?ver=3.2.6' id='ppress-frontend-script-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-content/plugins/td-composer/legacy/common/wp_booster/js_dev/tdModalPostImages.js?ver=9.7' id='tdModalPostImages-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-includes/js/underscore.min.js?ver=1.13.1' id='underscore-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-content/plugins/td-cloud-library/assets/js/js_posts_autoload.min.js?ver=0efffdb5d54304d2033d0c415272a0e3' id='tdb_js_posts_autoload-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-content/themes/Newspaper/js/tagdiv_theme.min.js?ver=9.7' id='td-site-min-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-includes/js/comment-reply.min.js?ver=5.8.4' id='comment-reply-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-content/plugins/td-cloud-library/assets/js/js_files_for_front.min.js?ver=0efffdb5d54304d2033d0c415272a0e3' id='tdb_js_files_for_front-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-includes/js/wp-embed.min.js?ver=5.8.4' id='wp-embed-js'></script>
+<script type='text/javascript' src='https://cdn.onesignal.com/sdks/OneSignalSDK.js?ver=5.8.4' async='async' id='remote_sdk-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-content/plugins/easy-table-of-contents/vendor/smooth-scroll/jquery.smooth-scroll.min.js?ver=2.2.0' id='jquery-smooth-scroll-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-content/plugins/easy-table-of-contents/vendor/js-cookie/js.cookie.min.js?ver=2.2.1' id='js-cookie-js'></script>
+<script type='text/javascript' src='https://oox.space/wp-content/plugins/easy-table-of-contents/vendor/sticky-kit/jquery.sticky-kit.min.js?ver=1.9.2' id='jquery-sticky-kit-js'></script>
+<script type='text/javascript' id='ez-toc-js-js-extra'>
+/* <![CDATA[ */
+var ezTOC = {"smooth_scroll":"1","visibility_hide_by_default":"","width":"auto","scroll_offset":"30"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://oox.space/wp-content/plugins/easy-table-of-contents/assets/js/front.min.js?ver=2.0.17-1626009102' id='ez-toc-js-js'></script>
+
+<!-- JS generated by theme -->
+
+<script>
+    
+jQuery(window).ready(function() {
+(function(){
+var td_backstr_item = new tdBackstr.item();
+td_backstr_item.wrapper_image_jquery_obj = jQuery( "#td-full-screen-header-image" );
+td_backstr_item.image_jquery_obj = td_backstr_item.wrapper_image_jquery_obj.find( 'img:first' );
+tdBackstr.add_item( td_backstr_item );
+jQuery('.td-read-down a').click(function(event){
+event.preventDefault();
+var header_wrap = jQuery( '.td-full-screen-header-image-wrap:first' )
+if ( 1 === header_wrap.length ) {
+tdUtil.scrollToPosition(header_wrap.height() + header_wrap.offset().top, 1200);
+}
+});
+})();
+});
+
+                jQuery().ready(function jQuery_ready() {
+                    tdAjaxCount.tdGetViewsCountsAjax("post","[813]");
+                });
+            
+
+	
+
+		(function(){
+			var html_jquery_obj = jQuery('html');
+
+			if (html_jquery_obj.length && (html_jquery_obj.is('.ie8') || html_jquery_obj.is('.ie9'))) {
+
+				var path = 'https://oox.space/wp-content/themes/Newspaper/style.css';
+
+				jQuery.get(path, function(data) {
+
+					var str_split_separator = '#td_css_split_separator';
+					var arr_splits = data.split(str_split_separator);
+					var arr_length = arr_splits.length;
+
+					if (arr_length > 1) {
+
+						var dir_path = 'https://oox.space/wp-content/themes/Newspaper';
+						var splited_css = '';
+
+						for (var i = 0; i < arr_length; i++) {
+							if (i > 0) {
+								arr_splits[i] = str_split_separator + ' ' + arr_splits[i];
+							}
+							//jQuery('head').append('<style>' + arr_splits[i] + '</style>');
+
+							var formated_str = arr_splits[i].replace(/\surl\(\'(?!data\:)/gi, function regex_function(str) {
+								return ' url(\'' + dir_path + '/' + str.replace(/url\(\'/gi, '').replace(/^\s+|\s+$/gm,'');
+							});
+
+							splited_css += "<style>" + formated_str + "</style>";
+						}
+
+						var td_theme_css = jQuery('link#td-theme-css');
+
+						if (td_theme_css.length) {
+							td_theme_css.after(splited_css);
+						}
+					}
+				});
+			}
+		})();
+
+	
+	
+</script>
+
+
+</body>
+</html>
+<!-- Dynamic page generated in 0.380 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2022-04-14 15:49:30 -->
+
+<!-- Compression = gzip -->
+<!-- super cache -->
