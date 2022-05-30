@@ -3,5 +3,5 @@ plotly==5.8.0
 pandas==1.4.2
 ta==0.10.1
 tqdm==4.64.0
-ccxt==1.84.15
+ccxt==1.84.42
 scikit-learn
