@@ -24,7 +24,7 @@ setup(
         'Bug Tracker': 'https://github.com/VladKochetov007/quick_trade/issues'
     },
     install_requires=[
-        'numpy==1.23.4',
+        'numpy==1.23.5',
         'plotly==5.11.0',
         'pandas==1.5.1',
         'ta==0.10.1',
